@@ -10,6 +10,7 @@
 | No. Presensi | 5 |
 | Topik Sistem | Sistem Point of Sales (POS / Kasir Toko) |
 | Tema Visual | **Neumorphism** (Soft UI) |
+| Url Stitch | https://stitch.withgoogle.com/projects/11214029862213967469 |
 
 ---
 
