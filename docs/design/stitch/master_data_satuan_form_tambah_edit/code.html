@@ -1,0 +1,385 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><title>Toko Sari Amerta - POS &amp; Retail System</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&amp;family=Outfit:wght@500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet"><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface": "#f2fbf8", "surface-bright": "#f2fbf8", "secondary-fixed": "#c8e9e3", "surface-sunken": "#D7E4E0", "surface-variant": "#dbe4e1", "text-muted": "#526E69", "sidebar-idle": "#A8C6C0", "surface-crisp": "#FFFFFF", "text-secondary": "#47625D", "warning-bg": "#F7E6B5", "primary-fixed-dim": "#85d5c9", "on-surface": "#151d1c", "on-primary-fixed": "#00201d", "tertiary-fixed-dim": "#80d998", "chart-series-2": "#2B5C78", "teal-100": "#D0E7E3", "info-text": "#0B6158", "secondary-container": "#c5e7e0", "sidebar-active": "#FFFFFF", "on-tertiary-fixed-variant": "#005228", "on-secondary-fixed": "#00201c", "on-secondary": "#ffffff", "surface-container-low": "#edf6f3", "on-background": "#151d1c", "on-primary-container": "#99e8dd", "error-container": "#ffdad6", "sidebar-indicator": "#45C9B8", "danger-bg": "#F6DACF", "on-error": "#ffffff", "teal-400": "#45C9B8", "teal-900": "#06403B", "outline-variant": "#bec9c6", "surface-header": "#F4F8F7", "secondary": "#46645f", "on-tertiary": "#ffffff", "on-error-container": "#93000a", "on-secondary-container": "#4a6863", "warning-text": "#6F5000", "on-primary-fixed-variant": "#005049", "chart-series-3": "#9A6B06", "inverse-surface": "#2a3230", "sidebar-active-bg": "rgba(255, 255, 255, 0.08)", "primary-container": "#0b6b62", "surface-tint": "#096a61", "success-bg": "#CFE7DB", "on-tertiary-fixed": "#00210d", "chart-series-4": "#B23A16", "btn-neutral": "#1F3A35", "teal-600": "#0D7C74", "teal-800": "#09514A", "on-primary": "#ffffff", "surface-dim": "#d3dcd9", "success-text": "#12694A", "background": "#f2fbf8", "on-surface-variant": "#3e4947", "inverse-on-surface": "#eaf3f0", "surface-container-highest": "#dbe4e1", "surface-container-lowest": "#ffffff", "text-primary": "#16302C", "danger-text": "#9E3210", "primary-fixed": "#a1f1e5", "btn-danger": "#B23A16", "error": "#ba1a1a", "surface-container-high": "#e1eae7", "on-tertiary-container": "#93edaa", "inverse-primary": "#85d5c9", "tertiary-container": "#036e39", "tertiary": "#005329", "secondary-fixed-dim": "#accdc7", "primary": "#00514a", "on-secondary-fixed-variant": "#2e4c48", "divider": "#CBDAD5", "info-bg": "#D0E7E3", "surface-raised": "#EDF4F2", "sidebar-label": "#7FA39D", "tertiary-fixed": "#9bf6b2", "outline": "#6f7977", "surface-container": "#e7f0ed" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-sm": "0.5rem", "margin": "2rem", "space-xl": "2rem", "margin-mobile": "1rem", "gutter": "1.25rem", "space-md": "1rem", "space-xs": "0.25rem", "gutter-mobile": "0.75rem", "space-lg": "1.5rem" }, "fontFamily": { "body-sm": ["Plus Jakarta Sans"], "overline": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "numeric-data": ["JetBrains Mono"], "headline-md": ["Outfit"], "display-hero": ["Outfit"], "body-lg": ["Plus Jakarta Sans"], "headline-sm": ["Outfit"], "body-md": ["Plus Jakarta Sans"], "numeric-total": ["JetBrains Mono"], "headline-lg": ["Outfit"], "display-hero-mobile": ["Outfit"] }, "fontSize": { "body-sm": ["13.5px", { "lineHeight": "20px", "fontWeight": "400" }], "overline": ["11px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "600" }], "label-sm": ["12px", { "lineHeight": "18px", "fontWeight": "500" }], "label-md": ["13.5px", { "lineHeight": "20px", "fontWeight": "600" }], "numeric-data": ["13.5px", { "lineHeight": "20px", "fontWeight": "500" }], "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "display-hero": ["40px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "body-lg": ["15px", { "lineHeight": "24px", "fontWeight": "600" }], "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "500" }], "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }], "numeric-total": ["28px", { "lineHeight": "32px", "fontWeight": "600" }], "headline-lg": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "display-hero-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-[260px] bg-[#0B2B27] z-50 flex flex-col justify-between overflow-y-auto"><div class="flex flex-col"><div class="h-16 px-space-lg flex items-center gap-space-sm bg-[#07201d]"><img alt="Teal circular monogram logo with SA initials for Toko Sari Amerta POS. Brand logo. - Primary color: #0b6b62 - Font: outfit - Mode: light - Roundness: rounded-md" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VBWVLdBpLWEhBUcBOL3Z9dvcmiO-z0sl3sHN68ZR7vN4oYKg7YZ_MioLKw4NGaCSa6GiZh279y15rIoEalj8kqgXJ7QfpfC256DpSY0RKPNEN-6jduECX3ZwzQooc9ETRvSHkjFkCvaqNhWFmaS3JHYZNqcwX9Q0p0OGHGu7rLOARPWG15NmBHoVm5pZ6ZlYLng6kN2TEZlVB9-T6JpLh8UiLVBE0TpdLsZ9rZyMmknqfiicpJTjm47rlR"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-white font-semibold leading-tight">Sari Amerta</span><span class="font-overline text-overline text-sidebar-label uppercase">POS &amp; Retail</span></div></div><nav class="flex flex-col py-space-sm" data-active-classes="bg-sidebar-active-bg text-sidebar-active font-bold border-l-[3px] border-sidebar-indicator"><div class="px-space-lg pt-space-md pb-space-xs font-overline text-overline uppercase text-sidebar-label">Utama</div><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span><span>Dashboard</span></a><div class="px-space-lg pt-space-md pb-space-xs font-overline text-overline uppercase text-sidebar-label">Transaksi</div><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="kasir-(pos)" href="#"><span class="material-symbols-outlined text-[18px]">point_of_sale</span><span>Kasir (POS)</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="riwayat-transaksi" href="#"><span class="material-symbols-outlined text-[18px]">receipt_long</span><span>Riwayat Transaksi</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="retur-penjualan" href="#"><span class="material-symbols-outlined text-[18px]">assignment_return</span><span>Retur Penjualan</span></a><div class="px-space-lg pt-space-md pb-space-xs font-overline text-overline uppercase text-sidebar-label">Master Data</div><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="produk" href="#"><span class="material-symbols-outlined text-[18px]">inventory_2</span><span>Produk</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="kategori-produk" href="#"><span class="material-symbols-outlined text-[18px]">category</span><span>Kategori Produk</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-lg py-2.5 transition-all bg-sidebar-active-bg text-sidebar-active font-bold border-l-[3px] border-sidebar-indicator" data-path="satuan" href="#"><span class="material-symbols-outlined text-[18px] text-sidebar-indicator">straighten</span><span>Satuan</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="supplier" href="#"><span class="material-symbols-outlined text-[18px]">local_shipping</span><span>Supplier</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="pelanggan" href="#"><span class="material-symbols-outlined text-[18px]">group</span><span>Pelanggan</span></a><div class="px-space-lg pt-space-md pb-space-xs font-overline text-overline uppercase text-sidebar-label">Inventori</div><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="stok-barang" href="#"><span class="material-symbols-outlined text-[18px]">warehouse</span><span>Stok Barang</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="barang-masuk-(purchasing)" href="#"><span class="material-symbols-outlined text-[18px]">input</span><span>Barang Masuk (Purchasing)</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="stok-opname" href="#"><span class="material-symbols-outlined text-[18px]">fact_check</span><span>Stok Opname</span></a><div class="px-space-lg pt-space-md pb-space-xs font-overline text-overline uppercase text-sidebar-label">Laporan</div><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="laporan-penjualan" href="#"><span class="material-symbols-outlined text-[18px]">query_stats</span><span>Laporan Penjualan</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="laba-rugi" href="#"><span class="material-symbols-outlined text-[18px]">payments</span><span>Laba Rugi</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="laporan-stok" href="#"><span class="material-symbols-outlined text-[18px]">inventory</span><span>Laporan Stok</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="cetak-struk-/-ulang-struk" href="#"><span class="material-symbols-outlined text-[18px]">print</span><span>Cetak Struk / Ulang</span></a><div class="px-space-lg pt-space-md pb-space-xs font-overline text-overline uppercase text-sidebar-label">Pengaturan</div><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="pengguna-&amp;-hak-akses" href="#"><span class="material-symbols-outlined text-[18px]">manage_accounts</span><span>Pengguna &amp; Hak Akses</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="profil-toko" href="#"><span class="material-symbols-outlined text-[18px]">store</span><span>Profil Toko</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="metode-pembayaran" href="#"><span class="material-symbols-outlined text-[18px]">credit_card</span><span>Metode Pembayaran</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="pajak-&amp;-diskon" href="#"><span class="material-symbols-outlined text-[18px]">percent</span><span>Pajak &amp; Diskon</span></a></nav></div><div class="p-space-md bg-[#07201d] flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="Profile" class="w-8 h-8 rounded-full object-cover shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1VzXL-W4fXNz743_6iWgs8tnRRX6QnzXYD90htSNO8UlqW94thzjEwWO45hD3116fznsyea8gMe8AEGqapS-lN5b8rO6oNawJnFl19YFJleZOjiPkJw-3RQZMAw6rcMt2EV1VtLgLGyreSE_fMKAZg7DQLdi__18uNJnqVQ3AJ0btoKpschfq6N2a4wDiQfc2Q7xbLsTA9GbursNP91Io_M4sfAQt_GGv5Mwsg2DOtESpik3Umvkuyvrsko"><div class="flex flex-col min-w-0"><span class="font-label-md text-label-md text-white truncate">Ni Kadek Ayu Pramesti</span><span class="font-label-sm text-label-sm text-sidebar-label">Kasir Aktif #01</span></div></div><a class="text-sidebar-idle hover:text-white p-1 transition-colors" href="#" title="Keluar"><span class="material-symbols-outlined text-[20px]">logout</span></a></div></aside><div class="pl-[260px]"><header class="fixed top-0 left-[260px] right-0 h-16 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl"><div class="flex items-center gap-space-md"><div class="flex items-center gap-2 bg-surface-raised px-3 py-1.5 rounded-lg shadow-[inset_2px_2px_5px_rgba(122,152,145,0.25),inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"><span class="material-symbols-outlined text-text-muted text-[18px]">storefront</span><span class="font-label-md text-label-md text-text-primary">Toko Pusat Jimbaran</span><span class="material-symbols-outlined text-text-muted text-[16px]">expand_more</span></div><div class="h-4 w-px bg-divider"></div><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-teal-400"></span><span class="font-label-sm text-label-sm text-text-muted">Sistem Online: Kasir 01</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-2 bg-surface-raised px-3.5 py-1.5 rounded-lg shadow-[inset_2px_2px_5px_rgba(122,152,145,0.25),inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"><span class="material-symbols-outlined text-text-muted text-[18px]">search</span><input class="bg-transparent border-none outline-none font-body-sm text-body-sm text-text-primary w-64 placeholder:text-text-muted" placeholder="Cari transaksi, produk, barcode... (F2)" type="text"></div><button class="p-2 text-text-muted hover:text-on-surface transition-colors relative" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 bg-btn-danger rounded-full"></span></button><button class="p-2 text-text-muted hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">help</span></button><div class="h-4 w-px bg-divider"></div><div class="flex items-center gap-space-sm"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VzXL-W4fXNz743_6iWgs8tnRRX6QnzXYD90htSNO8UlqW94thzjEwWO45hD3116fznsyea8gMe8AEGqapS-lN5b8rO6oNawJnFl19YFJleZOjiPkJw-3RQZMAw6rcMt2EV1VtLgLGyreSE_fMKAZg7DQLdi__18uNJnqVQ3AJ0btoKpschfq6N2a4wDiQfc2Q7xbLsTA9GbursNP91Io_M4sfAQt_GGv5Mwsg2DOtESpik3Umvkuyvrsko"><div class="flex flex-col text-left"><span class="font-label-md text-label-md text-text-primary leading-none">Ni Kadek Ayu</span><span class="font-overline text-overline text-text-muted mt-0.5 uppercase">Kasir</span></div></div></div></header><main class="relative pt-16 bg-surface min-h-screen w-full px-space-xl py-space-lg"><div class="flex flex-col w-full pb-28">
+<!-- Top Bar: Breadcrumb, Mode Pill, and Headline -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md mb-space-lg">
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center gap-2 font-label-sm text-label-sm text-text-muted">
+<span>Master Data</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span>Satuan</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-teal-600 font-medium">Form Satuan</span>
+</div>
+<div class="flex items-center gap-3 flex-wrap">
+<h1 class="font-headline-lg text-headline-lg text-text-primary tracking-tight">Tambah / Edit Satuan</h1>
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-raised shadow-[inset_2px_2px_5px_rgba(122,152,145,0.22),inset_-2px_-2px_5px_rgba(255,255,255,0.7)]">
+<span class="w-2 h-2 rounded-full bg-teal-400"></span>
+<span class="font-numeric-data text-numeric-data text-info-text uppercase font-semibold">ID Mode: Modifikasi (SAT-003 · KG)</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-text-secondary">
+        Kelola rincian unit ukuran, simbol kasir POS, dan konfigurasi pecahan timbangan desimal.
+      </p>
+</div>
+<!-- Quick Stat Pill -->
+<div class="hidden xl:flex items-center gap-4 bg-surface-raised px-5 py-3 rounded-xl shadow-[4px_4px_10px_rgba(122,152,145,0.25),-4px_-4px_10px_rgba(255,255,255,0.85)]">
+<div class="w-10 h-10 rounded-lg bg-teal-100 flex items-center justify-center text-teal-800">
+<span class="material-symbols-outlined text-[22px]">scale</span>
+</div>
+<div class="flex flex-col">
+<span class="font-overline text-overline uppercase text-text-muted">Status Timbangan Kasir</span>
+<span class="font-label-md text-label-md text-text-primary flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-success-text"></span>
+          EAN-13 Scale Ready
+        </span>
+</div>
+</div>
+</div>
+<!-- Tab Navigation -->
+<div class="flex items-center gap-2 p-1.5 mb-space-lg rounded-xl bg-surface-sunken/60 w-fit shadow-[inset_2px_2px_5px_rgba(122,152,145,0.28),inset_-2px_-2px_5px_rgba(255,255,255,0.6)]">
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg font-label-md text-label-md text-text-muted hover:text-text-primary transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">format_list_bulleted</span>
+<span>Daftar Satuan</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg font-label-md text-label-md bg-surface-crisp text-teal-800 shadow-[0_4px_12px_rgba(13,124,116,0.12)]" type="button">
+<span class="w-2 h-2 rounded-full bg-sidebar-indicator"></span>
+<span class="material-symbols-outlined text-[18px]">edit_note</span>
+<span class="font-bold">Tambah / Edit Satuan</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg font-label-md text-label-md text-text-muted hover:text-text-primary transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">sync_alt</span>
+<span>Aturan Konversi &amp; Timbangan</span>
+</button>
+</div>
+<!-- Asymmetric Two-Column Grid (2fr : 1fr) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT COLUMN: 8 Cols (2fr equivalent) -->
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<!-- Card 1: Informasi Utama Satuan -->
+<div class="bg-surface-raised p-6 rounded-2xl shadow-[10px_10px_24px_rgba(122,152,145,0.3),-8px_-8px_20px_rgba(255,255,255,0.92)] flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-3">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-teal-100/80 flex items-center justify-center text-teal-800">
+<span class="material-symbols-outlined text-[20px]">straighten</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-text-primary font-semibold">Informasi Utama Satuan</h2>
+<span class="font-overline text-overline text-text-muted uppercase">Parameter Identifikasi Satuan</span>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-md bg-teal-100 text-info-text font-label-sm text-label-sm font-semibold">Wajib Diisi *</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Nama Satuan -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-text-primary" for="nama_satuan">Nama Satuan <span class="text-btn-danger">*</span></label>
+<span class="font-numeric-data text-[11px] text-text-muted">8 / 30</span>
+</div>
+<div class="h-12 px-4 rounded-xl bg-surface-sunken flex items-center shadow-[inset_4px_4px_10px_rgba(122,152,145,0.38),inset_-3px_-3px_8px_rgba(255,255,255,0.85)] focus-within:ring-2 focus-within:ring-teal-600 transition-all">
+<input class="w-full bg-transparent outline-none font-body-md text-body-md text-text-primary placeholder:text-text-muted" id="nama_satuan" placeholder="Misal: Kilogram, Gram, Liter" type="text" value="Kilogram">
+<span class="material-symbols-outlined text-[18px] text-teal-600">check_circle</span>
+</div>
+<p class="font-label-sm text-label-sm text-text-muted">Nama lengkap satuan yang terdaftar di master inventori.</p>
+</div>
+<!-- Kode / Singkatan Satuan -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-text-primary" for="kode_satuan">Kode / Singkatan Satuan <span class="text-btn-danger">*</span></label>
+<span class="font-overline text-[10px] px-2 py-0.5 rounded bg-surface-crisp text-teal-800 shadow-sm font-semibold">Tampil di Struk &amp; POS</span>
+</div>
+<div class="h-12 px-4 rounded-xl bg-surface-sunken flex items-center gap-2 shadow-[inset_4px_4px_10px_rgba(122,152,145,0.38),inset_-3px_-3px_8px_rgba(255,255,255,0.85)] focus-within:ring-2 focus-within:ring-teal-600 transition-all">
+<span class="font-numeric-data text-numeric-data text-text-muted font-bold select-none">#</span>
+<input class="w-full bg-transparent outline-none font-numeric-data text-numeric-data text-text-primary uppercase font-bold tracking-wider" id="kode_satuan" maxlength="8" type="text" value="KG">
+<span class="material-symbols-outlined text-[18px] text-text-muted">receipt</span>
+</div>
+<p class="font-label-sm text-label-sm text-text-muted">Maksimal 6 karakter. Contoh: KG, GR, LTR, PCS.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md pt-2">
+<!-- Kategori Ukuran -->
+<div class="md:col-span-2 flex flex-col gap-2">
+<label class="font-label-md text-label-md text-text-primary" for="kategori_satuan">Kategori Pengelompokan Ukuran</label>
+<div class="h-12 px-4 rounded-xl bg-surface-sunken flex items-center justify-between shadow-[inset_4px_4px_10px_rgba(122,152,145,0.38),inset_-3px_-3px_8px_rgba(255,255,255,0.85)]">
+<select class="w-full bg-transparent outline-none font-body-md text-body-md text-text-primary cursor-pointer" id="kategori_satuan">
+<option selected="" value="berat">Berat / Massa (Timbangan Digital)</option>
+<option value="unit">Satuan Buah / Unit (Pcs, Box, Pack)</option>
+<option value="volume">Volume Cairan (Liter, Mililiter)</option>
+<option value="panjang">Panjang / Dimensi (Meter, Centimeter)</option>
+</select>
+<span class="material-symbols-outlined text-[20px] text-text-muted pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Urutan Tampilan POS -->
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-text-primary" for="urutan_pos">Urutan di POS</label>
+<div class="h-12 px-4 rounded-xl bg-surface-sunken flex items-center justify-between shadow-[inset_4px_4px_10px_rgba(122,152,145,0.38),inset_-3px_-3px_8px_rgba(255,255,255,0.85)]">
+<input class="w-full bg-transparent outline-none font-numeric-data text-numeric-data text-text-primary" id="urutan_pos" max="99" min="1" type="number" value="2">
+<span class="material-symbols-outlined text-[18px] text-text-muted">low_priority</span>
+</div>
+</div>
+</div>
+<!-- Deskripsi Penggunaan -->
+<div class="flex flex-col gap-2 pt-2">
+<label class="font-label-md text-label-md text-text-primary" for="deskripsi_satuan">Deskripsi &amp; Catatan Penggunaan</label>
+<div class="p-3.5 rounded-xl bg-surface-sunken shadow-[inset_4px_4px_10px_rgba(122,152,145,0.38),inset_-3px_-3px_8px_rgba(255,255,255,0.85)] focus-within:ring-2 focus-within:ring-teal-600 transition-all">
+<textarea class="w-full bg-transparent outline-none font-body-sm text-body-sm text-text-primary resize-none placeholder:text-text-muted" id="deskripsi_satuan" rows="3">Satuan berat untuk sembako curah seperti beras, gula pasir, bawang, dan telur.</textarea>
+</div>
+<span class="font-label-sm text-label-sm text-text-muted">Membantu staff kasir membedakan varian satuan curah vs kemasan utuh.</span>
+</div>
+</div>
+<!-- Card 2: Konfigurasi POS & Timbangan Digital -->
+<div class="bg-surface-raised p-6 rounded-2xl shadow-[10px_10px_24px_rgba(122,152,145,0.3),-8px_-8px_20px_rgba(255,255,255,0.92)] flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-3">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-teal-100/80 flex items-center justify-center text-teal-800">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-text-primary font-semibold">Konfigurasi POS &amp; Timbangan Digital</h2>
+<span class="font-overline text-overline text-text-muted uppercase">Otomatisasi Kasir &amp; Perhitungan Kasir</span>
+</div>
+</div>
+<span class="font-numeric-data text-[12px] px-2.5 py-1 rounded bg-surface-sunken text-teal-900 font-semibold">SCALE-ENGINE v2</span>
+</div>
+<!-- Toggle 1: Desimal / Pecahan -->
+<div class="p-4 rounded-xl bg-surface-crisp shadow-[0_4px_16px_rgba(0,0,0,0.03)] flex items-start justify-between gap-4">
+<div class="flex gap-3 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-teal-100 text-teal-800 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">calculate</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Izinkan Penjualan Desimal / Pecahan</span>
+<p class="font-body-sm text-body-sm text-text-muted mt-0.5">
+                Mendukung input desimal seperti <span class="font-numeric-data text-text-primary font-semibold">0.5 kg</span>, <span class="font-numeric-data text-text-primary font-semibold">1.25 kg</span> saat ditimbang di kasir.
+              </p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-12 h-6 bg-surface-sunken peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600 shadow-[inset_2px_2px_4px_rgba(0,0,0,0.2)]"></div>
+</label>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Presisi Desimal Kasir -->
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-text-primary" for="presisi_desimal">Presisi Desimal Kasir</label>
+<div class="h-12 px-4 rounded-xl bg-surface-sunken flex items-center justify-between shadow-[inset_4px_4px_10px_rgba(122,152,145,0.38),inset_-3px_-3px_8px_rgba(255,255,255,0.85)]">
+<select class="w-full bg-transparent outline-none font-body-sm text-body-sm text-text-primary cursor-pointer font-medium" id="presisi_desimal">
+<option value="1">1 Angka di Belakang Koma (0.5 kg)</option>
+<option selected="" value="2">2 Angka di Belakang Koma (0.75 kg)</option>
+<option value="3">3 Angka Presisi Tinggi (0.125 kg)</option>
+</select>
+<span class="material-symbols-outlined text-[20px] text-text-muted pointer-events-none">expand_more</span>
+</div>
+<span class="font-label-sm text-label-sm text-text-muted">Format standar struk transaksi retail modern.</span>
+</div>
+<!-- Nilai Minimum Transaksi -->
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-text-primary" for="min_transaksi">Nilai Minimum Transaksi</label>
+<div class="h-12 px-4 rounded-xl bg-surface-sunken flex items-center gap-2 shadow-[inset_4px_4px_10px_rgba(122,152,145,0.38),inset_-3px_-3px_8px_rgba(255,255,255,0.85)] focus-within:ring-2 focus-within:ring-teal-600 transition-all">
+<input class="w-full bg-transparent outline-none font-numeric-data text-numeric-data text-text-primary font-semibold" id="min_transaksi" type="text" value="0.05">
+<span class="px-2 py-0.5 rounded bg-surface-crisp font-numeric-data text-[12px] text-teal-800 font-bold shadow-sm">KG</span>
+</div>
+<span class="font-label-sm text-label-sm text-text-muted">Batas terendah deteksi timbangan di keranjang kasir.</span>
+</div>
+</div>
+<!-- Toggle 2: Integrasi Barcode EAN-13 -->
+<div class="p-4 rounded-xl bg-surface-crisp shadow-[0_4px_16px_rgba(0,0,0,0.03)] flex items-start justify-between gap-4">
+<div class="flex gap-3 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-teal-100 text-teal-800 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">barcode_scanner</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Integrasi Timbangan Barcode (Scale Barcode EAN-13)</span>
+<p class="font-body-sm text-body-sm text-text-muted mt-0.5">
+                Otomatis membaca berat dari barcode timbangan elektrik kasir (awalan <span class="font-numeric-data font-semibold text-text-primary">02</span> atau <span class="font-numeric-data font-semibold text-text-primary">20</span>).
+              </p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-12 h-6 bg-surface-sunken peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600 shadow-[inset_2px_2px_4px_rgba(0,0,0,0.2)]"></div>
+</label>
+</div>
+<!-- Toggle 3: Quick Button Kasir -->
+<div class="p-4 rounded-xl bg-surface-crisp shadow-[0_4px_16px_rgba(0,0,0,0.03)] flex items-start justify-between gap-4">
+<div class="flex gap-3 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-teal-100 text-teal-800 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">touch_app</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Tampilkan di Quick Button Kasir POS</span>
+<p class="font-body-sm text-body-sm text-text-muted mt-0.5">
+                Sematkan tombol pintas satuan ini di panel numpad layar kasir untuk input cepat saat penimbangan manual.
+              </p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-12 h-6 bg-surface-sunken peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600 shadow-[inset_2px_2px_4px_rgba(0,0,0,0.2)]"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: 4 Cols (1fr equivalent) -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- Card 1: Pratinjau Tampilan Kasir & Struk -->
+<div class="bg-surface-raised p-5 rounded-2xl shadow-[10px_10px_24px_rgba(122,152,145,0.3),-8px_-8px_20px_rgba(255,255,255,0.92)] flex flex-col gap-4">
+<div class="flex items-center justify-between pb-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-teal-600">visibility</span>
+<h3 class="font-headline-sm text-headline-sm text-text-primary font-semibold">Pratinjau POS &amp; Struk</h3>
+</div>
+<span class="font-numeric-data text-[11px] px-2 py-0.5 rounded bg-surface-sunken text-text-muted">LIVE SIMULATION</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted">
+          Representasi langsung penulisan simbol <span class="font-numeric-data font-bold text-teal-800">KG</span> pada keranjang kasir dan kertas struk cetak:
+        </p>
+<!-- Simulated POS Cart Item Card -->
+<div class="bg-surface-crisp p-4 rounded-xl shadow-[0_8px_20px_rgba(11,43,39,0.06)] flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="font-overline text-overline uppercase text-teal-800 bg-teal-100/70 px-2 py-0.5 rounded">Tampilan Keranjang POS</span>
+<span class="font-numeric-data text-[11px] text-text-muted">Item #01</span>
+</div>
+<div class="flex items-start justify-between gap-2">
+<div>
+<div class="font-label-md text-label-md text-text-primary font-bold">Beras Pandan Wangi Curah</div>
+<div class="flex items-center gap-1.5 mt-0.5 font-numeric-data text-numeric-data text-text-muted">
+<span>@ Rp 15.600</span>
+<span>×</span>
+<span class="text-teal-800 font-bold bg-teal-100 px-1.5 py-0.2 rounded">1.75 KG</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-numeric-data text-numeric-data font-bold text-teal-900">Rp 27.300</span>
+<span class="block font-overline text-[10px] text-success-text mt-0.5">Timbang Akurat</span>
+</div>
+</div>
+</div>
+<!-- Simulated Thermal Receipt Cutout -->
+<div class="relative bg-surface-crisp p-4 pb-6 rounded-t-xl shadow-[0_10px_24px_rgba(22,48,44,0.08)] font-numeric-data text-[12.5px] leading-relaxed text-text-primary">
+<div class="text-center pb-3 mb-2 border-b border-dashed border-divider">
+<span class="font-headline-sm text-[13px] font-bold block text-text-primary">TOKO SARI AMERTA</span>
+<span class="text-[11px] text-text-muted block">Jimbaran, Kuta Selatan - Bali</span>
+</div>
+<div class="flex justify-between font-bold text-[11px] text-text-muted pb-1 mb-1 border-b border-divider">
+<span>ITEM / QTY</span>
+<span>TOTAL</span>
+</div>
+<div class="flex justify-between items-start">
+<span class="truncate max-w-[140px]">Beras Pandan W.</span>
+<span class="font-semibold">27.300</span>
+</div>
+<div class="flex justify-between text-text-muted text-[11.5px] pl-1">
+<span>1.75 <strong class="text-teal-800 bg-teal-100 px-1 rounded">KG</strong> @15.600</span>
+<span class="text-success-text text-[10px]">EAN-SCALE</span>
+</div>
+<div class="mt-3 pt-2 border-t border-dashed border-divider flex justify-between font-bold text-[13px]">
+<span>TOTAL AKHIR</span>
+<span class="text-teal-900">Rp 27.300</span>
+</div>
+<!-- Decorative Saw-tooth jagged receipt edge simulation -->
+<div class="absolute -bottom-2 left-0 right-0 h-2 bg-repeat-x bg-[radial-gradient(circle,_transparent_3px,_#FFFFFF_3px)] bg-[length:10px_10px]"></div>
+</div>
+</div>
+<!-- Card 2: Status & Visibilitas Satuan -->
+<div class="bg-surface-raised p-5 rounded-2xl shadow-[10px_10px_24px_rgba(122,152,145,0.3),-8px_-8px_20px_rgba(255,255,255,0.92)] flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-teal-600">toggle_on</span>
+<h3 class="font-headline-sm text-headline-sm text-text-primary font-semibold">Status &amp; Visibilitas</h3>
+</div>
+<span class="px-3 py-1 rounded-full bg-success-bg text-success-text font-label-sm text-label-sm font-bold shadow-sm">
+            Aktif
+          </span>
+</div>
+<div class="p-3.5 rounded-xl bg-surface-sunken flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Status Satuan Aktif</span>
+<span class="font-label-sm text-label-sm text-text-muted">Aktifkan untuk penggunaan di kasir</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600 shadow-inner"></div>
+</label>
+</div>
+<div class="p-3 rounded-xl bg-warning-bg/40 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-warning-text text-[18px] shrink-0 mt-0.5">info</span>
+<p class="font-label-sm text-label-sm text-warning-text leading-snug">
+            Jika dinonaktifkan, kasir tidak dapat memilih satuan ini untuk produk baru, namun data riwayat transaksi lama tetap tersimpan aman.
+          </p>
+</div>
+</div>
+<!-- Card 3: Ringkasan Terkait -->
+<div class="bg-surface-raised p-5 rounded-2xl shadow-[10px_10px_24px_rgba(122,152,145,0.3),-8px_-8px_20px_rgba(255,255,255,0.92)] flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-teal-600">query_stats</span>
+<h3 class="font-headline-sm text-headline-sm text-text-primary font-semibold">Ringkasan Terkait</h3>
+</div>
+<span class="font-numeric-data text-[11px] text-text-muted">Bulan Ini</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="p-3.5 rounded-xl bg-surface-crisp shadow-sm flex flex-col">
+<span class="font-overline text-overline uppercase text-text-muted">Produk Terhubung</span>
+<span class="font-numeric-total text-[22px] font-bold text-teal-900 mt-1">24 SKU</span>
+<span class="font-label-sm text-[11px] text-text-muted mt-0.5 truncate">Beras, Gula, Bawang, Telur</span>
+</div>
+<div class="p-3.5 rounded-xl bg-surface-crisp shadow-sm flex flex-col">
+<span class="font-overline text-overline uppercase text-text-muted">Total Transaksi</span>
+<span class="font-numeric-total text-[22px] font-bold text-teal-900 mt-1">1.842</span>
+<span class="font-label-sm text-[11px] text-success-text mt-0.5 flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +12% vol
+            </span>
+</div>
+</div>
+<div class="p-3.5 rounded-xl bg-surface-crisp shadow-sm flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-text-muted">Omzet Penjualan Satuan:</span>
+<span class="font-numeric-data text-numeric-data font-bold text-teal-800">Rp 46.210.000</span>
+</div>
+<!-- Inline Sparkline / Progress Indicator -->
+<div class="w-full bg-surface-sunken h-2 rounded-full overflow-hidden">
+<div class="bg-teal-600 h-full rounded-full w-[68%]" title="68% dari total komoditas timbang"></div>
+</div>
+<div class="flex items-center justify-between text-[11px] font-numeric-data text-text-muted">
+<span>Kontribusi: 68% Curah</span>
+<span>Target: Rp 50.000.000</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom Action Bar -->
+<div class="fixed bottom-0 left-[260px] right-0 h-20 bg-surface/90 backdrop-blur-xl shadow-[0_-8px_30px_rgba(11,43,39,0.08)] z-30 px-space-xl flex items-center justify-between">
+<!-- Left: Cancel / Back -->
+<a class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-surface-raised text-text-primary font-label-md text-label-md hover:bg-surface-sunken transition-all shadow-[4px_4px_10px_rgba(122,152,145,0.25),-4px_-4px_10px_rgba(255,255,255,0.85)] active:shadow-[inset_2px_2px_5px_rgba(122,152,145,0.3)]" href="#">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span>Batal &amp; Kembali ke Daftar</span>
+</a>
+<!-- Center & Right: Actions -->
+<div class="flex items-center gap-3">
+<button class="inline-flex items-center gap-2 px-4 py-3 rounded-xl text-btn-danger hover:bg-danger-bg/50 transition-all font-label-md text-label-md shadow-[inset_1px_1px_3px_rgba(178,58,22,0.15)]" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+<span class="hidden sm:inline">Hapus Satuan Ini</span>
+</button>
+<div class="h-6 w-px bg-divider mx-1"></div>
+<button class="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-teal-600 hover:bg-teal-800 text-white font-label-md text-label-md font-semibold transition-all shadow-[0_6px_16px_-4px_rgba(13,124,116,0.5)] active:scale-[0.985]" type="button">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+<span>Simpan Satuan</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+  // Simple reactive preview for unit code typing
+  const kodeInput = document.getElementById('kode_satuan');
+  if (kodeInput) {
+    kodeInput.addEventListener('input', function(e) {
+      const val = e.target.value.toUpperCase();
+      e.target.value = val;
+    });
+  }
+</script></main></div></body></html>

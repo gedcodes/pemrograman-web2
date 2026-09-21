@@ -1,0 +1,687 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><title>Toko Sari Amerta - POS &amp; Retail System</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&amp;family=Outfit:wght@500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet"><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface": "#f2fbf8", "surface-bright": "#f2fbf8", "secondary-fixed": "#c8e9e3", "surface-sunken": "#D7E4E0", "surface-variant": "#dbe4e1", "text-muted": "#526E69", "sidebar-idle": "#A8C6C0", "surface-crisp": "#FFFFFF", "text-secondary": "#47625D", "warning-bg": "#F7E6B5", "primary-fixed-dim": "#85d5c9", "on-surface": "#151d1c", "on-primary-fixed": "#00201d", "tertiary-fixed-dim": "#80d998", "chart-series-2": "#2B5C78", "teal-100": "#D0E7E3", "info-text": "#0B6158", "secondary-container": "#c5e7e0", "sidebar-active": "#FFFFFF", "on-tertiary-fixed-variant": "#005228", "on-secondary-fixed": "#00201c", "on-secondary": "#ffffff", "surface-container-low": "#edf6f3", "on-background": "#151d1c", "on-primary-container": "#99e8dd", "error-container": "#ffdad6", "sidebar-indicator": "#45C9B8", "danger-bg": "#F6DACF", "on-error": "#ffffff", "teal-400": "#45C9B8", "teal-900": "#06403B", "outline-variant": "#bec9c6", "surface-header": "#F4F8F7", "secondary": "#46645f", "on-tertiary": "#ffffff", "on-error-container": "#93000a", "on-secondary-container": "#4a6863", "warning-text": "#6F5000", "on-primary-fixed-variant": "#005049", "chart-series-3": "#9A6B06", "inverse-surface": "#2a3230", "sidebar-active-bg": "rgba(255, 255, 255, 0.08)", "primary-container": "#0b6b62", "surface-tint": "#096a61", "success-bg": "#CFE7DB", "on-tertiary-fixed": "#00210d", "chart-series-4": "#B23A16", "btn-neutral": "#1F3A35", "teal-600": "#0D7C74", "teal-800": "#09514A", "on-primary": "#ffffff", "surface-dim": "#d3dcd9", "success-text": "#12694A", "background": "#f2fbf8", "on-surface-variant": "#3e4947", "inverse-on-surface": "#eaf3f0", "surface-container-highest": "#dbe4e1", "surface-container-lowest": "#ffffff", "text-primary": "#16302C", "danger-text": "#9E3210", "primary-fixed": "#a1f1e5", "btn-danger": "#B23A16", "error": "#ba1a1a", "surface-container-high": "#e1eae7", "on-tertiary-container": "#93edaa", "inverse-primary": "#85d5c9", "tertiary-container": "#036e39", "tertiary": "#005329", "secondary-fixed-dim": "#accdc7", "primary": "#00514a", "on-secondary-fixed-variant": "#2e4c48", "divider": "#CBDAD5", "info-bg": "#D0E7E3", "surface-raised": "#EDF4F2", "sidebar-label": "#7FA39D", "tertiary-fixed": "#9bf6b2", "outline": "#6f7977", "surface-container": "#e7f0ed" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-sm": "0.5rem", "margin": "2rem", "space-xl": "2rem", "margin-mobile": "1rem", "gutter": "1.25rem", "space-md": "1rem", "space-xs": "0.25rem", "gutter-mobile": "0.75rem", "space-lg": "1.5rem" }, "fontFamily": { "body-sm": ["Plus Jakarta Sans"], "overline": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "numeric-data": ["JetBrains Mono"], "headline-md": ["Outfit"], "display-hero": ["Outfit"], "body-lg": ["Plus Jakarta Sans"], "headline-sm": ["Outfit"], "body-md": ["Plus Jakarta Sans"], "numeric-total": ["JetBrains Mono"], "headline-lg": ["Outfit"], "display-hero-mobile": ["Outfit"] }, "fontSize": { "body-sm": ["13.5px", { "lineHeight": "20px", "fontWeight": "400" }], "overline": ["11px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "600" }], "label-sm": ["12px", { "lineHeight": "18px", "fontWeight": "500" }], "label-md": ["13.5px", { "lineHeight": "20px", "fontWeight": "600" }], "numeric-data": ["13.5px", { "lineHeight": "20px", "fontWeight": "500" }], "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "display-hero": ["40px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "body-lg": ["15px", { "lineHeight": "24px", "fontWeight": "600" }], "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "500" }], "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }], "numeric-total": ["28px", { "lineHeight": "32px", "fontWeight": "600" }], "headline-lg": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "display-hero-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-[260px] bg-[#0B2B27] z-50 flex flex-col justify-between overflow-y-auto"><div class="flex flex-col"><div class="h-16 px-space-lg flex items-center gap-space-sm bg-[#07201d]"><img alt="Teal circular monogram logo with SA initials for Toko Sari Amerta POS. Brand logo. - Primary color: #0b6b62 - Font: outfit - Mode: light - Roundness: rounded-md" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VBWVLdBpLWEhBUcBOL3Z9dvcmiO-z0sl3sHN68ZR7vN4oYKg7YZ_MioLKw4NGaCSa6GiZh279y15rIoEalj8kqgXJ7QfpfC256DpSY0RKPNEN-6jduECX3ZwzQooc9ETRvSHkjFkCvaqNhWFmaS3JHYZNqcwX9Q0p0OGHGu7rLOARPWG15NmBHoVm5pZ6ZlYLng6kN2TEZlVB9-T6JpLh8UiLVBE0TpdLsZ9rZyMmknqfiicpJTjm47rlR"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-white font-semibold leading-tight">Sari Amerta</span><span class="font-overline text-overline text-sidebar-label uppercase">POS &amp; Retail</span></div></div><nav class="flex flex-col py-space-sm" data-active-classes="bg-sidebar-active-bg text-sidebar-active font-bold border-l-[3px] border-sidebar-indicator"><div class="px-space-lg pt-space-md pb-space-xs font-overline text-overline uppercase text-sidebar-label">Utama</div><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span><span class="">Dashboard</span></a><div class="px-space-lg pt-space-md pb-space-xs font-overline text-overline uppercase text-sidebar-label">Transaksi</div><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="kasir-(pos)" href="#"><span class="material-symbols-outlined text-[18px]">point_of_sale</span><span class="">Kasir (POS)</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="riwayat-transaksi" href="#"><span class="material-symbols-outlined text-[18px]">receipt_long</span><span class="">Riwayat Transaksi</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="retur-penjualan" href="#"><span class="material-symbols-outlined text-[18px]">assignment_return</span><span class="">Retur Penjualan</span></a><div class="px-space-lg pt-space-md pb-space-xs font-overline text-overline uppercase text-sidebar-label">Master Data</div><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="produk" href="#"><span class="material-symbols-outlined text-[18px]">inventory_2</span><span class="">Produk</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="kategori-produk" href="#"><span class="material-symbols-outlined text-[18px]">category</span><span class="">Kategori Produk</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="satuan" href="#"><span class="material-symbols-outlined text-[18px]">straighten</span><span class="">Satuan</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-lg py-2.5 transition-all bg-sidebar-active-bg text-sidebar-active font-bold border-l-[3px] border-sidebar-indicator" data-path="supplier" href="#"><span class="material-symbols-outlined text-[18px] text-sidebar-indicator">local_shipping</span><span class="">Supplier</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="pelanggan" href="#"><span class="material-symbols-outlined text-[18px]">group</span><span class="">Pelanggan</span></a><div class="px-space-lg pt-space-md pb-space-xs font-overline text-overline uppercase text-sidebar-label">Inventori</div><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="stok-barang" href="#"><span class="material-symbols-outlined text-[18px]">warehouse</span><span class="">Stok Barang</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="barang-masuk-(purchasing)" href="#"><span class="material-symbols-outlined text-[18px]">input</span><span class="">Barang Masuk (Purchasing)</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="stok-opname" href="#"><span class="material-symbols-outlined text-[18px]">fact_check</span><span class="">Stok Opname</span></a><div class="px-space-lg pt-space-md pb-space-xs font-overline text-overline uppercase text-sidebar-label">Laporan</div><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="laporan-penjualan" href="#"><span class="material-symbols-outlined text-[18px]">query_stats</span><span class="">Laporan Penjualan</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="laba-rugi" href="#"><span class="material-symbols-outlined text-[18px]">payments</span><span class="">Laba Rugi</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="laporan-stok" href="#"><span class="material-symbols-outlined text-[18px]">inventory</span><span class="">Laporan Stok</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="cetak-struk-/-ulang-struk" href="#"><span class="material-symbols-outlined text-[18px]">print</span><span class="">Cetak Struk / Ulang</span></a><div class="px-space-lg pt-space-md pb-space-xs font-overline text-overline uppercase text-sidebar-label">Pengaturan</div><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="pengguna-&amp;-hak-akses" href="#"><span class="material-symbols-outlined text-[18px]">manage_accounts</span><span class="">Pengguna &amp; Hak Akses</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="profil-toko" href="#"><span class="material-symbols-outlined text-[18px]">store</span><span class="">Profil Toko</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="metode-pembayaran" href="#"><span class="material-symbols-outlined text-[18px]">credit_card</span><span class="">Metode Pembayaran</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="pajak-&amp;-diskon" href="#"><span class="material-symbols-outlined text-[18px]">percent</span><span class="">Pajak &amp; Diskon</span></a></nav></div><div class="p-space-md bg-[#07201d] flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="Profile" class="w-8 h-8 rounded-full object-cover shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1VzXL-W4fXNz743_6iWgs8tnRRX6QnzXYD90htSNO8UlqW94thzjEwWO45hD3116fznsyea8gMe8AEGqapS-lN5b8rO6oNawJnFl19YFJleZOjiPkJw-3RQZMAw6rcMt2EV1VtLgLGyreSE_fMKAZg7DQLdi__18uNJnqVQ3AJ0btoKpschfq6N2a4wDiQfc2Q7xbLsTA9GbursNP91Io_M4sfAQt_GGv5Mwsg2DOtESpik3Umvkuyvrsko"><div class="flex flex-col min-w-0"><span class="font-label-md text-label-md text-white truncate">Ni Kadek Ayu Pramesti</span><span class="font-label-sm text-label-sm text-sidebar-label">Kasir Aktif #01</span></div></div><a class="text-sidebar-idle hover:text-white p-1 transition-colors" href="#" title="Keluar"><span class="material-symbols-outlined text-[20px]">logout</span></a></div></aside><div class="pl-[260px]"><header class="fixed top-0 left-[260px] right-0 h-16 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl"><div class="flex items-center gap-space-md"><div class="flex items-center gap-2 bg-surface-raised px-3 py-1.5 rounded-lg shadow-[inset_2px_2px_5px_rgba(122,152,145,0.25),inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"><span class="material-symbols-outlined text-text-muted text-[18px]">storefront</span><span class="font-label-md text-label-md text-text-primary">Toko Pusat Jimbaran</span><span class="material-symbols-outlined text-text-muted text-[16px]">expand_more</span></div><div class="h-4 w-px bg-divider"></div><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-teal-400"></span><span class="font-label-sm text-label-sm text-text-muted">Sistem Online: Kasir 01</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-2 bg-surface-raised px-3.5 py-1.5 rounded-lg shadow-[inset_2px_2px_5px_rgba(122,152,145,0.25),inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"><span class="material-symbols-outlined text-text-muted text-[18px]">search</span><input class="bg-transparent border-none outline-none font-body-sm text-body-sm text-text-primary w-64 placeholder:text-text-muted" placeholder="Cari transaksi, produk, barcode... (F2)" type="text"></div><button class="p-2 text-text-muted hover:text-on-surface transition-colors relative" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 bg-btn-danger rounded-full"></span></button><button class="p-2 text-text-muted hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">help</span></button><div class="h-4 w-px bg-divider"></div><div class="flex items-center gap-space-sm"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VzXL-W4fXNz743_6iWgs8tnRRX6QnzXYD90htSNO8UlqW94thzjEwWO45hD3116fznsyea8gMe8AEGqapS-lN5b8rO6oNawJnFl19YFJleZOjiPkJw-3RQZMAw6rcMt2EV1VtLgLGyreSE_fMKAZg7DQLdi__18uNJnqVQ3AJ0btoKpschfq6N2a4wDiQfc2Q7xbLsTA9GbursNP91Io_M4sfAQt_GGv5Mwsg2DOtESpik3Umvkuyvrsko"><div class="flex flex-col text-left"><span class="font-label-md text-label-md text-text-primary leading-none">Ni Kadek Ayu</span><span class="font-overline text-overline text-text-muted mt-0.5 uppercase">Kasir</span></div></div></div></header><main class="relative pt-16 bg-surface min-h-screen w-full px-space-xl py-space-lg"><div class="flex flex-col w-full">
+<!-- Breadcrumb & Top Utility Row -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm mb-space-md">
+<div class="flex items-center gap-2">
+<span class="font-overline text-overline uppercase text-text-muted">Master Data</span>
+<span class="material-symbols-outlined text-[14px] text-text-muted">chevron_right</span>
+<span class="font-overline text-overline uppercase text-primary font-bold">Supplier</span>
+<span class="mx-1 text-divider">•</span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-success-bg text-success-text font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-success-text animate-pulse"></span>
+        16 Supplier Aktif
+      </span>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="font-label-sm text-label-sm text-text-muted">Sinkronisasi Katalog Terakhir:</span>
+<span class="font-numeric-data text-numeric-data text-text-primary font-semibold">Hari ini, 10:42 WITA</span>
+<button class="p-1 text-text-muted hover:text-primary transition-colors" title="Muat ulang sinkronisasi" type="button">
+<span class="material-symbols-outlined text-[18px]">sync</span>
+</button>
+</div>
+</div>
+<!-- Page Title & Header Actions -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md mb-space-lg">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-text-primary tracking-tight">Data Supplier &amp; Pemasok</h1>
+<p class="font-body-md text-body-md text-text-secondary mt-1 max-w-2xl">
+        Kelola data rekanan pemasok barang dagangan, kontak narahubung (PIC), dan syarat pembayaran (TOP) untuk kelancaran purchasing Toko Sari Amerta.
+      </p>
+</div>
+<div class="flex items-center gap-space-sm shrink-0">
+<!-- Soft Secondary Button: Export/Import -->
+<button class="h-12 px-4 rounded-xl bg-surface-raised text-text-primary font-label-md text-label-md flex items-center gap-2 shadow-[4px_4px_10px_rgba(122,152,145,0.30),-4px_-4px_10px_rgba(255,255,255,0.90)] hover:bg-surface-variant active:shadow-[inset_4px_4px_8px_rgba(122,152,145,0.35),inset_-3px_-3px_8px_rgba(255,255,255,0.85)] transition-all" type="button">
+<span class="material-symbols-outlined text-[18px] text-teal-600">import_export</span>
+<span class="">Export / Import</span>
+</button>
+<!-- Primary Teal Action CTA -->
+<button class="h-12 px-5 rounded-xl bg-primary-container text-white font-label-md text-label-md flex items-center gap-2 shadow-[0_6px_16px_-6px_rgba(11,107,98,0.55)] hover:bg-teal-800 active:scale-[0.985] transition-all" type="button">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span class="">+ Tambah Supplier</span>
+</button>
+</div>
+</div>
+<!-- Navigation Segmented Tabs -->
+<div class="flex items-center gap-2 p-1.5 rounded-2xl bg-surface-raised max-w-fit shadow-[inset_2px_2px_5px_rgba(122,152,145,0.25),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] mb-space-lg">
+<button class="px-5 py-2 rounded-xl bg-surface-crisp font-label-md text-label-md text-primary font-bold shadow-[2px_2px_6px_rgba(122,152,145,0.25)] flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[18px]">domain</span>
+<span class="">Daftar Supplier (16)</span>
+</button>
+<button class="px-5 py-2 rounded-xl font-label-md text-label-md text-text-muted hover:text-text-primary transition-colors flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[18px]">edit_note</span>
+<span class="">Tambah / Edit Supplier</span>
+</button>
+<button class="px-5 py-2 rounded-xl font-label-md text-label-md text-text-muted hover:text-text-primary transition-colors flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>
+<span class="">Riwayat Purchase Order &amp; Hutang</span>
+</button>
+</div>
+<!-- Quick Stats Bento Grid (Neumorphic Raised Cards) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md mb-space-xl">
+<!-- Stat 1 -->
+<div class="p-space-lg rounded-2xl bg-surface-raised shadow-[10px_10px_24px_rgba(122,152,145,0.30),-8px_-8px_20px_rgba(255,255,255,0.90)] flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-overline text-overline uppercase text-text-muted">Total Supplier</span>
+<div class="w-9 h-9 rounded-xl bg-teal-100 flex items-center justify-center text-teal-800">
+<span class="material-symbols-outlined text-[20px]">storefront</span>
+</div>
+</div>
+<div class="mt-3">
+<div class="flex items-baseline gap-2">
+<span class="font-numeric-total text-numeric-total text-text-primary">16</span>
+<span class="font-label-sm text-label-sm text-text-muted">Mitra Dagang</span>
+</div>
+<div class="flex items-center gap-1.5 mt-1 text-success-text font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="">100% Aktif Bermitra</span>
+</div>
+</div>
+</div>
+<!-- Stat 2 -->
+<div class="p-space-lg rounded-2xl bg-surface-raised shadow-[10px_10px_24px_rgba(122,152,145,0.30),-8px_-8px_20px_rgba(255,255,255,0.90)] flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-overline text-overline uppercase text-text-muted">Total PO Berjalan</span>
+<div class="w-9 h-9 rounded-xl bg-info-bg flex items-center justify-center text-info-text">
+<span class="material-symbols-outlined text-[20px]">local_shipping</span>
+</div>
+</div>
+<div class="mt-3">
+<div class="flex items-baseline gap-2">
+<span class="font-numeric-total text-numeric-total text-text-primary">28</span>
+<span class="font-label-sm text-label-sm text-text-muted">PO Terbuka</span>
+</div>
+<div class="flex items-center gap-1 mt-1 text-text-secondary font-label-sm text-label-sm">
+<span class="">Nilai:</span>
+<span class="font-numeric-data text-numeric-data font-bold text-text-primary">Rp 142.850.000</span>
+</div>
+</div>
+</div>
+<!-- Stat 3 -->
+<div class="p-space-lg rounded-2xl bg-surface-raised shadow-[10px_10px_24px_rgba(122,152,145,0.30),-8px_-8px_20px_rgba(255,255,255,0.90)] flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-overline text-overline uppercase text-text-muted">Rekanan Terbesar</span>
+<div class="w-9 h-9 rounded-xl bg-warning-bg flex items-center justify-center text-warning-text">
+<span class="material-symbols-outlined text-[20px]">workspace_premium</span>
+</div>
+</div>
+<div class="mt-3">
+<div class="font-headline-sm text-headline-sm text-text-primary truncate font-semibold">
+          PT Indofood CBP
+        </div>
+<div class="flex items-center gap-1.5 mt-1 text-text-secondary font-label-sm text-label-sm">
+<span class="font-numeric-data text-numeric-data font-bold text-teal-800">42 SKU</span>
+<span class="">terdaftar di rak toko</span>
+</div>
+</div>
+</div>
+<!-- Stat 4 -->
+<div class="p-space-lg rounded-2xl bg-surface-raised shadow-[10px_10px_24px_rgba(122,152,145,0.30),-8px_-8px_20px_rgba(255,255,255,0.90)] flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-overline text-overline uppercase text-text-muted">Rata-Rata Tempo (TOP)</span>
+<div class="w-9 h-9 rounded-xl bg-secondary-container flex items-center justify-center text-teal-900">
+<span class="material-symbols-outlined text-[20px]">calendar_clock</span>
+</div>
+</div>
+<div class="mt-3">
+<div class="font-headline-sm text-headline-sm text-text-primary font-semibold">
+          14 – 30 Hari
+        </div>
+<div class="flex items-center gap-1 mt-1 text-text-secondary font-label-sm text-label-sm">
+<span class="">Standar Cash Flow Sehat</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Operational Filter & Search Toolbar -->
+<div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-space-md mb-space-md">
+<!-- Left Search Inset Bar -->
+<div class="relative w-full lg:w-96">
+<div class="flex items-center w-full h-12 px-4 rounded-xl bg-surface-raised shadow-[inset_3px_3px_7px_rgba(122,152,145,0.32),inset_-2px_-2px_6px_rgba(255,255,255,0.85)]">
+<span class="material-symbols-outlined text-text-muted text-[20px] mr-2">search</span>
+<input class="w-full bg-transparent border-none outline-none font-body-sm text-body-sm text-text-primary placeholder:text-text-muted" placeholder="Cari nama supplier, kode, PIC, kota..." type="text">
+</div>
+</div>
+<!-- Right Dropdown Filter Matrix -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<!-- Category Filter -->
+<div class="relative flex items-center px-3.5 h-11 rounded-xl bg-surface-raised shadow-[4px_4px_10px_rgba(122,152,145,0.25),-4px_-4px_10px_rgba(255,255,255,0.9)] text-text-secondary cursor-pointer hover:bg-surface-variant transition-all">
+<span class="material-symbols-outlined text-[18px] mr-2 text-text-muted">category</span>
+<span class="font-label-sm text-label-sm font-semibold">Semua Kategori Suplai</span>
+<span class="material-symbols-outlined text-[16px] ml-2 text-text-muted">expand_more</span>
+</div>
+<!-- Status Filter -->
+<div class="relative flex items-center px-3.5 h-11 rounded-xl bg-surface-raised shadow-[4px_4px_10px_rgba(122,152,145,0.25),-4px_-4px_10px_rgba(255,255,255,0.9)] text-text-secondary cursor-pointer hover:bg-surface-variant transition-all">
+<span class="material-symbols-outlined text-[18px] mr-2 text-text-muted">verified</span>
+<span class="font-label-sm text-label-sm font-semibold">Status: Aktif</span>
+<span class="material-symbols-outlined text-[16px] ml-2 text-text-muted">expand_more</span>
+</div>
+<!-- Sort By -->
+<div class="relative flex items-center px-3.5 h-11 rounded-xl bg-surface-raised shadow-[4px_4px_10px_rgba(122,152,145,0.25),-4px_-4px_10px_rgba(255,255,255,0.9)] text-text-secondary cursor-pointer hover:bg-surface-variant transition-all">
+<span class="material-symbols-outlined text-[18px] mr-2 text-text-muted">sort</span>
+<span class="font-label-sm text-label-sm font-semibold">Urutkan: Transaksi Terbanyak</span>
+<span class="material-symbols-outlined text-[16px] ml-2 text-text-muted">expand_more</span>
+</div>
+<!-- Reset / Refresh Button -->
+<button class="w-11 h-11 rounded-xl bg-surface-raised shadow-[4px_4px_10px_rgba(122,152,145,0.25),-4px_-4px_10px_rgba(255,255,255,0.9)] flex items-center justify-center text-text-muted hover:text-primary active:shadow-[inset_2px_2px_5px_rgba(122,152,145,0.3)] transition-all" title="Segarkan Data" type="button">
+<span class="material-symbols-outlined text-[20px]">refresh</span>
+</button>
+</div>
+</div>
+<!-- Crisp White Data Table Surface (Elevated, 24px radius) -->
+<div class="w-full bg-surface-crisp rounded-[24px] shadow-[0_18px_40px_-18px_rgba(22,48,44,0.14)] overflow-hidden mb-space-lg">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-header h-12">
+<th class="w-12 px-4 py-3 text-center">
+<input class="rounded accent-teal-600 cursor-pointer w-4 h-4" type="checkbox">
+</th>
+<th class="px-4 py-3 font-overline text-overline uppercase text-text-secondary tracking-wider">Kode</th>
+<th class="px-4 py-3 font-overline text-overline uppercase text-text-secondary tracking-wider">Nama Supplier &amp; Kategori</th>
+<th class="px-4 py-3 font-overline text-overline uppercase text-text-secondary tracking-wider">Kontak Narahubung (PIC)</th>
+<th class="px-4 py-3 font-overline text-overline uppercase text-text-secondary tracking-wider">Kota &amp; Alamat Distribusi</th>
+<th class="px-4 py-3 font-overline text-overline uppercase text-text-secondary tracking-wider">Syarat Bayar (TOP)</th>
+<th class="px-4 py-3 font-overline text-overline uppercase text-text-secondary tracking-wider text-right">Jumlah SKU</th>
+<th class="px-4 py-3 font-overline text-overline uppercase text-text-secondary tracking-wider text-center">Status</th>
+<th class="px-4 py-3 font-overline text-overline uppercase text-text-secondary tracking-wider text-center w-28">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-divider/40 font-body-sm text-body-sm text-text-primary">
+<!-- Row 1: PT Indofood CBP -->
+<tr class="h-[58px] hover:bg-teal-100/20 transition-colors">
+<td class="px-4 py-3 text-center">
+<input class="rounded accent-teal-600 cursor-pointer w-4 h-4" type="checkbox">
+</td>
+<td class="px-4 py-3">
+<span class="font-numeric-data text-numeric-data font-bold text-teal-800 bg-surface-container px-2 py-0.5 rounded">SUP-001</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-body-lg text-body-lg text-text-primary leading-snug">PT Indofood CBP Sukses Makmur Tbk</span>
+<span class="font-label-sm text-label-sm text-text-muted mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-teal-600">ramen_dining</span>
+                  Makanan &amp; Mie Instan
+                </span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Hendra Wijaya</span>
+<span class="font-numeric-data text-numeric-data text-text-secondary">0812-3456-7890</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col max-w-xs">
+<span class="font-label-md text-label-md text-text-primary">Denpasar</span>
+<span class="font-body-sm text-body-sm text-text-muted truncate">Jl. Gatot Subroto Timur No. 88</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-surface-container font-numeric-data text-numeric-data font-medium text-text-primary">
+                Tempo 30 Hari
+              </span>
+</td>
+<td class="px-4 py-3 text-right">
+<span class="font-numeric-data text-numeric-data font-bold text-teal-800 bg-teal-100/60 px-2 py-0.5 rounded-full">42 SKU</span>
+</td>
+<td class="px-4 py-3 text-center">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-success-bg text-success-text font-label-sm text-label-sm font-semibold">
+                Aktif
+              </span>
+</td>
+<td class="px-4 py-3 text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="p-1.5 rounded-lg text-text-muted hover:text-teal-800 hover:bg-surface-container transition-colors" title="Lihat Detail" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-text-muted hover:text-primary hover:bg-surface-container transition-colors" title="Ubah Data" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-text-muted hover:text-btn-danger hover:bg-danger-bg/40 transition-colors" title="Hapus" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: PT Tirta Investama -->
+<tr class="h-[58px] hover:bg-teal-100/20 transition-colors">
+<td class="px-4 py-3 text-center">
+<input class="rounded accent-teal-600 cursor-pointer w-4 h-4" type="checkbox">
+</td>
+<td class="px-4 py-3">
+<span class="font-numeric-data text-numeric-data font-bold text-teal-800 bg-surface-container px-2 py-0.5 rounded">SUP-002</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-body-lg text-body-lg text-text-primary leading-snug">PT Tirta Investama (Danone Aqua)</span>
+<span class="font-label-sm text-label-sm text-text-muted mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-teal-600">water_drop</span>
+                  Air Mineral &amp; Minuman
+                </span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Made Sudarta</span>
+<span class="font-numeric-data text-numeric-data text-text-secondary">0819-8765-4321</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col max-w-xs">
+<span class="font-label-md text-label-md text-text-primary">Badung</span>
+<span class="font-body-sm text-body-sm text-text-muted truncate">Jl. Bypass Ngurah Rai No. 120</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-surface-container font-numeric-data text-numeric-data font-medium text-text-primary">
+                Tempo 14 Hari
+              </span>
+</td>
+<td class="px-4 py-3 text-right">
+<span class="font-numeric-data text-numeric-data font-bold text-teal-800 bg-teal-100/60 px-2 py-0.5 rounded-full">18 SKU</span>
+</td>
+<td class="px-4 py-3 text-center">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-success-bg text-success-text font-label-sm text-label-sm font-semibold">
+                Aktif
+              </span>
+</td>
+<td class="px-4 py-3 text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="p-1.5 rounded-lg text-text-muted hover:text-teal-800 hover:bg-surface-container transition-colors" title="Lihat Detail" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-text-muted hover:text-primary hover:bg-surface-container transition-colors" title="Ubah Data" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-text-muted hover:text-btn-danger hover:bg-danger-bg/40 transition-colors" title="Hapus" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: CV Amerta Jaya Distribusi -->
+<tr class="h-[58px] hover:bg-teal-100/20 transition-colors">
+<td class="px-4 py-3 text-center">
+<input class="rounded accent-teal-600 cursor-pointer w-4 h-4" type="checkbox">
+</td>
+<td class="px-4 py-3">
+<span class="font-numeric-data text-numeric-data font-bold text-teal-800 bg-surface-container px-2 py-0.5 rounded">SUP-003</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-body-lg text-body-lg text-text-primary leading-snug">CV Amerta Jaya Distribusi</span>
+<span class="font-label-sm text-label-sm text-text-muted mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-teal-600">kitchen</span>
+                  Sembako, Beras &amp; Minyak
+                </span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Ketut Sujana</span>
+<span class="font-numeric-data text-numeric-data text-text-secondary">0878-1122-3344</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col max-w-xs">
+<span class="font-label-md text-label-md text-text-primary">Tabanan</span>
+<span class="font-body-sm text-body-sm text-text-muted truncate">Pergudangan Sempidi Blok C2</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-surface-raised font-label-sm text-label-sm font-semibold text-text-primary">
+                Cash on Delivery (COD)
+              </span>
+</td>
+<td class="px-4 py-3 text-right">
+<span class="font-numeric-data text-numeric-data font-bold text-teal-800 bg-teal-100/60 px-2 py-0.5 rounded-full">26 SKU</span>
+</td>
+<td class="px-4 py-3 text-center">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-success-bg text-success-text font-label-sm text-label-sm font-semibold">
+                Aktif
+              </span>
+</td>
+<td class="px-4 py-3 text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="p-1.5 rounded-lg text-text-muted hover:text-teal-800 hover:bg-surface-container transition-colors" title="Lihat Detail" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-text-muted hover:text-primary hover:bg-surface-container transition-colors" title="Ubah Data" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-text-muted hover:text-btn-danger hover:bg-danger-bg/40 transition-colors" title="Hapus" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4: PT Unilever Indonesia Distributor Bali -->
+<tr class="h-[58px] hover:bg-teal-100/20 transition-colors">
+<td class="px-4 py-3 text-center">
+<input class="rounded accent-teal-600 cursor-pointer w-4 h-4" type="checkbox">
+</td>
+<td class="px-4 py-3">
+<span class="font-numeric-data text-numeric-data font-bold text-teal-800 bg-surface-container px-2 py-0.5 rounded">SUP-004</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-body-lg text-body-lg text-text-primary leading-snug">PT Unilever Indonesia Distributor Bali</span>
+<span class="font-label-sm text-label-sm text-text-muted mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-teal-600">cleaning_services</span>
+                  Kebersihan &amp; Perawatan
+                </span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Ni Putu Riani</span>
+<span class="font-numeric-data text-numeric-data text-text-secondary">0813-9988-7766</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col max-w-xs">
+<span class="font-label-md text-label-md text-text-primary">Denpasar</span>
+<span class="font-body-sm text-body-sm text-text-muted truncate">Jl. Cokroaminoto No. 210</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-surface-container font-numeric-data text-numeric-data font-medium text-text-primary">
+                Tempo 30 Hari
+              </span>
+</td>
+<td class="px-4 py-3 text-right">
+<span class="font-numeric-data text-numeric-data font-bold text-teal-800 bg-teal-100/60 px-2 py-0.5 rounded-full">38 SKU</span>
+</td>
+<td class="px-4 py-3 text-center">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-success-bg text-success-text font-label-sm text-label-sm font-semibold">
+                Aktif
+              </span>
+</td>
+<td class="px-4 py-3 text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="p-1.5 rounded-lg text-text-muted hover:text-teal-800 hover:bg-surface-container transition-colors" title="Lihat Detail" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-text-muted hover:text-primary hover:bg-surface-container transition-colors" title="Ubah Data" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-text-muted hover:text-btn-danger hover:bg-danger-bg/40 transition-colors" title="Hapus" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 5: PT Mayora Indah Tbk -->
+<tr class="h-[58px] hover:bg-teal-100/20 transition-colors">
+<td class="px-4 py-3 text-center">
+<input class="rounded accent-teal-600 cursor-pointer w-4 h-4" type="checkbox">
+</td>
+<td class="px-4 py-3">
+<span class="font-numeric-data text-numeric-data font-bold text-teal-800 bg-surface-container px-2 py-0.5 rounded">SUP-005</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-body-lg text-body-lg text-text-primary leading-snug">PT Mayora Indah Tbk</span>
+<span class="font-label-sm text-label-sm text-text-muted mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-teal-600">cookie</span>
+                  Biskuit &amp; Kopi
+                </span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Agus Pratama</span>
+<span class="font-numeric-data text-numeric-data text-text-secondary">0857-4433-2211</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col max-w-xs">
+<span class="font-label-md text-label-md text-text-primary">Gianyar</span>
+<span class="font-body-sm text-body-sm text-text-muted truncate">Jl. Raya Batubulan No. 45</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-surface-container font-numeric-data text-numeric-data font-medium text-text-primary">
+                Tempo 21 Hari
+              </span>
+</td>
+<td class="px-4 py-3 text-right">
+<span class="font-numeric-data text-numeric-data font-bold text-teal-800 bg-teal-100/60 px-2 py-0.5 rounded-full">24 SKU</span>
+</td>
+<td class="px-4 py-3 text-center">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-success-bg text-success-text font-label-sm text-label-sm font-semibold">
+                Aktif
+              </span>
+</td>
+<td class="px-4 py-3 text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="p-1.5 rounded-lg text-text-muted hover:text-teal-800 hover:bg-surface-container transition-colors" title="Lihat Detail" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-text-muted hover:text-primary hover:bg-surface-container transition-colors" title="Ubah Data" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-text-muted hover:text-btn-danger hover:bg-danger-bg/40 transition-colors" title="Hapus" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 6: CV Surya Pangan Mandiri -->
+<tr class="h-[58px] hover:bg-teal-100/20 transition-colors">
+<td class="px-4 py-3 text-center">
+<input class="rounded accent-teal-600 cursor-pointer w-4 h-4" type="checkbox">
+</td>
+<td class="px-4 py-3">
+<span class="font-numeric-data text-numeric-data font-bold text-teal-800 bg-surface-container px-2 py-0.5 rounded">SUP-006</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-body-lg text-body-lg text-text-primary leading-snug">CV Surya Pangan Mandiri</span>
+<span class="font-label-sm text-label-sm text-text-muted mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-teal-600">egg</span>
+                  Bumbu, Telur &amp; Gula Pasir
+                </span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Wayan Darma</span>
+<span class="font-numeric-data text-numeric-data text-text-secondary">0812-6655-4433</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col max-w-xs">
+<span class="font-label-md text-label-md text-text-primary">Kuta Selatan</span>
+<span class="font-body-sm text-body-sm text-text-muted truncate">Jl. Uluwatu No. 77</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-surface-container font-numeric-data text-numeric-data font-medium text-text-primary">
+                Tempo 7 Hari
+              </span>
+</td>
+<td class="px-4 py-3 text-right">
+<span class="font-numeric-data text-numeric-data font-bold text-teal-800 bg-teal-100/60 px-2 py-0.5 rounded-full">15 SKU</span>
+</td>
+<td class="px-4 py-3 text-center">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-success-bg text-success-text font-label-sm text-label-sm font-semibold">
+                Aktif
+              </span>
+</td>
+<td class="px-4 py-3 text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="p-1.5 rounded-lg text-text-muted hover:text-teal-800 hover:bg-surface-container transition-colors" title="Lihat Detail" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-text-muted hover:text-primary hover:bg-surface-container transition-colors" title="Ubah Data" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-text-muted hover:text-btn-danger hover:bg-danger-bg/40 transition-colors" title="Hapus" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 7: PT Wings Surya Distribusi -->
+<tr class="h-[58px] hover:bg-teal-100/20 transition-colors">
+<td class="px-4 py-3 text-center">
+<input class="rounded accent-teal-600 cursor-pointer w-4 h-4" type="checkbox">
+</td>
+<td class="px-4 py-3">
+<span class="font-numeric-data text-numeric-data font-bold text-teal-800 bg-surface-container px-2 py-0.5 rounded">SUP-007</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-body-lg text-body-lg text-text-primary leading-snug">PT Wings Surya Distribusi</span>
+<span class="font-label-sm text-label-sm text-text-muted mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-teal-600">soap</span>
+                  Sabun, Deterjen &amp; Makanan
+                </span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Budi Santoso</span>
+<span class="font-numeric-data text-numeric-data text-text-secondary">0821-3344-5566</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col max-w-xs">
+<span class="font-label-md text-label-md text-text-primary">Denpasar</span>
+<span class="font-body-sm text-body-sm text-text-muted truncate">Jl. Teuku Umar Barat No. 168</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-surface-container font-numeric-data text-numeric-data font-medium text-text-primary">
+                Tempo 30 Hari
+              </span>
+</td>
+<td class="px-4 py-3 text-right">
+<span class="font-numeric-data text-numeric-data font-bold text-teal-800 bg-teal-100/60 px-2 py-0.5 rounded-full">31 SKU</span>
+</td>
+<td class="px-4 py-3 text-center">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-success-bg text-success-text font-label-sm text-label-sm font-semibold">
+                Aktif
+              </span>
+</td>
+<td class="px-4 py-3 text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="p-1.5 rounded-lg text-text-muted hover:text-teal-800 hover:bg-surface-container transition-colors" title="Lihat Detail" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-text-muted hover:text-primary hover:bg-surface-container transition-colors" title="Ubah Data" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-text-muted hover:text-btn-danger hover:bg-danger-bg/40 transition-colors" title="Hapus" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 8: PT Djarum Distribusi Retail -->
+<tr class="h-[58px] hover:bg-teal-100/20 transition-colors">
+<td class="px-4 py-3 text-center">
+<input class="rounded accent-teal-600 cursor-pointer w-4 h-4" type="checkbox">
+</td>
+<td class="px-4 py-3">
+<span class="font-numeric-data text-numeric-data font-bold text-teal-800 bg-surface-container px-2 py-0.5 rounded">SUP-008</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-body-lg text-body-lg text-text-primary leading-snug">PT Djarum Distribusi Retail</span>
+<span class="font-label-sm text-label-sm text-text-muted mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-teal-600">inventory</span>
+                  Rokok &amp; Tembakau
+                </span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">I Gusti Rai</span>
+<span class="font-numeric-data text-numeric-data text-text-secondary">0818-7766-5544</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col max-w-xs">
+<span class="font-label-md text-label-md text-text-primary">Denpasar</span>
+<span class="font-body-sm text-body-sm text-text-muted truncate">Jl. Diponegoro No. 50</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-surface-container font-numeric-data text-numeric-data font-medium text-text-primary">
+                Tempo 7 Hari
+              </span>
+</td>
+<td class="px-4 py-3 text-right">
+<span class="font-numeric-data text-numeric-data font-bold text-teal-800 bg-teal-100/60 px-2 py-0.5 rounded-full">12 SKU</span>
+</td>
+<td class="px-4 py-3 text-center">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-success-bg text-success-text font-label-sm text-label-sm font-semibold">
+                Aktif
+              </span>
+</td>
+<td class="px-4 py-3 text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="p-1.5 rounded-lg text-text-muted hover:text-teal-800 hover:bg-surface-container transition-colors" title="Lihat Detail" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-text-muted hover:text-primary hover:bg-surface-container transition-colors" title="Ubah Data" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-text-muted hover:text-btn-danger hover:bg-danger-bg/40 transition-colors" title="Hapus" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer & Soft Neumorphic Pagination -->
+<div class="px-space-lg py-3.5 bg-surface-header flex flex-col sm:flex-row items-center justify-between gap-space-sm border-t border-divider/60">
+<div class="flex items-center gap-2">
+<span class="font-body-sm text-body-sm text-text-muted">Menampilkan</span>
+<span class="font-numeric-data text-numeric-data font-bold text-text-primary">1–8</span>
+<span class="font-body-sm text-body-sm text-text-muted">dari</span>
+<span class="font-numeric-data text-numeric-data font-bold text-text-primary">16</span>
+<span class="font-body-sm text-body-sm text-text-muted">supplier terdaftar</span>
+</div>
+<div class="flex items-center gap-2">
+<!-- Prev -->
+<button class="w-9 h-9 rounded-lg bg-surface-raised shadow-[2px_2px_5px_rgba(122,152,145,0.25),-2px_-2px_5px_rgba(255,255,255,0.8)] text-text-muted flex items-center justify-center hover:text-primary transition-all disabled:opacity-40" disabled="" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<!-- Page 1 Active -->
+<button class="w-9 h-9 rounded-lg bg-primary text-white font-numeric-data text-numeric-data font-bold shadow-[0_3px_8px_rgba(0,81,74,0.35)] flex items-center justify-center" type="button">
+          1
+        </button>
+<!-- Page 2 -->
+<button class="w-9 h-9 rounded-lg bg-surface-raised shadow-[2px_2px_5px_rgba(122,152,145,0.25),-2px_-2px_5px_rgba(255,255,255,0.8)] text-text-primary font-numeric-data text-numeric-data font-semibold hover:bg-surface-variant transition-all flex items-center justify-center" type="button">
+          2
+        </button>
+<!-- Next -->
+<button class="w-9 h-9 rounded-lg bg-surface-raised shadow-[2px_2px_5px_rgba(122,152,145,0.25),-2px_-2px_5px_rgba(255,255,255,0.8)] text-text-secondary flex items-center justify-center hover:text-primary transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bottom Informational Card (Teal Soft Callout) -->
+<div class="p-space-lg rounded-2xl bg-teal-100/50 shadow-[6px_6px_16px_rgba(122,152,145,0.20),-4px_-4px_12px_rgba(255,255,255,0.85)] flex items-start gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+<span class="material-symbols-outlined text-[22px]">inventory_2</span>
+</div>
+<div class="flex flex-col">
+<h4 class="font-headline-sm text-headline-sm text-teal-900 font-semibold">
+        Integrasi Purchasing &amp; Inventori Otomatis
+      </h4>
+<p class="font-body-sm text-body-sm text-text-secondary mt-0.5">
+        Data supplier ini terhubung langsung dengan modul <strong class="text-teal-900">Barang Masuk (Purchasing)</strong> dan pembaruan stok otomatis di modul <strong class="text-teal-900">Inventori Toko Sari Amerta</strong>. Perubahan jatuh tempo atau alamat narahubung akan merefleksikan faktur tagihan konsinyasi secara real-time.
+      </p>
+</div>
+</div>
+</div></main></div>
+
+</body></html>

@@ -1,0 +1,410 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><title>Toko Sari Amerta - POS &amp; Retail System</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&amp;family=Outfit:wght@500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet"><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface": "#f2fbf8", "surface-bright": "#f2fbf8", "secondary-fixed": "#c8e9e3", "surface-sunken": "#D7E4E0", "surface-variant": "#dbe4e1", "text-muted": "#526E69", "sidebar-idle": "#A8C6C0", "surface-crisp": "#FFFFFF", "text-secondary": "#47625D", "warning-bg": "#F7E6B5", "primary-fixed-dim": "#85d5c9", "on-surface": "#151d1c", "on-primary-fixed": "#00201d", "tertiary-fixed-dim": "#80d998", "chart-series-2": "#2B5C78", "teal-100": "#D0E7E3", "info-text": "#0B6158", "secondary-container": "#c5e7e0", "sidebar-active": "#FFFFFF", "on-tertiary-fixed-variant": "#005228", "on-secondary-fixed": "#00201c", "on-secondary": "#ffffff", "surface-container-low": "#edf6f3", "on-background": "#151d1c", "on-primary-container": "#99e8dd", "error-container": "#ffdad6", "sidebar-indicator": "#45C9B8", "danger-bg": "#F6DACF", "on-error": "#ffffff", "teal-400": "#45C9B8", "teal-900": "#06403B", "outline-variant": "#bec9c6", "surface-header": "#F4F8F7", "secondary": "#46645f", "on-tertiary": "#ffffff", "on-error-container": "#93000a", "on-secondary-container": "#4a6863", "warning-text": "#6F5000", "on-primary-fixed-variant": "#005049", "chart-series-3": "#9A6B06", "inverse-surface": "#2a3230", "sidebar-active-bg": "rgba(255, 255, 255, 0.08)", "primary-container": "#0b6b62", "surface-tint": "#096a61", "success-bg": "#CFE7DB", "on-tertiary-fixed": "#00210d", "chart-series-4": "#B23A16", "btn-neutral": "#1F3A35", "teal-600": "#0D7C74", "teal-800": "#09514A", "on-primary": "#ffffff", "surface-dim": "#d3dcd9", "success-text": "#12694A", "background": "#f2fbf8", "on-surface-variant": "#3e4947", "inverse-on-surface": "#eaf3f0", "surface-container-highest": "#dbe4e1", "surface-container-lowest": "#ffffff", "text-primary": "#16302C", "danger-text": "#9E3210", "primary-fixed": "#a1f1e5", "btn-danger": "#B23A16", "error": "#ba1a1a", "surface-container-high": "#e1eae7", "on-tertiary-container": "#93edaa", "inverse-primary": "#85d5c9", "tertiary-container": "#036e39", "tertiary": "#005329", "secondary-fixed-dim": "#accdc7", "primary": "#00514a", "on-secondary-fixed-variant": "#2e4c48", "divider": "#CBDAD5", "info-bg": "#D0E7E3", "surface-raised": "#EDF4F2", "sidebar-label": "#7FA39D", "tertiary-fixed": "#9bf6b2", "outline": "#6f7977", "surface-container": "#e7f0ed" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-sm": "0.5rem", "margin": "2rem", "space-xl": "2rem", "margin-mobile": "1rem", "gutter": "1.25rem", "space-md": "1rem", "space-xs": "0.25rem", "gutter-mobile": "0.75rem", "space-lg": "1.5rem" }, "fontFamily": { "body-sm": ["Plus Jakarta Sans"], "overline": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "numeric-data": ["JetBrains Mono"], "headline-md": ["Outfit"], "display-hero": ["Outfit"], "body-lg": ["Plus Jakarta Sans"], "headline-sm": ["Outfit"], "body-md": ["Plus Jakarta Sans"], "numeric-total": ["JetBrains Mono"], "headline-lg": ["Outfit"], "display-hero-mobile": ["Outfit"] }, "fontSize": { "body-sm": ["13.5px", { "lineHeight": "20px", "fontWeight": "400" }], "overline": ["11px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "600" }], "label-sm": ["12px", { "lineHeight": "18px", "fontWeight": "500" }], "label-md": ["13.5px", { "lineHeight": "20px", "fontWeight": "600" }], "numeric-data": ["13.5px", { "lineHeight": "20px", "fontWeight": "500" }], "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "display-hero": ["40px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "body-lg": ["15px", { "lineHeight": "24px", "fontWeight": "600" }], "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "500" }], "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }], "numeric-total": ["28px", { "lineHeight": "32px", "fontWeight": "600" }], "headline-lg": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "display-hero-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-[260px] bg-[#0B2B27] z-50 flex flex-col justify-between overflow-y-auto"><div class="flex flex-col"><div class="h-16 px-space-lg flex items-center gap-space-sm bg-[#07201d]"><img alt="Teal circular monogram logo with SA initials for Toko Sari Amerta POS. Brand logo. - Primary color: #0b6b62 - Font: outfit - Mode: light - Roundness: rounded-md" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VBWVLdBpLWEhBUcBOL3Z9dvcmiO-z0sl3sHN68ZR7vN4oYKg7YZ_MioLKw4NGaCSa6GiZh279y15rIoEalj8kqgXJ7QfpfC256DpSY0RKPNEN-6jduECX3ZwzQooc9ETRvSHkjFkCvaqNhWFmaS3JHYZNqcwX9Q0p0OGHGu7rLOARPWG15NmBHoVm5pZ6ZlYLng6kN2TEZlVB9-T6JpLh8UiLVBE0TpdLsZ9rZyMmknqfiicpJTjm47rlR"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-white font-semibold leading-tight">Sari Amerta</span><span class="font-overline text-overline text-sidebar-label uppercase">POS &amp; Retail</span></div></div><nav class="flex flex-col py-space-sm" data-active-classes="bg-sidebar-active-bg text-sidebar-active font-bold border-l-[3px] border-sidebar-indicator"><div class="px-space-lg pt-space-md pb-space-xs font-overline text-overline uppercase text-sidebar-label">Utama</div><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span><span class="">Dashboard</span></a><div class="px-space-lg pt-space-md pb-space-xs font-overline text-overline uppercase text-sidebar-label">Transaksi</div><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="kasir-(pos)" href="#"><span class="material-symbols-outlined text-[18px]">point_of_sale</span><span class="">Kasir (POS)</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="riwayat-transaksi" href="#"><span class="material-symbols-outlined text-[18px]">receipt_long</span><span class="">Riwayat Transaksi</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="retur-penjualan" href="#"><span class="material-symbols-outlined text-[18px]">assignment_return</span><span class="">Retur Penjualan</span></a><div class="px-space-lg pt-space-md pb-space-xs font-overline text-overline uppercase text-sidebar-label">Master Data</div><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="produk" href="#"><span class="material-symbols-outlined text-[18px]">inventory_2</span><span class="">Produk</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="kategori-produk" href="#"><span class="material-symbols-outlined text-[18px]">category</span><span class="">Kategori Produk</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="satuan" href="#"><span class="material-symbols-outlined text-[18px]">straighten</span><span class="">Satuan</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-lg py-2.5 transition-all bg-sidebar-active-bg text-sidebar-active font-bold border-l-[3px] border-sidebar-indicator" data-path="supplier" href="#"><span class="material-symbols-outlined text-[18px] text-sidebar-indicator">local_shipping</span><span class="">Supplier</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="pelanggan" href="#"><span class="material-symbols-outlined text-[18px]">group</span><span class="">Pelanggan</span></a><div class="px-space-lg pt-space-md pb-space-xs font-overline text-overline uppercase text-sidebar-label">Inventori</div><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="stok-barang" href="#"><span class="material-symbols-outlined text-[18px]">warehouse</span><span class="">Stok Barang</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="barang-masuk-(purchasing)" href="#"><span class="material-symbols-outlined text-[18px]">input</span><span class="">Barang Masuk (Purchasing)</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="stok-opname" href="#"><span class="material-symbols-outlined text-[18px]">fact_check</span><span class="">Stok Opname</span></a><div class="px-space-lg pt-space-md pb-space-xs font-overline text-overline uppercase text-sidebar-label">Laporan</div><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="laporan-penjualan" href="#"><span class="material-symbols-outlined text-[18px]">query_stats</span><span class="">Laporan Penjualan</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="laba-rugi" href="#"><span class="material-symbols-outlined text-[18px]">payments</span><span class="">Laba Rugi</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="laporan-stok" href="#"><span class="material-symbols-outlined text-[18px]">inventory</span><span class="">Laporan Stok</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="cetak-struk-/-ulang-struk" href="#"><span class="material-symbols-outlined text-[18px]">print</span><span class="">Cetak Struk / Ulang</span></a><div class="px-space-lg pt-space-md pb-space-xs font-overline text-overline uppercase text-sidebar-label">Pengaturan</div><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="pengguna-&amp;-hak-akses" href="#"><span class="material-symbols-outlined text-[18px]">manage_accounts</span><span class="">Pengguna &amp; Hak Akses</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="profil-toko" href="#"><span class="material-symbols-outlined text-[18px]">store</span><span class="">Profil Toko</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="metode-pembayaran" href="#"><span class="material-symbols-outlined text-[18px]">credit_card</span><span class="">Metode Pembayaran</span></a><a class="flex items-center gap-space-sm px-space-lg py-2.5 font-label-md text-label-md text-sidebar-idle hover:bg-sidebar-active-bg hover:text-white transition-all" data-path="pajak-&amp;-diskon" href="#"><span class="material-symbols-outlined text-[18px]">percent</span><span class="">Pajak &amp; Diskon</span></a></nav></div><div class="p-space-md bg-[#07201d] flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="Profile" class="w-8 h-8 rounded-full object-cover shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1VzXL-W4fXNz743_6iWgs8tnRRX6QnzXYD90htSNO8UlqW94thzjEwWO45hD3116fznsyea8gMe8AEGqapS-lN5b8rO6oNawJnFl19YFJleZOjiPkJw-3RQZMAw6rcMt2EV1VtLgLGyreSE_fMKAZg7DQLdi__18uNJnqVQ3AJ0btoKpschfq6N2a4wDiQfc2Q7xbLsTA9GbursNP91Io_M4sfAQt_GGv5Mwsg2DOtESpik3Umvkuyvrsko"><div class="flex flex-col min-w-0"><span class="font-label-md text-label-md text-white truncate">Ni Kadek Ayu Pramesti</span><span class="font-label-sm text-label-sm text-sidebar-label">Kasir Aktif #01</span></div></div><a class="text-sidebar-idle hover:text-white p-1 transition-colors" href="#" title="Keluar"><span class="material-symbols-outlined text-[20px]">logout</span></a></div></aside><div class="pl-[260px]"><header class="fixed top-0 left-[260px] right-0 h-16 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl"><div class="flex items-center gap-space-md"><div class="flex items-center gap-2 bg-surface-raised px-3 py-1.5 rounded-lg shadow-[inset_2px_2px_5px_rgba(122,152,145,0.25),inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"><span class="material-symbols-outlined text-text-muted text-[18px]">storefront</span><span class="font-label-md text-label-md text-text-primary">Toko Pusat Jimbaran</span><span class="material-symbols-outlined text-text-muted text-[16px]">expand_more</span></div><div class="h-4 w-px bg-divider"></div><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-teal-400"></span><span class="font-label-sm text-label-sm text-text-muted">Sistem Online: Kasir 01</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-2 bg-surface-raised px-3.5 py-1.5 rounded-lg shadow-[inset_2px_2px_5px_rgba(122,152,145,0.25),inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"><span class="material-symbols-outlined text-text-muted text-[18px]">search</span><input class="bg-transparent border-none outline-none font-body-sm text-body-sm text-text-primary w-64 placeholder:text-text-muted" placeholder="Cari transaksi, produk, barcode... (F2)" type="text"></div><button class="p-2 text-text-muted hover:text-on-surface transition-colors relative" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 bg-btn-danger rounded-full"></span></button><button class="p-2 text-text-muted hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">help</span></button><div class="h-4 w-px bg-divider"></div><div class="flex items-center gap-space-sm"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VzXL-W4fXNz743_6iWgs8tnRRX6QnzXYD90htSNO8UlqW94thzjEwWO45hD3116fznsyea8gMe8AEGqapS-lN5b8rO6oNawJnFl19YFJleZOjiPkJw-3RQZMAw6rcMt2EV1VtLgLGyreSE_fMKAZg7DQLdi__18uNJnqVQ3AJ0btoKpschfq6N2a4wDiQfc2Q7xbLsTA9GbursNP91Io_M4sfAQt_GGv5Mwsg2DOtESpik3Umvkuyvrsko"><div class="flex flex-col text-left"><span class="font-label-md text-label-md text-text-primary leading-none">Ni Kadek Ayu</span><span class="font-overline text-overline text-text-muted mt-0.5 uppercase">Kasir</span></div></div></div></header><main class="relative pt-16 bg-surface min-h-screen w-full px-space-xl py-space-lg"><div class="flex flex-col w-full pb-28">
+<!-- Breadcrumb & Top Operational Heading -->
+<div class="flex flex-col gap-space-sm mb-space-lg">
+<div class="flex items-center gap-2 text-text-muted font-label-sm text-label-sm">
+<span class="hover:text-primary transition-colors cursor-pointer">Master Data</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="hover:text-primary transition-colors cursor-pointer">Supplier</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-text-primary font-semibold">Form Supplier</span>
+</div>
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-space-sm flex-wrap">
+<h1 class="font-headline-lg text-headline-lg text-text-primary">Tambah / Edit Supplier</h1>
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-100 text-teal-800 font-overline text-overline shadow-[inset_1px_1px_3px_rgba(122,152,145,0.3)]">
+<span class="w-1.5 h-1.5 rounded-full bg-teal-600 animate-pulse"></span>
+            ID MODE: MODIFIKASI (SUP-001 · PT INDOFOOD CBP)
+          </div>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted">
+          Kelola rincian data rekanan supplier, kontak PIC, syarat pembayaran, rekening bank, dan katalog produk yang disuplai.
+        </p>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-text-muted">Sinkronisasi Terakhir:</span>
+<span class="font-numeric-data text-numeric-data text-text-primary font-semibold bg-surface-container-high px-2.5 py-1 rounded-lg">14 Okt 2026, 09:41 WITA</span>
+</div>
+</div>
+</div>
+<!-- Navigation Flow Tabs -->
+<div class="flex items-center gap-2 mb-space-xl p-1.5 bg-surface-container rounded-xl w-fit shadow-[inset_2px_2px_5px_rgba(122,152,145,0.25),inset_-2px_-2px_5px_rgba(255,255,255,0.8)]">
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg font-label-md text-label-md text-text-muted hover:text-text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">format_list_bulleted</span>
+<span class="">Daftar Supplier</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg font-label-md text-label-md bg-surface-crisp text-teal-800 font-bold shadow-[3px_3px_8px_rgba(122,152,145,0.25),-2px_-2px_6px_rgba(255,255,255,0.9)] transition-all" type="button">
+<span class="material-symbols-outlined text-[18px] text-teal-600">edit_note</span>
+<span class="">Tambah / Edit Supplier</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg font-label-md text-label-md text-text-muted hover:text-text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+<span class="">Riwayat PO &amp; Hutang</span>
+<span class="px-1.5 py-0.5 text-[10px] font-numeric-data rounded-full bg-surface-variant text-text-secondary">18</span>
+</button>
+</div>
+<!-- Asymmetric Workspace: 2fr Left / 1fr Right -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-xl items-start">
+<!-- LEFT COLUMN (2 Columns Span) -->
+<div class="lg:col-span-2 flex flex-col gap-space-xl">
+<!-- Card 1: Informasi Pokok Supplier -->
+<section class="rounded-[24px] p-6 bg-surface-raised shadow-[8px_8px_20px_rgba(122,152,145,0.28),-8px_-8px_20px_rgba(255,255,255,0.92)] flex flex-col gap-space-lg relative overflow-hidden">
+<div class="flex items-center justify-between pb-2">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center text-teal-800 shadow-[inset_2px_2px_4px_rgba(122,152,145,0.2)]">
+<span class="material-symbols-outlined text-[22px]">corporate_fare</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-text-primary font-bold">Informasi Pokok Supplier</h2>
+<span class="font-overline text-overline uppercase text-text-muted">Profil Hukum &amp; Lokasi Legal</span>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-teal-600 bg-teal-100/70 px-3 py-1 rounded-full font-semibold">Wajib Diisi (*)</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Nama Perusahaan -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-text-primary">Nama Perusahaan / Supplier <span class="text-error">*</span></label>
+<div class="relative flex items-center">
+<input class="w-full h-12 px-4 rounded-xl font-body-md text-body-md text-text-primary bg-surface-sunken shadow-[inset_3px_3px_7px_rgba(122,152,145,0.35),inset_-3px_-3px_7px_rgba(255,255,255,0.85)] outline-none focus:ring-2 focus:ring-teal-600 transition-all" type="text" value="PT Indofood CBP Sukses Makmur Tbk">
+<span class="material-symbols-outlined absolute right-3 text-success-text text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Kode Supplier -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-text-primary">Kode Supplier <span class="text-error">*</span></label>
+<span class="font-overline text-overline text-text-muted">Dihasilkan otomatis</span>
+</div>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-text-muted text-[18px]">tag</span>
+<input class="w-full h-12 pl-10 pr-4 rounded-xl font-numeric-data text-numeric-data font-bold text-teal-800 bg-surface-variant/70 shadow-[inset_2px_2px_5px_rgba(122,152,145,0.25)] cursor-not-allowed" disabled="" type="text" value="SUP-001">
+</div>
+</div>
+<!-- Kategori Suplai -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-text-primary">Kategori Produk Suplai</label>
+<div class="relative">
+<select class="w-full h-12 px-4 pr-10 rounded-xl font-body-md text-body-md text-text-primary bg-surface-sunken shadow-[inset_3px_3px_7px_rgba(122,152,145,0.35),inset_-3px_-3px_7px_rgba(255,255,255,0.85)] outline-none focus:ring-2 focus:ring-teal-600 appearance-none cursor-pointer">
+<option selected="" value="makanan-mie">Makanan &amp; Mie Instan</option>
+<option value="minuman-kemasan">Minuman Kemasan &amp; Susu</option>
+<option value="sembako">Sembako &amp; Bumbu Dapur</option>
+<option value="perawatan-diri">Perawatan Diri &amp; Kosmetik</option>
+<option value="rokok-tembakau">Rokok &amp; Tembakau</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-text-muted pointer-events-none text-[20px]">expand_more</span>
+</div>
+</div>
+<!-- Badan Usaha / Tipe -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-text-primary">Badan Usaha / Tipe</label>
+<div class="relative">
+<select class="w-full h-12 px-4 pr-10 rounded-xl font-body-md text-body-md text-text-primary bg-surface-sunken shadow-[inset_3px_3px_7px_rgba(122,152,145,0.35),inset_-3px_-3px_7px_rgba(255,255,255,0.85)] outline-none focus:ring-2 focus:ring-teal-600 appearance-none cursor-pointer">
+<option selected="" value="pt">Perseroan Terbatas (PT)</option>
+<option value="cv">Commanditaire Vennootschap (CV)</option>
+<option value="ud">Usaha Dagang (UD) / Perorangan</option>
+<option value="koperasi">Koperasi Unit Desa</option>
+<option value="distributor-resmi">Distributor Tunggal / Prinsipal</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-text-muted pointer-events-none text-[20px]">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Alamat Kantor / Gudang -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-text-primary">Alamat Kantor / Gudang Utama <span class="text-error">*</span></label>
+<textarea class="w-full p-3.5 rounded-xl font-body-md text-body-md text-text-primary bg-surface-sunken shadow-[inset_3px_3px_7px_rgba(122,152,145,0.35),inset_-3px_-3px_7px_rgba(255,255,255,0.85)] outline-none focus:ring-2 focus:ring-teal-600 resize-none" rows="2">Jl. Gatot Subroto Timur No. 88, Kesiman Kertalangu, Kec. Denpasar Timur, Kota Denpasar, Bali 80237</textarea>
+</div>
+<!-- Grid 3 Kolom Kota, Prov, Kode Pos -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-text-primary">Kota / Kabupaten</label>
+<input class="w-full h-12 px-4 rounded-xl font-body-md text-body-md text-text-primary bg-surface-sunken shadow-[inset_3px_3px_7px_rgba(122,152,145,0.35),inset_-3px_-3px_7px_rgba(255,255,255,0.85)] outline-none focus:ring-2 focus:ring-teal-600" type="text" value="Denpasar">
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-text-primary">Provinsi</label>
+<input class="w-full h-12 px-4 rounded-xl font-body-md text-body-md text-text-primary bg-surface-sunken shadow-[inset_3px_3px_7px_rgba(122,152,145,0.35),inset_-3px_-3px_7px_rgba(255,255,255,0.85)] outline-none focus:ring-2 focus:ring-teal-600" type="text" value="Bali">
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-text-primary">Kode Pos</label>
+<input class="w-full h-12 px-4 rounded-xl font-numeric-data text-numeric-data text-text-primary bg-surface-sunken shadow-[inset_3px_3px_7px_rgba(122,152,145,0.35),inset_-3px_-3px_7px_rgba(255,255,255,0.85)] outline-none focus:ring-2 focus:ring-teal-600" type="text" value="80237">
+</div>
+</div>
+</section>
+<!-- Card 2: Kontak PIC & Narahubung -->
+<section class="rounded-[24px] p-6 bg-surface-raised shadow-[8px_8px_20px_rgba(122,152,145,0.28),-8px_-8px_20px_rgba(255,255,255,0.92)] flex flex-col gap-space-lg">
+<div class="flex items-center gap-space-sm pb-2">
+<div class="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center text-teal-800 shadow-[inset_2px_2px_4px_rgba(122,152,145,0.2)]">
+<span class="material-symbols-outlined text-[22px]">contact_phone</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-text-primary font-bold">Kontak PIC &amp; Narahubung</h2>
+<span class="font-overline text-overline uppercase text-text-muted">Person In Charge &amp; Komunikasi Sales</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-text-primary">Nama PIC (Person in Charge) <span class="text-error">*</span></label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-text-muted text-[18px]">person</span>
+<input class="w-full h-12 pl-10 pr-4 rounded-xl font-body-md text-body-md text-text-primary bg-surface-sunken shadow-[inset_3px_3px_7px_rgba(122,152,145,0.35),inset_-3px_-3px_7px_rgba(255,255,255,0.85)] outline-none focus:ring-2 focus:ring-teal-600" type="text" value="Hendra Wijaya">
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-text-primary">Jabatan PIC</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-text-muted text-[18px]">badge</span>
+<input class="w-full h-12 pl-10 pr-4 rounded-xl font-body-md text-body-md text-text-primary bg-surface-sunken shadow-[inset_3px_3px_7px_rgba(122,152,145,0.35),inset_-3px_-3px_7px_rgba(255,255,255,0.85)] outline-none focus:ring-2 focus:ring-teal-600" type="text" value="Sales Area Supervisor Bali">
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-text-primary">No. Telepon / WhatsApp <span class="text-error">*</span></label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-success-text text-[18px]">call</span>
+<input class="w-full h-12 pl-10 pr-24 rounded-xl font-numeric-data text-numeric-data font-medium text-text-primary bg-surface-sunken shadow-[inset_3px_3px_7px_rgba(122,152,145,0.35),inset_-3px_-3px_7px_rgba(255,255,255,0.85)] outline-none focus:ring-2 focus:ring-teal-600" type="text" value="0812-3456-7890">
+<span class="absolute right-2 px-2 py-0.5 rounded-md bg-success-bg text-success-text font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">chat</span>
+                WA Aktif
+              </span>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-text-primary">Email Resmi</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-text-muted text-[18px]">mail</span>
+<input class="w-full h-12 pl-10 pr-4 rounded-xl font-body-md text-body-md text-text-primary bg-surface-sunken shadow-[inset_3px_3px_7px_rgba(122,152,145,0.35),inset_-3px_-3px_7px_rgba(255,255,255,0.85)] outline-none focus:ring-2 focus:ring-teal-600" type="email" value="hendra.wijaya@indofood.co.id">
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-text-primary">Catatan Khusus Pengiriman / Lead Time</label>
+<span class="font-overline text-overline text-text-muted">Instruksi Ekspedisi Logistik</span>
+</div>
+<textarea class="w-full p-3.5 rounded-xl font-body-md text-body-md text-text-primary bg-surface-sunken shadow-[inset_3px_3px_7px_rgba(122,152,145,0.35),inset_-3px_-3px_7px_rgba(255,255,255,0.85)] outline-none focus:ring-2 focus:ring-teal-600 resize-none" rows="2">Jadwal pengiriman rutin setiap hari Selasa &amp; Jumat pagi. Lead time pemesanan H-2 sebelum pengantaran gudang.</textarea>
+</div>
+</section>
+<!-- Card 3: Syarat Pembayaran & Rekening Bank -->
+<section class="rounded-[24px] p-6 bg-surface-raised shadow-[8px_8px_20px_rgba(122,152,145,0.28),-8px_-8px_20px_rgba(255,255,255,0.92)] flex flex-col gap-space-lg">
+<div class="flex items-center gap-space-sm pb-2">
+<div class="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center text-teal-800 shadow-[inset_2px_2px_4px_rgba(122,152,145,0.2)]">
+<span class="material-symbols-outlined text-[22px]">account_balance</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-text-primary font-bold">Syarat Pembayaran &amp; Rekening Bank</h2>
+<span class="font-overline text-overline uppercase text-text-muted">Term of Payment &amp; Finansial Hutang Dagang</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-text-primary">Syarat Pembayaran (TOP) <span class="text-error">*</span></label>
+<div class="relative">
+<select class="w-full h-12 px-4 pr-10 rounded-xl font-body-md text-body-md text-text-primary bg-surface-sunken shadow-[inset_3px_3px_7px_rgba(122,152,145,0.35),inset_-3px_-3px_7px_rgba(255,255,255,0.85)] outline-none focus:ring-2 focus:ring-teal-600 appearance-none cursor-pointer">
+<option value="cod">Cash on Delivery (COD)</option>
+<option value="net7">Tempo 7 Hari (Net 7)</option>
+<option value="net14">Tempo 14 Hari (Net 14)</option>
+<option selected="" value="net30">Tempo 30 Hari (Net 30)</option>
+<option value="net45">Tempo 45 Hari (Net 45)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-text-muted pointer-events-none text-[20px]">expand_more</span>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-text-primary">Plafon Kredit Maksimal</label>
+<div class="relative flex items-center">
+<span class="absolute left-4 font-numeric-data text-numeric-data font-bold text-text-muted">Rp</span>
+<input class="w-full h-12 pl-12 pr-4 rounded-xl font-numeric-data text-numeric-data font-semibold text-text-primary bg-surface-sunken shadow-[inset_3px_3px_7px_rgba(122,152,145,0.35),inset_-3px_-3px_7px_rgba(255,255,255,0.85)] outline-none focus:ring-2 focus:ring-teal-600" type="text" value="50.000.000">
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-text-primary">Nama Bank</label>
+<div class="relative">
+<select class="w-full h-12 px-4 pr-10 rounded-xl font-body-md text-body-md text-text-primary bg-surface-sunken shadow-[inset_3px_3px_7px_rgba(122,152,145,0.35),inset_-3px_-3px_7px_rgba(255,255,255,0.85)] outline-none focus:ring-2 focus:ring-teal-600 appearance-none cursor-pointer">
+<option selected="" value="bca">Bank Central Asia (BCA)</option>
+<option value="mandiri">Bank Mandiri</option>
+<option value="bri">Bank BRI</option>
+<option value="bni">Bank BNI</option>
+<option value="bpd-bali">BPD Bali</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-text-muted pointer-events-none text-[20px]">expand_more</span>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-text-primary">Nomor Rekening</label>
+<input class="w-full h-12 px-4 rounded-xl font-numeric-data text-numeric-data font-semibold text-text-primary bg-surface-sunken shadow-[inset_3px_3px_7px_rgba(122,152,145,0.35),inset_-3px_-3px_7px_rgba(255,255,255,0.85)] outline-none focus:ring-2 focus:ring-teal-600" type="text" value="040-288-9901">
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-text-primary">Atas Nama Rekening</label>
+<input class="w-full h-12 px-4 rounded-xl font-body-md text-body-md text-text-primary bg-surface-sunken shadow-[inset_3px_3px_7px_rgba(122,152,145,0.35),inset_-3px_-3px_7px_rgba(255,255,255,0.85)] outline-none focus:ring-2 focus:ring-teal-600 truncate" type="text" value="PT Indofood CBP Sukses Makmur Tbk">
+</div>
+</div>
+<!-- Toggle Pajak PKP / PPN -->
+<div class="p-4 rounded-2xl bg-surface-container flex items-center justify-between shadow-[inset_2px_2px_4px_rgba(122,152,145,0.2)]">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-surface-crisp flex items-center justify-center text-teal-800 shadow-[2px_2px_6px_rgba(122,152,145,0.25)]">
+<span class="material-symbols-outlined text-[20px]">receipt</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Pajak Faktur Standar (PKP / PPN 11%)</span>
+<span class="font-body-sm text-body-sm text-text-muted">Kemitraan menerbitkan e-Faktur resmi untuk setiap pesanan barang</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-sm text-label-sm text-teal-800 bg-teal-100 px-2.5 py-1 rounded-full font-semibold hidden sm:inline-block">Faktur Pajak Elektronik Siap</span>
+<!-- Custom Toggle -->
+<button class="w-12 h-6 bg-teal-600 rounded-full p-0.5 flex items-center justify-end shadow-[inset_1px_1px_3px_rgba(0,0,0,0.3)] transition-colors cursor-pointer" type="button">
+<span class="w-5 h-5 bg-white rounded-full shadow-md"></span>
+</button>
+</div>
+</div>
+</section>
+</div>
+<!-- RIGHT COLUMN (1 Column Span) -->
+<div class="flex flex-col gap-space-xl">
+<!-- Card Right 1: Ringkasan Kemitraan & Performa -->
+<div class="rounded-[24px] p-6 bg-surface-raised shadow-[8px_8px_20px_rgba(122,152,145,0.28),-8px_-8px_20px_rgba(255,255,255,0.92)] flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-teal-600 text-[20px]">analytics</span>
+<h3 class="font-headline-sm text-headline-sm text-text-primary font-bold">Ringkasan Rekanan</h3>
+</div>
+<span class="font-label-sm text-label-sm text-text-muted bg-surface-container px-2.5 py-0.5 rounded-full">Bulan Ini</span>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="p-3.5 rounded-xl bg-surface-container-low flex flex-col gap-1">
+<span class="font-overline text-overline uppercase text-text-muted">TOTAL SKU DISUPLAI</span>
+<span class="font-headline-md text-headline-md text-text-primary font-bold">42 SKU</span>
+<span class="font-label-sm text-label-sm text-text-muted truncate">Indomie, Pop Mie, Chitato</span>
+</div>
+<div class="p-3.5 rounded-xl bg-surface-container-low flex flex-col gap-1">
+<span class="font-overline text-overline uppercase text-text-muted">TOTAL PEMBELIAN</span>
+<span class="font-numeric-data text-numeric-data text-teal-800 font-bold">Rp 68,45 Jt</span>
+<span class="font-label-sm text-label-sm text-success-text flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px]">arrow_upward</span>
+              +8.4% vol
+            </span>
+</div>
+</div>
+<!-- Progress Bar Plafon Kredit -->
+<div class="flex flex-col gap-2 p-3.5 rounded-xl bg-surface-container shadow-[inset_2px_2px_4px_rgba(122,152,145,0.2)]">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-text-secondary font-semibold">Pemakaian Plafon Kredit</span>
+<span class="font-numeric-data text-numeric-data text-teal-800 font-bold">64.3%</span>
+</div>
+<div class="w-full h-3 bg-surface-sunken rounded-full overflow-hidden p-0.5">
+<div class="h-full bg-gradient-to-r from-teal-400 to-teal-600 rounded-full transition-all" style="width: 64.3%;"></div>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-text-muted">
+<span class="">Terpakai: <strong class="text-text-primary font-numeric-data">Rp 32.180.000</strong></span>
+<span class="">Limit: <strong class="text-text-primary font-numeric-data">Rp 50 Jt</strong></span>
+</div>
+</div>
+<div class="flex items-center gap-2 p-3 rounded-xl bg-teal-100/60 text-teal-800 font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span class="truncate">PO Terakhir: <strong>PO-20260912-0019</strong> (Lunas)</span>
+</div>
+</div>
+<!-- Card Right 2: Status & Visibilitas Mitra -->
+<div class="rounded-[24px] p-6 bg-surface-raised shadow-[8px_8px_20px_rgba(122,152,145,0.28),-8px_-8px_20px_rgba(255,255,255,0.92)] flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-teal-600 text-[20px]">toggle_on</span>
+<h3 class="font-headline-sm text-headline-sm text-text-primary font-bold">Status Kemitraan</h3>
+</div>
+<span class="font-label-sm text-label-sm px-2.5 py-0.5 rounded-full bg-success-bg text-success-text font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-success-text"></span>
+            Aktif Bermitra
+          </span>
+</div>
+<!-- Big Toggle Switch -->
+<div class="flex items-center justify-between p-4 rounded-xl bg-surface-crisp shadow-[0_4px_12px_rgba(22,48,44,0.06)]">
+<div class="flex flex-col pr-2">
+<span class="font-label-md text-label-md text-text-primary font-semibold">Status Rekanan Aktif</span>
+<span class="font-body-sm text-body-sm text-text-muted">Supplier dapat dipilih pada Purchasing / PO Baru.</span>
+</div>
+<button class="w-14 h-7 bg-teal-600 rounded-full p-0.5 flex items-center justify-end shadow-[inset_1px_1px_3px_rgba(0,0,0,0.3)] shrink-0 cursor-pointer" type="button">
+<span class="w-6 h-6 bg-white rounded-full shadow-md"></span>
+</button>
+</div>
+<!-- Amber / Teal Soft Info Banner -->
+<div class="p-3.5 rounded-xl bg-warning-bg/40 text-warning-text flex gap-2.5 items-start">
+<span class="material-symbols-outlined text-[18px] text-chart-series-3 shrink-0 mt-0.5">info</span>
+<p class="font-body-sm text-body-sm text-text-secondary leading-tight">
+            Jika dinonaktifkan, supplier tidak dapat dipilih pada modul PO baru, namun seluruh riwayat faktur pembelian dan retur barang tetap tersimpan aman.
+          </p>
+</div>
+</div>
+<!-- Card Right 3: Pratinjau Kartu Kontak Cepat -->
+<div class="rounded-[24px] p-6 bg-surface-crisp shadow-[0_18px_40px_-18px_rgba(22,48,44,0.14)] flex flex-col gap-space-md relative overflow-hidden">
+<div class="flex items-center justify-between pb-1">
+<span class="font-overline text-overline uppercase text-text-muted">Quick Contact Card</span>
+<span class="material-symbols-outlined text-text-muted text-[16px]">qr_code_2</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-teal-900 text-white flex items-center justify-center font-headline-md text-headline-md font-bold shrink-0 shadow-md">
+            ICBP
+          </div>
+<div class="flex flex-col min-w-0">
+<h4 class="font-label-md text-label-md text-text-primary font-bold truncate">PT Indofood CBP Sukses Makmur</h4>
+<span class="font-body-sm text-body-sm text-text-muted truncate">PIC: Hendra Wijaya</span>
+<span class="font-label-sm text-label-sm text-teal-600">Sales Area Bali</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 pt-2">
+<button class="w-full h-10 px-3 rounded-lg bg-surface-raised text-text-primary font-label-md text-label-md flex items-center justify-center gap-2 shadow-[3px_3px_7px_rgba(122,152,145,0.25),-3px_-3px_7px_rgba(255,255,255,0.9)] hover:bg-surface-variant transition-all" type="button">
+<span class="material-symbols-outlined text-[18px] text-success-text">chat</span>
+<span class="">0812-3456-7890</span>
+</button>
+<button class="w-full h-10 px-3 rounded-lg bg-teal-100/70 text-teal-800 font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-teal-100 transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">outgoing_mail</span>
+<span class="">Kirim Email PO</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- STICKY BOTTOM ACTION BAR -->
+<aside aria-label="Aksi Formulir Supplier" class="fixed bottom-0 left-[260px] right-0 h-20 bg-surface-crisp/95 backdrop-blur-md px-space-xl flex items-center justify-between z-30 shadow-[0_-8px_25px_rgba(22,48,44,0.08)]">
+<!-- Left Navigation Back Action -->
+<div class="flex items-center gap-space-md">
+<button class="h-12 px-5 rounded-xl bg-surface-raised font-label-md text-label-md text-text-primary flex items-center gap-2 shadow-[4px_4px_10px_rgba(122,152,145,0.30),-4px_-4px_10px_rgba(255,255,255,0.90)] active:shadow-[inset_3px_3px_6px_rgba(122,152,145,0.35)] transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span class="">Batal &amp; Kembali ke Daftar</span>
+</button>
+<span class="hidden md:inline-block font-label-sm text-label-sm text-text-muted">Perubahan tersimpan otomatis di draf lokal</span>
+</div>
+<!-- Right Destructive and Save Actions -->
+<div class="flex items-center gap-space-md">
+<button class="h-12 px-4 rounded-xl bg-danger-bg text-danger-text font-label-md text-label-md flex items-center gap-1.5 hover:bg-red-200 transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+<span class="hidden sm:inline-block">Hapus Supplier Ini</span>
+</button>
+<button class="h-12 px-7 rounded-xl bg-primary-container text-white font-headline-sm text-headline-sm font-semibold flex items-center gap-2 shadow-[0_6px_16px_-6px_rgba(11,107,98,0.55)] hover:bg-teal-800 transition-all cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[20px]">save</span>
+<span class="">Simpan Data Supplier</span>
+</button>
+</div>
+</aside>
+</div>
+<script>
+  // Micro-interaction: Toggles
+  document.querySelectorAll('button:has(.rounded-full.shadow-md)').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const dot = this.querySelector('.rounded-full.shadow-md');
+      const isChecked = this.classList.contains('bg-teal-600');
+      if (isChecked) {
+        this.classList.remove('bg-teal-600', 'justify-end');
+        this.classList.add('bg-surface-sunken', 'justify-start');
+      } else {
+        this.classList.add('bg-teal-600', 'justify-end');
+        this.classList.remove('bg-surface-sunken', 'justify-start');
+      }
+    });
+  });
+</script></main></div>
+
+</body></html>

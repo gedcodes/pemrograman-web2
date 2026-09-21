@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+
+<html lang="id"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&amp;family=Outfit:wght@500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "success-bg": "#CFE7DB", "teal-600": "#0D7C74", "on-error": "#ffffff", "on-surface": "#151d1c", "primary-container": "#0b6b62", "sidebar-active-bg": "rgba(255, 255, 255, 0.08)", "on-error-container": "#93000a", "secondary-container": "#c5e7e0", "surface-tint": "#096a61", "sidebar-active": "#FFFFFF", "inverse-surface": "#2a3230", "surface-container-highest": "#dbe4e1", "teal-900": "#06403B", "teal-100": "#D0E7E3", "surface-crisp": "#FFFFFF", "on-primary-container": "#99e8dd", "chart-series-2": "#2B5C78", "on-tertiary-container": "#93edaa", "warning-text": "#6F5000", "secondary-fixed": "#c8e9e3", "on-secondary": "#ffffff", "surface-container-low": "#edf6f3", "primary-fixed-dim": "#85d5c9", "surface-bright": "#f2fbf8", "surface-header": "#F4F8F7", "tertiary": "#005329", "on-tertiary": "#ffffff", "tertiary-container": "#036e39", "text-secondary": "#47625D", "surface-sunken": "#D7E4E0", "sidebar-label": "#7FA39D", "sidebar-indicator": "#45C9B8", "primary-fixed": "#a1f1e5", "chart-series-3": "#9A6B06", "surface-container-lowest": "#ffffff", "inverse-on-surface": "#eaf3f0", "on-secondary-container": "#4a6863", "info-text": "#0B6158", "sidebar-idle": "#A8C6C0", "surface-container-high": "#e1eae7", "secondary": "#46645f", "error": "#ba1a1a", "info-bg": "#D0E7E3", "on-tertiary-fixed": "#00210d", "on-surface-variant": "#3e4947", "btn-danger": "#B23A16", "on-secondary-fixed": "#00201c", "teal-800": "#09514A", "chart-series-4": "#B23A16", "on-primary": "#ffffff", "error-container": "#ffdad6", "background": "#f2fbf8", "teal-400": "#45C9B8", "warning-bg": "#F7E6B5", "on-secondary-fixed-variant": "#2e4c48", "surface-raised": "#EDF4F2", "tertiary-fixed": "#9bf6b2", "secondary-fixed-dim": "#accdc7", "success-text": "#12694A", "inverse-primary": "#85d5c9", "text-primary": "#16302C", "surface-variant": "#dbe4e1", "on-primary-fixed": "#00201d", "surface-container": "#e7f0ed", "on-tertiary-fixed-variant": "#005228", "surface-dim": "#d3dcd9", "tertiary-fixed-dim": "#80d998", "danger-text": "#9E3210", "surface": "#f2fbf8", "outline-variant": "#bec9c6", "btn-neutral": "#1F3A35", "divider": "#CBDAD5", "outline": "#6f7977", "primary": "#00514a", "on-primary-fixed-variant": "#005049", "danger-bg": "#F6DACF", "on-background": "#151d1c", "text-muted": "#526E69" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "gutter-mobile": "0.75rem", "space-sm": "0.5rem", "space-md": "1rem", "margin-mobile": "1rem", "space-xl": "2rem", "gutter": "1.25rem", "space-lg": "1.5rem", "margin": "2rem", "space-xs": "0.25rem" }, "fontFamily": { "body-lg": ["Plus Jakarta Sans"], "display-hero": ["Outfit"], "headline-lg": ["Outfit"], "numeric-data": ["JetBrains Mono"], "headline-md": ["Outfit"], "body-md": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "overline": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "headline-sm": ["Outfit"], "display-hero-mobile": ["Outfit"], "numeric-total": ["JetBrains Mono"] }, "fontSize": { "body-lg": ["15px", { "lineHeight": "24px", "fontWeight": "600" }], "display-hero": ["40px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "headline-lg": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "numeric-data": ["13.5px", { "lineHeight": "20px", "fontWeight": "500" }], "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }], "label-md": ["13.5px", { "lineHeight": "20px", "fontWeight": "600" }], "body-sm": ["13.5px", { "lineHeight": "20px", "fontWeight": "400" }], "overline": ["11px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "600" }], "label-sm": ["12px", { "lineHeight": "18px", "fontWeight": "500" }], "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "500" }], "display-hero-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "numeric-total": ["28px", { "lineHeight": "32px", "fontWeight": "600" }] } } } };</script></head><body class="bg-background font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-[260px] bg-[#0B2B27] z-50 flex flex-col justify-between select-none"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-md flex items-center gap-space-sm"><img alt="Teal circular monogram logo with SA initials for Toko Sari Amerta POS. Brand logo. - Primary color: #0b6b62 - Font: outfit - Mode: light - Roundness: rounded-md" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VBWVLdBpLWEhBUcBOL3Z9dvcmiO-z0sl3sHN68ZR7vN4oYKg7YZ_MioLKw4NGaCSa6GiZh279y15rIoEalj8kqgXJ7QfpfC256DpSY0RKPNEN-6jduECX3ZwzQooc9ETRvSHkjFkCvaqNhWFmaS3JHYZNqcwX9Q0p0OGHGu7rLOARPWG15NmBHoVm5pZ6ZlYLng6kN2TEZlVB9-T6JpLh8UiLVBE0TpdLsZ9rZyMmknqfiicpJTjm47rlR"/><div class="flex flex-col leading-none"><span class="font-headline-sm text-headline-sm text-sidebar-active tracking-tight">Toko Sari Amerta</span><span class="font-overline text-overline text-sidebar-label tracking-widest mt-space-xs">ADMIN PANEL</span></div></div><div class="flex-1 overflow-y-auto px-space-xs py-space-sm"><nav class="flex flex-col gap-space-xs" data-active-classes="bg-sidebar-active-bg text-sidebar-active font-label-md text-label-md border-l-[3px] border-sidebar-indicator shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"><div class="px-space-md pt-space-xs pb-space-xs font-overline text-overline text-sidebar-label tracking-wider">UTAMA</div><a class="flex items-center px-space-md py-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-colors" data-path="dashboard" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">space_dashboard</span><span class="font-label-md text-label-md">Dashboard</span></a><div class="px-space-md pt-space-md pb-space-xs font-overline text-overline text-sidebar-label tracking-wider">TRANSAKSI</div><a class="flex items-center px-space-md py-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-colors" data-path="kasir-pos" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">point_of_sale</span><span class="font-label-md text-label-md">Kasir (POS)</span></a><a class="flex items-center px-space-md py-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-colors" data-path="riwayat-transaksi" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">receipt_long</span><span class="font-label-md text-label-md">Riwayat Transaksi</span></a><a class="flex items-center px-space-md py-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-colors" data-path="retur-penjualan" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">assignment_return</span><span class="font-label-md text-label-md">Retur Penjualan</span></a><div class="px-space-md pt-space-md pb-space-xs font-overline text-overline text-sidebar-label tracking-wider">MASTER DATA</div><a class="flex items-center px-space-md py-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-colors" data-path="produk" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">inventory_2</span><span class="font-label-md text-label-md">Produk</span></a><a class="flex items-center px-space-md py-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-colors" data-path="kategori-produk" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">category</span><span class="font-label-md text-label-md">Kategori Produk</span></a><a class="flex items-center px-space-md py-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-colors" data-path="satuan" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">straighten</span><span class="font-label-md text-label-md">Satuan</span></a><a class="flex items-center px-space-md py-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-colors" data-path="supplier" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">local_shipping</span><span class="font-label-md text-label-md">Supplier</span></a><a class="flex items-center px-space-md py-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-colors" data-path="pelanggan" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">groups</span><span class="font-label-md text-label-md">Pelanggan</span></a><div class="px-space-md pt-space-md pb-space-xs font-overline text-overline text-sidebar-label tracking-wider">INVENTORI</div><a class="flex items-center px-space-md py-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-colors" data-path="stok-barang" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">warehouse</span><span class="font-label-md text-label-md">Stok Barang</span></a><a class="flex items-center px-space-md py-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-colors" data-path="barang-masuk-purchasing" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">move_to_inbox</span><span class="font-label-md text-label-md">Barang Masuk (Purchasing)</span></a><a class="flex items-center px-space-md py-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-colors" data-path="stok-opname" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">fact_check</span><span class="font-label-md text-label-md">Stok Opname</span></a><div class="px-space-md pt-space-md pb-space-xs font-overline text-overline text-sidebar-label tracking-wider">LAPORAN</div><a class="flex items-center px-space-md py-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-colors" data-path="laporan-penjualan" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">analytics</span><span class="font-label-md text-label-md">Laporan Penjualan</span></a><a class="flex items-center px-space-md py-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-colors" data-path="laba-rugi" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">account_balance_wallet</span><span class="font-label-md text-label-md">Laba Rugi</span></a><a class="flex items-center px-space-md py-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-colors" data-path="laporan-stok" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">summarize</span><span class="font-label-md text-label-md">Laporan Stok</span></a><a class="flex items-center px-space-md py-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-colors" data-path="cetak-struk-ulang" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">print</span><span class="font-label-md text-label-md">Cetak Struk / Ulang</span></a><div class="px-space-md pt-space-md pb-space-xs font-overline text-overline text-sidebar-label tracking-wider">PENGATURAN</div><a class="flex items-center px-space-md py-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-colors" data-path="pengguna-hak-akses" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">admin_panel_settings</span><span class="font-label-md text-label-md">Pengguna &amp; Hak Akses</span></a><a aria-current="page" class="flex items-center px-space-md py-space-xs rounded transition-colors bg-sidebar-active-bg text-sidebar-active font-label-md text-label-md border-l-[3px] border-sidebar-indicator shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]" data-path="profil-toko" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">storefront</span><span class="font-label-md text-label-md">Profil Toko</span></a><a class="flex items-center px-space-md py-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-colors" data-path="metode-pembayaran" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">payments</span><span class="font-label-md text-label-md">Metode Pembayaran</span></a><a class="flex items-center px-space-md py-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-colors" data-path="pajak-diskon" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">percent</span><span class="font-label-md text-label-md">Pajak &amp; Diskon</span></a></nav></div></div><div class="p-space-md bg-[#08221f] flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="Profile" class="w-8 h-8 rounded-full object-cover shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1VzXL-W4fXNz743_6iWgs8tnRRX6QnzXYD90htSNO8UlqW94thzjEwWO45hD3116fznsyea8gMe8AEGqapS-lN5b8rO6oNawJnFl19YFJleZOjiPkJw-3RQZMAw6rcMt2EV1VtLgLGyreSE_fMKAZg7DQLdi__18uNJnqVQ3AJ0btoKpschfq6N2a4wDiQfc2Q7xbLsTA9GbursNP91Io_M4sfAQt_GGv5Mwsg2DOtESpik3Umvkuyvrsko"/><div class="flex flex-col min-w-0"><span class="font-label-sm text-label-sm text-sidebar-active truncate">Ni Kadek Ayu Pramesti</span><span class="font-overline text-overline text-sidebar-label truncate">Kasir Shift Pagi</span></div></div><a class="text-sidebar-idle hover:text-sidebar-active transition-colors" data-path="logout" href="#"><span class="material-symbols-outlined text-[18px]">logout</span></a></div></aside><div class="pl-[260px]"><header class="fixed top-0 left-[260px] right-0 h-16 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-lg"><div class="flex items-center gap-space-sm"><img alt="Teal circular monogram logo with SA initials for Toko Sari Amerta POS. Brand logo. - Primary color: #0b6b62 - Font: outfit - Mode: light - Roundness: rounded-md" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VBWVLdBpLWEhBUcBOL3Z9dvcmiO-z0sl3sHN68ZR7vN4oYKg7YZ_MioLKw4NGaCSa6GiZh279y15rIoEalj8kqgXJ7QfpfC256DpSY0RKPNEN-6jduECX3ZwzQooc9ETRvSHkjFkCvaqNhWFmaS3JHYZNqcwX9Q0p0OGHGu7rLOARPWG15NmBHoVm5pZ6ZlYLng6kN2TEZlVB9-T6JpLh8UiLVBE0TpdLsZ9rZyMmknqfiicpJTjm47rlR"/><span class="font-headline-sm text-headline-sm text-text-primary">Toko Sari Amerta</span><span class="px-space-sm py-space-xs rounded-full bg-surface-container text-text-secondary font-label-sm text-label-sm">Cabang Utama</span></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-full bg-success-bg text-success-text font-label-sm text-label-sm"><span class="w-2 h-2 rounded-full bg-success-text"></span><span>Terminal Online</span></div><div class="flex items-center gap-space-sm pl-space-md"><div class="text-right leading-tight"><div class="font-label-sm text-label-sm text-text-primary">Ni Kadek Ayu Pramesti</div><div class="font-overline text-overline text-text-secondary">Kasir Shift Pagi</div></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VzXL-W4fXNz743_6iWgs8tnRRX6QnzXYD90htSNO8UlqW94thzjEwWO45hD3116fznsyea8gMe8AEGqapS-lN5b8rO6oNawJnFl19YFJleZOjiPkJw-3RQZMAw6rcMt2EV1VtLgLGyreSE_fMKAZg7DQLdi__18uNJnqVQ3AJ0btoKpschfq6N2a4wDiQfc2Q7xbLsTA9GbursNP91Io_M4sfAQt_GGv5Mwsg2DOtESpik3Umvkuyvrsko"/></div></div></header><main class="relative pt-16 bg-background min-h-screen w-full px-space-lg"><div class="flex flex-col w-full pb-space-xl">
+<!-- Top Breadcrumb & Executive Header -->
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-space-md py-space-md">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs text-text-muted font-overline text-overline uppercase tracking-wider mb-space-xs">
+<span>Pengaturan</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-teal-600 font-label-md text-label-md">Profil Toko</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-text-primary tracking-tight">Profil Toko &amp; Informasi Bisnis</h1>
+<p class="font-body-sm text-body-sm text-text-secondary max-w-3xl mt-space-xs">
+        Konfigurasi identitas gerai ritel, alamat operasional, logo toko untuk cetak struk POS, NPWP usaha, dan kontak resmi Toko Sari Amerta.
+      </p>
+</div>
+<!-- Top Action Buttons -->
+<div class="flex items-center gap-space-sm shrink-0">
+<button class="h-12 px-space-md rounded-xl bg-surface-sunken text-text-primary font-label-md text-label-md flex items-center gap-space-xs shadow-[4px_4px_10px_rgba(122,152,145,0.25),-4px_-4px_10px_rgba(255,255,255,0.85)] hover:bg-surface-raised active:shadow-[inset_3px_3px_6px_rgba(122,152,145,0.35),inset_-3px_-3px_6px_rgba(255,255,255,0.85)] transition-all" type="button">
+<span class="material-symbols-outlined text-[20px] text-teal-600">receipt_long</span>
+<span>Lihat Pratinjau Struk</span>
+</button>
+<button class="h-12 px-space-lg rounded-xl bg-primary text-on-primary font-label-md text-label-md flex items-center gap-space-xs shadow-[0_6px_16px_-6px_rgba(11,107,98,0.55)] hover:bg-teal-800 transition-all" type="button">
+<span class="material-symbols-outlined text-[20px]">verified</span>
+<span>Simpan Perubahan Profil</span>
+</button>
+</div>
+</div>
+<!-- Tab Navigation Bar -->
+<div class="flex items-center gap-space-xs p-space-xs bg-surface-sunken rounded-xl shadow-[inset_3px_3px_8px_rgba(122,152,145,0.25),inset_-3px_-3px_8px_rgba(255,255,255,0.7)] my-space-md overflow-x-auto">
+<button class="px-space-md py-space-sm rounded-lg bg-surface-crisp text-teal-900 font-label-md text-label-md shadow-[2px_3px_8px_rgba(11,43,39,0.08)] flex items-center gap-space-xs shrink-0">
+<span class="material-symbols-outlined text-[18px] text-teal-600">storefront</span>
+<span>Identitas Toko &amp; Legalitas</span>
+<span class="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
+</button>
+<button class="px-space-md py-space-sm rounded-lg text-text-secondary hover:text-text-primary font-label-md text-label-md flex items-center gap-space-xs shrink-0 transition-colors">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+<span>Lokasi &amp; Jam Operasional Gerai</span>
+</button>
+<button class="px-space-md py-space-sm rounded-lg text-text-secondary hover:text-text-primary font-label-md text-label-md flex items-center gap-space-xs shrink-0 transition-colors">
+<span class="material-symbols-outlined text-[18px]">print</span>
+<span>Template Header / Footer Struk Kasir</span>
+</button>
+<button class="px-space-md py-space-sm rounded-lg text-text-secondary hover:text-text-primary font-label-md text-label-md flex items-center gap-space-xs shrink-0 transition-colors">
+<span class="material-symbols-outlined text-[18px]">hub</span>
+<span>Cabang &amp; Multi-Outlet (Jimbaran Center)</span>
+<span class="px-space-xs py-0.5 rounded-full bg-info-bg text-info-text font-overline text-overline">1 Cabang</span>
+</button>
+</div>
+<!-- Asymmetric Two-Column Workspace (2fr Left / 1fr Right) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT COLUMN (2fr equivalent: 8 cols) -->
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<!-- Card 1: Informasi Dasar & Brand Toko -->
+<div class="p-space-lg rounded-2xl bg-surface-crisp shadow-[0_18px_40px_-18px_rgba(22,48,44,0.09)] flex flex-col gap-space-md relative overflow-hidden">
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center text-teal-800">
+<span class="material-symbols-outlined text-[22px]">badge</span>
+</div>
+<div class="flex flex-col">
+<h2 class="font-headline-sm text-headline-sm text-text-primary">Informasi Dasar &amp; Brand Toko</h2>
+<span class="font-body-sm text-body-sm text-text-muted">Parameter identitas legal yang tampil pada aplikasi POS, faktur, dan arsip audit.</span>
+</div>
+</div>
+<span class="px-space-sm py-1 rounded-full bg-success-bg text-success-text font-label-sm text-label-sm flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-success-text"></span>
+            Terdaftar OSS
+          </span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Nama Toko -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-text-primary flex items-center justify-between">
+<span>Nama Toko / Merchant</span>
+<span class="text-teal-600 text-overline font-overline">Wajib</span>
+</label>
+<div class="h-12 px-space-md rounded-xl bg-surface-sunken flex items-center shadow-[inset_3px_3px_7px_rgba(122,152,145,0.28),inset_-2px_-2px_6px_rgba(255,255,255,0.85)]">
+<span class="material-symbols-outlined text-text-muted text-[20px] mr-space-xs">store</span>
+<input class="w-full bg-transparent text-text-primary font-body-md text-body-md focus:outline-none" type="text" value="Toko Sari Amerta"/>
+</div>
+</div>
+<!-- Kategori Usaha -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-text-primary">Kategori Usaha Retail</label>
+<div class="h-12 px-space-md rounded-xl bg-surface-sunken flex items-center justify-between shadow-[inset_3px_3px_7px_rgba(122,152,145,0.28),inset_-2px_-2px_6px_rgba(255,255,255,0.85)]">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-text-muted text-[20px]">category</span>
+<span class="text-text-primary font-body-md text-body-md truncate">Minimarket / Retail Sembako &amp; Kelontong</span>
+</div>
+<span class="material-symbols-outlined text-text-muted text-[20px]">expand_more</span>
+</div>
+</div>
+<!-- Slogan / Tagline Usaha -->
+<div class="md:col-span-2 flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-text-primary">Slogan / Sub-judul Usaha (Tagline Struk)</label>
+<div class="h-12 px-space-md rounded-xl bg-surface-sunken flex items-center shadow-[inset_3px_3px_7px_rgba(122,152,145,0.28),inset_-2px_-2px_6px_rgba(255,255,255,0.85)]">
+<span class="material-symbols-outlined text-text-muted text-[20px] mr-space-xs">label</span>
+<input class="w-full bg-transparent text-text-primary font-body-md text-body-md focus:outline-none" type="text" value="Pusat Sembako, Kebutuhan Harian &amp; Retail Modern Bali"/>
+</div>
+</div>
+<!-- Deskripsi Bisnis -->
+<div class="md:col-span-2 flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-text-primary">Deskripsi Ringkas Bisnis</label>
+<div class="p-space-md rounded-xl bg-surface-sunken shadow-[inset_3px_3px_7px_rgba(122,152,145,0.28),inset_-2px_-2px_6px_rgba(255,255,255,0.85)]">
+<textarea class="w-full bg-transparent text-text-primary font-body-md text-body-md resize-none focus:outline-none leading-relaxed" rows="2">Toko ritel penyedia kebutuhan pokok masyarakat dan sembako berkualitas dengan sistem kasir modern terpadu.</textarea>
+</div>
+</div>
+<!-- NIB -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-text-primary flex items-center gap-space-xs">
+<span>Nomor Induk Berusaha (NIB)</span>
+<span class="material-symbols-outlined text-text-muted text-[16px]">info</span>
+</label>
+<div class="h-12 px-space-md rounded-xl bg-surface-sunken flex items-center shadow-[inset_3px_3px_7px_rgba(122,152,145,0.28),inset_-2px_-2px_6px_rgba(255,255,255,0.85)]">
+<span class="material-symbols-outlined text-text-muted text-[20px] mr-space-xs">approval</span>
+<input class="w-full bg-transparent text-text-primary font-numeric-data text-numeric-data focus:outline-none" type="text" value="9120008310921"/>
+</div>
+</div>
+<!-- NPWP -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-text-primary flex items-center gap-space-xs">
+<span>NPWP Toko / Pemilik Usaha</span>
+<span class="material-symbols-outlined text-text-muted text-[16px]">verified_user</span>
+</label>
+<div class="h-12 px-space-md rounded-xl bg-surface-sunken flex items-center shadow-[inset_3px_3px_7px_rgba(122,152,145,0.28),inset_-2px_-2px_6px_rgba(255,255,255,0.85)]">
+<span class="material-symbols-outlined text-text-muted text-[20px] mr-space-xs">pin</span>
+<input class="w-full bg-transparent text-text-primary font-numeric-data text-numeric-data focus:outline-none" type="text" value="08.214.590.2-905.000"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2: Kontak & Alamat Operasional Toko -->
+<div class="p-space-lg rounded-2xl bg-surface-crisp shadow-[0_18px_40px_-18px_rgba(22,48,44,0.09)] flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center text-teal-800">
+<span class="material-symbols-outlined text-[22px]">pin_drop</span>
+</div>
+<div class="flex flex-col">
+<h2 class="font-headline-sm text-headline-sm text-text-primary">Kontak &amp; Alamat Operasional Toko</h2>
+<span class="font-body-sm text-body-sm text-text-muted">Data titik koordinat, slip cetak struk belanja, dan pusat layanan pelanggan.</span>
+</div>
+</div>
+<span class="px-space-sm py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">
+            Cabang Utama Denpasar
+          </span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Alamat Lengkap -->
+<div class="md:col-span-3 flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-text-primary">Alamat Fisik Gerai</label>
+<div class="h-12 px-space-md rounded-xl bg-surface-sunken flex items-center shadow-[inset_3px_3px_7px_rgba(122,152,145,0.28),inset_-2px_-2px_6px_rgba(255,255,255,0.85)]">
+<span class="material-symbols-outlined text-text-muted text-[20px] mr-space-xs">location_on</span>
+<input class="w-full bg-transparent text-text-primary font-body-md text-body-md focus:outline-none" type="text" value="Jl. Raya Puputan No. 41, Renon / Denpasar Selatan"/>
+</div>
+</div>
+<!-- Kota -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-text-primary">Kota / Kabupaten</label>
+<div class="h-12 px-space-md rounded-xl bg-surface-sunken flex items-center shadow-[inset_3px_3px_7px_rgba(122,152,145,0.28),inset_-2px_-2px_6px_rgba(255,255,255,0.85)]">
+<input class="w-full bg-transparent text-text-primary font-body-md text-body-md focus:outline-none" type="text" value="Kota Denpasar"/>
+</div>
+</div>
+<!-- Provinsi -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-text-primary">Provinsi</label>
+<div class="h-12 px-space-md rounded-xl bg-surface-sunken flex items-center shadow-[inset_3px_3px_7px_rgba(122,152,145,0.28),inset_-2px_-2px_6px_rgba(255,255,255,0.85)]">
+<input class="w-full bg-transparent text-text-primary font-body-md text-body-md focus:outline-none" type="text" value="Bali"/>
+</div>
+</div>
+<!-- Kode Pos -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-text-primary">Kode Pos</label>
+<div class="h-12 px-space-md rounded-xl bg-surface-sunken flex items-center shadow-[inset_3px_3px_7px_rgba(122,152,145,0.28),inset_-2px_-2px_6px_rgba(255,255,255,0.85)]">
+<input class="w-full bg-transparent text-text-primary font-numeric-data text-numeric-data focus:outline-none" type="text" value="80234"/>
+</div>
+</div>
+<!-- Telepon -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-text-primary">No. Telepon Toko (Line)</label>
+<div class="h-12 px-space-md rounded-xl bg-surface-sunken flex items-center shadow-[inset_3px_3px_7px_rgba(122,152,145,0.28),inset_-2px_-2px_6px_rgba(255,255,255,0.85)]">
+<span class="material-symbols-outlined text-text-muted text-[18px] mr-space-xs">call</span>
+<input class="w-full bg-transparent text-text-primary font-numeric-data text-numeric-data focus:outline-none" type="text" value="0361-284910"/>
+</div>
+</div>
+<!-- WhatsApp -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-text-primary">WhatsApp Customer Care</label>
+<div class="h-12 px-space-md rounded-xl bg-surface-sunken flex items-center shadow-[inset_3px_3px_7px_rgba(122,152,145,0.28),inset_-2px_-2px_6px_rgba(255,255,255,0.85)]">
+<span class="material-symbols-outlined text-teal-600 text-[18px] mr-space-xs">chat</span>
+<input class="w-full bg-transparent text-text-primary font-numeric-data text-numeric-data focus:outline-none" type="text" value="+62 812-3890-1122"/>
+</div>
+</div>
+<!-- Email -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-text-primary">Email Resmi Pengaduan</label>
+<div class="h-12 px-space-md rounded-xl bg-surface-sunken flex items-center shadow-[inset_3px_3px_7px_rgba(122,152,145,0.28),inset_-2px_-2px_6px_rgba(255,255,255,0.85)]">
+<span class="material-symbols-outlined text-text-muted text-[18px] mr-space-xs">mail</span>
+<input class="w-full bg-transparent text-text-primary font-body-sm text-body-sm focus:outline-none" type="email" value="kontak@tokosariamerta.com"/>
+</div>
+</div>
+</div>
+<!-- Shift & Operating Hours Notice Banner -->
+<div class="mt-space-xs p-space-md rounded-xl bg-surface-container-low flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-lg bg-teal-600 text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">av_timer</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Jam Operasional Kasir: Buka Setiap Hari (07:00 – 22:00 WITA)</span>
+<span class="font-body-sm text-body-sm text-text-muted">Shift 1 Pagi (07:00 - 15:00 WITA) • Shift 2 Sore (15:00 - 22:00 WITA)</span>
+</div>
+</div>
+<button class="px-space-md py-space-xs rounded-lg bg-surface-crisp text-text-primary font-label-sm text-label-sm shadow-[2px_2px_6px_rgba(122,152,145,0.2)] hover:bg-surface-sunken transition-colors self-start md:self-auto" type="button">
+            Atur Jadwal Shift
+          </button>
+</div>
+</div>
+<!-- Card 3: Pengaturan Pajak & Mata Uang POS Default -->
+<div class="p-space-lg rounded-2xl bg-surface-crisp shadow-[0_18px_40px_-18px_rgba(22,48,44,0.09)] flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center text-teal-800">
+<span class="material-symbols-outlined text-[22px]">calculate</span>
+</div>
+<div class="flex flex-col">
+<h2 class="font-headline-sm text-headline-sm text-text-primary">Pengaturan Pajak &amp; Mata Uang POS Default</h2>
+<span class="font-body-sm text-body-sm text-text-muted">Standarisasi perhitungan pembukuan kasir, pembulatan tunai, dan tarif PPN belanja ritel.</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-teal-600">lock_open</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-text-primary">Mata Uang Utama</label>
+<div class="h-12 px-space-md rounded-xl bg-surface-sunken flex items-center justify-between shadow-[inset_3px_3px_7px_rgba(122,152,145,0.28),inset_-2px_-2px_6px_rgba(255,255,255,0.85)]">
+<span class="font-body-md text-body-md text-text-primary">IDR (Rupiah Indonesia)</span>
+<span class="font-numeric-data text-numeric-data text-teal-600 font-semibold">Rp</span>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-text-primary">Format Nilai Moneter</label>
+<div class="h-12 px-space-md rounded-xl bg-surface-sunken flex items-center shadow-[inset_3px_3px_7px_rgba(122,152,145,0.28),inset_-2px_-2px_6px_rgba(255,255,255,0.85)]">
+<input class="w-full bg-transparent text-text-primary font-numeric-data text-numeric-data focus:outline-none" readonly="" type="text" value="Rp 1.000.000 (Desimal Koma Nol)"/>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-text-primary">Tarif Standar PPN Usaha</label>
+<div class="h-12 px-space-md rounded-xl bg-surface-sunken flex items-center justify-between shadow-[inset_3px_3px_7px_rgba(122,152,145,0.28),inset_-2px_-2px_6px_rgba(255,255,255,0.85)]">
+<span class="font-body-md text-body-md text-text-primary">11% (PPN Terintegrasi)</span>
+<span class="material-symbols-outlined text-text-muted text-[18px]">percent</span>
+</div>
+</div>
+<div class="md:col-span-3 flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-text-primary flex items-center justify-between">
+<span>Aturan Pembulatan Kasir Transaksi Tunai (Cash Rounding)</span>
+<span class="text-teal-600 font-label-sm text-label-sm">Rekomendasi Kasir</span>
+</label>
+<div class="h-12 px-space-md rounded-xl bg-surface-sunken flex items-center justify-between shadow-[inset_3px_3px_7px_rgba(122,152,145,0.28),inset_-2px_-2px_6px_rgba(255,255,255,0.85)]">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-teal-600 text-[20px]">toll</span>
+<span class="font-body-md text-body-md text-text-primary">Bulatkan ke Rp 100 terdekat secara otomatis (Contoh: Rp 14.850 → Rp 14.900)</span>
+</div>
+<span class="material-symbols-outlined text-text-muted text-[20px]">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN (1fr equivalent: 4 cols) -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- Card 1: Logo Toko & Visual Branding -->
+<div class="p-space-lg rounded-2xl bg-surface-crisp shadow-[0_18px_40px_-18px_rgba(22,48,44,0.09)] flex flex-col items-center text-center">
+<div class="w-full flex items-center justify-between mb-space-md">
+<span class="font-label-md text-label-md text-text-primary flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-teal-600 text-[18px]">photo_camera</span>
+            Visual &amp; Logo Toko
+          </span>
+<span class="px-space-xs py-0.5 rounded bg-info-bg text-info-text font-overline text-overline">Aktif</span>
+</div>
+<!-- Logo Monogram Inset Display -->
+<div class="relative group my-space-sm">
+<div class="w-32 h-32 rounded-full bg-surface-sunken p-2 shadow-[inset_4px_4px_10px_rgba(122,152,145,0.38),inset_-4px_-4px_10px_rgba(255,255,255,0.9)] flex items-center justify-center">
+<div class="w-28 h-28 rounded-full bg-teal-800 flex flex-col items-center justify-center shadow-[4px_4px_10px_rgba(122,152,145,0.3)] relative overflow-hidden">
+<div class="absolute -right-4 -top-4 w-16 h-16 rounded-full bg-teal-400/20 blur-md"></div>
+<span class="font-display-hero text-display-hero text-teal-400 tracking-wider">SA</span>
+<span class="font-overline text-[9px] uppercase tracking-[0.2em] text-teal-100/70 -mt-1">EST. 2018</span>
+</div>
+</div>
+<button class="absolute bottom-1 right-1 w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-[0_4px_12px_rgba(11,107,98,0.4)] hover:scale-105 transition-transform" title="Ganti Berkas Logo">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-text-primary mt-space-xs">Monogram Resmi Toko</h3>
+<p class="font-body-sm text-body-sm text-text-secondary mt-1 px-space-sm leading-relaxed">
+          Format PNG transparan resolusi minimal 512x512px. Logo ini otomatis tampil di header navigasi, nota faktur, dan cetakan struk kasir termal.
+        </p>
+<!-- Action Buttons for Logo -->
+<div class="w-full flex items-center gap-space-xs mt-space-md">
+<button class="flex-1 h-11 rounded-xl bg-teal-100 text-teal-900 font-label-sm text-label-sm hover:bg-teal-400/30 transition-colors flex items-center justify-center gap-space-xs" type="button">
+<span class="material-symbols-outlined text-[18px]">upload_file</span>
+            Unggah Logo Baru
+          </button>
+<button class="h-11 px-space-md rounded-xl bg-danger-bg text-danger-text font-label-sm text-label-sm hover:bg-error-container transition-colors flex items-center justify-center" title="Hapus Logo" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Live Preview Tampilan Identitas pada Struk Kasir -->
+<div class="p-space-lg rounded-2xl bg-surface-crisp shadow-[0_18px_40px_-18px_rgba(22,48,44,0.09)] flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-text-primary flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-teal-600 text-[18px]">print</span>
+            Pratinjau Kertas Struk POS
+          </span>
+<span class="font-overline text-overline text-text-muted uppercase">Lebar 80mm</span>
+</div>
+<!-- Simulated Thermal Receipt with Crisp Monospace and Sawtooth Edge -->
+<div class="mt-space-xs bg-surface-header p-space-md rounded-xl shadow-[inset_0_0_0_1px_rgba(203,218,213,0.8)] relative">
+<div class="bg-surface-crisp p-space-md rounded-lg shadow-sm font-numeric-data text-[12px] leading-tight text-on-surface flex flex-col items-center text-center">
+<!-- Struk Header Content -->
+<div class="font-bold text-[14px] text-text-primary tracking-wide mb-1">TOKO SARI AMERTA</div>
+<div class="text-[11px] text-text-secondary">Pusat Sembako &amp; Kebutuhan Harian</div>
+<div class="text-[11px] text-text-secondary">Jl. Raya Puputan No. 41, Denpasar</div>
+<div class="text-[11px] text-text-secondary">Telp: 0361-284910 / WA: 0812-3890-1122</div>
+<div class="text-[10px] text-text-muted mt-1 font-mono">NPWP: 08.214.590.2-905.000</div>
+<div class="w-full my-2 text-text-muted overflow-hidden select-none tracking-widest text-[10px]">
+              - - - - - - - - - - - - - - - - - - - - - - - -
+            </div>
+<div class="w-full flex justify-between text-[11px] text-text-secondary">
+<span>24/10/2024 14:28</span>
+<span>KSR-01 (Kadek)</span>
+</div>
+<div class="w-full flex justify-between text-[11px] text-text-secondary">
+<span>No: TRX-20241024-0092</span>
+<span>TUNAI</span>
+</div>
+<div class="w-full my-2 text-text-muted overflow-hidden select-none tracking-widest text-[10px]">
+              - - - - - - - - - - - - - - - - - - - - - - - -
+            </div>
+<!-- Example sample line items -->
+<div class="w-full flex justify-between text-[11px]">
+<span class="text-left font-medium">Beras Putri Sejati 5kg</span>
+<span class="font-semibold">Rp 74.500</span>
+</div>
+<div class="w-full flex justify-between text-[10px] text-text-muted mb-1">
+<span>1 pcs @ 74.500</span>
+<span>PPN 11%</span>
+</div>
+<div class="w-full flex justify-between text-[11px]">
+<span class="text-left font-medium">Minyak Kelapa Barco 1L</span>
+<span class="font-semibold">Rp 38.000</span>
+</div>
+<div class="w-full flex justify-between text-[10px] text-text-muted mb-1">
+<span>1 pcs @ 38.000</span>
+<span>PPN 11%</span>
+</div>
+<div class="w-full my-2 text-text-muted overflow-hidden select-none tracking-widest text-[10px]">
+              - - - - - - - - - - - - - - - - - - - - - - - -
+            </div>
+<div class="w-full flex justify-between text-[12px] font-bold text-text-primary">
+<span>TOTAL</span>
+<span>Rp 112.500</span>
+</div>
+<div class="mt-3 text-[10px] text-text-muted italic">
+              *** Terima Kasih Telah Berbelanja ***<br/>
+              Barang yang sudah dibeli tidak dapat ditukar
+            </div>
+</div>
+<div class="mt-space-sm flex items-center justify-between text-text-secondary font-label-sm text-label-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-teal-600">tune</span>
+              Auto-Cut Kertas
+            </span>
+<span class="text-teal-600 font-medium cursor-pointer hover:underline">Ubah Footer</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted mt-space-xs">
+          Format teks ini akan otomatis dicetak pada baris teratas struk printer 80mm &amp; 58mm setiap kali kasir menyelesaikan transaksi.
+        </p>
+</div>
+<!-- Card 3: Status Legalitas & Akreditasi Ritel -->
+<div class="p-space-lg rounded-2xl bg-surface-crisp shadow-[0_18px_40px_-18px_rgba(22,48,44,0.09)] flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-teal-600 text-[20px]">verified</span>
+<span class="font-headline-sm text-headline-sm text-text-primary">Status Legalitas Ritel</span>
+</div>
+<span class="px-space-sm py-0.5 rounded-full bg-success-bg text-success-text font-label-sm text-label-sm font-semibold">
+            Terverifikasi &amp; Aktif
+          </span>
+</div>
+<div class="flex flex-col gap-space-sm">
+<!-- QRIS National Merchant ID -->
+<div class="p-space-sm rounded-xl bg-surface-sunken flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-teal-600 text-[20px]">qr_code_2</span>
+<div class="flex flex-col">
+<span class="font-overline text-overline text-text-muted uppercase">QRIS Merchant ID</span>
+<span class="font-numeric-data text-numeric-data text-text-primary">NMID: ID102003891041</span>
+</div>
+</div>
+<span class="px-space-xs py-0.5 rounded bg-teal-100 text-teal-800 font-label-sm text-label-sm">Midtrans Mandiri</span>
+</div>
+<!-- Merchant Category Code -->
+<div class="p-space-sm rounded-xl bg-surface-sunken flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-text-muted text-[20px]">store_mall_directory</span>
+<div class="flex flex-col">
+<span class="font-overline text-overline text-text-muted uppercase">Merchant Category Code (MCC)</span>
+<span class="font-numeric-data text-numeric-data text-text-primary">MCC 5411 (Grocery / Supermarket)</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-teal-600 text-[18px]">check_circle</span>
+</div>
+<!-- Founding Date -->
+<div class="p-space-sm rounded-xl bg-surface-sunken flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-text-muted text-[20px]">event_available</span>
+<div class="flex flex-col">
+<span class="font-overline text-overline text-text-muted uppercase">Tanggal Berdiri Toko</span>
+<span class="font-body-sm text-body-sm text-text-primary font-medium">12 Januari 2018 (6 Tahun Beroperasi)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Security and Audit Guarantee Note -->
+<div class="p-space-sm rounded-xl bg-secondary-container/40 flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-teal-800 text-[18px] shrink-0 mt-0.5">security</span>
+<span class="font-body-sm text-body-sm text-teal-900 leading-snug">
+            Profil toko ini tersinkronisasi otomatis dengan server pembukuan pajak dan modul pelaporan laba/rugi POS.
+          </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom Quick Action Drawer / Autosave Indicator -->
+<div class="sticky bottom-4 z-30 mt-space-xl p-space-md rounded-2xl bg-surface-crisp/95 backdrop-blur-md shadow-[0_12px_32px_rgba(11,43,39,0.12)] flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-3 h-3 rounded-full bg-teal-400 animate-pulse"></div>
+<div class="flex flex-col sm:flex-row sm:items-center gap-x-space-sm text-text-secondary font-body-sm text-body-sm">
+<span class="font-semibold text-text-primary">Status Sinkronisasi: Siap Disimpan</span>
+<span class="hidden sm:inline text-text-muted">•</span>
+<span class="text-text-muted">Semua perubahan tersinkronisasi ke seluruh terminal kasir POS Sari Amerta.</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm w-full sm:w-auto justify-end">
+<button class="h-11 px-space-md rounded-xl bg-surface-sunken text-text-secondary hover:text-danger-text font-label-md text-label-md transition-colors" type="button">
+        Reset ke Pengaturan Awal
+      </button>
+<button class="h-11 px-space-lg rounded-xl bg-primary text-on-primary font-label-md text-label-md flex items-center gap-space-xs shadow-[0_6px_16px_-6px_rgba(11,107,98,0.55)] hover:bg-teal-800 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">save</span>
+<span>Simpan Profil Toko</span>
+</button>
+</div>
+</div>
+</div></main></div></body></html>

@@ -1,0 +1,754 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Master Data Pelanggan - Form Tambah &amp; Edit | Toko Sari Amerta POS &amp; Retail</title>
+<!-- Google Fonts: Outfit, Plus Jakarta Sans, JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Outfit:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS CDN with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Custom Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            tealCanvas: '#E4EDEA',
+            tealSidebar: '#0B2B27',
+            tealPrimary: '#0B6B62',
+            tealAccent: '#45C9B8',
+            tealMuted: '#A8C6C0',
+            tealDarker: '#081F1C',
+            neumorphBase: '#E4EDEA',
+            goldVip: '#EAB308',
+            goldVipBg: '#FEF3C7'
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Outfit"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          boxShadow: {
+            'neu-flat': '6px 6px 14px rgba(163, 177, 173, 0.6), -6px -6px 14px rgba(255, 255, 255, 0.85)',
+            'neu-pressed': 'inset 4px 4px 8px rgba(163, 177, 173, 0.5), inset -4px -4px 8px rgba(255, 255, 255, 0.8)',
+            'neu-pressed-sm': 'inset 2px 2px 4px rgba(163, 177, 173, 0.5), inset -2px -2px 4px rgba(255, 255, 255, 0.8)',
+            'neu-card': '8px 8px 18px rgba(163, 177, 173, 0.6), -8px -8px 18px rgba(255, 255, 255, 0.9)',
+            'neu-button': '4px 4px 10px rgba(163, 177, 173, 0.5), -4px -4px 10px rgba(255, 255, 255, 0.85)',
+            'neu-toggle': '2px 2px 5px rgba(163, 177, 173, 0.6), -2px -2px 5px rgba(255, 255, 255, 0.85)'
+          }
+        }
+      }
+    }
+  </script>
+<!-- Custom CSS for Neumorphic Accents -->
+<style data-purpose="custom-neumorphic-rules">
+    body {
+      background-color: #E4EDEA;
+      color: #1F2937;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .neu-card {
+      background: #E4EDEA;
+      box-shadow: 8px 8px 18px rgba(163, 177, 173, 0.6), -8px -8px 18px rgba(255, 255, 255, 0.9);
+      border-radius: 24px;
+    }
+    .neu-input {
+      background: #E4EDEA;
+      box-shadow: inset 3px 3px 6px rgba(163, 177, 173, 0.5), inset -3px -3px 6px rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.2s ease;
+    }
+    .neu-input:focus {
+      box-shadow: inset 4px 4px 8px rgba(11, 107, 98, 0.2), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+      border-color: #45C9B8;
+      outline: none;
+    }
+    .neu-button {
+      background: #E4EDEA;
+      box-shadow: 4px 4px 10px rgba(163, 177, 173, 0.5), -4px -4px 10px rgba(255, 255, 255, 0.85);
+      transition: all 0.15s ease-in-out;
+    }
+    .neu-button:active {
+      box-shadow: inset 3px 3px 6px rgba(163, 177, 173, 0.5), inset -3px -3px 6px rgba(255, 255, 255, 0.8);
+      transform: translateY(1px);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #E4EDEA;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #A8C6C0;
+      border-radius: 9999px;
+    }
+    .sidebar-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .sidebar-scrollbar::-webkit-scrollbar-track {
+      background: #081F1C;
+    }
+    .sidebar-scrollbar::-webkit-scrollbar-thumb {
+      background: #194640;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="flex h-screen overflow-hidden select-none">
+<!-- BEGIN: SidebarNavigation -->
+<aside class="w-[260px] min-w-[260px] h-full bg-[#0B2B27] flex flex-col justify-between text-[#A8C6C0] z-20 shadow-xl" data-purpose="sidebar-admin">
+<!-- Top Branding & Monogram -->
+<div class="p-5 border-b border-[#14423C]">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 rounded-xl bg-[#14423C] border border-[#45C9B8]/30 flex items-center justify-center font-display font-bold text-lg text-[#45C9B8] shadow-md">
+          SA
+        </div>
+<div>
+<h1 class="text-white font-display font-bold text-base leading-tight">Toko Sari Amerta</h1>
+<p class="text-[11px] font-mono tracking-widest text-[#45C9B8] uppercase">POS &amp; Retail</p>
+</div>
+</div>
+</div>
+<!-- Scrollable Navigation Tree -->
+<nav class="flex-1 overflow-y-auto sidebar-scrollbar py-3 px-3 space-y-5 text-[13px] font-medium" data-purpose="nav-menu">
+<!-- Section: UTAMA -->
+<div>
+<div class="px-3 pb-1.5 text-[10px] uppercase font-mono tracking-wider text-teal-400/60">Utama</div>
+<a class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-colors" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Dashboard</span>
+</a>
+</div>
+<!-- Section: TRANSAKSI -->
+<div>
+<div class="px-3 pb-1.5 text-[10px] uppercase font-mono tracking-wider text-teal-400/60">Transaksi</div>
+<div class="space-y-0.5">
+<a class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-colors" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Kasir (POS)</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-colors" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Riwayat Transaksi</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-colors" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 15v-1a4 4 0 00-4-4H4m0 0l4 4m-4-4l4-4m12 7a4 4 0 01-4 4H8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Retur Penjualan</span>
+</a>
+</div>
+</div>
+<!-- Section: MASTER DATA -->
+<div>
+<div class="px-3 pb-1.5 text-[10px] uppercase font-mono tracking-wider text-teal-400/60">Master Data</div>
+<div class="space-y-0.5">
+<a class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-colors" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Produk</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-colors" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Kategori Produk</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-colors" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Satuan</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-colors" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Supplier</span>
+</a>
+<!-- ACTIVE ITEM: Pelanggan (Customer) -->
+<a class="relative flex items-center space-x-3 px-3 py-2.5 rounded-xl bg-white/10 text-white font-semibold transition-all shadow-inner border-l-[3px] border-[#45C9B8]" href="#">
+<svg class="w-4 h-4 text-[#45C9B8]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-white font-medium">Pelanggan</span>
+</a>
+</div>
+</div>
+<!-- Section: INVENTORI -->
+<div>
+<div class="px-3 pb-1.5 text-[10px] uppercase font-mono tracking-wider text-teal-400/60">Inventori</div>
+<div class="space-y-0.5">
+<a class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-colors" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Stok Barang</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-colors" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Barang Masuk (Purchasing)</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-colors" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Stok Opname</span>
+</a>
+</div>
+</div>
+<!-- Section: LAPORAN -->
+<div>
+<div class="px-3 pb-1.5 text-[10px] uppercase font-mono tracking-wider text-teal-400/60">Laporan</div>
+<div class="space-y-0.5">
+<a class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-colors" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Laporan Penjualan</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-colors" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Laba Rugi</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-colors" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Laporan Stok</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-colors" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Cetak Struk / Ulang</span>
+</a>
+</div>
+</div>
+<!-- Section: PENGATURAN -->
+<div>
+<div class="px-3 pb-1.5 text-[10px] uppercase font-mono tracking-wider text-teal-400/60">Pengaturan</div>
+<div class="space-y-0.5">
+<a class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-colors" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Pengguna &amp; Hak Akses</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-colors" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Profil Toko</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-colors" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Metode Pembayaran</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-colors" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Pajak &amp; Diskon</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- Bottom Operator Profile -->
+<div class="p-3.5 border-t border-[#14423C] bg-[#09221F] flex items-center space-x-3" data-purpose="operator-profile">
+<div class="w-9 h-9 rounded-full bg-[#1A4B45] text-teal-200 border border-teal-500/40 flex items-center justify-center font-bold font-mono text-xs">
+        NK
+      </div>
+<div class="flex-1 min-w-0">
+<p class="text-xs font-semibold text-white truncate">Ni Kadek Ayu Pramesti</p>
+<p class="text-[11px] text-[#45C9B8] flex items-center">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block mr-1.5 animate-pulse"></span>
+          Kasir Shift Pagi
+        </p>
+</div>
+</div>
+</aside>
+<!-- END: SidebarNavigation -->
+<!-- BEGIN: MainContentArea -->
+<main class="flex-1 flex flex-col h-full bg-[#E4EDEA] overflow-hidden">
+<!-- Top Utility Bar -->
+<header class="h-16 bg-[#E4EDEA] border-b border-[#CBDAD5] px-8 flex items-center justify-between z-10" data-purpose="top-utility-bar">
+<!-- Store Location & Online Status -->
+<div class="flex items-center space-x-4 text-xs font-medium text-gray-700">
+<!-- Store Selector Button (Neumorphic) -->
+<button class="neu-button px-3 py-1.5 rounded-xl flex items-center space-x-2 text-gray-800 hover:text-teal-800">
+<svg class="w-4 h-4 text-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="font-semibold">Toko Pusat Jimbaran</span>
+<svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<div class="flex items-center space-x-2 px-3 py-1.5 rounded-xl neu-button bg-opacity-70 text-[11px] font-mono text-emerald-800">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+<span>Sistem Online: Kasir 01</span>
+</div>
+</div>
+<!-- Quick Search Bar & Global Icons -->
+<div class="flex items-center space-x-4">
+<div class="relative w-80">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<input class="w-full pl-9 pr-8 py-1.5 rounded-xl neu-input text-xs text-gray-800 placeholder-gray-400 focus:ring-0" placeholder="Cari transaksi, produk, barcode... (F2)" type="text">
+<span class="absolute inset-y-0 right-0 pr-2.5 flex items-center font-mono text-[10px] text-gray-400">F2</span>
+</div>
+<button class="w-9 h-9 rounded-xl neu-button flex items-center justify-center text-gray-600 hover:text-teal-700 relative">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="absolute 1.5 top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-[#E4EDEA]"></span>
+</button>
+<button class="w-9 h-9 rounded-xl neu-button flex items-center justify-center text-gray-600 hover:text-teal-700">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<!-- Current User Avatar Pill -->
+<div class="flex items-center space-x-2.5 pl-2">
+<div class="w-8 h-8 rounded-full bg-teal-800 text-teal-100 flex items-center justify-center font-bold text-xs shadow-inner">
+            NK
+          </div>
+<div class="text-left text-xs">
+<span class="font-semibold text-gray-800 block leading-tight">Ni Kadek Ayu</span>
+<span class="text-[10px] text-gray-500 font-mono">KASIR</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Scrollable Form Body with Sticky Bottom Bar -->
+<div class="flex-1 overflow-y-auto custom-scrollbar px-8 pt-6 pb-28">
+<!-- BEGIN: PageHeaderAndBreadcrumbs -->
+<div class="mb-6">
+<!-- Breadcrumbs -->
+<div class="flex items-center space-x-2 text-xs text-gray-500 font-medium mb-2 font-mono">
+<a class="hover:text-teal-700" href="#">Master Data</a>
+<span>›</span>
+<a class="hover:text-teal-700" href="#">Pelanggan</a>
+<span>›</span>
+<span class="text-teal-900 font-semibold">Form Pelanggan</span>
+</div>
+<!-- Page Title & ID Badge -->
+<div class="flex flex-wrap items-center justify-between gap-4">
+<div>
+<div class="flex items-center space-x-3">
+<h1 class="font-display font-bold text-2xl text-gray-900 tracking-tight">Tambah / Edit Pelanggan</h1>
+<div class="px-3 py-1 rounded-full neu-button text-xs font-mono font-semibold text-teal-800 bg-[#E4EDEA] border border-teal-600/20 flex items-center space-x-1.5">
+<span class="w-2 h-2 rounded-full bg-teal-500"></span>
+<span>ID MODE: MODIFIKASI (CUST-001 · I WAYAN SURYA ADNYANA)</span>
+</div>
+</div>
+<p class="text-xs text-gray-600 mt-1">Kelola profil lengkap pelanggan, level loyalty member, saldo poin belanja, serta limit piutang bon belanja kasir.</p>
+</div>
+<!-- Sync Metadata -->
+<div class="text-right">
+<div class="text-[11px] text-gray-500 font-mono">Sinkronisasi Terakhir:</div>
+<div class="text-xs font-mono font-bold text-gray-800">14 Okt 2026, 10:45 WITA</div>
+</div>
+</div>
+</div>
+<!-- END: PageHeaderAndBreadcrumbs -->
+<!-- BEGIN: NavigationTabs -->
+<div class="flex items-center space-x-3 mb-7" data-purpose="section-tabs">
+<button class="neu-button px-5 py-2.5 rounded-2xl text-xs font-semibold text-gray-600 hover:text-teal-900 flex items-center space-x-2">
+<span>📋</span>
+<span>Daftar Pelanggan</span>
+</button>
+<button class="px-5 py-2.5 rounded-2xl text-xs font-semibold text-teal-900 bg-[#D4E4DF] border border-teal-600/30 neu-input flex items-center space-x-2 shadow-inner">
+<span class="text-teal-700">➕</span>
+<span>Tambah / Edit Pelanggan</span>
+</button>
+<button class="neu-button px-5 py-2.5 rounded-2xl text-xs font-semibold text-gray-600 hover:text-teal-900 flex items-center space-x-2">
+<span class="text-amber-500">⭐</span>
+<span>Tingkat Member &amp; Poin Loyalty <span class="ml-1 text-[11px] font-mono px-1.5 py-0.5 rounded-full bg-gray-300 text-gray-700">342</span></span>
+</button>
+</div>
+<!-- END: NavigationTabs -->
+<!-- BEGIN: AsymmetricFormLayout -->
+<div class="grid grid-cols-12 gap-6 items-start" data-purpose="form-columns-grid">
+<!-- ================= LEFT COLUMN: 2fr (col-span-8) ================= -->
+<div class="col-span-12 lg:col-span-8 space-y-6">
+<!-- CARD 1: Informasi Identitas & Profil Pelanggan -->
+<section class="neu-card p-6" data-purpose="customer-identity-card">
+<div class="flex items-center justify-between pb-4 mb-5 border-b border-gray-300/60">
+<div class="flex items-center space-x-3">
+<div class="w-9 h-9 rounded-xl neu-button flex items-center justify-center text-teal-800">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<div>
+<h2 class="font-display font-bold text-base text-gray-900">Informasi Identitas &amp; Profil Pelanggan</h2>
+<p class="text-[10px] font-mono tracking-wider text-gray-500 uppercase">Biodata Kontak &amp; Wilayah Domisili</p>
+</div>
+</div>
+<span class="text-[11px] font-mono font-semibold text-teal-700 px-2.5 py-1 rounded-full neu-pressed-sm bg-teal-50/50">Wajib Diisi (*)</span>
+</div>
+<!-- Form Content -->
+<div class="space-y-4">
+<!-- Row 1: Nama & Kode -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-semibold text-gray-700 mb-1.5">Nama Lengkap Pelanggan *</label>
+<div class="relative">
+<input class="w-full neu-input rounded-xl px-3.5 py-2.5 text-xs text-gray-900 font-semibold focus:ring-0" type="text" value="I Wayan Surya Adnyana">
+<span class="absolute inset-y-0 right-0 pr-3 flex items-center text-emerald-600">
+<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path></svg>
+</span>
+</div>
+</div>
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="text-xs font-semibold text-gray-700">Kode Pelanggan / Barcode Member *</label>
+<span class="text-[10px] font-mono text-gray-500">Dihasilkan otomatis</span>
+</div>
+<div class="relative">
+<input class="w-full neu-input rounded-xl px-3.5 py-2.5 text-xs font-mono font-bold text-gray-800 focus:ring-0" type="text" value="# CUST-001">
+<button class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-teal-700" title="Scan Barcode Kartu" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+</div>
+<!-- Row 2: Kategori & Tipe -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-semibold text-gray-700 mb-1.5">Kategori / Level Member *</label>
+<div class="relative">
+<select class="w-full neu-input rounded-xl px-3.5 py-2.5 text-xs font-medium text-gray-800 appearance-none focus:ring-0">
+<option selected="">VIP Gold (Diskon 5% &amp; Poin 2x)</option>
+<option>Silver Member (Diskon 2% &amp; Poin 1.5x)</option>
+<option>Reguler Member (Poin Normal 1x)</option>
+<option>Grosir / Reseller Warung</option>
+</select>
+<span class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-gray-500">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+</div>
+</div>
+<div>
+<label class="block text-xs font-semibold text-gray-700 mb-1.5">Tipe Pelanggan</label>
+<div class="relative">
+<select class="w-full neu-input rounded-xl px-3.5 py-2.5 text-xs font-medium text-gray-800 appearance-none focus:ring-0">
+<option selected="">Perorangan / Ritel Langsung</option>
+<option>Badan Usaha / UMKM Kuliner</option>
+<option>Keluarga Staf / Karyawan</option>
+</select>
+<span class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-gray-500">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+</div>
+</div>
+</div>
+<!-- Row 3: Kontak WhatsApp & Email -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="text-xs font-semibold text-gray-700">Nomor WhatsApp / HP *</label>
+<span class="text-[10px] font-mono font-medium text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-full flex items-center space-x-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span>WA Aktif &amp; Terverifikasi</span>
+</span>
+</div>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 pl-3.5 flex items-center font-mono text-xs text-gray-500">📞</span>
+<input class="w-full neu-input rounded-xl pl-9 pr-3.5 py-2.5 text-xs font-mono font-bold text-gray-900 focus:ring-0" type="text" value="0812-3890-1122">
+</div>
+</div>
+<div>
+<label class="block text-xs font-semibold text-gray-700 mb-1.5">Alamat Email</label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-xs text-gray-400">✉️</span>
+<input class="w-full neu-input rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-gray-800 focus:ring-0" type="email" value="surya.adnyana@gmail.com">
+</div>
+</div>
+</div>
+<!-- Row 4: Alamat Domisili -->
+<div>
+<label class="block text-xs font-semibold text-gray-700 mb-1.5">Alamat Tempat Tinggal / Toko *</label>
+<textarea class="w-full neu-input rounded-xl px-3.5 py-2 text-xs text-gray-800 focus:ring-0 resize-none" rows="2">Jl. Danau Tamblingan No. 14, Sanur, Denpasar Selatan, Bali 80228</textarea>
+</div>
+<!-- Row 5: Kota, Kecamatan, Kode Pos -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<div>
+<label class="block text-xs font-semibold text-gray-700 mb-1.5">Kota / Kabupaten</label>
+<input class="w-full neu-input rounded-xl px-3.5 py-2.5 text-xs text-gray-800 focus:ring-0" type="text" value="Denpasar">
+</div>
+<div>
+<label class="block text-xs font-semibold text-gray-700 mb-1.5">Kecamatan / Wilayah</label>
+<input class="w-full neu-input rounded-xl px-3.5 py-2.5 text-xs text-gray-800 focus:ring-0" type="text" value="Sanur / Denpasar Selatan">
+</div>
+<div>
+<label class="block text-xs font-semibold text-gray-700 mb-1.5">Kode Pos</label>
+<input class="w-full neu-input rounded-xl px-3.5 py-2.5 text-xs font-mono text-gray-800 focus:ring-0" type="text" value="80228">
+</div>
+</div>
+</div>
+</section>
+<!-- CARD 2: Loyalty Program & Saldo Poin Belanja -->
+<section class="neu-card p-6" data-purpose="loyalty-program-card">
+<div class="flex items-center justify-between pb-4 mb-5 border-b border-gray-300/60">
+<div class="flex items-center space-x-3">
+<div class="w-9 h-9 rounded-xl neu-button flex items-center justify-center text-amber-600">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<div>
+<h2 class="font-display font-bold text-base text-gray-900">Loyalty Program &amp; Saldo Poin Belanja</h2>
+<p class="text-[10px] font-mono tracking-wider text-gray-500 uppercase">Akumulasi Transaksi &amp; Perolehan Poin Kasir</p>
+</div>
+</div>
+<span class="text-[11px] font-mono font-bold text-amber-700 bg-amber-100/70 px-2.5 py-1 rounded-full border border-amber-300">VIP Tier: 2x Multiplier</span>
+</div>
+<!-- Stats 3-Column Display -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+<!-- Saldo Poin -->
+<div class="neu-input rounded-2xl p-4 bg-[#DFE9E6]">
+<span class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide block">Saldo Poin Saat Ini</span>
+<div class="flex items-baseline space-x-1.5 my-1">
+<span class="font-display font-bold text-2xl text-teal-900">4.820</span>
+<span class="text-xs font-bold text-teal-700 font-mono">Poin</span>
+</div>
+<div class="text-[11px] font-mono text-emerald-800 bg-emerald-100/70 rounded-md px-2 py-0.5 inline-block">
+                  Setara Rp 48.200
+                </div>
+</div>
+<!-- Total Belanja -->
+<div class="neu-input rounded-2xl p-4 bg-[#DFE9E6]">
+<span class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide block">Total Transaksi Akumulatif</span>
+<div class="font-mono font-bold text-lg text-gray-900 my-1">
+                  Rp 14.850.000
+                </div>
+<div class="text-[11px] text-gray-600 font-mono">
+                  38 kali checkout di kasir
+                </div>
+</div>
+<!-- Tanggal Bergabung -->
+<div class="neu-input rounded-2xl p-4 bg-[#DFE9E6]">
+<span class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide block">Tanggal Bergabung</span>
+<div class="font-display font-bold text-base text-gray-800 my-1">
+                  12 Januari 2025
+                </div>
+<div class="text-[11px] text-teal-800 font-mono flex items-center">
+<svg class="w-3.5 h-3.5 mr-1 text-teal-600" fill="currentColor" viewBox="0 0 20 20"><path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" fill-rule="evenodd"></path></svg>
+                  Member aktif 1+ tahun
+                </div>
+</div>
+</div>
+<!-- Toggles and Logistics -->
+<div class="space-y-3 pt-2 border-t border-gray-300/40">
+<div class="flex items-center justify-between p-3 rounded-xl neu-button">
+<div>
+<span class="text-xs font-semibold text-gray-800 block">Otomatis Dapatkan Poin Belanja di Kasir (POS)</span>
+<span class="text-[11px] text-gray-500">Poin dihitung 10 poin per kelipatan belanja Rp 10.000 (VIP mendapat pengganda 2x).</span>
+</div>
+<!-- Neumorphic Toggle Active -->
+<div class="w-12 h-6 rounded-full bg-teal-800 p-1 flex items-center justify-end cursor-pointer shadow-inner">
+<div class="w-4 h-4 rounded-full bg-white shadow-md"></div>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-xl neu-button">
+<div>
+<span class="text-xs font-semibold text-gray-800 block">Kirim Notifikasi Struk &amp; Saldo Poin via WhatsApp</span>
+<span class="text-[11px] text-gray-500">Kirim e-struk digital otomatis ke nomor HP 0812-3890-1122 sesaat setelah transaksi selesai.</span>
+</div>
+<!-- Neumorphic Toggle Active -->
+<div class="w-12 h-6 rounded-full bg-teal-800 p-1 flex items-center justify-end cursor-pointer shadow-inner">
+<div class="w-4 h-4 rounded-full bg-white shadow-md"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- CARD 3: Batas Piutang (Bon) & Syarat Pembayaran Ritel -->
+<section class="neu-card p-6" data-purpose="credit-limit-card">
+<div class="flex items-center justify-between pb-4 mb-5 border-b border-gray-300/60">
+<div class="flex items-center space-x-3">
+<div class="w-9 h-9 rounded-xl neu-button flex items-center justify-center text-teal-800">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<div>
+<h2 class="font-display font-bold text-base text-gray-900">Batas Piutang (Bon) &amp; Syarat Pembayaran Ritel</h2>
+<p class="text-[10px] font-mono tracking-wider text-gray-500 uppercase">Limit Transaksi Non-Tunai / Kredit Toko</p>
+</div>
+</div>
+<span class="text-[11px] font-mono text-emerald-800 bg-emerald-100/70 border border-emerald-300 px-2.5 py-1 rounded-full font-semibold">Kredit Disetujui</span>
+</div>
+<!-- Form Row 1: Izinkan Bon & Limit -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+<div class="p-3.5 rounded-xl neu-button flex items-center justify-between">
+<div>
+<label class="text-xs font-semibold text-gray-800 block">Izinkan Transaksi Kasbon / Piutang</label>
+<span class="text-[10px] text-gray-500">Aktivasi tombol Kasbon di kasir</span>
+</div>
+<!-- Toggle ON -->
+<div class="w-12 h-6 rounded-full bg-teal-800 p-1 flex items-center justify-end cursor-pointer shadow-inner">
+<div class="w-4 h-4 rounded-full bg-white shadow-md"></div>
+</div>
+</div>
+<div>
+<label class="block text-xs font-semibold text-gray-700 mb-1.5">Batas Maksimal Bon (Limit Piutang)</label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 pl-3.5 flex items-center font-mono text-xs font-bold text-gray-600">Rp</span>
+<input class="w-full neu-input rounded-xl pl-10 pr-3.5 py-2.5 text-xs font-mono font-bold text-gray-900 focus:ring-0" type="text" value="1.000.000">
+</div>
+</div>
+</div>
+<!-- Form Row 2: Saldo Bon & Jatuh Tempo -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+<div>
+<label class="block text-xs font-semibold text-gray-700 mb-1.5">Saldo Bon Terpakai Saat Ini</label>
+<div class="neu-input rounded-xl px-3.5 py-2.5 text-xs font-mono font-bold text-emerald-800 bg-[#DCE7E4]">
+                  Rp 0 <span class="font-sans font-normal text-[11px] text-gray-600 ml-1.5">(Tidak ada tunggakan berjalan)</span>
+</div>
+</div>
+<div>
+<label class="block text-xs font-semibold text-gray-700 mb-1.5">Jatuh Tempo Pembayaran</label>
+<div class="relative">
+<select class="w-full neu-input rounded-xl px-3.5 py-2.5 text-xs font-medium text-gray-800 appearance-none focus:ring-0">
+<option selected="">Maksimal 7 Hari (Mingguan)</option>
+<option>Maksimal 14 Hari (Dua Mingguan)</option>
+<option>Maksimal 30 Hari (Bulanan)</option>
+<option>Batas Hari Kerja Tertentu</option>
+</select>
+<span class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-gray-500">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+</div>
+</div>
+</div>
+<!-- Alert Notice Inset -->
+<div class="p-3.5 rounded-xl neu-pressed text-[11px] text-gray-700 flex items-start space-x-2.5 border border-amber-300/40 bg-[#DFECE8]">
+<svg class="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span><strong>Kebijakan Proteksi Toko:</strong> Jika limit bon terlampaui atau jatuh tempo lewat, sistem kasir secara otomatis akan mengunci fitur piutang dan meminta verifikasi otorisasi PIN Supervisor sebelum proses checkout.</span>
+</div>
+</section>
+</div>
+<!-- ================= END LEFT COLUMN ================= -->
+<!-- ================= RIGHT COLUMN: 1fr (col-span-4) ================= -->
+<div class="col-span-12 lg:col-span-4 space-y-6">
+<!-- CARD 1: Kartu Member Digital (POS Card) -->
+<section class="neu-card p-6" data-purpose="digital-member-card">
+<div class="flex items-center justify-between pb-3 mb-4 border-b border-gray-300/60">
+<h2 class="font-display font-bold text-sm text-gray-900">Kartu Member Digital</h2>
+<span class="text-[10px] font-mono text-teal-800 bg-teal-100 px-2 py-0.5 rounded-md font-bold">POS Ready</span>
+</div>
+<!-- Realistic Virtual Membership Card Mockup -->
+<div class="w-full aspect-[1.58/1] rounded-2xl p-4 relative overflow-hidden text-white flex flex-col justify-between shadow-2xl bg-gradient-to-br from-[#0B2B27] via-[#0E3A35] to-[#081F1C] border border-amber-400/30">
+<!-- Background Gold/Teal Shimmer Glow -->
+<div class="absolute -right-8 -top-8 w-36 h-36 bg-amber-400/10 rounded-full blur-2xl"></div>
+<div class="absolute -left-8 -bottom-8 w-36 h-36 bg-teal-400/10 rounded-full blur-2xl"></div>
+<!-- Top Row: Logo & Chip -->
+<div class="relative z-10 flex items-start justify-between">
+<div>
+<span class="font-display font-bold tracking-wide text-xs text-white flex items-center">
+<span class="w-2 h-2 rounded-full bg-[#45C9B8] inline-block mr-1.5"></span>
+                    Toko Sari Amerta
+                  </span>
+<span class="text-[8px] font-mono tracking-widest text-[#45C9B8] block uppercase">Retail &amp; Mart Member</span>
+</div>
+<!-- EMV Chip & Contactless Icon -->
+<div class="flex items-center space-x-2">
+<svg class="w-4 h-4 text-amber-300/80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<div class="w-7 h-5 rounded bg-gradient-to-tr from-amber-400 to-yellow-200 border border-amber-300/80 shadow-sm flex items-center justify-center">
+<div class="w-5 h-3 border border-amber-600/40 rounded-[2px]"></div>
+</div>
+</div>
+</div>
+<!-- Center: Member Name & VIP Badge -->
+<div class="relative z-10 my-1">
+<div class="inline-flex items-center space-x-1.5 px-2 py-0.5 rounded-full bg-amber-400/20 border border-amber-300/40 text-[9px] font-bold text-amber-300 tracking-wider uppercase mb-1">
+<span>★</span>
+<span>VIP GOLD MEMBER</span>
+</div>
+<h3 class="font-display font-bold text-sm tracking-wide text-white uppercase truncate">I WAYAN SURYA ADNYANA</h3>
+<p class="font-mono text-[11px] text-gray-300 tracking-wider">CUST-001 • 8990 1122 3890</p>
+</div>
+<!-- Bottom Row: Expiration & QR Code Miniature -->
+<div class="relative z-10 flex items-end justify-between pt-1 border-t border-white/10">
+<div>
+<span class="text-[8px] text-gray-400 block font-mono">MASA BERLAKU:</span>
+<span class="text-[9px] font-semibold text-teal-200">Seumur Hidup / Permanen</span>
+</div>
+<!-- QR Code Representation -->
+<div class="w-8 h-8 rounded bg-white p-0.5 shadow-sm flex items-center justify-center">
+<div class="w-full h-full grid grid-cols-3 gap-0.5">
+<div class="bg-black"></div><div class="bg-black"></div><div class="bg-black"></div>
+<div class="bg-black"></div><div class="bg-white"></div><div class="bg-black"></div>
+<div class="bg-black"></div><div class="bg-black"></div><div class="bg-black"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Card Quick Action -->
+<button class="w-full mt-4 neu-button py-2.5 px-3 rounded-xl text-xs font-semibold text-teal-900 hover:text-teal-950 flex items-center justify-center space-x-2">
+<svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.347.491 1.199.534 1.286.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.861.174.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086.159.058 1.011.477 1.184.564.173.087.289.13.332.203.043.072.043.419-.101.824z"></path></svg>
+<span>Kirim Kartu via WhatsApp</span>
+</button>
+</section>
+<!-- CARD 2: Status & Visibilitas Pelanggan -->
+<section class="neu-card p-6" data-purpose="customer-status-card">
+<div class="flex items-center justify-between pb-3 mb-4 border-b border-gray-300/60">
+<h2 class="font-display font-bold text-sm text-gray-900">Status &amp; Visibilitas POS</h2>
+<span class="text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300 flex items-center">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
+                Aktif Belanja
+              </span>
+</div>
+<!-- Status Activation Item -->
+<div class="p-3.5 rounded-xl neu-button flex items-center justify-between mb-3">
+<div>
+<span class="text-xs font-semibold text-gray-800 block">Status Pelanggan Aktif</span>
+<span class="text-[11px] text-gray-500">Tersedia di form kasir checkout</span>
+</div>
+<div class="w-12 h-6 rounded-full bg-teal-800 p-1 flex items-center justify-end cursor-pointer shadow-inner">
+<div class="w-4 h-4 rounded-full bg-white shadow-md"></div>
+</div>
+</div>
+<p class="text-[11px] text-gray-600 leading-relaxed mb-3">
+              Pelanggan dapat dicari seketika oleh kasir di layar kasir POS dengan memindai barcode fisik, scan QR di WhatsApp, atau ketik nama/nomor handphone.
+            </p>
+<!-- Disclaimer warning box -->
+<div class="p-3 rounded-xl neu-pressed bg-[#E2EBE8] text-[11px] text-gray-600 flex items-start space-x-2">
+<svg class="w-4 h-4 text-gray-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Jika dinonaktifkan, profil tidak muncul di pencarian kasir harian namun seluruh riwayat faktur penjualan dan perolehan poin tetap tersimpan utuh di sistem.</span>
+</div>
+</section>
+<!-- CARD 3: Ringkasan Riwayat Pembelian -->
+<section class="neu-card p-6" data-purpose="customer-purchase-summary-card">
+<div class="flex items-center justify-between pb-3 mb-4 border-b border-gray-300/60">
+<h2 class="font-display font-bold text-sm text-gray-900">Ringkasan Riwayat Belanja</h2>
+<span class="text-[10px] font-mono text-gray-500">30 Hari Terakhir</span>
+</div>
+<div class="space-y-3.5">
+<!-- Item 1: Produk Favorit -->
+<div class="p-3 rounded-xl neu-input bg-[#DEE8E5]">
+<div class="text-[10px] font-mono uppercase tracking-wider text-gray-500 mb-0.5">Produk Paling Sering Dibeli</div>
+<div class="text-xs font-semibold text-gray-800 flex items-center space-x-1.5">
+<span>🌾</span>
+<span class="truncate">Beras Pandan Wangi 5kg, Aqua 600ml</span>
+</div>
+</div>
+<!-- Item 2: Rata-rata Belanja -->
+<div class="p-3 rounded-xl neu-input bg-[#DEE8E5]">
+<div class="text-[10px] font-mono uppercase tracking-wider text-gray-500 mb-0.5">Rata-rata Nilai Belanja (Basket Size)</div>
+<div class="text-xs font-mono font-bold text-teal-900">
+                  Rp 390.700 <span class="text-[11px] font-normal text-gray-600 font-sans">/ Transaksi</span>
+</div>
+</div>
+<!-- Item 3: Kunjungan Terakhir -->
+<div class="p-3 rounded-xl neu-input bg-[#DEE8E5]">
+<div class="text-[10px] font-mono uppercase tracking-wider text-gray-500 mb-0.5">Terakhir Belanja di Kasir</div>
+<div class="text-xs font-semibold text-gray-800">
+                  Hari ini, 09:15 WITA
+                </div>
+<div class="text-[10px] font-mono text-teal-700 mt-0.5">
+                  Faktur #TRX-20261014-0012
+                </div>
+</div>
+</div>
+</section>
+</div>
+<!-- ================= END RIGHT COLUMN ================= -->
+</div>
+<!-- END: AsymmetricFormLayout -->
+</div>
+<!-- BEGIN: StickyBottomActionBar -->
+<footer class="h-20 bg-[#E4EDEA] border-t border-[#CBDAD5] px-8 flex items-center justify-between z-30 shadow-[0_-8px_20px_rgba(163,177,173,0.4)]" data-purpose="form-action-bar">
+<!-- Left: Back Action -->
+<button class="neu-button px-5 py-2.5 rounded-xl text-xs font-semibold text-gray-700 hover:text-teal-900 flex items-center space-x-2">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Batal &amp; Kembali ke Daftar</span>
+</button>
+<!-- Center: Auto-save status -->
+<div class="hidden md:flex items-center space-x-2 text-xs text-gray-500 font-mono">
+<span class="w-2 h-2 rounded-full bg-teal-600"></span>
+<span>Perubahan tersimpan otomatis di draf lokal kasir</span>
+</div>
+<!-- Right: Destructive & Primary Actions -->
+<div class="flex items-center space-x-3">
+<!-- Delete Button -->
+<button class="neu-button px-4 py-2.5 rounded-xl text-xs font-semibold text-red-600 hover:bg-red-50/50 flex items-center space-x-1.5 transition-colors">
+<svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Hapus Pelanggan Ini</span>
+</button>
+<!-- Primary Save Button -->
+<button class="px-6 py-2.5 rounded-xl text-xs font-bold text-white bg-[#0B6B62] hover:bg-[#09574F] shadow-lg shadow-teal-900/20 active:scale-[0.98] transition-all flex items-center space-x-2">
+<svg class="w-4 h-4 text-[#45C9B8]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Simpan Data Pelanggan</span>
+</button>
+</div>
+</footer>
+<!-- END: StickyBottomActionBar -->
+</main>
+<!-- END: MainContentArea -->
+</body></html>

@@ -1,0 +1,636 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><title>Toko Sari Amerta - Admin Panel POS</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&amp;family=Outfit:wght@500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-secondary-fixed":"#00201c","info-text":"#0B6158","tertiary-container":"#036e39","warning-text":"#6F5000","inverse-primary":"#85d5c9","error":"#ba1a1a","primary-fixed":"#a1f1e5","surface-container-low":"#edf6f3","danger-bg":"#F6DACF","error-container":"#ffdad6","sidebar-active-bg":"rgba(255, 255, 255, 0.08)","chart-series-2":"#2B5C78","surface-crisp":"#FFFFFF","on-primary-fixed":"#00201d","sidebar-label":"#7FA39D","chart-series-3":"#9A6B06","success-text":"#12694A","surface-bright":"#f2fbf8","on-primary":"#ffffff","teal-100":"#D0E7E3","teal-600":"#0D7C74","on-background":"#151d1c","primary-fixed-dim":"#85d5c9","divider":"#CBDAD5","tertiary-fixed-dim":"#80d998","surface-header":"#F4F8F7","secondary-fixed-dim":"#accdc7","surface-container-high":"#e1eae7","on-tertiary-container":"#93edaa","sidebar-active":"#FFFFFF","secondary-fixed":"#c8e9e3","on-error":"#ffffff","surface-variant":"#dbe4e1","btn-neutral":"#1F3A35","background":"#f2fbf8","surface-dim":"#d3dcd9","on-primary-fixed-variant":"#005049","warning-bg":"#F7E6B5","on-secondary-fixed-variant":"#2e4c48","surface-container-highest":"#dbe4e1","surface-raised":"#EDF4F2","on-tertiary":"#ffffff","text-muted":"#526E69","text-primary":"#16302C","teal-400":"#45C9B8","danger-text":"#9E3210","outline":"#6f7977","tertiary-fixed":"#9bf6b2","inverse-surface":"#2a3230","on-tertiary-fixed-variant":"#005228","teal-800":"#09514A","info-bg":"#D0E7E3","inverse-on-surface":"#eaf3f0","text-secondary":"#47625D","surface-container":"#e7f0ed","teal-900":"#06403B","secondary":"#46645f","surface-sunken":"#D7E4E0","surface":"#f2fbf8","btn-danger":"#B23A16","on-secondary-container":"#4a6863","on-tertiary-fixed":"#00210d","outline-variant":"#bec9c6","on-primary-container":"#99e8dd","primary":"#00514a","sidebar-idle":"#A8C6C0","on-surface-variant":"#3e4947","surface-container-lowest":"#ffffff","on-error-container":"#93000a","sidebar-indicator":"#45C9B8","tertiary":"#005329","on-secondary":"#ffffff","on-surface":"#151d1c","surface-tint":"#096a61","primary-container":"#0b6b62","success-bg":"#CFE7DB","secondary-container":"#c5e7e0","chart-series-4":"#B23A16"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"gutter":"1.25rem","margin-mobile":"1rem","margin":"2rem","space-xs":"0.25rem","gutter-mobile":"0.75rem","space-lg":"1.5rem","space-xl":"2rem","space-md":"1rem","space-sm":"0.5rem"},fontFamily:{"body-sm":["Plus Jakarta Sans"],"overline":["Plus Jakarta Sans"],"label-md":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"headline-sm":["Outfit"],"display-hero":["Outfit"],"display-hero-mobile":["Outfit"],"body-md":["Plus Jakarta Sans"],"headline-md":["Outfit"],"numeric-total":["JetBrains Mono"],"headline-lg":["Outfit"],"numeric-data":["JetBrains Mono"],"label-sm":["Plus Jakarta Sans"]},fontSize:{"body-sm":["13.5px",{"lineHeight":"20px","fontWeight":"400"}],"overline":["11px",{"lineHeight":"16px","letterSpacing":"0.08em","fontWeight":"600"}],"label-md":["13.5px",{"lineHeight":"20px","fontWeight":"600"}],"body-lg":["15px",{"lineHeight":"24px","fontWeight":"600"}],"headline-sm":["16px",{"lineHeight":"24px","fontWeight":"500"}],"display-hero":["40px",{"lineHeight":"44px","letterSpacing":"-0.02em","fontWeight":"600"}],"display-hero-mobile":["30px",{"lineHeight":"36px","letterSpacing":"-0.02em","fontWeight":"600"}],"body-md":["15px",{"lineHeight":"24px","fontWeight":"400"}],"headline-md":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}],"numeric-total":["28px",{"lineHeight":"32px","fontWeight":"600"}],"headline-lg":["26px",{"lineHeight":"34px","letterSpacing":"-0.015em","fontWeight":"600"}],"numeric-data":["13.5px",{"lineHeight":"20px","fontWeight":"500"}],"label-sm":["12px",{"lineHeight":"18px","fontWeight":"500"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-[260px] bg-[#0B2B27] z-50 flex flex-col justify-between shadow-[4px_0_24px_rgba(0,0,0,0.12)]"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-md flex items-center gap-space-sm bg-[#08221f] shrink-0"><img alt="Teal circular monogram logo with SA initials for Toko Sari Amerta POS. Brand logo. - Primary color: #0b6b62
+- Font: outfit
+- Mode: light
+- Roundness: rounded-md
+" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VBWVLdBpLWEhBUcBOL3Z9dvcmiO-z0sl3sHN68ZR7vN4oYKg7YZ_MioLKw4NGaCSa6GiZh279y15rIoEalj8kqgXJ7QfpfC256DpSY0RKPNEN-6jduECX3ZwzQooc9ETRvSHkjFkCvaqNhWFmaS3JHYZNqcwX9Q0p0OGHGu7rLOARPWG15NmBHoVm5pZ6ZlYLng6kN2TEZlVB9-T6JpLh8UiLVBE0TpdLsZ9rZyMmknqfiicpJTjm47rlR"><div class="flex flex-col min-w-0"><span class="font-headline-sm text-headline-sm text-sidebar-active tracking-tight truncate">Toko Sari Amerta</span><span class="font-overline text-overline text-sidebar-label uppercase tracking-wider">ADMIN PANEL</span></div></div><div class="flex-1 overflow-y-auto py-space-sm px-space-xs"><nav class="flex flex-col gap-space-xs" data-active-classes="bg-sidebar-active-bg text-sidebar-active font-bold border-l-[3px] border-sidebar-indicator shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"><div class="px-space-sm pt-space-xs pb-space-xs"><span class="font-overline text-overline uppercase tracking-wider text-sidebar-label block">UTAMA</span></div><a class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-all font-body-sm text-body-sm" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span><span class="">Dashboard</span></a><div class="px-space-sm pt-space-sm pb-space-xs"><span class="font-overline text-overline uppercase tracking-wider text-sidebar-label block">TRANSAKSI</span></div><a class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-all font-body-sm text-body-sm" data-path="kasir-pos" href="#"><span class="material-symbols-outlined text-[18px]">point_of_sale</span><span class="">Kasir (POS)</span></a><a class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-all font-body-sm text-body-sm" data-path="riwayat-transaksi" href="#"><span class="material-symbols-outlined text-[18px]">receipt_long</span><span class="">Riwayat Transaksi</span></a><a class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-all font-body-sm text-body-sm" data-path="retur-penjualan" href="#"><span class="material-symbols-outlined text-[18px]">assignment_return</span><span class="">Retur Penjualan</span></a><div class="px-space-sm pt-space-sm pb-space-xs"><span class="font-overline text-overline uppercase tracking-wider text-sidebar-label block">MASTER DATA</span></div><a class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-all font-body-sm text-body-sm" data-path="produk" href="#"><span class="material-symbols-outlined text-[18px]">inventory_2</span><span class="">Produk</span></a><a class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-all font-body-sm text-body-sm" data-path="kategori-produk" href="#"><span class="material-symbols-outlined text-[18px]">category</span><span class="">Kategori Produk</span></a><a class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-all font-body-sm text-body-sm" data-path="satuan" href="#"><span class="material-symbols-outlined text-[18px]">straighten</span><span class="">Satuan</span></a><a class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-all font-body-sm text-body-sm" data-path="supplier" href="#"><span class="material-symbols-outlined text-[18px]">local_shipping</span><span class="">Supplier</span></a><a class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-all font-body-sm text-body-sm" data-path="pelanggan" href="#"><span class="material-symbols-outlined text-[18px]">group</span><span class="">Pelanggan</span></a><div class="px-space-sm pt-space-sm pb-space-xs"><span class="font-overline text-overline uppercase tracking-wider text-sidebar-label block">INVENTORI</span></div><a class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-all font-body-sm text-body-sm" data-path="stok-barang" href="#"><span class="material-symbols-outlined text-[18px]">warehouse</span><span class="">Stok Barang</span></a><a class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-all font-body-sm text-body-sm" data-path="barang-masuk-purchasing" href="#"><span class="material-symbols-outlined text-[18px]">move_to_inbox</span><span class="">Barang Masuk (Purchasing)</span></a><a class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-all font-body-sm text-body-sm" data-path="stok-opname" href="#"><span class="material-symbols-outlined text-[18px]">fact_check</span><span class="">Stok Opname</span></a><div class="px-space-sm pt-space-sm pb-space-xs"><span class="font-overline text-overline uppercase tracking-wider text-sidebar-label block">LAPORAN</span></div><a class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-all font-body-sm text-body-sm" data-path="laporan-penjualan" href="#"><span class="material-symbols-outlined text-[18px]">query_stats</span><span class="">Laporan Penjualan</span></a><a class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-all font-body-sm text-body-sm" data-path="laba-rugi" href="#"><span class="material-symbols-outlined text-[18px]">monitoring</span><span class="">Laba Rugi</span></a><a aria-current="page" class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg transition-all bg-sidebar-active-bg text-sidebar-active font-bold border-l-[3px] border-sidebar-indicator shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]" data-path="laporan-stok" href="#"><span class="material-symbols-outlined text-[18px]">summarize</span><span class="">Laporan Stok</span></a><a class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-all font-body-sm text-body-sm" data-path="cetak-struk" href="#"><span class="material-symbols-outlined text-[18px]">print</span><span class="">Cetak Struk / Ulang</span></a><div class="px-space-sm pt-space-sm pb-space-xs"><span class="font-overline text-overline uppercase tracking-wider text-sidebar-label block">PENGATURAN</span></div><a class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-all font-body-sm text-body-sm" data-path="pengguna-hak-akses" href="#"><span class="material-symbols-outlined text-[18px]">badge</span><span class="">Pengguna &amp; Hak Akses</span></a><a class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-all font-body-sm text-body-sm" data-path="profil-toko" href="#"><span class="material-symbols-outlined text-[18px]">storefront</span><span class="">Profil Toko</span></a><a class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-all font-body-sm text-body-sm" data-path="metode-pembayaran" href="#"><span class="material-symbols-outlined text-[18px]">payments</span><span class="">Metode Pembayaran</span></a><a class="group relative flex items-center gap-space-sm px-space-sm py-2 rounded-r-lg text-sidebar-idle hover:text-sidebar-active hover:bg-sidebar-active-bg transition-all font-body-sm text-body-sm" data-path="pajak-diskon" href="#"><span class="material-symbols-outlined text-[18px]">percent</span><span class="">Pajak &amp; Diskon</span></a></nav></div></div><div class="p-space-sm bg-[#08221f] shrink-0"><div class="flex items-center justify-between p-space-xs rounded-lg bg-sidebar-active-bg"><div class="flex items-center gap-space-sm min-w-0"><img alt="Profile" class="w-8 h-8 rounded-full object-cover shrink-0 ring-1 ring-teal-400" src="https://lh3.googleusercontent.com/aida/AEtjO1VzXL-W4fXNz743_6iWgs8tnRRX6QnzXYD90htSNO8UlqW94thzjEwWO45hD3116fznsyea8gMe8AEGqapS-lN5b8rO6oNawJnFl19YFJleZOjiPkJw-3RQZMAw6rcMt2EV1VtLgLGyreSE_fMKAZg7DQLdi__18uNJnqVQ3AJ0btoKpschfq6N2a4wDiQfc2Q7xbLsTA9GbursNP91Io_M4sfAQt_GGv5Mwsg2DOtESpik3Umvkuyvrsko"><div class="flex flex-col min-w-0"><span class="font-body-sm text-body-sm text-sidebar-active font-semibold truncate">Ni Kadek Ayu Pramesti</span><span class="font-label-sm text-label-sm text-sidebar-label truncate">Kasir Shift Pagi</span></div></div><button class="p-space-xs rounded text-sidebar-idle hover:text-sidebar-active hover:bg-white/10 transition-colors" title="Keluar" type="button"><span class="material-symbols-outlined text-[18px]">logout</span></button></div></div></aside><div class="pl-[260px]"><header class="fixed top-0 left-[260px] right-0 h-16 bg-surface-header/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-space-lg flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-full bg-surface-container-low shadow-[4px_4px_10px_rgba(122,152,145,0.20),-4px_-4px_10px_rgba(255,255,255,0.80)]"><span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span><span class="font-label-sm text-label-sm text-text-primary font-semibold">Toko Pusat Jimbaran</span><span class="material-symbols-outlined text-text-muted text-[16px]">expand_more</span></div><div class="hidden md:flex items-center gap-space-xs w-96 px-space-md py-2 rounded-xl bg-surface-container-low shadow-[inset_3px_3px_8px_rgba(122,152,145,0.28),inset_-2px_-2px_6px_rgba(255,255,255,0.85)]"><span class="material-symbols-outlined text-text-muted text-[20px]">search</span><input class="bg-transparent w-full text-body-sm font-body-sm text-text-primary placeholder:text-text-muted focus:outline-none" placeholder="Cari barang, SKU, transaksi... (F2)" type="text"></div></div><div class="flex items-center gap-space-sm"><button class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-text-secondary shadow-[4px_4px_10px_rgba(122,152,145,0.20),-4px_-4px_10px_rgba(255,255,255,0.80)] hover:text-text-primary active:shadow-[inset_3px_3px_6px_rgba(122,152,145,0.3)] transition-all" title="Pusat Bantuan" type="button"><span class="material-symbols-outlined text-[20px]">help</span></button><button class="relative w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-text-secondary shadow-[4px_4px_10px_rgba(122,152,145,0.20),-4px_-4px_10px_rgba(255,255,255,0.80)] hover:text-text-primary active:shadow-[inset_3px_3px_6px_rgba(122,152,145,0.3)] transition-all" title="Notifikasi" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-btn-danger"></span></button><div class="flex items-center gap-space-xs pl-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover shadow-[0_2px_6px_rgba(0,0,0,0.12)]" src="https://lh3.googleusercontent.com/aida/AEtjO1VzXL-W4fXNz743_6iWgs8tnRRX6QnzXYD90htSNO8UlqW94thzjEwWO45hD3116fznsyea8gMe8AEGqapS-lN5b8rO6oNawJnFl19YFJleZOjiPkJw-3RQZMAw6rcMt2EV1VtLgLGyreSE_fMKAZg7DQLdi__18uNJnqVQ3AJ0btoKpschfq6N2a4wDiQfc2Q7xbLsTA9GbursNP91Io_M4sfAQt_GGv5Mwsg2DOtESpik3Umvkuyvrsko"><span class="font-label-md text-label-md text-text-primary hidden lg:inline-block">Ni Kadek Ayu Pramesti</span></div></div></header><main class="relative pt-16 w-full min-h-screen bg-background"><div class="flex flex-col w-full">
+<div class="px-space-xl py-space-lg flex flex-col gap-space-lg max-w-[1440px] w-full mx-auto"><!-- Top Breadcrumb & Title Bar -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+  <div class="flex flex-col gap-1">
+    <div class="flex items-center gap-space-xs text-text-muted">
+      <span class="font-overline text-overline uppercase tracking-widest text-text-muted">LAPORAN</span>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <span class="font-overline text-overline uppercase tracking-widest text-primary font-semibold">LAPORAN STOK</span>
+    </div>
+    <div class="flex items-baseline gap-space-sm flex-wrap">
+      <h1 class="font-headline-lg text-headline-lg text-text-primary tracking-tight">Laporan Stok &amp; Mutasi Barang</h1>
+      <span class="px-2.5 py-0.5 rounded-full bg-surface-container-low text-text-secondary font-label-sm text-label-sm shadow-[inset_1px_1px_3px_rgba(122,152,145,0.25)]">Jimbaran Center Hub</span>
+    </div>
+    <p class="font-body-sm text-body-sm text-text-secondary max-w-2xl">
+      Valuasi persediaan toko, analisis perputaran stok (Inventory Turnover), riwayat mutasi masuk/keluar, dan status dead stock terintegrasi.
+    </p>
+  </div>
+  <div class="flex flex-wrap items-center gap-space-sm self-start lg:self-center">
+    <button class="h-10 px-space-md rounded-xl bg-surface-container-low text-text-primary font-label-md text-label-md flex items-center gap-space-xs shadow-[3px_3px_8px_rgba(122,152,145,0.25),-3px_-3px_8px_rgba(255,255,255,0.85)] hover:text-primary active:shadow-[inset_2px_2px_4px_rgba(122,152,145,0.3)] transition-all" type="button">
+      <span class="material-symbols-outlined text-text-secondary text-[18px]">file_download</span>
+      <span class="">Export XLS / CSV</span>
+    </button>
+    <button class="h-10 px-space-md rounded-xl bg-primary text-on-primary font-label-md text-label-md flex items-center gap-space-xs shadow-[0_4px_12px_rgba(11,107,98,0.4)] hover:bg-teal-800 active:scale-[0.985] transition-all" type="button">
+      <span class="material-symbols-outlined text-on-primary text-[18px]">add_shopping_cart</span>
+      <span class="">+ Buat PO Restok</span>
+    </button>
+  </div>
+</div>
+
+<!-- 4 Metric Cards Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md">
+  <!-- Card 1: Valuasi -->
+  <div class="p-space-md rounded-2xl bg-surface-container-low shadow-[4px_4px_12px_rgba(122,152,145,0.25),-4px_-4px_10px_rgba(255,255,255,0.85)] flex flex-col justify-between">
+    <div class="flex items-start justify-between gap-2">
+      <div class="flex flex-col min-w-0">
+        <span class="font-overline text-overline uppercase tracking-wider text-text-muted">TOTAL NILAI VALUASI STOK</span>
+        <span class="font-numeric-total text-numeric-total text-text-primary tracking-tight mt-1">Rp 142.850.000</span>
+      </div>
+      <div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-primary shrink-0 shadow-[inset_1px_1px_3px_rgba(122,152,145,0.25)]">
+        <span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+      </div>
+    </div>
+    <div class="mt-space-sm pt-space-xs flex items-center justify-between">
+      <span class="font-label-sm text-label-sm text-text-muted">HPP Bergerak</span>
+      <span class="font-label-sm text-label-sm text-success-text font-semibold flex items-center gap-0.5">
+        <span class="material-symbols-outlined text-[15px]">trending_up</span> +3.8% bln ini
+      </span>
+    </div>
+  </div>
+
+  <!-- Card 2: Unit Fisik -->
+  <div class="p-space-md rounded-2xl bg-surface-container-low shadow-[4px_4px_12px_rgba(122,152,145,0.25),-4px_-4px_10px_rgba(255,255,255,0.85)] flex flex-col justify-between">
+    <div class="flex items-start justify-between gap-2">
+      <div class="flex flex-col min-w-0">
+        <span class="font-overline text-overline uppercase tracking-wider text-text-muted">TOTAL UNIT FISIK</span>
+        <div class="mt-1 flex items-baseline gap-1">
+          <span class="font-numeric-total text-numeric-total text-text-primary tracking-tight">14.820</span>
+          <span class="font-label-md text-label-md text-text-secondary font-medium">Pcs</span>
+        </div>
+      </div>
+      <div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-info-text shrink-0 shadow-[inset_1px_1px_3px_rgba(122,152,145,0.25)]">
+        <span class="material-symbols-outlined text-[20px]">inventory</span>
+      </div>
+    </div>
+    <div class="mt-space-sm pt-space-xs flex items-center justify-between">
+      <span class="font-label-sm text-label-sm text-text-muted">248 SKU Terdaftar</span>
+      <span class="font-label-sm text-label-sm text-text-primary font-semibold">96.8% Akurasi Fisik</span>
+    </div>
+  </div>
+
+  <!-- Card 3: Perputaran Stok -->
+  <div class="p-space-md rounded-2xl bg-surface-container-low shadow-[4px_4px_12px_rgba(122,152,145,0.25),-4px_-4px_10px_rgba(255,255,255,0.85)] flex flex-col justify-between">
+    <div class="flex items-start justify-between gap-2">
+      <div class="flex flex-col min-w-0">
+        <span class="font-overline text-overline uppercase tracking-wider text-text-muted">INVENTORY TURNOVER</span>
+        <div class="mt-1 flex items-baseline gap-1">
+          <span class="font-numeric-total text-numeric-total text-text-primary tracking-tight">4.2x</span>
+          <span class="font-label-md text-label-md text-text-secondary font-medium">/ Tahun</span>
+        </div>
+      </div>
+      <div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-chart-series-2 shrink-0 shadow-[inset_1px_1px_3px_rgba(122,152,145,0.25)]">
+        <span class="material-symbols-outlined text-[20px]">sync_alt</span>
+      </div>
+    </div>
+    <div class="mt-space-sm pt-space-xs flex items-center justify-between">
+      <span class="font-label-sm text-label-sm text-success-text font-semibold flex items-center gap-1">
+        <span class="w-2 h-2 rounded-full bg-tertiary"></span> Fast Moving Sector
+      </span>
+      <span class="font-label-sm text-label-sm text-text-muted">DSI: 86.9 Hari</span>
+    </div>
+  </div>
+
+  <!-- Card 4: Status Risiko -->
+  <div class="p-space-md rounded-2xl bg-surface-container-low shadow-[4px_4px_12px_rgba(122,152,145,0.25),-4px_-4px_10px_rgba(255,255,255,0.85)] flex flex-col justify-between">
+    <div class="flex items-start justify-between gap-2">
+      <div class="flex flex-col min-w-0">
+        <span class="font-overline text-overline uppercase tracking-wider text-text-muted">STATUS RISIKO STOK</span>
+        <div class="mt-1 flex items-center gap-1.5 flex-wrap">
+          <span class="px-2 py-0.5 rounded bg-warning-bg text-warning-text font-label-sm text-label-sm font-semibold">20 Menipis</span>
+          <span class="px-2 py-0.5 rounded bg-danger-bg text-danger-text font-label-sm text-label-sm font-semibold">12 Habis</span>
+        </div>
+      </div>
+      <div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-danger-text shrink-0 shadow-[inset_1px_1px_3px_rgba(122,152,145,0.25)]">
+        <span class="material-symbols-outlined text-[20px]">warning</span>
+      </div>
+    </div>
+    <div class="mt-space-sm pt-space-xs flex items-center justify-between">
+      <span class="font-label-sm text-label-sm text-danger-text font-semibold flex items-center gap-1">
+        <span class="material-symbols-outlined text-[15px]">event_busy</span> 3 Expired &lt;30hr
+      </span>
+      <span class="font-label-sm text-label-sm text-text-secondary underline cursor-pointer hover:text-text-primary">Perlu Tindakan</span>
+    </div>
+  </div>
+</div>
+
+<!-- Visual Ledger: Trend Mutasi vs Kapasitas Lokasi Rak -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md">
+  <!-- Left: Trend Mutasi (7 Hari Terakhir) -->
+  <div class="lg:col-span-8 p-space-md rounded-2xl bg-surface-container-low shadow-[4px_4px_12px_rgba(122,152,145,0.25),-4px_-4px_10px_rgba(255,255,255,0.85)] flex flex-col justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+      <div>
+        <span class="font-overline text-overline uppercase tracking-wider text-text-muted">TREN MUTASI BARANG (7 HARI TERAKHIR)</span>
+        <h4 class="font-headline-sm text-headline-sm text-text-primary">Arus Masuk PO vs Penjualan POS</h4>
+      </div>
+      <div class="flex items-center gap-space-md">
+        <div class="flex items-center gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+          <span class="font-label-sm text-label-sm text-text-secondary">Barang Masuk (+)</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-btn-danger"></span>
+          <span class="font-label-sm text-label-sm text-text-secondary">Keluar Kasir (-)</span>
+        </div>
+      </div>
+    </div>
+    <!-- 7 Day Bar Columns -->
+    <div class="w-full h-28 flex items-end justify-between gap-3 px-space-xs pt-space-xs">
+      <!-- SEN -->
+      <div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+        <div class="w-full flex items-end justify-center gap-1 h-20">
+          <div class="w-2.5 bg-primary rounded-t-sm" style="height: 65%;"></div>
+          <div class="w-2.5 bg-danger-bg rounded-t-sm" style="height: 48%;"></div>
+        </div>
+        <span class="font-overline text-overline text-text-muted">SEN</span>
+      </div>
+      <!-- SEL -->
+      <div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+        <div class="w-full flex items-end justify-center gap-1 h-20">
+          <div class="w-2.5 bg-primary rounded-t-sm" style="height: 40%;"></div>
+          <div class="w-2.5 bg-danger-bg rounded-t-sm" style="height: 70%;"></div>
+        </div>
+        <span class="font-overline text-overline text-text-muted">SEL</span>
+      </div>
+      <!-- RAB -->
+      <div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+        <div class="w-full flex items-end justify-center gap-1 h-20">
+          <div class="w-2.5 bg-primary rounded-t-sm" style="height: 90%;"></div>
+          <div class="w-2.5 bg-danger-bg rounded-t-sm" style="height: 55%;"></div>
+        </div>
+        <span class="font-overline text-overline text-text-muted">RAB</span>
+      </div>
+      <!-- KAM -->
+      <div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+        <div class="w-full flex items-end justify-center gap-1 h-20">
+          <div class="w-2.5 bg-primary rounded-t-sm" style="height: 30%;"></div>
+          <div class="w-2.5 bg-danger-bg rounded-t-sm" style="height: 82%;"></div>
+        </div>
+        <span class="font-overline text-overline text-text-muted">KAM</span>
+      </div>
+      <!-- JUM -->
+      <div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+        <div class="w-full flex items-end justify-center gap-1 h-20">
+          <div class="w-2.5 bg-primary rounded-t-sm" style="height: 75%;"></div>
+          <div class="w-2.5 bg-danger-bg rounded-t-sm" style="height: 88%;"></div>
+        </div>
+        <span class="font-overline text-overline text-text-muted">JUM</span>
+      </div>
+      <!-- SAB -->
+      <div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+        <div class="w-full flex items-end justify-center gap-1 h-20">
+          <div class="w-2.5 bg-primary rounded-t-sm" style="height: 85%;"></div>
+          <div class="w-2.5 bg-btn-danger rounded-t-sm" style="height: 95%;"></div>
+        </div>
+        <span class="font-overline text-overline text-text-muted font-bold text-primary">SAB</span>
+      </div>
+      <!-- MIN -->
+      <div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+        <div class="w-full flex items-end justify-center gap-1 h-20">
+          <div class="w-2.5 bg-teal-400 rounded-t-sm" style="height: 52%;"></div>
+          <div class="w-2.5 bg-btn-danger rounded-t-sm" style="height: 60%;"></div>
+        </div>
+        <span class="font-overline text-overline text-teal-600 font-bold">MIN</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: Kapasitas Lokasi Rak -->
+  <div class="lg:col-span-4 p-space-md rounded-2xl bg-surface-container-low shadow-[4px_4px_12px_rgba(122,152,145,0.25),-4px_-4px_10px_rgba(255,255,255,0.85)] flex flex-col justify-between">
+    <div class="flex items-center justify-between">
+      <span class="font-overline text-overline uppercase tracking-wider text-text-muted">KAPASITAS LOKASI RAK</span>
+      <span class="font-label-sm text-label-sm text-primary font-semibold">Toko Jimbaran</span>
+    </div>
+    <div class="space-y-space-sm my-space-xs">
+      <div>
+        <div class="flex justify-between font-label-sm text-label-sm mb-1">
+          <span class="text-text-primary font-medium">Gudang Belakang (Beras &amp; Dus)</span>
+          <span class="font-numeric-data text-numeric-data text-text-secondary font-semibold">88%</span>
+        </div>
+        <div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden shadow-[inset_1px_1px_3px_rgba(122,152,145,0.3)]">
+          <div class="h-full bg-primary rounded-full" style="width: 88%;"></div>
+        </div>
+      </div>
+      <div>
+        <div class="flex justify-between font-label-sm text-label-sm mb-1">
+          <span class="text-text-primary font-medium">Rak Depan &amp; Makanan (A1-A4)</span>
+          <span class="font-numeric-data text-numeric-data text-text-secondary font-semibold">62%</span>
+        </div>
+        <div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden shadow-[inset_1px_1px_3px_rgba(122,152,145,0.3)]">
+          <div class="h-full bg-teal-600 rounded-full" style="width: 62%;"></div>
+        </div>
+      </div>
+      <div>
+        <div class="flex justify-between font-label-sm text-label-sm mb-1">
+          <span class="text-text-primary font-medium">Chiller / Rak Dingin Minuman</span>
+          <span class="font-numeric-data text-numeric-data text-text-secondary font-semibold">94%</span>
+        </div>
+        <div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden shadow-[inset_1px_1px_3px_rgba(122,152,145,0.3)]">
+          <div class="h-full bg-btn-danger rounded-full" style="width: 94%;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center justify-between text-text-muted font-label-sm text-label-sm pt-2">
+      <span class="">Terakhir Audit: 04 Mei 2025</span>
+      <span class="text-primary font-semibold hover:underline cursor-pointer">Lihat Rinci</span>
+    </div>
+  </div>
+</div>
+
+<!-- Tab Chips & Search / Filter Toolbar -->
+<div class="flex flex-col gap-space-sm">
+  <!-- Neumorphic Tab Pills -->
+  <div class="flex items-center gap-space-xs overflow-x-auto pb-1">
+    <button class="px-space-md py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md shadow-[0_4px_12px_rgba(11,107,98,0.35)] shrink-0 flex items-center gap-1.5" type="button">
+      <span class="">Semua Barang &amp; Valuasi</span>
+      <span class="px-2 py-0.5 rounded-full bg-white/20 text-on-primary text-[11px] font-bold">248</span>
+    </button>
+    <button class="px-space-md py-2 rounded-full bg-surface-container-low text-text-primary font-label-md text-label-md shadow-[3px_3px_8px_rgba(122,152,145,0.25),-3px_-3px_8px_rgba(255,255,255,0.85)] hover:text-primary active:shadow-[inset_2px_2px_5px_rgba(122,152,145,0.3)] transition-all shrink-0 flex items-center gap-1.5" type="button">
+      <span class="">Stok Kritis &amp; Reorder</span>
+      <span class="px-2 py-0.5 rounded-full bg-danger-bg text-danger-text text-[11px] font-bold">32</span>
+    </button>
+    <button class="px-space-md py-2 rounded-full bg-surface-container-low text-text-primary font-label-md text-label-md shadow-[3px_3px_8px_rgba(122,152,145,0.25),-3px_-3px_8px_rgba(255,255,255,0.85)] hover:text-primary active:shadow-[inset_2px_2px_5px_rgba(122,152,145,0.3)] transition-all shrink-0 flex items-center gap-1.5" type="button">
+      <span class="">Fast Moving Item</span>
+      <span class="px-2 py-0.5 rounded-full bg-success-bg text-success-text text-[11px] font-bold">45</span>
+    </button>
+    <button class="px-space-md py-2 rounded-full bg-surface-container-low text-text-primary font-label-md text-label-md shadow-[3px_3px_8px_rgba(122,152,145,0.25),-3px_-3px_8px_rgba(255,255,255,0.85)] hover:text-primary active:shadow-[inset_2px_2px_5px_rgba(122,152,145,0.3)] transition-all shrink-0 flex items-center gap-1.5" type="button">
+      <span class="">Dead Stock / Slow Moving</span>
+      <span class="px-2 py-0.5 rounded-full bg-warning-bg text-warning-text text-[11px] font-bold">14</span>
+    </button>
+  </div>
+
+  <!-- Search & Precision Filter Toolbar -->
+  <div class="flex flex-col md:flex-row items-center justify-between gap-space-sm p-space-sm rounded-2xl bg-surface-container-low shadow-[4px_4px_12px_rgba(122,152,145,0.22),-4px_-4px_10px_rgba(255,255,255,0.80)]">
+    <!-- Search Input -->
+    <div class="w-full md:w-96 flex items-center gap-space-xs px-space-md py-2 rounded-xl bg-surface-container-low shadow-[inset_3px_3px_8px_rgba(122,152,145,0.32),inset_-2px_-2px_6px_rgba(255,255,255,0.85)] focus-within:shadow-[inset_4px_4px_10px_rgba(122,152,145,0.40)]">
+      <span class="material-symbols-outlined text-text-muted text-[18px]">search</span>
+      <input class="bg-transparent w-full text-body-sm font-body-sm text-text-primary placeholder:text-text-muted focus:outline-none" placeholder="Cari nama barang, barcode, SKU..." type="text">
+      <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-numeric-data rounded bg-surface-variant text-text-secondary shadow-sm">CTRL+F</kbd>
+    </div>
+    <!-- Dropdown Filters -->
+    <div class="flex flex-wrap items-center gap-space-xs w-full md:w-auto justify-end">
+      <button class="h-9 px-3 rounded-xl bg-surface-container-low text-text-primary font-label-sm text-label-sm flex items-center gap-1 shadow-[2px_2px_6px_rgba(122,152,145,0.25),-2px_-2px_6px_rgba(255,255,255,0.85)] hover:text-primary active:shadow-[inset_2px_2px_4px_rgba(122,152,145,0.3)]" type="button">
+        <span class="material-symbols-outlined text-[16px] text-text-muted">tune</span>
+        <span class="">Semua Kategori</span>
+        <span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+      </button>
+      <button class="h-9 px-3 rounded-xl bg-surface-container-low text-text-primary font-label-sm text-label-sm flex items-center gap-1 shadow-[2px_2px_6px_rgba(122,152,145,0.25),-2px_-2px_6px_rgba(255,255,255,0.85)] hover:text-primary active:shadow-[inset_2px_2px_4px_rgba(122,152,145,0.3)]" type="button">
+        <span class="material-symbols-outlined text-[16px] text-text-muted">local_shipping</span>
+        <span class="">Semua Supplier</span>
+        <span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+      </button>
+      <button class="h-9 px-3 rounded-xl bg-surface-container-low text-text-primary font-label-sm text-label-sm flex items-center gap-1 shadow-[2px_2px_6px_rgba(122,152,145,0.25),-2px_-2px_6px_rgba(255,255,255,0.85)] hover:text-primary active:shadow-[inset_2px_2px_4px_rgba(122,152,145,0.3)]" type="button">
+        <span class="material-symbols-outlined text-primary text-[16px]">sort</span>
+        <span class="font-semibold">Valuasi Tertinggi</span>
+        <span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Crisp White High-Density Inventory Table -->
+<div class="w-full rounded-2xl bg-surface-crisp shadow-[0_18px_40px_-18px_rgba(22,48,44,0.14)] overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="bg-surface-header sticky top-0 z-10 shadow-[inset_0_-1px_0_#CBDAD5]">
+          <th class="py-3 px-4 font-overline text-overline text-text-secondary uppercase tracking-wider" scope="col">KODE SKU</th>
+          <th class="py-3 px-4 font-overline text-overline text-text-secondary uppercase tracking-wider" scope="col">NAMA PRODUK</th>
+          <th class="py-3 px-4 font-overline text-overline text-text-secondary uppercase tracking-wider" scope="col">KATEGORI</th>
+          <th class="py-3 px-4 font-overline text-overline text-text-secondary uppercase tracking-wider" scope="col">LOKASI RAK</th>
+          <th class="py-3 px-4 font-overline text-overline text-text-secondary uppercase tracking-wider text-right" scope="col">STOK AWAL</th>
+          <th class="py-3 px-4 font-overline text-overline text-primary uppercase tracking-wider text-right" scope="col">MASUK (+)</th>
+          <th class="py-3 px-4 font-overline text-overline text-danger-text uppercase tracking-wider text-right" scope="col">KELUAR (-)</th>
+          <th class="py-3 px-4 font-overline text-overline text-text-secondary uppercase tracking-wider text-right font-bold" scope="col">STOK AKHIR</th>
+          <th class="py-3 px-4 font-overline text-overline text-text-secondary uppercase tracking-wider text-right" scope="col">HPP SATUAN</th>
+          <th class="py-3 px-4 font-overline text-overline text-text-primary uppercase tracking-wider text-right font-bold" scope="col">TOTAL VALUASI</th>
+          <th class="py-3 px-4 font-overline text-overline text-text-secondary uppercase tracking-wider text-center" scope="col">STATUS</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-divider font-body-sm text-body-sm text-text-primary">
+        <!-- Row 1: Indomie Goreng -->
+        <tr class="hover:bg-primary/5 transition-colors">
+          <td class="py-3 px-4 font-numeric-data text-numeric-data font-semibold text-primary">SKU-001</td>
+          <td class="py-3 px-4">
+            <div class="flex items-center gap-space-sm">
+              <div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-text-muted shrink-0 shadow-sm">
+                <span class="material-symbols-outlined text-[18px]">lunch_dining</span>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <span class="font-label-md text-label-md text-text-primary truncate">Indomie Goreng Rendang 85g</span>
+                <span class="font-label-sm text-label-sm text-text-muted">Barcode: 899886620011</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-4 text-text-secondary">Makanan</td>
+          <td class="py-3 px-4 text-text-secondary">
+            <span class="px-2 py-0.5 rounded bg-surface-container-low font-label-sm text-label-sm">Rak Depan A1</span>
+          </td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-text-secondary">120</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-success-text font-semibold">+180</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-danger-text">-116</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right font-bold text-text-primary">184 Pcs</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-text-secondary">Rp 2.850</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right font-bold text-primary">Rp 524.400</td>
+          <td class="py-3 px-4 text-center">
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-success-bg text-success-text font-label-sm text-label-sm font-semibold">
+              <span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Aman
+            </span>
+          </td>
+        </tr>
+
+        <!-- Row 2: Aqua Botol -->
+        <tr class="hover:bg-primary/5 transition-colors">
+          <td class="py-3 px-4 font-numeric-data text-numeric-data font-semibold text-primary">SKU-002</td>
+          <td class="py-3 px-4">
+            <div class="flex items-center gap-space-sm">
+              <div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-text-muted shrink-0 shadow-sm">
+                <span class="material-symbols-outlined text-[18px]">local_drink</span>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <span class="font-label-md text-label-md text-text-primary truncate">Aqua Botol 600ml</span>
+                <span class="font-label-sm text-label-sm text-text-muted">Barcode: 899275301112</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-4 text-text-secondary">Minuman</td>
+          <td class="py-3 px-4 text-text-secondary">
+            <span class="px-2 py-0.5 rounded bg-surface-container-low font-label-sm text-label-sm">Rak Minuman B2</span>
+          </td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-text-secondary">48</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-success-text font-semibold">+120</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-danger-text">-72</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right font-bold text-text-primary">96 Btl</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-text-secondary">Rp 3.100</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right font-bold text-primary">Rp 297.600</td>
+          <td class="py-3 px-4 text-center">
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-success-bg text-success-text font-label-sm text-label-sm font-semibold">
+              <span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Aman
+            </span>
+          </td>
+        </tr>
+
+        <!-- Row 3: Beras Pandan Wangi -->
+        <tr class="hover:bg-primary/5 transition-colors bg-warning-bg/10">
+          <td class="py-3 px-4 font-numeric-data text-numeric-data font-semibold text-warning-text">SKU-003</td>
+          <td class="py-3 px-4">
+            <div class="flex items-center gap-space-sm">
+              <div class="w-8 h-8 rounded-lg bg-warning-bg/50 flex items-center justify-center text-warning-text shrink-0 shadow-sm">
+                <span class="material-symbols-outlined text-[18px]">grain</span>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <span class="font-label-md text-label-md text-text-primary truncate">Beras Pandan Wangi 5kg</span>
+                <span class="font-label-sm text-label-sm text-text-muted">Barcode: 899100234001</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-4 text-text-secondary">Sembako</td>
+          <td class="py-3 px-4 text-text-secondary">
+            <span class="px-2 py-0.5 rounded bg-surface-container-low font-label-sm text-label-sm">Gudang Belakang</span>
+          </td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-text-secondary">10</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-success-text font-semibold">+15</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-danger-text">-22</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right font-bold text-warning-text">3 Sak</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-text-secondary">Rp 68.400</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right font-bold text-primary">Rp 205.200</td>
+          <td class="py-3 px-4 text-center">
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-warning-bg text-warning-text font-label-sm text-label-sm font-semibold">
+              <span class="material-symbols-outlined text-[14px]">priority_high</span> Menipis (3)
+            </span>
+          </td>
+        </tr>
+
+        <!-- Row 4: Minyak Bimoli -->
+        <tr class="hover:bg-primary/5 transition-colors">
+          <td class="py-3 px-4 font-numeric-data text-numeric-data font-semibold text-text-primary">SKU-004</td>
+          <td class="py-3 px-4">
+            <div class="flex items-center gap-space-sm">
+              <div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-text-muted shrink-0 shadow-sm">
+                <span class="material-symbols-outlined text-[18px]">sanitizer</span>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <span class="font-label-md text-label-md text-text-primary truncate">Minyak Bimoli 1L</span>
+                <span class="font-label-sm text-label-sm text-text-muted">Barcode: 899300511890</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-4 text-text-secondary">Sembako</td>
+          <td class="py-3 px-4 text-text-secondary">
+            <span class="px-2 py-0.5 rounded bg-surface-container-low font-label-sm text-label-sm">Rak Sembako C1</span>
+          </td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-text-secondary">12</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-success-text font-semibold">+24</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-danger-text">-31</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right font-bold text-warning-text">5 Pouch</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-text-secondary">Rp 16.900</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right font-bold text-primary">Rp 84.500</td>
+          <td class="py-3 px-4 text-center">
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-warning-bg text-warning-text font-label-sm text-label-sm font-semibold">
+              Menipis (5)
+            </span>
+          </td>
+        </tr>
+
+        <!-- Row 5: Gula Pasir Gulaku (Habis) -->
+        <tr class="hover:bg-primary/5 transition-colors bg-danger-bg/15">
+          <td class="py-3 px-4 font-numeric-data text-numeric-data font-semibold text-danger-text">SKU-006</td>
+          <td class="py-3 px-4">
+            <div class="flex items-center gap-space-sm">
+              <div class="w-8 h-8 rounded-lg bg-danger-bg flex items-center justify-center text-danger-text shrink-0 shadow-sm">
+                <span class="material-symbols-outlined text-[18px]">inventory_2</span>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <span class="font-label-md text-label-md text-danger-text font-bold truncate">Gula Pasir Gulaku 1kg</span>
+                <span class="font-label-sm text-label-sm text-danger-text/80">Barcode: 899600143211</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-4 text-text-secondary">Sembako</td>
+          <td class="py-3 px-4 text-text-secondary">
+            <span class="px-2 py-0.5 rounded bg-surface-container-low font-label-sm text-label-sm">Rak Sembako C2</span>
+          </td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-text-secondary">8</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-text-muted">0</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-danger-text">-8</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right font-bold text-danger-text">0 Pcs</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-text-secondary">Rp 15.200</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right font-bold text-danger-text">Rp 0</td>
+          <td class="py-3 px-4 text-center">
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-btn-danger text-on-error font-label-sm text-label-sm font-semibold shadow-sm">
+              <span class="material-symbols-outlined text-[14px]">notification_important</span> Habis (0)
+            </span>
+          </td>
+        </tr>
+
+        <!-- Row 6: Teh Pucuk Harum -->
+        <tr class="hover:bg-primary/5 transition-colors">
+          <td class="py-3 px-4 font-numeric-data text-numeric-data font-semibold text-primary">SKU-005</td>
+          <td class="py-3 px-4">
+            <div class="flex items-center gap-space-sm">
+              <div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-text-muted shrink-0 shadow-sm">
+                <span class="material-symbols-outlined text-[18px]">emoji_food_beverage</span>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <span class="font-label-md text-label-md text-text-primary truncate">Teh Pucuk Harum 350ml</span>
+                <span class="font-label-sm text-label-sm text-text-muted">Barcode: 899400231901</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-4 text-text-secondary">Minuman</td>
+          <td class="py-3 px-4 text-text-secondary">
+            <span class="px-2 py-0.5 rounded bg-surface-container-low font-label-sm text-label-sm">Rak Dingin</span>
+          </td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-text-secondary">60</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-success-text font-semibold">+140</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-danger-text">-58</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right font-bold text-text-primary">142 Btl</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-text-secondary">Rp 4.600</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right font-bold text-primary">Rp 653.200</td>
+          <td class="py-3 px-4 text-center">
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-success-bg text-success-text font-label-sm text-label-sm font-semibold">
+              <span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Aman
+            </span>
+          </td>
+        </tr>
+
+        <!-- Row 7: Kopi Kapal Api -->
+        <tr class="hover:bg-primary/5 transition-colors">
+          <td class="py-3 px-4 font-numeric-data text-numeric-data font-semibold text-primary">SKU-007</td>
+          <td class="py-3 px-4">
+            <div class="flex items-center gap-space-sm">
+              <div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-text-muted shrink-0 shadow-sm">
+                <span class="material-symbols-outlined text-[18px]">coffee</span>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <span class="font-label-md text-label-md text-text-primary truncate">Kopi Kapal Api 165g</span>
+                <span class="font-label-sm text-label-sm text-text-muted">Barcode: 899111456002</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-4 text-text-secondary">Minuman</td>
+          <td class="py-3 px-4 text-text-secondary">
+            <span class="px-2 py-0.5 rounded bg-surface-container-low font-label-sm text-label-sm">Rak Kopi A3</span>
+          </td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-text-secondary">25</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-success-text font-semibold">+60</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-danger-text">-18</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right font-bold text-text-primary">67 Pcs</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-text-secondary">Rp 10.100</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right font-bold text-primary">Rp 676.700</td>
+          <td class="py-3 px-4 text-center">
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-success-bg text-success-text font-label-sm text-label-sm font-semibold">
+              <span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Aman
+            </span>
+          </td>
+        </tr>
+
+        <!-- Row 8: Sabun Lifebuoy -->
+        <tr class="hover:bg-primary/5 transition-colors">
+          <td class="py-3 px-4 font-numeric-data text-numeric-data font-semibold text-text-primary">SKU-008</td>
+          <td class="py-3 px-4">
+            <div class="flex items-center gap-space-sm">
+              <div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-text-muted shrink-0 shadow-sm">
+                <span class="material-symbols-outlined text-[18px]">cleaning_services</span>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <span class="font-label-md text-label-md text-text-primary truncate">Sabun Lifebuoy 250ml</span>
+                <span class="font-label-sm text-label-sm text-text-muted">Barcode: 899200388901</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-4 text-text-secondary">Kebersihan</td>
+          <td class="py-3 px-4 text-text-secondary">
+            <span class="px-2 py-0.5 rounded bg-surface-container-low font-label-sm text-label-sm">Rak Sabun D1</span>
+          </td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-text-secondary">14</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-text-muted">0</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-danger-text">-6</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right font-bold text-warning-text">8 Pcs</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right text-text-secondary">Rp 18.300</td>
+          <td class="py-3 px-4 font-numeric-data text-numeric-data text-right font-bold text-primary">Rp 146.400</td>
+          <td class="py-3 px-4 text-center">
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-warning-bg text-warning-text font-label-sm text-label-sm font-semibold">
+              Menipis (8)
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Table Subtotal & Pagination Bar -->
+  <div class="p-space-md bg-surface-header flex flex-col md:flex-row items-center justify-between gap-space-md shadow-[inset_0_1px_0_#CBDAD5]">
+    <div class="flex items-center gap-space-md flex-wrap">
+      <div class="flex items-baseline gap-2">
+        <span class="font-label-sm text-label-sm text-text-muted uppercase">Total Valuasi Halaman:</span>
+        <span class="font-numeric-data text-numeric-data font-bold text-primary text-base">Rp 32.480.000</span>
+      </div>
+      <span class="text-divider hidden sm:inline">|</span>
+      <span class="font-body-sm text-body-sm text-text-secondary">
+        Menampilkan <span class="font-semibold text-text-primary">1-8</span> dari <span class="font-semibold text-text-primary">248</span> produk terdaftar
+      </span>
+    </div>
+    <!-- Pagination Controls -->
+    <div class="flex items-center gap-1.5">
+      <button class="w-8 h-8 rounded-lg bg-surface-container-low text-text-muted flex items-center justify-center cursor-not-allowed opacity-50 shadow-none" disabled="" type="button">
+        <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+      </button>
+      <button class="w-8 h-8 rounded-lg bg-primary text-on-primary font-numeric-data text-numeric-data font-bold flex items-center justify-center shadow-sm" type="button">
+        1
+      </button>
+      <button class="w-8 h-8 rounded-lg bg-surface-container-low text-text-primary font-numeric-data text-numeric-data flex items-center justify-center hover:bg-surface-raised shadow-[2px_2px_5px_rgba(122,152,145,0.2),-2px_-2px_5px_rgba(255,255,255,0.8)]" type="button">
+        2
+      </button>
+      <button class="w-8 h-8 rounded-lg bg-surface-container-low text-text-primary font-numeric-data text-numeric-data flex items-center justify-center hover:bg-surface-raised shadow-[2px_2px_5px_rgba(122,152,145,0.2),-2px_-2px_5px_rgba(255,255,255,0.8)]" type="button">
+        3
+      </button>
+      <span class="px-1 text-text-muted font-numeric-data text-label-sm">...</span>
+      <button class="w-8 h-8 rounded-lg bg-surface-container-low text-text-primary font-numeric-data text-numeric-data flex items-center justify-center hover:bg-surface-raised shadow-[2px_2px_5px_rgba(122,152,145,0.2),-2px_-2px_5px_rgba(255,255,255,0.8)]" type="button">
+        31
+      </button>
+      <button class="w-8 h-8 rounded-lg bg-surface-container-low text-text-primary flex items-center justify-center hover:bg-surface-raised shadow-[2px_2px_5px_rgba(122,152,145,0.2),-2px_-2px_5px_rgba(255,255,255,0.8)]" type="button">
+        <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Notification Callout Banner -->
+<div class="p-space-md rounded-2xl bg-surface-container-low shadow-[4px_4px_12px_rgba(122,152,145,0.25),-4px_-4px_10px_rgba(255,255,255,0.85)] flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md">
+  <div class="flex items-center gap-space-sm">
+    <div class="w-10 h-10 rounded-xl bg-teal-100 text-info-text flex items-center justify-center shrink-0 shadow-sm">
+      <span class="material-symbols-outlined text-[22px]">auto_graph</span>
+    </div>
+    <div>
+      <h4 class="font-label-md text-label-md text-text-primary">Rekomendasi Restok Otomatis Aktif</h4>
+      <p class="font-body-sm text-body-sm text-text-secondary">Sistem mendeteksi 4 item sembako mendekati Safety Stock Limit. Disarankan membuat PO sebelum akhir pekan.</p>
+    </div>
+  </div>
+  <div class="flex items-center gap-space-sm w-full md:w-auto justify-end shrink-0">
+    <button class="h-10 px-space-md rounded-xl bg-surface-container-low text-text-primary font-label-md text-label-md shadow-[3px_3px_8px_rgba(122,152,145,0.25),-3px_-3px_8px_rgba(255,255,255,0.85)] hover:text-primary active:shadow-[inset_2px_2px_4px_rgba(122,152,145,0.3)] transition-all" type="button">
+      Abaikan
+    </button>
+    <button class="h-10 px-space-md rounded-xl bg-primary text-on-primary font-label-md text-label-md shadow-[0_4px_12px_rgba(11,107,98,0.4)] hover:bg-teal-800 transition-all" type="button">
+      Generate Draft PO (4 Item)
+    </button>
+  </div>
+</div></div>
+</div>
+<script>
+  // Micro-interactions for table row selection and filtering
+  document.querySelectorAll('table tbody tr').forEach(row => {
+    row.addEventListener('click', (e) => {
+      if (!e.target.closest('button')) {
+        document.querySelectorAll('table tbody tr').forEach(r => r.classList.remove('bg-primary/10'));
+        row.classList.add('bg-primary/10');
+      }
+    });
+  });
+</script></main></div>
+
+</body></html>

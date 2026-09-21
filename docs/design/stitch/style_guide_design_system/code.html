@@ -1,0 +1,529 @@
+<!DOCTYPE html><html class="h-full" lang="id"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&amp;family=Outfit:wght@500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-raised": "#EDF4F2", "surface-bright": "#f2fbf8", "on-tertiary-container": "#93edaa", "chart-series-3": "#9A6B06", "on-background": "#151d1c", "error-container": "#ffdad6", "teal-100": "#D0E7E3", "text-secondary": "#47625D", "surface-container-low": "#edf6f3", "outline-variant": "#bec9c6", "background": "#f2fbf8", "info-bg": "#D0E7E3", "sidebar-idle": "#A8C6C0", "warning-bg": "#F7E6B5", "on-secondary-fixed-variant": "#2e4c48", "danger-text": "#9E3210", "primary": "#00514a", "inverse-surface": "#2a3230", "on-primary-fixed": "#00201d", "tertiary-fixed": "#9bf6b2", "divider": "#CBDAD5", "text-primary": "#16302C", "primary-fixed": "#a1f1e5", "sidebar-indicator": "#45C9B8", "sidebar-label": "#7FA39D", "on-primary-fixed-variant": "#005049", "outline": "#6f7977", "secondary-container": "#c5e7e0", "on-tertiary-fixed": "#00210d", "chart-series-2": "#2B5C78", "tertiary": "#005329", "sidebar-active-bg": "rgba(255, 255, 255, 0.08)", "on-primary": "#ffffff", "surface-container": "#e7f0ed", "surface-crisp": "#FFFFFF", "teal-600": "#0D7C74", "surface": "#f2fbf8", "surface-dim": "#d3dcd9", "on-secondary-fixed": "#00201c", "sidebar-active": "#FFFFFF", "btn-neutral": "#1F3A35", "secondary-fixed-dim": "#accdc7", "on-surface": "#151d1c", "on-secondary": "#ffffff", "on-secondary-container": "#4a6863", "success-bg": "#CFE7DB", "surface-header": "#F4F8F7", "inverse-primary": "#85d5c9", "on-tertiary": "#ffffff", "teal-900": "#06403B", "on-error-container": "#93000a", "tertiary-container": "#036e39", "inverse-on-surface": "#eaf3f0", "surface-tint": "#096a61", "surface-variant": "#dbe4e1", "chart-series-4": "#B23A16", "surface-container-highest": "#dbe4e1", "success-text": "#12694A", "danger-bg": "#F6DACF", "primary-fixed-dim": "#85d5c9", "text-muted": "#526E69", "surface-container-lowest": "#ffffff", "surface-sunken": "#D7E4E0", "info-text": "#0B6158", "on-primary-container": "#99e8dd", "teal-800": "#09514A", "surface-container-high": "#e1eae7", "on-surface-variant": "#3e4947", "tertiary-fixed-dim": "#80d998", "on-error": "#ffffff", "secondary": "#46645f", "btn-danger": "#B23A16", "on-tertiary-fixed-variant": "#005228", "primary-container": "#0b6b62", "secondary-fixed": "#c8e9e3", "warning-text": "#6F5000", "error": "#ba1a1a", "teal-400": "#45C9B8" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-md": "1rem", "margin": "2rem", "space-xl": "2rem", "gutter": "1.25rem", "space-xs": "0.25rem", "gutter-mobile": "0.75rem", "space-sm": "0.5rem", "space-lg": "1.5rem", "margin-mobile": "1rem" }, "fontFamily": { "label-sm": [ "Plus Jakarta Sans" ], "body-md": [ "Plus Jakarta Sans" ], "display-hero-mobile": [ "Outfit" ], "headline-lg": [ "Outfit" ], "headline-sm": [ "Outfit" ], "body-sm": [ "Plus Jakarta Sans" ], "display-hero": [ "Outfit" ], "body-lg": [ "Plus Jakarta Sans" ], "numeric-data": [ "JetBrains Mono" ], "overline": [ "Plus Jakarta Sans" ], "numeric-total": [ "JetBrains Mono" ], "label-md": [ "Plus Jakarta Sans" ], "headline-md": [ "Outfit" ] }, "fontSize": { "label-sm": [ "12px", { "lineHeight": "18px", "fontWeight": "500" } ], "body-md": [ "15px", { "lineHeight": "24px", "fontWeight": "400" } ], "display-hero-mobile": [ "30px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "headline-lg": [ "26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "600" } ], "headline-sm": [ "16px", { "lineHeight": "24px", "fontWeight": "500" } ], "body-sm": [ "13.5px", { "lineHeight": "20px", "fontWeight": "400" } ], "display-hero": [ "40px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "body-lg": [ "15px", { "lineHeight": "24px", "fontWeight": "600" } ], "numeric-data": [ "13.5px", { "lineHeight": "20px", "fontWeight": "500" } ], "overline": [ "11px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "600" } ], "numeric-total": [ "28px", { "lineHeight": "32px", "fontWeight": "600" } ], "label-md": [ "13.5px", { "lineHeight": "20px", "fontWeight": "600" } ], "headline-md": [ "20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" } ] } } } };</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen"><aside class="fixed left-0 top-0 h-screen w-[260px] bg-[#0B2B27] z-50 flex flex-col justify-between shadow-[4px_0_24px_rgba(6,64,59,0.25)]"><div class="flex flex-col flex-1 overflow-y-auto"><div class="h-20 px-space-lg flex items-center gap-space-sm"><img alt="Monogram Logo SA Toko Sari Amerta" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VBWVLdBpLWEhBUcBOL3Z9dvcmiO-z0sl3sHN68ZR7vN4oYKg7YZ_MioLKw4NGaCSa6GiZh279y15rIoEalj8kqgXJ7QfpfC256DpSY0RKPNEN-6jduECX3ZwzQooc9ETRvSHkjFkCvaqNhWFmaS3JHYZNqcwX9Q0p0OGHGu7rLOARPWG15NmBHoVm5pZ6ZlYLng6kN2TEZlVB9-T6JpLh8UiLVBE0TpdLsZ9rZyMmknqfiicpJTjm47rlR"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-primary tracking-tight">Toko Sari Amerta</span><span class="font-overline text-overline text-sidebar-label uppercase tracking-wider">ADMIN PANEL</span></div></div><div class="px-space-md py-space-sm space-y-space-md"><div class="space-y-space-xs"><p class="px-space-sm font-overline text-overline text-sidebar-label uppercase tracking-wider">UTAMA</p><nav class="space-y-1" data-active-classes="bg-sidebar-active-bg text-sidebar-active font-body-lg text-body-lg before:content-[''] before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-[3px] before:h-[20px] before:bg-sidebar-indicator before:rounded-r"><a aria-current="page" class="relative flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg transition-all bg-sidebar-active-bg text-sidebar-active font-body-lg text-body-lg before:content-[''] before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-[3px] before:h-[20px] before:bg-sidebar-indicator before:rounded-r" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="font-label-md text-label-md">Dashboard</span></a></nav></div><div class="space-y-space-xs"><p class="px-space-sm font-overline text-overline text-sidebar-label uppercase tracking-wider">TRANSAKSI</p><nav class="space-y-1" data-active-classes="bg-sidebar-active-bg text-sidebar-active font-body-lg text-body-lg before:content-[''] before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-[3px] before:h-[20px] before:bg-sidebar-indicator before:rounded-r"><a class="relative flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-sidebar-idle hover:bg-sidebar-active-bg hover:text-sidebar-active transition-all" data-path="kasir" href="#"><span class="material-symbols-outlined text-[20px]">point_of_sale</span><span class="font-label-md text-label-md">Kasir</span></a><a class="relative flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-sidebar-idle hover:bg-sidebar-active-bg hover:text-sidebar-active transition-all" data-path="riwayat-transaksi" href="#"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span class="font-label-md text-label-md">Riwayat Transaksi</span></a></nav></div><div class="space-y-space-xs"><p class="px-space-sm font-overline text-overline text-sidebar-label uppercase tracking-wider">MASTER DATA</p><nav class="space-y-1" data-active-classes="bg-sidebar-active-bg text-sidebar-active font-body-lg text-body-lg before:content-[''] before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-[3px] before:h-[20px] before:bg-sidebar-indicator before:rounded-r"><a class="relative flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-sidebar-idle hover:bg-sidebar-active-bg hover:text-sidebar-active transition-all" data-path="produk" href="#"><span class="material-symbols-outlined text-[20px]">inventory_2</span><span class="font-label-md text-label-md">Produk</span></a></nav></div><div class="space-y-space-xs"><p class="px-space-sm font-overline text-overline text-sidebar-label uppercase tracking-wider">LAPORAN</p><nav class="space-y-1" data-active-classes="bg-sidebar-active-bg text-sidebar-active font-body-lg text-body-lg before:content-[''] before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-[3px] before:h-[20px] before:bg-sidebar-indicator before:rounded-r"><a class="relative flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-sidebar-idle hover:bg-sidebar-active-bg hover:text-sidebar-active transition-all" data-path="laporan-penjualan" href="#"><span class="material-symbols-outlined text-[20px]">bar_chart</span><span class="font-label-md text-label-md">Laporan Penjualan</span></a></nav></div></div></div><div class="p-space-md bg-[#082320] m-space-sm rounded-xl flex items-center justify-between shadow-[inset_1px_1px_4px_rgba(0,0,0,0.3)]"><div class="flex items-center gap-space-sm min-w-0"><img alt="Profile" class="w-8 h-8 rounded-full object-cover shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjLOfx3vtYfKkHdwZHLyXYeqtkjxAVCfAcKaZRz1G7X1ZyzQ7qm-6iXBXDqQD-vL8ovQkt7ZxXbWFSWuEWPVrOix7zYRDTvFI4mGfe_960ColcKbGT1j-2Gbbo6Wbrgj19BfbOJa45NqHLtT_oMueTpX8CJtsiO1UP0psx_KfF6iNqzfj52uAk5L7rQIB1G3iRI6SUTcjwy91HQPPRzfT24plJ-5BtjVdOa04T-nhhFxzMuf1QWqdvwg"><div class="flex flex-col min-w-0"><span class="font-label-sm text-label-sm text-on-primary truncate font-semibold">Ni Kadek Ayu Pramesti</span><span class="font-overline text-overline text-sidebar-label truncate">Kasir · Shift Pagi</span></div></div><a aria-label="Keluar" class="text-sidebar-idle hover:text-danger-text transition-colors ml-space-xs" data-path="login" href="#"><span class="material-symbols-outlined text-[20px]">logout</span></a></div></aside><div class="pl-[260px]"><header class="fixed top-0 left-[260px] right-0 h-20 bg-surface/85 backdrop-blur-md z-40 px-margin flex items-center justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center gap-space-md"><img alt="Monogram Logo SA Toko Sari Amerta" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VBWVLdBpLWEhBUcBOL3Z9dvcmiO-z0sl3sHN68ZR7vN4oYKg7YZ_MioLKw4NGaCSa6GiZh279y15rIoEalj8kqgXJ7QfpfC256DpSY0RKPNEN-6jduECX3ZwzQooc9ETRvSHkjFkCvaqNhWFmaS3JHYZNqcwX9Q0p0OGHGu7rLOARPWG15NmBHoVm5pZ6ZlYLng6kN2TEZlVB9-T6JpLh8UiLVBE0TpdLsZ9rZyMmknqfiicpJTjm47rlR"><span class="font-headline-sm text-headline-sm text-text-primary">Toko Sari Amerta</span></div><div class="flex items-center gap-space-md"><div class="flex items-center bg-surface-container-low px-space-sm py-1.5 rounded-full"><span class="w-2 h-2 rounded-full bg-teal-400 mr-2 animate-pulse"></span><span class="font-label-sm text-label-sm text-text-secondary">Shift Aktif</span></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover shadow-[0_2px_8px_rgba(0,0,0,0.12)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjLOfx3vtYfKkHdwZHLyXYeqtkjxAVCfAcKaZRz1G7X1ZyzQ7qm-6iXBXDqQD-vL8ovQkt7ZxXbWFSWuEWPVrOix7zYRDTvFI4mGfe_960ColcKbGT1j-2Gbbo6Wbrgj19BfbOJa45NqHLtT_oMueTpX8CJtsiO1UP0psx_KfF6iNqzfj52uAk5L7rQIB1G3iRI6SUTcjwy91HQPPRzfT24plJ-5BtjVdOa04T-nhhFxzMuf1QWqdvwg"></div></header><main class="pt-20 bg-surface min-h-screen w-full"><div class="max-w-[1440px] mx-auto p-margin"><div class="flex flex-col w-full">
+<div class="flex flex-col gap-y-12">
+<!-- SECTION 1: HEADER -->
+<header class="p-8 rounded-[24px] bg-surface-raised shadow-[10px_10px_24px_rgba(122,152,145,0.32),-8px_-8px_20px_rgba(255,255,255,0.92)] flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div class="flex items-center gap-6">
+<div class="w-20 h-20 rounded-full bg-teal-800 flex items-center justify-center shadow-[6px_6px_14px_rgba(122,152,145,0.36),-4px_-4px_12px_rgba(255,255,255,0.85)] shrink-0">
+<span class="font-headline-lg text-headline-lg text-primary-fixed tracking-tight select-none">SA</span>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-3">
+<h1 class="font-display-hero text-display-hero text-text-primary tracking-tight">Design System</h1>
+<span class="px-3 py-1 rounded-full bg-surface-sunken text-text-secondary font-overline text-overline uppercase tracking-wider">v2.4 SPEC</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-text-muted">Toko Sari Amerta — Admin Panel POS Architecture &amp; Tokens</p>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-surface-container-low px-5 py-3 rounded-[16px] shadow-[inset_3px_3px_6px_rgba(122,152,145,0.25),inset_-2px_-2px_6px_rgba(255,255,255,0.9)]">
+<div class="flex flex-col">
+<span class="font-overline text-overline text-text-muted uppercase">Design Ethos</span>
+<span class="font-label-md text-label-md text-text-primary">Soft Chrome, Crisp Data</span>
+</div>
+<span class="w-2.5 h-2.5 rounded-full bg-teal-400"></span>
+</div>
+</header>
+<!-- SECTION 2: COLOR SYSTEM -->
+<section class="flex flex-col gap-6">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="font-overline text-overline text-sidebar-label uppercase tracking-wider">SECTION 01</span>
+<span class="w-8 h-[2px] bg-divider"></span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-text-primary">Color Palette &amp; Foundations</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Calibrated dual-ambient light scales, high-contrast operational teals, and administrative signal hues.</p>
+</div>
+<!-- Color Sub-grid: Surfaces -->
+<div class="flex flex-col gap-3">
+<h3 class="font-label-md text-label-md text-text-secondary">Surfaces &amp; Ground</h3>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+<div class="p-4 rounded-[20px] bg-surface-raised shadow-[6px_6px_14px_rgba(122,152,145,0.25),-4px_-4px_12px_rgba(255,255,255,0.85)] flex flex-col gap-3">
+<div class="h-[88px] w-full rounded-[14px] bg-[#E4EDEA] shadow-[inset_2px_2px_4px_rgba(0,0,0,0.06)]"></div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Canvas Neutral</span>
+<span class="font-numeric-data text-numeric-data text-text-muted">#E4EDEA</span>
+</div>
+</div>
+<div class="p-4 rounded-[20px] bg-surface-raised shadow-[6px_6px_14px_rgba(122,152,145,0.25),-4px_-4px_12px_rgba(255,255,255,0.85)] flex flex-col gap-3">
+<div class="h-[88px] w-full rounded-[14px] bg-[#EDF4F2] shadow-[inset_2px_2px_4px_rgba(0,0,0,0.04)]"></div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Surface Raised</span>
+<span class="font-numeric-data text-numeric-data text-text-muted">#EDF4F2</span>
+</div>
+</div>
+<div class="p-4 rounded-[20px] bg-surface-raised shadow-[6px_6px_14px_rgba(122,152,145,0.25),-4px_-4px_12px_rgba(255,255,255,0.85)] flex flex-col gap-3">
+<div class="h-[88px] w-full rounded-[14px] bg-[#FFFFFF] shadow-[inset_0_0_0_1px_#CBDAD5]"></div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Crisp Data White</span>
+<span class="font-numeric-data text-numeric-data text-text-muted">#FFFFFF</span>
+</div>
+</div>
+<div class="p-4 rounded-[20px] bg-surface-raised shadow-[6px_6px_14px_rgba(122,152,145,0.25),-4px_-4px_12px_rgba(255,255,255,0.85)] flex flex-col gap-3">
+<div class="h-[88px] w-full rounded-[14px] bg-[#D7E4E0] shadow-[inset_3px_3px_6px_rgba(122,152,145,0.35)]"></div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Sunken Recess</span>
+<span class="font-numeric-data text-numeric-data text-text-muted">#D7E4E0</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Color Sub-grid: Teal Scale -->
+<div class="flex flex-col gap-3">
+<h3 class="font-label-md text-label-md text-text-secondary">Teal Chromatic Ramp</h3>
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+<div class="p-4 rounded-[20px] bg-surface-raised shadow-[6px_6px_14px_rgba(122,152,145,0.25),-4px_-4px_12px_rgba(255,255,255,0.85)] flex flex-col gap-3">
+<div class="h-[88px] w-full rounded-[14px] bg-[#0B2B27]"></div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Deep Sidebar</span>
+<span class="font-numeric-data text-numeric-data text-text-muted">#0B2B27</span>
+</div>
+</div>
+<div class="p-4 rounded-[20px] bg-surface-raised shadow-[6px_6px_14px_rgba(122,152,145,0.25),-4px_-4px_12px_rgba(255,255,255,0.85)] flex flex-col gap-3">
+<div class="h-[88px] w-full rounded-[14px] bg-[#09514A]"></div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Teal 800 Solid</span>
+<span class="font-numeric-data text-numeric-data text-text-muted">#09514A</span>
+</div>
+</div>
+<div class="p-4 rounded-[20px] bg-surface-raised shadow-[6px_6px_14px_rgba(122,152,145,0.25),-4px_-4px_12px_rgba(255,255,255,0.85)] flex flex-col gap-3">
+<div class="h-[88px] w-full rounded-[14px] bg-[#0B6B62]"></div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Teal Primary</span>
+<span class="font-numeric-data text-numeric-data text-text-muted">#0B6B62</span>
+</div>
+</div>
+<div class="p-4 rounded-[20px] bg-surface-raised shadow-[6px_6px_14px_rgba(122,152,145,0.25),-4px_-4px_12px_rgba(255,255,255,0.85)] flex flex-col gap-3">
+<div class="h-[88px] w-full rounded-[14px] bg-[#0D7C74]"></div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Teal 600 Focus</span>
+<span class="font-numeric-data text-numeric-data text-text-muted">#0D7C74</span>
+</div>
+</div>
+<div class="p-4 rounded-[20px] bg-surface-raised shadow-[6px_6px_14px_rgba(122,152,145,0.25),-4px_-4px_12px_rgba(255,255,255,0.85)] flex flex-col gap-3">
+<div class="h-[88px] w-full rounded-[14px] bg-[#45C9B8]"></div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Teal 400 Accent</span>
+<span class="font-numeric-data text-numeric-data text-text-muted">#45C9B8</span>
+</div>
+</div>
+<div class="p-4 rounded-[20px] bg-surface-raised shadow-[6px_6px_14px_rgba(122,152,145,0.25),-4px_-4px_12px_rgba(255,255,255,0.85)] flex flex-col gap-3">
+<div class="h-[88px] w-full rounded-[14px] bg-[#D0E7E3]"></div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Teal 100 Tint</span>
+<span class="font-numeric-data text-numeric-data text-text-muted">#D0E7E3</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Color Sub-grid: Text & Status -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<div class="flex flex-col gap-3">
+<h3 class="font-label-md text-label-md text-text-secondary">Text Typography Colors</h3>
+<div class="grid grid-cols-3 gap-4">
+<div class="p-4 rounded-[20px] bg-surface-raised shadow-[6px_6px_14px_rgba(122,152,145,0.25),-4px_-4px_12px_rgba(255,255,255,0.85)] flex flex-col gap-3">
+<div class="h-[88px] w-full rounded-[14px] bg-[#16302C]"></div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Primary Text</span>
+<span class="font-numeric-data text-numeric-data text-text-muted">#16302C</span>
+</div>
+</div>
+<div class="p-4 rounded-[20px] bg-surface-raised shadow-[6px_6px_14px_rgba(122,152,145,0.25),-4px_-4px_12px_rgba(255,255,255,0.85)] flex flex-col gap-3">
+<div class="h-[88px] w-full rounded-[14px] bg-[#47625D]"></div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Secondary Text</span>
+<span class="font-numeric-data text-numeric-data text-text-muted">#47625D</span>
+</div>
+</div>
+<div class="p-4 rounded-[20px] bg-surface-raised shadow-[6px_6px_14px_rgba(122,152,145,0.25),-4px_-4px_12px_rgba(255,255,255,0.85)] flex flex-col gap-3">
+<div class="h-[88px] w-full rounded-[14px] bg-[#526E69]"></div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-text-primary">Muted Caption</span>
+<span class="font-numeric-data text-numeric-data text-text-muted">#526E69</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<h3 class="font-label-md text-label-md text-text-secondary">Administrative Status Tokens</h3>
+<div class="grid grid-cols-4 gap-3">
+<div class="p-3 rounded-[20px] bg-surface-raised shadow-[6px_6px_14px_rgba(122,152,145,0.25),-4px_-4px_12px_rgba(255,255,255,0.85)] flex flex-col gap-2">
+<div class="h-[76px] w-full rounded-[12px] bg-[#12694A]"></div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-text-primary truncate">Success</span>
+<span class="font-numeric-data text-numeric-data text-text-muted text-[11px]">#12694A</span>
+</div>
+</div>
+<div class="p-3 rounded-[20px] bg-surface-raised shadow-[6px_6px_14px_rgba(122,152,145,0.25),-4px_-4px_12px_rgba(255,255,255,0.85)] flex flex-col gap-2">
+<div class="h-[76px] w-full rounded-[12px] bg-[#6F5000]"></div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-text-primary truncate">Warning</span>
+<span class="font-numeric-data text-numeric-data text-text-muted text-[11px]">#6F5000</span>
+</div>
+</div>
+<div class="p-3 rounded-[20px] bg-surface-raised shadow-[6px_6px_14px_rgba(122,152,145,0.25),-4px_-4px_12px_rgba(255,255,255,0.85)] flex flex-col gap-2">
+<div class="h-[76px] w-full rounded-[12px] bg-[#9E3210]"></div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-text-primary truncate">Danger</span>
+<span class="font-numeric-data text-numeric-data text-text-muted text-[11px]">#9E3210</span>
+</div>
+</div>
+<div class="p-3 rounded-[20px] bg-surface-raised shadow-[6px_6px_14px_rgba(122,152,145,0.25),-4px_-4px_12px_rgba(255,255,255,0.85)] flex flex-col gap-2">
+<div class="h-[76px] w-full rounded-[12px] bg-[#0B6158]"></div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-text-primary truncate">Info / Draft</span>
+<span class="font-numeric-data text-numeric-data text-text-muted text-[11px]">#0B6158</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 3: TYPOGRAPHY SPECIMENS -->
+<section class="flex flex-col gap-6">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="font-overline text-overline text-sidebar-label uppercase tracking-wider">SECTION 02</span>
+<span class="w-8 h-[2px] bg-divider"></span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-text-primary">Typographic Hierarchy</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Clear separation of Outfit for impactful titles, Plus Jakarta Sans for dense body text, and JetBrains Mono for monetary precision.</p>
+</div>
+<div class="p-8 rounded-[24px] bg-surface-raised shadow-[10px_10px_24px_rgba(122,152,145,0.32),-8px_-8px_20px_rgba(255,255,255,0.92)] flex flex-col gap-8">
+<!-- Display 40px Specimen -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between pb-6 border-b border-divider gap-4">
+<div class="flex flex-col">
+<span class="font-overline text-overline text-sidebar-label uppercase">Outfit Semibold · 40px / 44px · -0.02em</span>
+<span class="font-body-sm text-body-sm text-text-muted">Display Hero Currency / Ledger Total</span>
+</div>
+<div class="font-display-hero text-display-hero text-text-primary">
+            Rp 4.317.500
+          </div>
+</div>
+<!-- Headline 26px Specimen -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between pb-6 border-b border-divider gap-4">
+<div class="flex flex-col">
+<span class="font-overline text-overline text-sidebar-label uppercase">Outfit Semibold · 26px / 34px · -0.015em</span>
+<span class="font-body-sm text-body-sm text-text-muted">Headline Large / Page Top Level Header</span>
+</div>
+<div class="font-headline-lg text-headline-lg text-text-primary">
+            Judul Halaman Operasional Toko
+          </div>
+</div>
+<!-- Body 15px Specimen -->
+<div class="flex flex-col lg:flex-row lg:items-baseline justify-between pb-6 border-b border-divider gap-4">
+<div class="flex flex-col shrink-0 lg:w-1/3">
+<span class="font-overline text-overline text-sidebar-label uppercase">Plus Jakarta Sans Regular · 15px / 24px</span>
+<span class="font-body-sm text-body-sm text-text-muted">Body Regular / Contextual Descriptions &amp; Form Fields</span>
+</div>
+<div class="font-body-md text-body-md text-text-primary max-w-2xl">
+            Sistem kasir dan manajemen persediaan modern dirancang khusus untuk mempercepat pemrosesan transaksi ritel grosir dan eceran dengan kepastian stok riil secara instan pada terminal kasir fisik.
+          </div>
+</div>
+<!-- Numbers / Monospace Specimen -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+<div class="flex flex-col">
+<span class="font-overline text-overline text-sidebar-label uppercase">JetBrains Mono Semibold · 13.5px / 20px</span>
+<span class="font-body-sm text-body-sm text-text-muted">Numeric Ledger, SKU Codes &amp; Barcode Strings</span>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-numeric-data text-numeric-data px-3 py-1.5 rounded-lg bg-surface-sunken text-teal-900 font-mono">SKU-89210-BALI-TRX</span>
+<span class="font-numeric-total text-numeric-total text-text-primary font-mono">#9082.44</span>
+<span class="font-numeric-data text-numeric-data text-success-text font-mono font-bold">+28.5% STOK</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 4: ELEVATION TILES -->
+<section class="flex flex-col gap-6">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="font-overline text-overline text-sidebar-label uppercase tracking-wider">SECTION 03</span>
+<span class="w-8 h-[2px] bg-divider"></span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-text-primary">Elevation &amp; Depth Archetypes</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Top-left 315° directional cast with crisp administrative contrast rules.</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Raised Sm -->
+<div class="h-44 p-6 rounded-[24px] bg-surface-raised shadow-[4px_4px_10px_rgba(122,152,145,0.30),-4px_-4px_10px_rgba(255,255,255,0.90)] flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-text-primary">Raised Sm</span>
+<span class="material-symbols-outlined text-teal-600">layers</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted">Chips, pagination pills, toggle switch controls.</p>
+<span class="font-numeric-data text-numeric-data text-text-secondary text-xs">4px / -4px blur 10px</span>
+</div>
+<!-- Raised Md -->
+<div class="h-44 p-6 rounded-[24px] bg-surface-raised shadow-[10px_10px_24px_rgba(122,152,145,0.32),-8px_-8px_20px_rgba(255,255,255,0.92)] flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-text-primary">Raised Md</span>
+<span class="material-symbols-outlined text-teal-600">dashboard_customize</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted">Primary canvas modules, cards, tactile tiles.</p>
+<span class="font-numeric-data text-numeric-data text-text-secondary text-xs">10px / -8px blur 24px</span>
+</div>
+<!-- Inset / Pressed -->
+<div class="h-44 p-6 rounded-[24px] bg-surface-raised shadow-[inset_4px_4px_10px_rgba(122,152,145,0.38),inset_-3px_-3px_8px_rgba(255,255,255,0.85)] flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-text-primary">Inset / Pressed</span>
+<span class="material-symbols-outlined text-teal-600">touch_app</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted">Sunken form text inputs and active button states.</p>
+<span class="font-numeric-data text-numeric-data text-text-secondary text-xs">inset 4px / -3px blur 10px</span>
+</div>
+<!-- Crisp Data White -->
+<div class="h-44 p-6 rounded-[24px] bg-surface-crisp shadow-[0_18px_40px_-18px_rgba(22,48,44,0.14)] border border-divider flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-text-primary">Crisp Data White</span>
+<span class="material-symbols-outlined text-teal-600">table_chart</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted">Data tables, receipts, invoices, export reports.</p>
+<span class="font-numeric-data text-numeric-data text-text-secondary text-xs">#FFFFFF + 1px #CBDAD5</span>
+</div>
+</div>
+</section>
+<!-- SECTION 5: BUTTON MATRIX -->
+<section class="flex flex-col gap-6">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="font-overline text-overline text-sidebar-label uppercase tracking-wider">SECTION 04</span>
+<span class="w-8 h-[2px] bg-divider"></span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-text-primary">Interactive Button States</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Ergonomic touch targets with deterministic visual hierarchy for high-stress cashier shifts.</p>
+</div>
+<div class="p-8 rounded-[24px] bg-surface-raised shadow-[10px_10px_24px_rgba(122,152,145,0.32),-8px_-8px_20px_rgba(255,255,255,0.92)] flex flex-wrap items-center gap-5">
+<!-- Primary Action Teal -->
+<button class="h-12 px-6 rounded-[14px] bg-[#0B6B62] text-on-primary font-label-md text-label-md shadow-[0_6px_16px_-6px_rgba(11,107,98,0.55)] hover:bg-teal-800 active:scale-[0.985] transition-all flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>Tambah Item</span>
+</button>
+<!-- Transactional Green BAYAR -->
+<button class="h-14 px-8 rounded-[14px] bg-[#1B7A43] text-on-primary font-headline-sm text-headline-sm tracking-wide shadow-[0_8px_20px_-6px_rgba(27,122,67,0.5)] hover:bg-[#156336] active:scale-[0.985] transition-all flex items-center gap-3" type="button">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+<span>BAYAR (F12)</span>
+</button>
+<!-- Danger Rust -->
+<button class="h-12 px-6 rounded-[14px] bg-[#B23A16] text-on-primary font-label-md text-label-md shadow-[0_6px_16px_-6px_rgba(178,58,22,0.45)] hover:bg-[#962f11] active:scale-[0.985] transition-all flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+<span>Batalkan Pesanan</span>
+</button>
+<!-- Neutral Dark -->
+<button class="h-12 px-6 rounded-[14px] bg-[#1F3A35] text-on-primary font-label-md text-label-md shadow-[0_6px_16px_-6px_rgba(31,58,53,0.45)] hover:bg-[#132522] active:scale-[0.985] transition-all flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[18px]">print</span>
+<span>Cetak Salinan</span>
+</button>
+<!-- Soft Neumorphic Secondary -->
+<button class="h-12 px-6 rounded-[14px] bg-surface-raised text-text-primary font-label-md text-label-md shadow-[4px_4px_10px_rgba(122,152,145,0.30),-4px_-4px_10px_rgba(255,255,255,0.90)] hover:shadow-[6px_6px_12px_rgba(122,152,145,0.35),-5px_-5px_12px_rgba(255,255,255,0.95)] active:shadow-[inset_4px_4px_8px_rgba(122,152,145,0.38),inset_-3px_-3px_6px_rgba(255,255,255,0.85)] active:scale-[0.985] transition-all flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-text-secondary text-[18px]">tune</span>
+<span>Filter Lanjutan</span>
+</button>
+</div>
+</section>
+<!-- SECTION 6: FORM CONTROLS & INPUT STATES -->
+<section class="flex flex-col gap-6">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="font-overline text-overline text-sidebar-label uppercase tracking-wider">SECTION 05</span>
+<span class="w-8 h-[2px] bg-divider"></span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-text-primary">Form Input Mechanics</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Tactile sunken receptors providing rapid barcode feedback and explicit diagnostic focus rings.</p>
+</div>
+<div class="p-8 rounded-[24px] bg-surface-raised shadow-[10px_10px_24px_rgba(122,152,145,0.32),-8px_-8px_20px_rgba(255,255,255,0.92)] grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Default State -->
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-text-primary flex items-center justify-between">
+<span>Default Input</span>
+<span class="font-overline text-overline text-text-muted">IDLE</span>
+</label>
+<div class="relative h-12 flex items-center">
+<span class="material-symbols-outlined absolute left-4 text-text-muted text-[20px]">barcode_scanner</span>
+<input class="w-full h-full pl-12 pr-4 rounded-[14px] bg-surface-raised text-text-primary font-numeric-data text-numeric-data shadow-[inset_4px_4px_10px_rgba(122,152,145,0.38),inset_-3px_-3px_8px_rgba(255,255,255,0.85)] outline-none cursor-default" readonly="" type="text" value="8992775312010">
+</div>
+<span class="font-label-sm text-label-sm text-text-muted">Siap membaca pemindai optik POS</span>
+</div>
+<!-- Focused State -->
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-text-primary flex items-center justify-between">
+<span>Active / Focused</span>
+<span class="font-overline text-overline text-teal-600 font-bold">FOCUSED</span>
+</label>
+<div class="relative h-12 flex items-center">
+<span class="material-symbols-outlined absolute left-4 text-teal-600 text-[20px]">search</span>
+<input class="w-full h-full pl-12 pr-4 rounded-[14px] bg-surface-raised text-text-primary font-body-md text-body-md shadow-[inset_4px_4px_10px_rgba(122,152,145,0.38),inset_-3px_-3px_8px_rgba(255,255,255,0.85)] ring-2 ring-teal-600 ring-offset-2 ring-offset-surface-raised outline-none" type="text" value="Kopi Bubuk Robusta Amerta">
+</div>
+<span class="font-label-sm text-label-sm text-teal-600 font-semibold">Kursor aktif menerima masukan teks</span>
+</div>
+<!-- Error State -->
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-danger-text flex items-center justify-between">
+<span>Error Validation</span>
+<span class="font-overline text-overline text-danger-text font-bold">INVALID</span>
+</label>
+<div class="relative h-12 flex items-center">
+<span class="material-symbols-outlined absolute left-4 text-danger-text text-[20px]">error</span>
+<input class="w-full h-full pl-12 pr-4 rounded-[14px] bg-surface-raised text-danger-text font-numeric-data text-numeric-data shadow-[inset_4px_4px_10px_rgba(122,152,145,0.38),inset_-3px_-3px_8px_rgba(255,255,255,0.85)] ring-2 ring-danger-text ring-offset-2 ring-offset-surface-raised outline-none" type="text" value="-12 PCS">
+</div>
+<div class="flex items-center gap-1.5 text-danger-text">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+<span class="font-label-sm text-label-sm">Jumlah unit stok tidak boleh negatif</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 7: BADGES & STATUS PILLS -->
+<section class="flex flex-col gap-6">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="font-overline text-overline text-sidebar-label uppercase tracking-wider">SECTION 06</span>
+<span class="w-8 h-[2px] bg-divider"></span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-text-primary">Status Badges &amp; Metrics</h2>
+<p class="font-body-sm text-body-sm text-text-muted">High-legibility pill indicators equipped with semantic line icons for inventory thresholds.</p>
+</div>
+<div class="p-8 rounded-[24px] bg-surface-raised shadow-[10px_10px_24px_rgba(122,152,145,0.32),-8px_-8px_20px_rgba(255,255,255,0.92)] flex flex-wrap items-center gap-6">
+<!-- Stok Aman -->
+<div class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-success-bg text-success-text shadow-[0_2px_6px_rgba(18,105,74,0.15)]">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+<span class="font-label-md text-label-md font-semibold">Stok Aman</span>
+<span class="ml-1 font-numeric-data text-numeric-data px-1.5 py-0.5 rounded-full bg-[#FFFFFF]/40">142</span>
+</div>
+<!-- Stok Menipis -->
+<div class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-warning-bg text-warning-text shadow-[0_2px_6px_rgba(111,80,0,0.15)]">
+<span class="material-symbols-outlined text-[18px]">inventory</span>
+<span class="font-label-md text-label-md font-semibold">Stok Menipis</span>
+<span class="ml-1 font-numeric-data text-numeric-data px-1.5 py-0.5 rounded-full bg-[#FFFFFF]/40">5</span>
+</div>
+<!-- Stok Habis -->
+<div class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-danger-bg text-danger-text shadow-[0_2px_6px_rgba(158,50,16,0.15)]">
+<span class="material-symbols-outlined text-[18px]">cancel</span>
+<span class="font-label-md text-label-md font-semibold">Stok Habis</span>
+<span class="ml-1 font-numeric-data text-numeric-data px-1.5 py-0.5 rounded-full bg-[#FFFFFF]/40">0</span>
+</div>
+<!-- Draft -->
+<div class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-info-bg text-info-text shadow-[0_2px_6px_rgba(11,97,88,0.15)]">
+<span class="material-symbols-outlined text-[18px]">edit_note</span>
+<span class="font-label-md text-label-md font-semibold">Draft</span>
+<span class="ml-1 font-numeric-data text-numeric-data px-1.5 py-0.5 rounded-full bg-[#FFFFFF]/40">PENDING</span>
+</div>
+</div>
+</section>
+<!-- SECTION 8: ATOMIC COMPONENT ARTIFACTS -->
+<section class="flex flex-col gap-6">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="font-overline text-overline text-sidebar-label uppercase tracking-wider">SECTION 07</span>
+<span class="w-8 h-[2px] bg-divider"></span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-text-primary">Composite Components</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Live micro-interactions combining POS product card tiles, crisp tabular ledgers, and floating operational notices.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- 1. Small Neumorphic Product Card -->
+<div class="lg:col-span-4 p-5 rounded-[24px] bg-surface-raised shadow-[10px_10px_24px_rgba(122,152,145,0.32),-8px_-8px_20px_rgba(255,255,255,0.92)] flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<span class="font-overline text-overline text-sidebar-label uppercase">POS TILE UNIT</span>
+<span class="px-2.5 py-0.5 rounded-full bg-success-bg text-success-text font-numeric-data text-xs">READY</span>
+</div>
+<!-- Thumbnail with image placeholder -->
+<div class="h-36 w-full rounded-[18px] bg-surface-sunken shadow-[inset_4px_4px_8px_rgba(122,152,145,0.38),inset_-3px_-3px_6px_rgba(255,255,255,0.85)] p-2 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover rounded-[14px]" data-alt="Traditional packaged Indonesian artisan ground coffee bag titled Sari Amerta, artisanal teal and kraft paper pouch, warm diffuse lighting on soft teal tabletop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgxnZgF0IDMSXPokEifC95Lb2v7-6yCsnERyTOHywUA_Zg1reqi9AIq7iePjFDWmg73j0AP2NoJg_w0TkZUDOUaLqsZG4YFi0uDZmRiGlI5Y6qAvzW6B35GEFKPbQGBBVpyrsYo7hDVzzijbbcYg9Ysz_4OXIPLQ83bCA5T8Brupn-sW2SDheeowyvkrVzxKXens28LzfoYa77hMENHAjbnGlZBRaAY09L7yqWZsEfKBVop_Gw_vDhDw">
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-overline text-overline text-text-muted">SEMBAKO &amp; KOPI</span>
+<h4 class="font-headline-sm text-headline-sm text-text-primary leading-snug">Kopi Bubuk Robusta Sari Amerta 250g</h4>
+</div>
+<div class="flex items-end justify-between pt-2 border-t border-divider">
+<div class="flex flex-col">
+<span class="font-overline text-overline text-text-muted">HARGA SATUAN</span>
+<span class="font-numeric-total text-numeric-total text-teal-800 font-mono">Rp 38.500</span>
+</div>
+<button aria-label="Tambah item" class="w-11 h-11 rounded-[12px] bg-primary text-on-primary shadow-[0_4px_12px_rgba(0,81,74,0.35)] flex items-center justify-center hover:bg-teal-800 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+</button>
+</div>
+</div>
+<!-- 2. Crisp White Table Row & Toast -->
+<div class="lg:col-span-8 flex flex-col gap-6">
+<!-- Crisp White Table Card -->
+<div class="rounded-[24px] bg-surface-crisp shadow-[0_18px_40px_-18px_rgba(22,48,44,0.14)] border border-divider overflow-hidden flex flex-col">
+<div class="px-6 py-4 bg-surface-header border-b border-divider flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-teal-600">table_rows</span>
+<span class="font-label-md text-label-md text-text-primary">Ledger Data Table (Crisp Matrix)</span>
+</div>
+<span class="font-overline text-overline text-text-secondary uppercase">2 DARI 148 BARIS</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full border-collapse">
+<thead>
+<tr class="border-b border-divider bg-surface-header/50">
+<th class="py-3 px-6 text-left font-overline text-overline text-text-secondary uppercase">KODE SKU</th>
+<th class="py-3 px-6 text-left font-overline text-overline text-text-secondary uppercase">NAMA BARANG</th>
+<th class="py-3 px-4 text-center font-overline text-overline text-text-secondary uppercase">STATUS</th>
+<th class="py-3 px-6 text-right font-overline text-overline text-text-secondary uppercase">STOK</th>
+<th class="py-3 px-6 text-right font-overline text-overline text-text-secondary uppercase">HARGA JUAL</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-divider">
+<tr class="hover:bg-primary/[0.03] transition-colors">
+<td class="py-3.5 px-6 font-numeric-data text-numeric-data text-text-muted">SKU-89210-KOPI</td>
+<td class="py-3.5 px-6 font-body-md text-body-md text-text-primary font-medium">Kopi Robusta Amerta 250g</td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-success-bg text-success-text font-label-sm text-label-sm font-semibold">Stok Aman</span>
+</td>
+<td class="py-3.5 px-6 font-numeric-data text-numeric-data text-text-primary text-right">142 bks</td>
+<td class="py-3.5 px-6 font-numeric-data text-numeric-data text-teal-800 text-right font-bold">Rp 38.500</td>
+</tr>
+<tr class="hover:bg-primary/[0.03] transition-colors">
+<td class="py-3.5 px-6 font-numeric-data text-numeric-data text-text-muted">SKU-44109-MINYAK</td>
+<td class="py-3.5 px-6 font-body-md text-body-md text-text-primary font-medium">Minyak Kelapa Tanduk 1 Liter</td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-warning-bg text-warning-text font-label-sm text-label-sm font-semibold">Menipis (4)</span>
+</td>
+<td class="py-3.5 px-6 font-numeric-data text-numeric-data text-text-primary text-right">4 btl</td>
+<td class="py-3.5 px-6 font-numeric-data text-numeric-data text-teal-800 text-right font-bold">Rp 24.000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Toast Notification Pattern -->
+<div class="p-4 rounded-[20px] bg-surface-crisp border border-divider shadow-[0_16px_32px_-12px_rgba(22,48,44,0.18)] flex items-center justify-between gap-4">
+<div class="flex items-center gap-3.5 min-w-0">
+<div class="w-10 h-10 rounded-full bg-success-bg text-success-text flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[22px]">check</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md text-text-primary">Transaksi Berhasil Disimpan</span>
+<span class="font-numeric-data text-numeric-data text-xs text-text-muted">#TRX-202410-0042</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-secondary truncate">Struk digital telah dikirimkan ke printer thermal kasir utama.</p>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-sunken text-teal-800 font-label-sm text-label-sm hover:bg-teal-100 transition-colors" type="button">Lihat Struk</button>
+<button aria-label="Tutup notifikasi" class="w-8 h-8 rounded-lg text-text-muted hover:text-text-primary flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- FOOTER METADATA STAMP -->
+<footer class="pt-6 pb-12 border-t border-divider flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-teal-400"></span>
+<span class="font-overline text-overline text-text-muted uppercase tracking-widest">TOKO SARI AMERTA DESIGN SYSTEM SPECIFICATION 2.4 · BALI</span>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-numeric-data text-numeric-data text-xs text-text-secondary">GRID: 8PX FLUID</span>
+<span class="font-numeric-data text-numeric-data text-xs text-text-secondary">SURFACE: #E4EDEA</span>
+<span class="font-numeric-data text-numeric-data text-xs text-text-secondary">ACCESSIBILITY: WCAG 2.1 AA COMPLIANT</span>
+</div>
+</footer>
+</div>
+</div></div></main></div></body></html>
