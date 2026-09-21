@@ -1,0 +1,471 @@
+/* ==========================================================================
+   Layout — rangka aplikasi (sidebar, topbar, konten, footer) + grid halaman
+   Perilaku responsif (DESIGN Stitch §Layout):
+     ≥1280px      sidebar penuh 260px
+     1024–1279px  rail ikon 72px (bisa dilebarkan lewat tombol)
+     <1024px      drawer off-canvas + backdrop
+   ========================================================================== */
+
+.app {
+  --sidebar-current: var(--sidebar-w);
+  display: grid;
+  grid-template-columns: var(--sidebar-current) minmax(0, 1fr);
+  min-height: 100dvh;
+}
+
+.app[data-sidebar="collapsed"] {
+  --sidebar-current: var(--sidebar-w-rail);
+}
+
+.app__main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* ---------- Sidebar ---------- */
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sidebar);
+  display: flex;
+  flex-direction: column;
+  width: var(--sidebar-current);
+  height: 100dvh;
+  background: var(--sidebar-bg);
+  color: var(--sidebar-idle);
+  box-shadow: var(--shadow-sidebar);
+}
+
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: var(--topbar-h);
+  padding: 0 var(--space-5);
+  flex-shrink: 0;
+  color: var(--sidebar-active);
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: var(--radius-pill);
+  background: var(--teal-400);
+  color: var(--teal-950);
+  font: 700 0.875rem/1 var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+.sidebar__brand-text {
+  display: grid;
+  min-width: 0;
+}
+
+.sidebar__brand-name {
+  font: 600 1rem/1.25rem var(--font-display);
+  white-space: nowrap;
+}
+
+.sidebar__brand-sub {
+  font: var(--text-overline);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--sidebar-label);
+}
+
+.sidebar__nav {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-2) var(--space-4) var(--space-4);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(168, 198, 192, 0.35) transparent;
+}
+
+.sidebar__group + .sidebar__group {
+  margin-top: var(--space-5);
+}
+
+.sidebar__group-label {
+  display: block;
+  padding: 0 var(--space-3);
+  margin-bottom: var(--space-2);
+  font: var(--text-overline);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--sidebar-label);
+}
+
+.sidebar__list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar__link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  color: var(--sidebar-idle);
+  font: 500 0.875rem/1.25rem var(--font-body);
+  text-decoration: none;
+  transition: background-color var(--dur-base) var(--ease), color var(--dur-base) var(--ease);
+}
+
+.sidebar__link:hover {
+  background: var(--sidebar-hover-bg);
+  color: var(--sidebar-active);
+}
+
+/* Menu aktif: tiga penanda sekaligus — latar, bobot teks, batang indikator */
+.sidebar__link[aria-current="page"] {
+  background: var(--sidebar-active-bg);
+  color: var(--sidebar-active);
+  font-weight: 600;
+}
+
+.sidebar__link[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 3px;
+  height: 20px;
+  border-radius: 0 3px 3px 0;
+  background: var(--sidebar-indicator);
+  transform: translateY(-50%);
+}
+
+.sidebar__link:focus-visible {
+  box-shadow: 0 0 0 2px var(--teal-400);
+  border-radius: var(--radius-sm);
+}
+
+.sidebar__label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar__footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--sidebar-footer-bg);
+  box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
+}
+
+.sidebar__user {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+}
+
+.sidebar__user-name {
+  font: 600 0.8125rem/1.125rem var(--font-body);
+  color: var(--sidebar-active);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar__user-role {
+  font: var(--text-overline);
+  letter-spacing: 0.04em;
+  color: var(--sidebar-label);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar__logout {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--sidebar-idle);
+  transition: color var(--dur-base) var(--ease), background-color var(--dur-base) var(--ease);
+}
+
+.sidebar__logout:hover {
+  color: var(--sidebar-danger);
+  background: var(--sidebar-hover-bg);
+}
+
+.sidebar__logout:focus-visible {
+  box-shadow: 0 0 0 2px var(--teal-400);
+}
+
+/* Mode rail: label tetap ada untuk pembaca layar, hanya disembunyikan visual */
+.app[data-sidebar="collapsed"] .sidebar__brand {
+  justify-content: center;
+  padding: 0;
+}
+
+.app[data-sidebar="collapsed"] .sidebar__nav {
+  padding-inline: var(--space-3);
+}
+
+.app[data-sidebar="collapsed"] .sidebar__brand-text,
+.app[data-sidebar="collapsed"] .sidebar__label,
+.app[data-sidebar="collapsed"] .sidebar__group-label,
+.app[data-sidebar="collapsed"] .sidebar__user {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.app[data-sidebar="collapsed"] .sidebar__group + .sidebar__group {
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.app[data-sidebar="collapsed"] .sidebar__link {
+  justify-content: center;
+  padding: 0;
+}
+
+.app[data-sidebar="collapsed"] .sidebar__footer {
+  flex-direction: column;
+  padding: var(--space-2);
+}
+
+/* ---------- Topbar ---------- */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-topbar);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  height: var(--topbar-h);
+  padding: 0 var(--page-pad);
+  background: rgba(242, 251, 248, 0.86);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 rgba(203, 218, 213, 0.7);
+}
+
+.topbar__search {
+  flex: 1;
+  max-width: 420px;
+}
+
+.topbar__end {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+
+/* ---------- Konten & footer ---------- */
+
+.content {
+  flex: 1;
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding: var(--space-8) var(--page-pad) var(--space-12);
+}
+
+.content:focus {
+  outline: none;
+}
+
+.app-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-6);
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding: var(--space-4) var(--page-pad) var(--space-6);
+  border-top: 1px solid var(--divider);
+  font: var(--text-caption);
+  color: var(--text-muted);
+}
+
+.app__backdrop {
+  display: none;
+}
+
+/* ---------- Drawer (<1024px) ---------- */
+
+@media (max-width: 1023px) {
+  .app,
+  .app[data-sidebar="collapsed"] {
+    --sidebar-current: var(--sidebar-w);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(var(--sidebar-w), 85vw);
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform var(--dur-slow) var(--ease), visibility 0s linear var(--dur-slow);
+  }
+
+  .app[data-drawer="open"] .sidebar {
+    transform: none;
+    visibility: visible;
+    transition: transform var(--dur-slow) var(--ease), visibility 0s;
+  }
+
+  .app__backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-backdrop);
+    background: rgba(11, 43, 39, 0.45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-base) var(--ease);
+  }
+
+  .app[data-drawer="open"] .app__backdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* ==========================================================================
+   Pola halaman
+   ========================================================================== */
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.page-header__text {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.page-header__subtitle {
+  font: var(--text-small);
+  color: var(--text-secondary);
+  max-width: 68ch;
+}
+
+.page-header__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.section {
+  margin-top: var(--space-12);
+}
+
+.section__header {
+  display: grid;
+  gap: var(--space-1);
+  margin-bottom: var(--space-5);
+}
+
+.section__desc {
+  font: var(--text-small);
+  color: var(--text-secondary);
+}
+
+/* ---------- Grid ---------- */
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--stack-gap, var(--space-5));
+}
+
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cluster-gap, var(--space-3));
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-5);
+}
+
+/* Bento dashboard: kartu utama 2fr, dua kolom kecil 1fr */
+.grid--bento {
+  grid-template-columns: 2fr 1fr 1fr;
+}
+
+.grid--70-30 {
+  grid-template-columns: 7fr 3fr;
+}
+
+.grid--2-1 {
+  grid-template-columns: 2fr 1fr;
+}
+
+.grid--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid--4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 1279px) {
+  .grid--bento {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .grid--bento > :first-child {
+    grid-column: 1 / -1;
+  }
+
+  .grid--4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Semua layout asimetris runtuh jadi satu kolom di bawah 768px */
+@media (max-width: 767px) {
+  .grid--bento,
+  .grid--70-30,
+  .grid--2-1,
+  .grid--2,
+  .grid--4 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

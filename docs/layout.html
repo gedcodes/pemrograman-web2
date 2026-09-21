@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Layout Dasar · Toko Sari Amerta</title>
+  <meta name="description" content="Template master Admin Panel POS Toko Sari Amerta: sidebar, header, area konten, dan footer, beserta katalog komponen design system.">
+  <link rel="icon" href="assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="assets/css/main.css">
+
+  <script type="module" src="assets/js/pages/layout.js"></script>
+</head>
+
+<!-- data-page memilih menu aktif; template memakai "dashboard" untuk memperlihatkan state aktif -->
+<body data-page="dashboard">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li><a href="layout.html">Template</a></li>
+                <li><span aria-current="page">Layout Dasar</span></li>
+              </ol>
+            </nav>
+            <h1>Layout Dasar</h1>
+            <p class="page-header__subtitle">
+              <time data-today></time> · Template master berisi sidebar, header, area konten, dan footer.
+              Bagian di bawah adalah katalog komponen design system.
+            </p>
+          </div>
+          <div class="page-header__actions">
+            <button class="btn" type="button" data-demo="toast">
+              <span class="icon" aria-hidden="true">notifications</span>Tampilkan Toast
+            </button>
+            <button class="btn btn--primary" type="button" data-demo="modal">
+              <span class="icon" aria-hidden="true">delete</span>Contoh Modal Hapus
+            </button>
+          </div>
+        </header>
+
+        <!-- ========== Pola bento dashboard ========== -->
+        <section aria-labelledby="demo-ringkasan">
+          <h2 class="sr-only" id="demo-ringkasan">Ringkasan penjualan hari ini</h2>
+          <div class="grid grid--bento">
+            <article class="card stat stat--hero reveal" style="--i: 0">
+              <div class="stat__head">
+                <h3 class="stat__label">Omzet Hari Ini</h3>
+                <span class="badge badge--success"><span class="icon" aria-hidden="true">trending_up</span>+12,4% vs kemarin</span>
+              </div>
+              <p class="stat__value"><span class="money__prefix">Rp</span>4.317.500</p>
+              <dl class="grid grid--2">
+                <div>
+                  <dt class="stat__label">Kemarin</dt>
+                  <dd class="num"><span class="money__prefix">Rp</span>3.841.200</dd>
+                </div>
+                <div>
+                  <dt class="stat__label">Target Harian</dt>
+                  <dd class="num">88% tercapai</dd>
+                </div>
+              </dl>
+            </article>
+
+            <div class="stack">
+              <article class="card stat reveal" style="--i: 1">
+                <div class="stat__head">
+                  <h3 class="stat__label">Transaksi</h3>
+                  <span class="badge badge--success">+6 transaksi</span>
+                </div>
+                <p class="stat__value">47<span class="stat__unit">struk lunas</span></p>
+                <p class="stat__meta">Rata-rata Rp 91.860/transaksi</p>
+              </article>
+              <article class="card stat reveal" style="--i: 2">
+                <div class="stat__head">
+                  <h3 class="stat__label">Produk Terjual</h3>
+                  <span class="badge badge--danger">−3,1%</span>
+                </div>
+                <p class="stat__value">186<span class="stat__unit">item</span></p>
+                <p class="stat__meta">Didominasi sembako &amp; minuman</p>
+              </article>
+            </div>
+
+            <div class="stack">
+              <article class="card stat reveal" style="--i: 3">
+                <div class="stat__head">
+                  <h3 class="stat__label">Stok Menipis</h3>
+                  <span class="badge badge--warning">Perlu restock</span>
+                </div>
+                <p class="stat__value stat__value--warning">12<span class="stat__unit">produk</span></p>
+                <p class="stat__meta stat__meta--warning">
+                  <span class="icon icon--sm" aria-hidden="true">warning</span>Segera terbitkan PO ke supplier
+                </p>
+              </article>
+              <article class="card stat reveal" style="--i: 4">
+                <div class="stat__head">
+                  <h3 class="stat__label">Margin Kotor</h3>
+                  <span class="badge badge--info">Sehat</span>
+                </div>
+                <p class="stat__value">23,8%</p>
+                <p class="stat__meta">Laba kotor Rp 1.027.565</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== Tombol ========== -->
+        <section class="section" aria-labelledby="demo-tombol">
+          <header class="section__header">
+            <p class="overline">Komponen 01</p>
+            <h2 id="demo-tombol">Tombol</h2>
+            <p class="section__desc">Aksi utama memakai isian solid, aksi sekunder tetap neumorphic. Tombol BAYAR punya tinggi khusus 56px dengan petunjuk tombol F2.</p>
+          </header>
+          <div class="card stack">
+            <div class="cluster">
+              <button class="btn btn--primary" type="button"><span class="icon" aria-hidden="true">add</span>Tambah Produk</button>
+              <button class="btn btn--success" type="button"><span class="icon" aria-hidden="true">check_circle</span>Konfirmasi Lunas</button>
+              <button class="btn btn--danger" type="button"><span class="icon" aria-hidden="true">delete</span>Hapus</button>
+              <button class="btn btn--neutral" type="button"><span class="icon" aria-hidden="true">print</span>Cetak Struk</button>
+              <button class="btn" type="button"><span class="icon" aria-hidden="true">tune</span>Filter</button>
+              <button class="btn btn--ghost" type="button">Lihat Semua<span class="icon" aria-hidden="true">arrow_forward</span></button>
+            </div>
+            <div class="cluster">
+              <button class="btn btn--primary btn--sm" type="button">Simpan</button>
+              <button class="btn btn--sm" type="button">Batal</button>
+              <button class="icon-btn" type="button" aria-label="Muat ulang"><span class="icon" aria-hidden="true">refresh</span></button>
+              <button class="btn btn--primary" type="button" disabled>Nonaktif</button>
+              <button class="btn btn--primary" type="button" data-demo="loading">
+                <span class="icon" aria-hidden="true">save</span>Simpan (klik: loading)
+              </button>
+            </div>
+            <div style="max-width: 420px">
+              <button class="btn btn--success btn--lg btn--block" type="button">
+                <span class="icon icon--lg" aria-hidden="true">payments</span>BAYAR<span class="btn__kbd">F2</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== Badge, chip, segmented ========== -->
+        <section class="section" aria-labelledby="demo-badge">
+          <header class="section__header">
+            <p class="overline">Komponen 02</p>
+            <h2 id="demo-badge">Badge, Chip &amp; Segmented</h2>
+            <p class="section__desc">Badge status selalu berbentuk pil datar dengan ikon + teks. Chip filter bisa diklik sehingga tampil timbul.</p>
+          </header>
+          <div class="grid grid--2">
+            <div class="card stack">
+              <h3 class="stat__label">Status stok &amp; transaksi</h3>
+              <div class="cluster">
+                <span class="badge badge--success"><span class="icon" aria-hidden="true">check_circle</span>Stok Aman</span>
+                <span class="badge badge--warning"><span class="icon" aria-hidden="true">schedule</span>Stok Menipis</span>
+                <span class="badge badge--danger"><span class="icon" aria-hidden="true">cancel</span>Stok Habis</span>
+                <span class="badge badge--info"><span class="icon" aria-hidden="true">draft</span>Draft</span>
+              </div>
+              <div class="cluster">
+                <span class="badge badge--success"><span class="icon" aria-hidden="true">check</span>Lunas</span>
+                <span class="badge badge--warning"><span class="icon" aria-hidden="true">schedule</span>Pending</span>
+                <span class="badge badge--danger"><span class="icon" aria-hidden="true">cancel</span>Dibatalkan</span>
+              </div>
+            </div>
+            <div class="card stack">
+              <h3 class="stat__label">Filter kategori</h3>
+              <div class="cluster" data-demo="chips" role="group" aria-label="Filter kategori">
+                <button class="chip" type="button" aria-pressed="true">Semua <span class="chip__count">248</span></button>
+                <button class="chip" type="button" aria-pressed="false">Makanan</button>
+                <button class="chip" type="button" aria-pressed="false">Minuman</button>
+                <button class="chip" type="button" aria-pressed="false">Sembako</button>
+                <button class="chip" type="button" aria-pressed="false">Kebersihan</button>
+              </div>
+              <div class="segmented" data-demo="segmented" role="group" aria-label="Periode">
+                <button class="segmented__option" type="button" aria-pressed="true">Hari Ini</button>
+                <button class="segmented__option" type="button" aria-pressed="false">7 Hari</button>
+                <button class="segmented__option" type="button" aria-pressed="false">Bulan Ini</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== Form ========== -->
+        <section class="section" aria-labelledby="demo-form">
+          <header class="section__header">
+            <p class="overline">Komponen 03</p>
+            <h2 id="demo-form">Form Input</h2>
+            <p class="section__desc">Label di atas, input inset 48px. Error ditandai tiga cara sekaligus: ring merah, ikon, dan pesan teks.</p>
+          </header>
+          <form class="card" novalidate aria-label="Contoh form produk">
+            <div class="grid grid--2">
+              <div class="field">
+                <label class="field__label" for="demo-nama">
+                  <span>Nama Produk <span class="field__required" aria-hidden="true">*</span></span>
+                  <span class="field__hint">Maks. 120 karakter</span>
+                </label>
+                <div class="control">
+                  <input class="control__input" id="demo-nama" type="text" value="Indomie Goreng Rendang 85g" required maxlength="120">
+                </div>
+                <p class="field__message" id="demo-nama-msg"></p>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="demo-barcode">Barcode (EAN-13)</label>
+                <div class="control">
+                  <span class="icon" aria-hidden="true">barcode_scanner</span>
+                  <input class="control__input control__input--num" id="demo-barcode" type="text" inputmode="numeric" value="8998866200196">
+                </div>
+                <p class="field__message">Scan dengan pemindai atau ketik manual</p>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="demo-kategori">Kategori</label>
+                <div class="control">
+                  <select class="control__input" id="demo-kategori">
+                    <option>Makanan</option>
+                    <option>Minuman</option>
+                    <option>Sembako</option>
+                    <option>Kebersihan</option>
+                  </select>
+                  <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+                </div>
+                <p class="field__message"></p>
+              </div>
+
+              <div class="field is-invalid">
+                <label class="field__label" for="demo-harga-jual">
+                  <span>Harga Jual <span class="field__required" aria-hidden="true">*</span></span>
+                </label>
+                <div class="control">
+                  <span class="control__affix">Rp</span>
+                  <input class="control__input control__input--num" id="demo-harga-jual" type="text" inputmode="numeric"
+                         value="2.500" aria-invalid="true" aria-describedby="demo-harga-jual-msg">
+                  <span class="icon control__status" aria-hidden="true">error</span>
+                </div>
+                <p class="field__message" id="demo-harga-jual-msg">
+                  <span class="icon" aria-hidden="true">warning</span>Harga jual harus lebih besar dari harga beli (Rp 2.850)
+                </p>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="demo-stok">Stok Awal</label>
+                <div class="control">
+                  <input class="control__input control__input--num" id="demo-stok" type="number" min="0" value="184">
+                  <span class="control__affix">Pcs</span>
+                </div>
+                <p class="field__message">Tidak boleh negatif</p>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="demo-kode">Kode Produk</label>
+                <div class="control">
+                  <input class="control__input control__input--num" id="demo-kode" type="text" value="PRD-0249" disabled>
+                </div>
+                <p class="field__message">Dibuat otomatis oleh sistem</p>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="demo-deskripsi">Deskripsi</label>
+                <div class="control control--textarea">
+                  <textarea class="control__input" id="demo-deskripsi" rows="3">Mi instan goreng rasa rendang, kemasan 85 gram.</textarea>
+                </div>
+              </div>
+
+              <div class="stack" style="--stack-gap: var(--space-4); padding-top: var(--space-6)">
+                <label class="switch">
+                  <input class="switch__input" type="checkbox" role="switch" checked>
+                  <span class="switch__track" aria-hidden="true"></span>
+                  Produk aktif dijual
+                </label>
+                <label class="check">
+                  <input type="checkbox">
+                  Izinkan transaksi walau stok fisik habis (backorder)
+                </label>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <!-- ========== Tabel data ========== -->
+        <section class="section" aria-labelledby="demo-tabel">
+          <header class="section__header">
+            <p class="overline">Komponen 04</p>
+            <h2 id="demo-tabel">Tabel Data</h2>
+            <p class="section__desc">Tabel duduk di permukaan putih, baris datar tanpa bayangan, kolom angka rata kanan. Coba tombol hapus pada salah satu baris.</p>
+          </header>
+          <div class="stack" style="--stack-gap: var(--space-4)">
+            <div class="toolbar">
+              <div class="toolbar__search">
+                <label class="sr-only" for="demo-cari">Cari produk</label>
+                <div class="control">
+                  <span class="icon" aria-hidden="true">search</span>
+                  <input class="control__input" id="demo-cari" type="search" placeholder="Cari nama atau barcode produk">
+                </div>
+              </div>
+              <div class="control">
+                <label class="sr-only" for="demo-filter">Filter kategori</label>
+                <select class="control__input" id="demo-filter">
+                  <option>Semua Kategori</option>
+                  <option>Makanan</option>
+                  <option>Minuman</option>
+                  <option>Sembako</option>
+                </select>
+                <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+              </div>
+              <div class="toolbar__end">
+                <button class="btn btn--primary" type="button"><span class="icon" aria-hidden="true">add</span>Tambah Produk</button>
+              </div>
+            </div>
+
+            <div class="table-card">
+              <div class="table-scroll">
+                <table class="table">
+                  <caption class="sr-only">Contoh daftar produk</caption>
+                  <thead>
+                    <tr>
+                      <th class="col-check" scope="col"><input type="checkbox" aria-label="Pilih semua produk"></th>
+                      <th scope="col">Produk</th>
+                      <th scope="col">Kategori</th>
+                      <th class="col-num" scope="col">Harga Beli</th>
+                      <th class="col-num" scope="col">Harga Jual</th>
+                      <th class="col-num" scope="col">Stok</th>
+                      <th class="col-center" scope="col">Status</th>
+                      <th class="col-center" scope="col">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody data-demo="product-rows">
+                    <tr>
+                      <td class="col-check"><input type="checkbox" aria-label="Pilih Indomie Goreng Rendang 85g"></td>
+                      <td>
+                        <div class="table__product">
+                          <img class="thumb" src="assets/img/products/indomie-goreng-rendang-85g.webp" alt="" width="40" height="40" loading="lazy">
+                          <div><span class="table__name">Indomie Goreng Rendang 85g</span><span class="table__sub">8998866200196</span></div>
+                        </div>
+                      </td>
+                      <td>Makanan</td>
+                      <td class="col-num"><span class="money__prefix">Rp</span>2.850</td>
+                      <td class="col-num"><span class="money__prefix">Rp</span>3.500</td>
+                      <td class="col-num">184</td>
+                      <td class="col-center"><span class="badge badge--success">Aman</span></td>
+                      <td class="col-center">
+                        <div class="table__actions">
+                          <button class="icon-btn icon-btn--flat" type="button" aria-label="Ubah Indomie Goreng Rendang 85g"><span class="icon" aria-hidden="true">edit</span></button>
+                          <button class="icon-btn icon-btn--flat icon-btn--danger" type="button" data-action="delete-row" aria-label="Hapus Indomie Goreng Rendang 85g"><span class="icon" aria-hidden="true">delete</span></button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="col-check"><input type="checkbox" aria-label="Pilih Aqua Botol 600ml"></td>
+                      <td>
+                        <div class="table__product">
+                          <img class="thumb" src="assets/img/products/aqua-botol-600ml.webp" alt="" width="40" height="40" loading="lazy">
+                          <div><span class="table__name">Aqua Botol 600ml</span><span class="table__sub">8992753211102</span></div>
+                        </div>
+                      </td>
+                      <td>Minuman</td>
+                      <td class="col-num"><span class="money__prefix">Rp</span>3.100</td>
+                      <td class="col-num"><span class="money__prefix">Rp</span>4.000</td>
+                      <td class="col-num">96</td>
+                      <td class="col-center"><span class="badge badge--success">Aman</span></td>
+                      <td class="col-center">
+                        <div class="table__actions">
+                          <button class="icon-btn icon-btn--flat" type="button" aria-label="Ubah Aqua Botol 600ml"><span class="icon" aria-hidden="true">edit</span></button>
+                          <button class="icon-btn icon-btn--flat icon-btn--danger" type="button" data-action="delete-row" aria-label="Hapus Aqua Botol 600ml"><span class="icon" aria-hidden="true">delete</span></button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="is-selected">
+                      <td class="col-check"><input type="checkbox" aria-label="Pilih Beras Pandan Wangi 5kg" checked></td>
+                      <td>
+                        <div class="table__product">
+                          <img class="thumb" src="assets/img/products/beras-pandan-wangi-5kg.webp" alt="" width="40" height="40" loading="lazy">
+                          <div><span class="table__name">Beras Pandan Wangi 5kg</span><span class="table__sub">8993175102043</span></div>
+                        </div>
+                      </td>
+                      <td>Sembako</td>
+                      <td class="col-num"><span class="money__prefix">Rp</span>68.400</td>
+                      <td class="col-num"><span class="money__prefix">Rp</span>78.000</td>
+                      <td class="col-num">3</td>
+                      <td class="col-center"><span class="badge badge--warning">Menipis</span></td>
+                      <td class="col-center">
+                        <div class="table__actions">
+                          <button class="icon-btn icon-btn--flat" type="button" aria-label="Ubah Beras Pandan Wangi 5kg"><span class="icon" aria-hidden="true">edit</span></button>
+                          <button class="icon-btn icon-btn--flat icon-btn--danger" type="button" data-action="delete-row" aria-label="Hapus Beras Pandan Wangi 5kg"><span class="icon" aria-hidden="true">delete</span></button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="col-check"><input type="checkbox" aria-label="Pilih Gula Pasir Gulaku 1kg"></td>
+                      <td>
+                        <div class="table__product">
+                          <img class="thumb" src="assets/img/products/gula-pasir-gulaku-1kg.webp" alt="" width="40" height="40" loading="lazy">
+                          <div><span class="table__name">Gula Pasir Gulaku 1kg</span><span class="table__sub">8991002341094</span></div>
+                        </div>
+                      </td>
+                      <td>Sembako</td>
+                      <td class="col-num"><span class="money__prefix">Rp</span>15.200</td>
+                      <td class="col-num"><span class="money__prefix">Rp</span>17.800</td>
+                      <td class="col-num">0</td>
+                      <td class="col-center"><span class="badge badge--danger">Habis</span></td>
+                      <td class="col-center">
+                        <div class="table__actions">
+                          <button class="icon-btn icon-btn--flat" type="button" aria-label="Ubah Gula Pasir Gulaku 1kg"><span class="icon" aria-hidden="true">edit</span></button>
+                          <button class="icon-btn icon-btn--flat icon-btn--danger" type="button" data-action="delete-row" aria-label="Hapus Gula Pasir Gulaku 1kg"><span class="icon" aria-hidden="true">delete</span></button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="col-check"><input type="checkbox" aria-label="Pilih Kopi Kapal Api 165g"></td>
+                      <td>
+                        <div class="table__product">
+                          <img class="thumb" src="assets/img/products/kopi-kapal-api-165g.webp" alt="" width="40" height="40" loading="lazy">
+                          <div><span class="table__name">Kopi Kapal Api 165g</span><span class="table__sub">8991001120034</span></div>
+                        </div>
+                      </td>
+                      <td>Minuman</td>
+                      <td class="col-num"><span class="money__prefix">Rp</span>10.100</td>
+                      <td class="col-num"><span class="money__prefix">Rp</span>12.300</td>
+                      <td class="col-num">67</td>
+                      <td class="col-center"><span class="badge badge--success">Aman</span></td>
+                      <td class="col-center">
+                        <div class="table__actions">
+                          <button class="icon-btn icon-btn--flat" type="button" aria-label="Ubah Kopi Kapal Api 165g"><span class="icon" aria-hidden="true">edit</span></button>
+                          <button class="icon-btn icon-btn--flat icon-btn--danger" type="button" data-action="delete-row" aria-label="Hapus Kopi Kapal Api 165g"><span class="icon" aria-hidden="true">delete</span></button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <nav class="pagination" aria-label="Halaman tabel produk">
+                <p class="pagination__info">Menampilkan <strong data-demo="row-count">1–5</strong> dari <strong>248</strong> produk</p>
+                <ul class="pagination__pages">
+                  <li><button class="page-btn" type="button" aria-label="Halaman sebelumnya" disabled><span class="icon icon--sm" aria-hidden="true">chevron_left</span></button></li>
+                  <li><button class="page-btn" type="button" aria-current="page">1</button></li>
+                  <li><button class="page-btn" type="button">2</button></li>
+                  <li><button class="page-btn" type="button">3</button></li>
+                  <li class="pagination__gap" aria-hidden="true">…</li>
+                  <li><button class="page-btn" type="button">50</button></li>
+                  <li><button class="page-btn" type="button" aria-label="Halaman berikutnya"><span class="icon icon--sm" aria-hidden="true">chevron_right</span></button></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== State wajib ========== -->
+        <section class="section" aria-labelledby="demo-state">
+          <header class="section__header">
+            <p class="overline">Komponen 05</p>
+            <h2 id="demo-state">State Kosong &amp; Memuat</h2>
+            <p class="section__desc">Setiap tampilan berbasis data punya state kosong dengan satu aksi penyelesai, dan skeleton berbentuk sama dengan kontennya.</p>
+          </header>
+          <div class="grid grid--2">
+            <div class="card card--crisp empty-state">
+              <span class="empty-state__icon" aria-hidden="true"><span class="icon">shopping_cart</span></span>
+              <h3 class="empty-state__title">Keranjang masih kosong</h3>
+              <p class="empty-state__text">Scan barcode produk pertama untuk memulai transaksi.</p>
+              <button class="btn btn--primary" type="button"><span class="icon" aria-hidden="true">barcode_scanner</span>Mulai Scan Produk</button>
+            </div>
+            <div class="card stack" aria-busy="true" aria-label="Memuat data">
+              <span class="skeleton skeleton--title"></span>
+              <span class="skeleton"></span>
+              <span class="skeleton" style="width: 80%"></span>
+              <span class="skeleton skeleton--block"></span>
+              <span class="skeleton" style="width: 60%"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== Simulasi hak akses ========== -->
+        <section class="section" aria-labelledby="demo-peran">
+          <header class="section__header">
+            <p class="overline">Hak Akses · PERANCANGAN §2.2</p>
+            <h2 id="demo-peran">Simulasi Peran Pengguna</h2>
+            <p class="section__desc">Menu sidebar dibangun dari satu konfigurasi dan disaring per peran. Kasir tidak melihat Master Data, Laporan, maupun Pengaturan.</p>
+          </header>
+          <div class="card cluster" style="justify-content: space-between">
+            <p class="text-small text-secondary">Lihat panel sebagai:</p>
+            <div class="segmented" data-demo="role" role="group" aria-label="Pilih peran">
+              <button class="segmented__option" type="button" data-user="USR-001">Admin / Pemilik</button>
+              <button class="segmented__option" type="button" data-user="USR-008">Kasir</button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>
