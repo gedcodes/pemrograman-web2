@@ -3,10 +3,8 @@
 #  I Gede Yoga Setiawan / 231011401028
 # ─────────────────────────────────────────────────────────────
 
-# ── Berkas panduan tugas (materi dosen, bukan hasil kerja) ──
-DESIGN.*
-Panduan Tugas Mandiri.*
-panduan-tugas-mandiri.*
+# ── Berkas rubrik penilaian dosen ──
+# DESIGN.md dan Panduan Tugas Mandiri sengaja ikut di-commit.
 Rubrik*.pdf
 Rubrik*.docx
 
