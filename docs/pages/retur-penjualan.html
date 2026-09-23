@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Retur Penjualan · Toko Sari Amerta</title>
+  <meta name="description" content="Proses retur penjualan Toko Sari Amerta: cari struk, pilih barang, hitung refund, dan approval admin.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script type="module" src="../assets/js/pages/retur-penjualan.js"></script>
+</head>
+
+<body data-page="retur-penjualan">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Transaksi</li>
+                <li><span aria-current="page">Retur Penjualan</span></li>
+              </ol>
+            </nav>
+            <h1>Retur Penjualan</h1>
+            <p class="page-header__subtitle" data-role-note></p>
+          </div>
+        </header>
+
+        <div class="grid grid--2-1 grid--start">
+          <!-- ========== Form retur ========== -->
+          <section class="card stack" aria-labelledby="form-title">
+            <header class="card__header">
+              <div>
+                <h2 class="card__title card__title--accent" id="form-title">Ajukan Retur</h2>
+                <p class="card__subtitle">Cari struk, pilih barang yang dikembalikan, lalu tentukan alasannya.</p>
+              </div>
+            </header>
+
+            <form class="lookup" data-lookup-form novalidate>
+              <div class="field" data-field="struk">
+                <label class="field__label" for="lookup-struk">
+                  <span>Nomor struk <span class="field__required" aria-hidden="true">*</span></span>
+                  <span class="field__hint">Maks. 7 hari</span>
+                </label>
+                <div class="control">
+                  <span class="icon" aria-hidden="true">receipt_long</span>
+                  <input class="control__input control__input--num" id="lookup-struk" name="struk" type="text" autocomplete="off"
+                         placeholder="TRX-20260921-0012" aria-describedby="lookup-struk-msg">
+                  <span class="icon control__status" aria-hidden="true">error</span>
+                </div>
+                <p class="field__message" id="lookup-struk-msg" data-hint="Tercetak di bagian atas struk pelanggan"></p>
+              </div>
+              <button class="btn btn--primary" type="submit">
+                <span class="icon" aria-hidden="true">search</span>Cari Struk
+              </button>
+            </form>
+
+            <form class="stack stack--tight" id="return-form" data-return-form novalidate hidden>
+              <div class="trx-summary" data-trx-summary></div>
+
+              <fieldset class="fieldset" data-field="items">
+                <legend class="field__label">Barang yang dikembalikan <span class="field__required" aria-hidden="true">*</span></legend>
+                <div class="table-scroll table-scroll--inset">
+                  <table class="table table--compact">
+                    <thead>
+                      <tr>
+                        <th scope="col">Produk</th>
+                        <th class="col-num" scope="col">Dibeli</th>
+                        <th class="col-num" scope="col">Bisa Diretur</th>
+                        <th class="col-center" scope="col">Qty Retur</th>
+                        <th class="col-num" scope="col">Nilai</th>
+                      </tr>
+                    </thead>
+                    <tbody data-lines></tbody>
+                  </table>
+                </div>
+                <p class="field__message" data-hint="Isi jumlah pada baris yang diretur, biarkan 0 untuk yang tidak"></p>
+              </fieldset>
+
+              <div class="form-grid">
+                <div class="field" data-field="alasan">
+                  <label class="field__label" for="alasan">
+                    <span>Alasan retur <span class="field__required" aria-hidden="true">*</span></span>
+                  </label>
+                  <div class="control">
+                    <select class="control__input" id="alasan" name="alasan" aria-describedby="alasan-msg">
+                      <option value="">Pilih alasan</option>
+                    </select>
+                    <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+                  </div>
+                  <p class="field__message" id="alasan-msg" data-hint=""></p>
+                </div>
+                <div class="field">
+                  <span class="field__label">Kondisi barang</span>
+                  <label class="check check--boxed">
+                    <input name="kembali_ke_stok" type="checkbox">
+                    Layak jual, kembalikan ke stok rak
+                  </label>
+                </div>
+                <div class="field field--full" data-field="catatan">
+                  <label class="field__label" for="catatan">
+                    <span>Catatan</span>
+                    <span class="field__hint" data-char-count>0/200</span>
+                  </label>
+                  <div class="control control--textarea">
+                    <textarea class="control__input" id="catatan" name="catatan" maxlength="200" rows="3"
+                              placeholder="Contoh: kemasan penyok, isi masih utuh" aria-describedby="catatan-msg"></textarea>
+                  </div>
+                  <p class="field__message" id="catatan-msg" data-hint="Wajib diisi bila alasan &quot;Alasan lain&quot;"></p>
+                </div>
+              </div>
+
+              <dl class="summary-list summary-list--boxed" aria-live="polite">
+                <div class="summary-list__row"><dt>Nilai barang diretur</dt><dd data-sum="barang">Rp 0</dd></div>
+                <div class="summary-list__row"><dt>Porsi diskon &amp; PPN</dt><dd data-sum="penyesuaian">Rp 0</dd></div>
+                <div class="summary-list__row summary-list__row--strong"><dt>Total refund</dt><dd data-sum="refund">Rp 0</dd></div>
+                <div class="summary-list__row"><dt>Cara pengembalian</dt><dd data-sum="metode">–</dd></div>
+              </dl>
+
+              <div class="modal__footer">
+                <button class="btn btn--ghost" type="button" data-action="reset-form">Batal</button>
+                <button class="btn btn--primary" type="submit">
+                  <span class="icon" aria-hidden="true">assignment_return</span><span data-submit-label>Ajukan Retur</span>
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <aside class="stack" aria-label="Ringkasan dan kebijakan retur">
+            <section class="card stack stack--tight" aria-labelledby="stat-title">
+              <h2 class="card__title" id="stat-title">Bulan Ini</h2>
+              <dl class="summary-list" data-stats></dl>
+            </section>
+            <section class="card stack stack--tight" aria-labelledby="policy-title">
+              <h2 class="card__title" id="policy-title">Kebijakan Retur</h2>
+              <ul class="check-list" role="list">
+                <li>Struk asli wajib ditunjukkan, maksimal <strong>7 hari</strong> setelah pembelian.</li>
+                <li>Refund dihitung proporsional, termasuk porsi diskon member dan PPN pada struk.</li>
+                <li>Retur yang diajukan kasir <strong>menunggu approval</strong> Admin / Pemilik (PERANCANGAN §2.2).</li>
+                <li>Stok bertambah hanya bila barang layak jual dan retur disetujui.</li>
+              </ul>
+            </section>
+          </aside>
+        </div>
+
+        <section class="table-card section" aria-labelledby="list-title" data-table>
+          <header class="table-card__header">
+            <div>
+              <h2 class="card__title" id="list-title">Daftar Retur</h2>
+              <p class="card__subtitle" data-list-subtitle></p>
+            </div>
+            <div class="segmented" role="group" aria-label="Saring status retur" data-status-filter>
+              <button class="segmented__option" type="button" data-status="" aria-pressed="true">Semua</button>
+              <button class="segmented__option" type="button" data-status="menunggu" aria-pressed="false">Menunggu</button>
+              <button class="segmented__option" type="button" data-status="disetujui" aria-pressed="false">Disetujui</button>
+              <button class="segmented__option" type="button" data-status="ditolak" aria-pressed="false">Ditolak</button>
+            </div>
+          </header>
+          <div class="table-scroll">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">No. Retur</th>
+                  <th scope="col">No. Struk</th>
+                  <th scope="col">Barang</th>
+                  <th scope="col">Alasan</th>
+                  <th class="col-num" scope="col">Refund</th>
+                  <th class="col-center" scope="col">Status</th>
+                  <th class="col-center" scope="col">Aksi</th>
+                </tr>
+              </thead>
+              <tbody data-rows></tbody>
+            </table>
+          </div>
+          <nav class="pagination" aria-label="Halaman daftar retur">
+            <p class="pagination__info" data-page-info></p>
+            <ul class="pagination__pages" data-pages></ul>
+          </nav>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ========== Dialog: tolak retur ========== -->
+  <dialog class="modal" id="reject-dialog" aria-labelledby="reject-title">
+    <form class="modal__form" novalidate>
+      <div class="modal__header">
+        <span class="modal__icon modal__icon--danger" aria-hidden="true"><span class="icon">block</span></span>
+        <div class="stack stack--xs">
+          <h2 class="modal__title" id="reject-title" data-dialog-title>Tolak retur</h2>
+          <p class="modal__body" data-dialog-subtitle></p>
+        </div>
+      </div>
+      <div class="field" data-field="catatan_proses">
+        <label class="field__label" for="reject-note">
+          <span>Alasan penolakan <span class="field__required" aria-hidden="true">*</span></span>
+        </label>
+        <div class="control control--textarea">
+          <textarea class="control__input" id="reject-note" name="catatan_proses" rows="3" maxlength="200"
+                    placeholder="Contoh: segel kemasan sudah dibuka" aria-describedby="reject-note-msg"></textarea>
+        </div>
+        <p class="field__message" id="reject-note-msg" data-hint="Dicatat dan terlihat oleh kasir yang mengajukan"></p>
+      </div>
+      <div class="modal__footer">
+        <button class="btn" type="button" data-dialog-cancel>Batal</button>
+        <button class="btn btn--danger" type="submit">Tolak Retur</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>

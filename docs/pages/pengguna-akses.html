@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pengguna &amp; Hak Akses · Toko Sari Amerta</title>
+  <meta name="description" content="Kelola akun admin dan kasir Toko Sari Amerta beserta matriks hak akses per menu.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script type="module" src="../assets/js/pages/pengguna-akses.js"></script>
+</head>
+
+<body data-page="pengguna-akses">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Pengaturan</li>
+                <li><span aria-current="page">Pengguna &amp; Hak Akses</span></li>
+              </ol>
+            </nav>
+            <h1>Pengguna &amp; Hak Akses</h1>
+            <p class="page-header__subtitle">Akun untuk masuk ke admin panel. Peran menentukan menu yang terlihat (PERANCANGAN §2.2).</p>
+          </div>
+          <div class="page-header__actions">
+            <button class="btn btn--primary" type="button" data-action="add">
+              <span class="icon" aria-hidden="true">person_add</span>Tambah Pengguna
+            </button>
+          </div>
+        </header>
+
+        <section class="card metric-strip" aria-label="Ringkasan pengguna">
+          <div class="metric-strip__item">
+            <span class="stat__label">Akun Aktif</span>
+            <span class="metric-strip__value" data-metric="aktif"></span>
+            <span class="text-caption text-muted" data-metric="aktif-meta"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Admin / Pemilik</span>
+            <span class="metric-strip__value" data-metric="admin"></span>
+            <span class="text-caption text-muted">akses penuh semua menu</span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Kasir</span>
+            <span class="metric-strip__value" data-metric="kasir"></span>
+            <span class="text-caption text-muted">kasir, riwayat sendiri, lihat stok</span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Login Terakhir</span>
+            <span class="metric-strip__value metric-strip__value--text" data-metric="login"></span>
+            <span class="text-caption text-muted" data-metric="login-meta"></span>
+          </div>
+        </section>
+
+        <section class="table-card section section--tight" aria-labelledby="users-title" data-table>
+          <header class="table-card__header">
+            <div>
+              <h2 class="card__title" id="users-title">Daftar Pengguna</h2>
+              <p class="card__subtitle">Akun nonaktif tidak bisa login, tetapi riwayat transaksinya tetap tersimpan.</p>
+            </div>
+            <form role="search" data-filters>
+              <label class="sr-only" for="filter-q">Cari pengguna</label>
+              <div class="control control--sm">
+                <span class="icon" aria-hidden="true">search</span>
+                <input class="control__input" id="filter-q" name="q" type="search" autocomplete="off" placeholder="Cari nama atau username">
+              </div>
+            </form>
+          </header>
+          <div class="table-scroll">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Pengguna</th>
+                  <th scope="col">Peran</th>
+                  <th scope="col">Jabatan &amp; Kontak</th>
+                  <th class="col-num" scope="col">Transaksi</th>
+                  <th scope="col">Login Terakhir</th>
+                  <th class="col-center" scope="col">Status</th>
+                  <th class="col-center" scope="col">Aksi</th>
+                </tr>
+              </thead>
+              <tbody data-rows aria-live="polite"></tbody>
+            </table>
+          </div>
+          <nav class="pagination" aria-label="Halaman daftar pengguna">
+            <p class="pagination__info" data-page-info></p>
+            <ul class="pagination__pages" data-pages></ul>
+          </nav>
+        </section>
+
+        <section class="table-card section" aria-labelledby="matrix-title">
+          <header class="table-card__header">
+            <div>
+              <h2 class="card__title" id="matrix-title">Matriks Hak Akses</h2>
+              <p class="card__subtitle">Dibaca langsung dari definisi menu, sehingga selalu sama dengan sidebar yang tampil.</p>
+            </div>
+            <span class="badge badge--info"><span class="icon" aria-hidden="true">shield</span>Pemisahan tugas</span>
+          </header>
+          <div class="table-scroll">
+            <table class="table matrix">
+              <thead>
+                <tr>
+                  <th scope="col">Menu</th>
+                  <th class="col-center" scope="col">Admin / Pemilik</th>
+                  <th class="col-center" scope="col">Kasir</th>
+                </tr>
+              </thead>
+              <tbody data-matrix></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ========== Dialog: tambah / ubah pengguna ========== -->
+  <dialog class="modal modal--lg" id="user-dialog" aria-labelledby="user-dialog-title">
+    <form class="modal__form" novalidate>
+      <div class="modal__header">
+        <span class="modal__icon" aria-hidden="true"><span class="icon">manage_accounts</span></span>
+        <div class="stack stack--xs">
+          <h2 class="modal__title" id="user-dialog-title" data-dialog-title>Tambah Pengguna</h2>
+          <p class="modal__body" data-dialog-subtitle></p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="field" data-field="nama">
+          <label class="field__label" for="user-nama">
+            <span>Nama lengkap <span class="field__required" aria-hidden="true">*</span></span>
+          </label>
+          <div class="control">
+            <input class="control__input" id="user-nama" name="nama" type="text" maxlength="60" autocomplete="name" aria-describedby="user-nama-msg">
+            <span class="icon control__status" aria-hidden="true">error</span>
+          </div>
+          <p class="field__message" id="user-nama-msg" data-hint="Tercetak di struk sebagai kasir"></p>
+        </div>
+
+        <div class="field" data-field="username">
+          <label class="field__label" for="user-username">
+            <span>Username <span class="field__required" aria-hidden="true">*</span></span>
+          </label>
+          <div class="control">
+            <span class="icon" aria-hidden="true">alternate_email</span>
+            <input class="control__input control__input--num" id="user-username" name="username" type="text" maxlength="20"
+                   autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="kadek.ayu" aria-describedby="user-username-msg">
+            <span class="icon control__status" aria-hidden="true">error</span>
+          </div>
+          <p class="field__message" id="user-username-msg" data-hint="Huruf kecil, angka, titik, atau garis bawah"></p>
+        </div>
+
+        <fieldset class="fieldset field" data-field="peran">
+          <legend class="field__label">Peran <span class="field__required" aria-hidden="true">*</span></legend>
+          <div class="segmented segmented--block">
+            <label class="segmented__option segmented__option--radio">
+              <input class="sr-only" type="radio" name="peran" value="kasir" checked>Kasir
+            </label>
+            <label class="segmented__option segmented__option--radio">
+              <input class="sr-only" type="radio" name="peran" value="admin">Admin / Pemilik
+            </label>
+          </div>
+          <p class="field__message" data-hint="Admin melihat semua menu termasuk Laporan & Pengaturan"></p>
+        </fieldset>
+
+        <div class="field" data-field="keterangan">
+          <label class="field__label" for="user-keterangan">
+            <span>Jabatan / shift <span class="field__required" aria-hidden="true">*</span></span>
+          </label>
+          <div class="control">
+            <input class="control__input" id="user-keterangan" name="keterangan" type="text" maxlength="40" list="keterangan-options"
+                   aria-describedby="user-keterangan-msg">
+            <span class="icon control__status" aria-hidden="true">error</span>
+          </div>
+          <datalist id="keterangan-options">
+            <option value="Kasir · Shift Pagi">
+            <option value="Kasir · Shift Siang">
+            <option value="Kasir Cadangan">
+            <option value="Supervisor Toko">
+            <option value="Pemilik Toko">
+          </datalist>
+          <p class="field__message" id="user-keterangan-msg" data-hint="Tampil di sidebar di bawah nama"></p>
+        </div>
+
+        <div class="field" data-field="no_hp">
+          <label class="field__label" for="user-hp">No. HP</label>
+          <div class="control">
+            <span class="icon" aria-hidden="true">smartphone</span>
+            <input class="control__input control__input--num" id="user-hp" name="no_hp" type="tel" maxlength="20" autocomplete="tel"
+                   aria-describedby="user-hp-msg">
+            <span class="icon control__status" aria-hidden="true">error</span>
+          </div>
+          <p class="field__message" id="user-hp-msg" data-hint="Opsional"></p>
+        </div>
+
+        <div class="field" data-field="pin">
+          <label class="field__label" for="user-pin">
+            <span>PIN login <span class="field__required" aria-hidden="true" data-pin-required>*</span></span>
+            <span class="field__hint">6 digit</span>
+          </label>
+          <div class="control">
+            <span class="icon" aria-hidden="true">pin</span>
+            <input class="control__input control__input--num" id="user-pin" name="pin" type="password" inputmode="numeric"
+                   maxlength="6" autocomplete="new-password" aria-describedby="user-pin-msg">
+            <span class="icon control__status" aria-hidden="true">error</span>
+          </div>
+          <p class="field__message" id="user-pin-msg" data-hint=""></p>
+        </div>
+
+        <div class="field" data-field="pin_konfirmasi">
+          <label class="field__label" for="user-pin2">Ulangi PIN</label>
+          <div class="control">
+            <input class="control__input control__input--num" id="user-pin2" name="pin_konfirmasi" type="password" inputmode="numeric"
+                   maxlength="6" autocomplete="new-password" aria-describedby="user-pin2-msg">
+            <span class="icon control__status" aria-hidden="true">error</span>
+          </div>
+          <p class="field__message" id="user-pin2-msg" data-hint=""></p>
+        </div>
+      </div>
+
+      <label class="switch" data-active-switch>
+        <input class="switch__input" name="aktif" type="checkbox" role="switch" checked>
+        <span class="switch__track" aria-hidden="true"></span>
+        Akun aktif (boleh login)
+      </label>
+
+      <div class="modal__footer">
+        <button class="btn" type="button" data-dialog-cancel>Batal</button>
+        <button class="btn btn--primary" type="submit">
+          <span class="icon" aria-hidden="true">check</span>Simpan Pengguna
+        </button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>

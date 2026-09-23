@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stok Barang · Toko Sari Amerta</title>
+  <meta name="description" content="Monitoring stok barang Toko Sari Amerta: status stok, penyesuaian manual, dan riwayat mutasi.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script type="module" src="../assets/js/pages/stok-barang.js"></script>
+</head>
+
+<body data-page="stok-barang">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Inventori</li>
+                <li><span aria-current="page">Stok Barang</span></li>
+              </ol>
+            </nav>
+            <h1>Stok Barang</h1>
+            <p class="page-header__subtitle" data-subtitle></p>
+          </div>
+          <div class="page-header__actions">
+            <button class="btn" type="button" data-action="export">
+              <span class="icon" aria-hidden="true">download</span>Export CSV
+            </button>
+            <a class="btn btn--primary" href="form-barang-masuk.html" data-admin-only>
+              <span class="icon" aria-hidden="true">move_to_inbox</span>Catat Barang Masuk
+            </a>
+          </div>
+        </header>
+
+        <div class="grid grid--4" role="group" aria-label="Saring berdasarkan status stok" data-status-cards>
+          <button class="mini-stat" type="button" data-status="" aria-pressed="true">
+            <span class="mini-stat__text">
+              <span class="mini-stat__label">Nilai Persediaan</span>
+              <span class="mini-stat__value" data-count="nilai">Rp 0</span>
+            </span>
+            <span class="mini-stat__icon" aria-hidden="true"><span class="icon">account_balance_wallet</span></span>
+          </button>
+          <button class="mini-stat mini-stat--success" type="button" data-status="aman" aria-pressed="false">
+            <span class="mini-stat__text">
+              <span class="mini-stat__label">Stok Aman</span>
+              <span class="mini-stat__value"><span data-count="aman">0</span> SKU</span>
+            </span>
+            <span class="mini-stat__icon" aria-hidden="true"><span class="icon">check_circle</span></span>
+          </button>
+          <button class="mini-stat mini-stat--warning" type="button" data-status="menipis" aria-pressed="false">
+            <span class="mini-stat__text">
+              <span class="mini-stat__label">Stok Menipis</span>
+              <span class="mini-stat__value"><span data-count="menipis">0</span> SKU</span>
+            </span>
+            <span class="mini-stat__icon" aria-hidden="true"><span class="icon">warning</span></span>
+          </button>
+          <button class="mini-stat mini-stat--danger" type="button" data-status="habis" aria-pressed="false">
+            <span class="mini-stat__text">
+              <span class="mini-stat__label">Stok Habis</span>
+              <span class="mini-stat__value"><span data-count="habis">0</span> SKU</span>
+            </span>
+            <span class="mini-stat__icon" aria-hidden="true"><span class="icon">error</span></span>
+          </button>
+        </div>
+
+        <div class="tabs section section--tight" role="tablist" aria-label="Tampilan stok">
+          <button class="tabs__tab" type="button" role="tab" id="tab-stok" aria-controls="panel-stok" aria-selected="true" data-tab="stok">
+            <span class="icon" aria-hidden="true">layers</span>Daftar Stok
+          </button>
+          <button class="tabs__tab" type="button" role="tab" id="tab-mutasi" aria-controls="panel-mutasi" aria-selected="false" tabindex="-1" data-tab="mutasi">
+            <span class="icon" aria-hidden="true">history</span>Riwayat Mutasi
+          </button>
+        </div>
+
+        <!-- ========== Panel: daftar stok ========== -->
+        <div class="stack stack--tight tab-panel" role="tabpanel" id="panel-stok" aria-labelledby="tab-stok">
+          <form class="toolbar" role="search" aria-label="Saring stok" data-filters>
+            <div class="toolbar__search">
+              <label class="sr-only" for="filter-q">Cari produk</label>
+              <div class="control">
+                <span class="icon" aria-hidden="true">search</span>
+                <input class="control__input" id="filter-q" name="q" type="search" autocomplete="off" placeholder="Cari nama atau barcode">
+              </div>
+            </div>
+            <div class="control">
+              <label class="sr-only" for="filter-kategori">Kategori</label>
+              <select class="control__input" id="filter-kategori" name="kategori">
+                <option value="">Semua Kategori</option>
+              </select>
+              <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+            </div>
+            <div class="control">
+              <label class="sr-only" for="filter-status">Status stok</label>
+              <select class="control__input" id="filter-status" name="status">
+                <option value="">Semua Status</option>
+                <option value="aman">Stok Aman</option>
+                <option value="menipis">Stok Menipis</option>
+                <option value="habis">Stok Habis</option>
+              </select>
+              <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+            </div>
+            <p class="toolbar__end text-small text-secondary" data-readonly-note hidden>
+              <span class="icon icon--sm" aria-hidden="true">visibility</span> Mode lihat saja untuk kasir
+            </p>
+          </form>
+
+          <section class="table-card" aria-labelledby="stock-title" data-stock-table>
+            <h2 class="sr-only" id="stock-title">Daftar stok produk</h2>
+            <div class="table-scroll">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Produk</th>
+                    <th scope="col">Kategori</th>
+                    <th class="col-num" scope="col">Stok</th>
+                    <th class="col-num" scope="col">Minimum</th>
+                    <th scope="col">Ketersediaan</th>
+                    <th class="col-num" scope="col">Nilai Stok</th>
+                    <th class="col-center" scope="col">Status</th>
+                    <th class="col-center" scope="col">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody data-rows aria-live="polite"></tbody>
+              </table>
+            </div>
+            <nav class="pagination" aria-label="Halaman daftar stok">
+              <p class="pagination__info" data-page-info></p>
+              <ul class="pagination__pages" data-pages></ul>
+            </nav>
+          </section>
+        </div>
+
+        <!-- ========== Panel: riwayat mutasi ========== -->
+        <div class="stack stack--tight tab-panel" role="tabpanel" id="panel-mutasi" aria-labelledby="tab-mutasi" hidden>
+          <form class="toolbar" role="search" aria-label="Saring mutasi" data-move-filters>
+            <div class="toolbar__search">
+              <label class="sr-only" for="move-q">Cari produk atau referensi</label>
+              <div class="control">
+                <span class="icon" aria-hidden="true">search</span>
+                <input class="control__input" id="move-q" name="q" type="search" autocomplete="off" placeholder="Cari produk atau nomor dokumen">
+              </div>
+            </div>
+            <div class="control">
+              <label class="sr-only" for="move-tipe">Jenis mutasi</label>
+              <select class="control__input" id="move-tipe" name="tipe">
+                <option value="">Semua Jenis</option>
+              </select>
+              <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+            </div>
+          </form>
+
+          <section class="table-card" aria-labelledby="move-title" data-move-table>
+            <h2 class="sr-only" id="move-title">Riwayat mutasi stok</h2>
+            <div class="table-scroll">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Waktu</th>
+                    <th scope="col">Produk</th>
+                    <th scope="col">Jenis</th>
+                    <th class="col-num" scope="col">Perubahan</th>
+                    <th class="col-num" scope="col">Stok</th>
+                    <th scope="col">Referensi / Catatan</th>
+                    <th scope="col">Oleh</th>
+                  </tr>
+                </thead>
+                <tbody data-rows></tbody>
+              </table>
+            </div>
+            <nav class="pagination" aria-label="Halaman riwayat mutasi">
+              <p class="pagination__info" data-page-info></p>
+              <ul class="pagination__pages" data-pages></ul>
+            </nav>
+          </section>
+        </div>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ========== Dialog: penyesuaian stok ========== -->
+  <dialog class="modal" id="adjust-dialog" aria-labelledby="adjust-title">
+    <form class="modal__form" novalidate>
+      <div class="modal__header">
+        <span class="modal__icon" aria-hidden="true"><span class="icon">tune</span></span>
+        <div class="stack stack--xs">
+          <h2 class="modal__title" id="adjust-title" data-dialog-title>Penyesuaian Stok</h2>
+          <p class="modal__body" data-dialog-subtitle></p>
+        </div>
+      </div>
+
+      <fieldset class="fieldset">
+        <legend class="field__label">Arah penyesuaian</legend>
+        <div class="segmented segmented--block">
+          <label class="segmented__option segmented__option--radio">
+            <input class="sr-only" type="radio" name="arah" value="kurang" checked>Kurangi stok
+          </label>
+          <label class="segmented__option segmented__option--radio">
+            <input class="sr-only" type="radio" name="arah" value="tambah">Tambah stok
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="form-grid">
+        <div class="field" data-field="jumlah">
+          <label class="field__label" for="adjust-jumlah">
+            <span>Jumlah <span class="field__required" aria-hidden="true">*</span></span>
+          </label>
+          <div class="control">
+            <input class="control__input control__input--num" id="adjust-jumlah" name="jumlah" type="number" min="1" step="1"
+                   inputmode="numeric" aria-describedby="adjust-jumlah-msg">
+            <span class="control__affix" data-unit></span>
+            <span class="icon control__status" aria-hidden="true">error</span>
+          </div>
+          <p class="field__message" id="adjust-jumlah-msg" data-hint=""></p>
+        </div>
+
+        <div class="field" data-field="alasan">
+          <label class="field__label" for="adjust-alasan">
+            <span>Alasan <span class="field__required" aria-hidden="true">*</span></span>
+          </label>
+          <div class="control">
+            <select class="control__input" id="adjust-alasan" name="alasan" aria-describedby="adjust-alasan-msg">
+              <option value="">Pilih alasan</option>
+            </select>
+            <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+          </div>
+          <p class="field__message" id="adjust-alasan-msg" data-hint=""></p>
+        </div>
+
+        <div class="field field--full" data-field="catatan">
+          <label class="field__label" for="adjust-catatan">Catatan</label>
+          <div class="control control--textarea">
+            <textarea class="control__input" id="adjust-catatan" name="catatan" rows="2" maxlength="160"
+                      placeholder="Contoh: 2 botol bocor di rak depan" aria-describedby="adjust-catatan-msg"></textarea>
+          </div>
+          <p class="field__message" id="adjust-catatan-msg" data-hint="Wajib diisi bila alasan &quot;Lainnya&quot;"></p>
+        </div>
+      </div>
+
+      <div class="adjust-preview" aria-live="polite">
+        <span class="stat__label">Stok setelah penyesuaian</span>
+        <span class="adjust-preview__value" data-preview></span>
+      </div>
+
+      <div class="modal__footer">
+        <button class="btn" type="button" data-dialog-cancel>Batal</button>
+        <button class="btn btn--primary" type="submit">
+          <span class="icon" aria-hidden="true">check</span>Simpan Penyesuaian
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ========== Dialog: kartu stok per produk ========== -->
+  <dialog class="modal modal--lg" id="history-dialog" aria-labelledby="history-title">
+    <form class="modal__form" method="dialog">
+      <div class="modal__header">
+        <span class="modal__icon" aria-hidden="true"><span class="icon">history</span></span>
+        <div class="stack stack--xs">
+          <h2 class="modal__title" id="history-title" data-history-title>Kartu Stok</h2>
+          <p class="modal__body" data-history-meta></p>
+        </div>
+      </div>
+      <ol class="timeline timeline--dense" data-history-list></ol>
+      <div class="modal__footer">
+        <button class="btn" type="submit" value="close">Tutup</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>

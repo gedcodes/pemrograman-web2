@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Satuan · Toko Sari Amerta</title>
+  <meta name="description" content="Master data satuan jual Toko Sari Amerta: pieces, botol, sak, kilogram, dan lainnya.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script type="module" src="../assets/js/pages/satuan.js"></script>
+</head>
+
+<body data-page="satuan">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Master Data</li>
+                <li><span aria-current="page">Satuan</span></li>
+              </ol>
+            </nav>
+            <h1>Satuan</h1>
+            <p class="page-header__subtitle">Satuan jual yang tercetak di keranjang kasir, stok, dan faktur barang masuk.</p>
+          </div>
+          <div class="page-header__actions">
+            <button class="btn btn--primary" type="button" data-action="add">
+              <span class="icon" aria-hidden="true">add</span>Tambah Satuan
+            </button>
+          </div>
+        </header>
+
+        <div class="grid grid--2-1">
+          <section class="table-card" aria-labelledby="table-title" data-table>
+            <header class="table-card__header">
+              <div>
+                <h2 class="card__title" id="table-title">Daftar Satuan</h2>
+                <p class="card__subtitle" data-subtitle></p>
+              </div>
+              <form class="toolbar__search" role="search" data-filters>
+                <label class="sr-only" for="filter-q">Cari satuan</label>
+                <div class="control control--sm">
+                  <span class="icon" aria-hidden="true">search</span>
+                  <input class="control__input" id="filter-q" name="q" type="search" autocomplete="off" placeholder="Cari nama atau singkatan">
+                </div>
+              </form>
+            </header>
+            <div class="table-scroll">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Kode</th>
+                    <th scope="col">Nama Satuan</th>
+                    <th scope="col">Singkatan</th>
+                    <th class="col-num" scope="col">Produk</th>
+                    <th scope="col">Contoh Produk</th>
+                    <th class="col-center" scope="col">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody data-rows aria-live="polite"></tbody>
+              </table>
+            </div>
+            <nav class="pagination" aria-label="Halaman daftar satuan">
+              <p class="pagination__info" data-page-info></p>
+              <ul class="pagination__pages" data-pages></ul>
+            </nav>
+          </section>
+
+          <aside class="card stack stack--tight" aria-labelledby="usage-title">
+            <header class="card__header">
+              <h2 class="card__title" id="usage-title">Pemakaian</h2>
+              <span class="badge badge--info" data-usage-badge></span>
+            </header>
+            <ul class="bar-list" role="list" data-usage></ul>
+            <div class="notice">
+              <span class="icon" aria-hidden="true">info</span>
+              <p>Satuan yang masih dipakai produk tidak bisa dihapus. Ubah dulu satuan produknya di Form Produk.</p>
+            </div>
+          </aside>
+        </div>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ========== Dialog: tambah / ubah satuan ========== -->
+  <dialog class="modal" id="unit-dialog" aria-labelledby="unit-dialog-title">
+    <form class="modal__form" novalidate>
+      <div class="modal__header">
+        <span class="modal__icon" aria-hidden="true"><span class="icon">straighten</span></span>
+        <div class="stack stack--xs">
+          <h2 class="modal__title" id="unit-dialog-title" data-dialog-title>Tambah Satuan</h2>
+          <p class="modal__body" data-dialog-subtitle></p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="field" data-field="nama">
+          <label class="field__label" for="unit-nama">
+            <span>Nama satuan <span class="field__required" aria-hidden="true">*</span></span>
+          </label>
+          <div class="control">
+            <input class="control__input" id="unit-nama" name="nama" type="text" maxlength="30" autocomplete="off"
+                   placeholder="Contoh: Renteng" aria-describedby="unit-nama-msg">
+            <span class="icon control__status" aria-hidden="true">error</span>
+          </div>
+          <p class="field__message" id="unit-nama-msg" data-hint="Nama lengkap satuan"></p>
+        </div>
+
+        <div class="field" data-field="singkatan">
+          <label class="field__label" for="unit-singkatan">
+            <span>Singkatan <span class="field__required" aria-hidden="true">*</span></span>
+            <span class="field__hint">Maks. 6</span>
+          </label>
+          <div class="control">
+            <input class="control__input control__input--num" id="unit-singkatan" name="singkatan" type="text" maxlength="6"
+                   autocomplete="off" placeholder="Rtg" aria-describedby="unit-singkatan-msg">
+            <span class="icon control__status" aria-hidden="true">error</span>
+          </div>
+          <p class="field__message" id="unit-singkatan-msg" data-hint="Tercetak di struk & keranjang"></p>
+        </div>
+      </div>
+
+      <div class="modal__footer">
+        <button class="btn" type="button" data-dialog-cancel>Batal</button>
+        <button class="btn btn--primary" type="submit">
+          <span class="icon" aria-hidden="true">check</span>Simpan
+        </button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>

@@ -1,0 +1,84 @@
+/* ==========================================================================
+   Print — dipakai halaman laporan & kasir.
+   body[data-print="laporan"] → cetak isi halaman tanpa sidebar/topbar
+   body[data-print="struk"]   → cetak struk saja (dari .print-root), 80mm
+   ========================================================================== */
+
+/* Wadah struk untuk dicetak; tidak pernah tampil di layar */
+.print-root {
+  display: none;
+}
+
+@media print {
+  @page {
+    margin: 12mm;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .sidebar,
+  .topbar,
+  .app__backdrop,
+  .app-footer,
+  .skip-link,
+  .toast-region,
+  .page-header__actions,
+  .range-form .segmented,
+  .action-bar,
+  .pagination,
+  .notif__panel,
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  .app {
+    display: block;
+  }
+
+  .content {
+    max-width: none;
+    padding: 0;
+  }
+
+  .card,
+  .table-card,
+  .mini-stat {
+    background: #fff;
+    box-shadow: none;
+    border: 1px solid var(--divider);
+    break-inside: avoid;
+  }
+
+  .grid--2-1,
+  .grid--70-30 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Mode laporan: panel struk tidak ikut dicetak */
+  body[data-print="laporan"] [data-print-section="struk"] {
+    display: none !important;
+  }
+
+  /* Mode struk: hanya .print-root yang dicetak */
+  body[data-print="struk"] > :not(.print-root) {
+    display: none !important;
+  }
+
+  body[data-print="struk"] .print-root {
+    display: block;
+  }
+
+  body[data-print="struk"] .receipt {
+    width: 80mm;
+    max-width: none;
+    margin: 0;
+    box-shadow: none;
+    font-size: 9pt;
+  }
+
+  body[data-print="struk"] .receipt::after {
+    display: none;
+  }
+}

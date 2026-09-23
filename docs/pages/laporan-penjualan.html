@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laporan Penjualan · Toko Sari Amerta</title>
+  <meta name="description" content="Rekap penjualan per periode, produk terlaris, dan pratinjau struk siap cetak.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script type="module" src="../assets/js/pages/laporan-penjualan.js"></script>
+</head>
+
+<body data-page="laporan-penjualan">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Laporan</li>
+                <li><span aria-current="page">Penjualan</span></li>
+              </ol>
+            </nav>
+            <h1>Laporan Penjualan</h1>
+            <p class="page-header__subtitle" data-range-label></p>
+          </div>
+          <div class="page-header__actions">
+            <button class="btn" type="button" data-action="export">
+              <span class="icon" aria-hidden="true">download</span>Export CSV
+            </button>
+            <button class="btn btn--neutral" type="button" data-action="print-report">
+              <span class="icon" aria-hidden="true">print</span>Cetak Laporan
+            </button>
+          </div>
+        </header>
+
+        <form class="card range-form" data-range-form novalidate aria-label="Periode laporan">
+          <div class="segmented" role="group" aria-label="Periode cepat" data-presets>
+            <button class="segmented__option" type="button" data-preset="7d" aria-pressed="false">7 Hari</button>
+            <button class="segmented__option" type="button" data-preset="30d" aria-pressed="false">30 Hari</button>
+            <button class="segmented__option" type="button" data-preset="month" aria-pressed="true">Bulan Ini</button>
+            <button class="segmented__option" type="button" data-preset="last-month" aria-pressed="false">Bulan Lalu</button>
+          </div>
+          <div class="range-form__dates">
+            <div class="field" data-field="from">
+              <label class="field__label" for="range-from">Dari</label>
+              <div class="control control--sm">
+                <input class="control__input" id="range-from" name="from" type="date" required aria-describedby="range-msg">
+              </div>
+            </div>
+            <div class="field" data-field="to">
+              <label class="field__label" for="range-to">Sampai</label>
+              <div class="control control--sm">
+                <input class="control__input" id="range-to" name="to" type="date" required aria-describedby="range-msg">
+              </div>
+            </div>
+          </div>
+          <p class="field__message range-form__message" id="range-msg" data-range-msg></p>
+        </form>
+
+        <section class="card metric-strip section section--tight" aria-label="Angka kunci periode ini">
+          <div class="metric-strip__item">
+            <span class="stat__label">Total Penjualan</span>
+            <span class="metric-strip__value" data-metric="omzet"></span>
+            <span data-metric="omzet-change"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Jumlah Transaksi</span>
+            <span class="metric-strip__value" data-metric="trx"></span>
+            <span data-metric="trx-change"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Rata-rata / Transaksi</span>
+            <span class="metric-strip__value" data-metric="avg"></span>
+            <span class="text-caption text-muted" data-metric="items"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Laba Kotor</span>
+            <span class="metric-strip__value" data-metric="laba"></span>
+            <span class="text-caption text-muted" data-metric="margin"></span>
+          </div>
+        </section>
+
+        <div class="grid grid--2-1 section section--tight">
+          <article class="card stack">
+            <header class="card__header">
+              <div>
+                <h2 class="card__title">Penjualan per Hari</h2>
+                <p class="card__subtitle">Omzet transaksi lunas, termasuk PPN</p>
+              </div>
+              <span class="badge badge--info" data-peak></span>
+            </header>
+            <div class="chart-box chart-box--fill">
+              <canvas id="daily-chart" role="img" aria-label="Grafik penjualan per hari"></canvas>
+            </div>
+          </article>
+
+          <article class="card stack">
+            <header class="card__header">
+              <h2 class="card__title">Ringkasan Keuangan</h2>
+            </header>
+            <dl class="summary-list" data-finance></dl>
+            <h3 class="stat__label">Metode Pembayaran</h3>
+            <ul class="payment-list" role="list" data-payments></ul>
+          </article>
+        </div>
+
+        <div class="grid grid--2-1 section section--tight">
+          <section class="table-card" aria-labelledby="top-title">
+            <header class="table-card__header">
+              <div>
+                <h2 class="card__title" id="top-title">Produk Terlaris</h2>
+                <p class="card__subtitle">Sepuluh produk dengan kuantitas terjual terbanyak</p>
+              </div>
+            </header>
+            <div class="table-scroll">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="col-center" scope="col">Rank</th>
+                    <th scope="col">Produk</th>
+                    <th class="col-num" scope="col">Terjual</th>
+                    <th class="col-num" scope="col">Penjualan</th>
+                    <th class="col-num" scope="col">Laba</th>
+                    <th class="col-num" scope="col">Margin</th>
+                  </tr>
+                </thead>
+                <tbody data-top-products></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="card stack stack--tight" aria-labelledby="receipt-title" data-print-section="struk">
+            <header class="card__header">
+              <h2 class="card__title" id="receipt-title">Pratinjau Struk</h2>
+              <span class="badge badge--success"><span class="icon" aria-hidden="true">print</span>Termal 80mm</span>
+            </header>
+            <div class="field">
+              <label class="field__label" for="receipt-select">Transaksi</label>
+              <div class="control control--sm">
+                <select class="control__input" id="receipt-select" data-receipt-select></select>
+                <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+              </div>
+            </div>
+            <div class="receipt-stage" data-receipt></div>
+            <button class="btn btn--neutral btn--block" type="button" data-action="print-receipt">
+              <span class="icon" aria-hidden="true">print</span>Cetak Struk
+            </button>
+          </section>
+        </div>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

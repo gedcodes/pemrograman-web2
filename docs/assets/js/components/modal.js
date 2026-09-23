@@ -30,7 +30,7 @@ export function confirmDialog({
     <form class="modal__form" method="dialog">
       <div class="modal__header">
         <span class="modal__icon ${style.icon}" aria-hidden="true"><span class="icon">${icon}</span></span>
-        <div class="stack" style="--stack-gap: var(--space-2)">
+        <div class="stack stack--xs">
           <h2 class="modal__title" id="confirm-title">${escapeHtml(title)}</h2>
           <p class="modal__body" id="confirm-message">${escapeHtml(message)}</p>
         </div>

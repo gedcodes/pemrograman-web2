@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kasir (POS) · Toko Sari Amerta</title>
+  <meta name="description" content="Halaman kasir Toko Sari Amerta: scan barcode, keranjang, dan pembayaran tunai atau non-tunai (Midtrans).">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script defer src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <script type="module" src="../assets/js/pages/kasir.js"></script>
+</head>
+
+<body data-page="kasir">
+  <a class="skip-link" href="#pos-search">Lewati ke pencarian produk</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content content--pos" id="main" tabindex="-1">
+        <h1 class="sr-only">Kasir (Point of Sale)</h1>
+        <div class="pos">
+          <!-- ========== Zona katalog ========== -->
+          <section class="pos__catalog" aria-labelledby="catalog-title">
+            <h2 class="sr-only" id="catalog-title">Katalog produk</h2>
+            <form class="pos__search" role="search" data-scan-form>
+              <label class="sr-only" for="pos-search">Scan barcode atau cari nama produk</label>
+              <div class="control control--lg">
+                <span class="icon" aria-hidden="true">search</span>
+                <input class="control__input" id="pos-search" type="search" autocomplete="off"
+                       placeholder="Scan barcode atau ketik nama produk" aria-describedby="pos-search-hint">
+                <kbd class="kbd">/</kbd>
+              </div>
+              <button class="btn btn--primary btn--scan" type="submit" aria-label="Tambahkan produk hasil pencarian">
+                <span class="icon icon--lg" aria-hidden="true">barcode_scanner</span>
+              </button>
+            </form>
+            <p class="sr-only" id="pos-search-hint">Tekan Enter untuk menambahkan produk dengan barcode yang cocok.</p>
+
+            <div class="chip-row" role="group" aria-label="Filter kategori" data-category-chips></div>
+            <div class="product-grid" data-product-grid></div>
+            <p class="sr-only" aria-live="polite" data-announcer></p>
+          </section>
+
+          <!-- ========== Panel keranjang ========== -->
+          <aside class="cart" id="cart" aria-labelledby="cart-title">
+            <header class="cart__header">
+              <div>
+                <h2 class="cart__title" id="cart-title">Keranjang</h2>
+                <p class="cart__trx num" data-trx-number></p>
+              </div>
+              <div class="cluster cluster--tight">
+                <button class="btn btn--sm" type="button" data-action="open-held" hidden>
+                  <span class="icon icon--sm" aria-hidden="true">pause_circle</span><span data-held-count></span>
+                </button>
+                <button class="icon-btn icon-btn--danger-soft" type="button" data-action="clear-cart" aria-label="Kosongkan keranjang">
+                  <span class="icon" aria-hidden="true">delete_sweep</span>
+                </button>
+              </div>
+            </header>
+
+            <div class="cart__cashier" data-cashier></div>
+
+            <div class="field">
+              <label class="field__label" for="cart-member">Pelanggan</label>
+              <div class="control control--sm">
+                <span class="icon" aria-hidden="true">loyalty</span>
+                <select class="control__input" id="cart-member" data-member>
+                  <option value="">Umum (bukan member)</option>
+                </select>
+                <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+              </div>
+            </div>
+
+            <ul class="cart__lines" role="list" data-cart-lines></ul>
+
+            <dl class="cart__summary">
+              <div class="cart__row"><dt>Subtotal</dt><dd class="num" data-sum="subtotal"></dd></div>
+              <div class="cart__row cart__row--discount" data-discount-row hidden>
+                <dt data-discount-label>Diskon Member</dt><dd class="num" data-sum="diskon"></dd>
+              </div>
+              <div class="cart__row"><dt data-tax-label>PPN</dt><dd class="num" data-sum="pajak"></dd></div>
+              <div class="cart__row cart__row--total"><dt>Total</dt><dd data-sum="total"></dd></div>
+            </dl>
+
+            <button class="btn btn--success btn--lg btn--block" type="button" data-action="pay" disabled>
+              <span class="icon icon--lg" aria-hidden="true">payments</span>BAYAR<span class="btn__kbd">F2</span>
+            </button>
+            <div class="cart__secondary">
+              <button class="btn" type="button" data-action="hold">
+                <span class="icon" aria-hidden="true">pause_circle</span>Tahan
+              </button>
+              <button class="btn btn--danger-soft" type="button" data-action="cancel">
+                <span class="icon" aria-hidden="true">cancel</span>Batalkan
+              </button>
+            </div>
+          </aside>
+        </div>
+
+        <!-- Ringkasan menempel di bawah layar pada perangkat kecil -->
+        <div class="pos-bar" data-pos-bar>
+          <a class="pos-bar__summary" href="#cart">
+            <span class="text-caption text-muted"><span data-bar-count>0</span> item · lihat keranjang</span>
+            <span class="pos-bar__total" data-bar-total></span>
+          </a>
+          <button class="btn btn--success" type="button" data-action="pay" disabled>BAYAR</button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ========== Dialog: buka shift (flow 4.1) ========== -->
+  <dialog class="modal" id="shift-dialog" aria-labelledby="shift-title">
+    <form class="modal__form" data-shift-form novalidate>
+      <div class="modal__header">
+        <span class="modal__icon" aria-hidden="true"><span class="icon">lock_open</span></span>
+        <div class="stack stack--xs">
+          <h2 class="modal__title" id="shift-title">Buka Shift Kasir</h2>
+          <p class="modal__body" data-shift-info></p>
+        </div>
+      </div>
+      <div class="field" data-field="modal">
+        <label class="field__label" for="shift-cash">
+          <span>Modal awal di laci kas <span class="field__required" aria-hidden="true">*</span></span>
+        </label>
+        <div class="control control--lg">
+          <span class="control__affix">Rp</span>
+          <input class="control__input control__input--num control__input--big" id="shift-cash" type="text" inputmode="numeric"
+                 autocomplete="off" required data-money aria-describedby="shift-cash-msg">
+          <span class="icon control__status" aria-hidden="true">error</span>
+        </div>
+        <p class="field__message" id="shift-cash-msg">Hitung uang kembalian yang tersedia sebelum melayani pelanggan</p>
+      </div>
+      <div class="modal__footer">
+        <a class="btn btn--ghost" data-page-link="dashboard">Kembali ke Dashboard</a>
+        <button class="btn btn--primary" type="submit"><span class="icon" aria-hidden="true">play_arrow</span>Buka Shift</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ========== Dialog: pembayaran (Tunai & Non-Tunai) ========== -->
+  <dialog class="modal modal--lg" id="payment-dialog" aria-labelledby="payment-title">
+    <div class="modal__form">
+      <div class="modal__header">
+        <div class="stack stack--xs">
+          <h2 class="modal__title" id="payment-title">Pembayaran</h2>
+          <p class="text-small text-secondary" data-pay-meta></p>
+        </div>
+        <button class="icon-btn" type="button" data-action="close-payment" aria-label="Tutup pembayaran">
+          <span class="icon" aria-hidden="true">close</span>
+        </button>
+      </div>
+
+      <div class="pay-total">
+        <span class="stat__label">Total Tagihan</span>
+        <span class="pay-total__value" data-pay-total></span>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Metode pembayaran">
+        <button class="tabs__tab" type="button" role="tab" id="tab-tunai" aria-controls="panel-tunai" aria-selected="true" data-tab="tunai">
+          <span class="icon" aria-hidden="true">payments</span>Tunai
+        </button>
+        <button class="tabs__tab" type="button" role="tab" id="tab-nontunai" aria-controls="panel-nontunai" aria-selected="false" tabindex="-1" data-tab="nontunai">
+          <span class="icon" aria-hidden="true">qr_code_2</span>Non-Tunai (Midtrans)
+        </button>
+      </div>
+
+      <!-- Tunai -->
+      <form class="stack stack--tight" role="tabpanel" id="panel-tunai" aria-labelledby="tab-tunai" data-cash-form novalidate>
+        <div class="field" data-field="cash">
+          <label class="field__label" for="cash-input">Uang diterima</label>
+          <div class="control control--lg">
+            <span class="control__affix">Rp</span>
+            <input class="control__input control__input--num control__input--big" id="cash-input" type="text" inputmode="numeric"
+                   autocomplete="off" data-money aria-describedby="cash-msg">
+            <span class="icon control__status" aria-hidden="true">error</span>
+          </div>
+          <p class="field__message" id="cash-msg"></p>
+        </div>
+        <div class="quick-amounts" role="group" aria-label="Nominal cepat" data-quick-amounts></div>
+        <div class="change-panel" data-change-panel aria-live="polite">
+          <span class="stat__label">Kembalian</span>
+          <span class="change-panel__value" data-change></span>
+        </div>
+        <div class="modal__footer">
+          <button class="btn" type="button" data-action="close-payment">Batal (Esc)</button>
+          <button class="btn btn--success" type="submit" data-cash-submit disabled>
+            <span class="icon" aria-hidden="true">print</span>Konfirmasi &amp; Cetak Struk
+          </button>
+        </div>
+      </form>
+
+      <!-- Non-tunai: Midtrans Payment Link (PERANCANGAN §4.3 & §5) -->
+      <div class="stack stack--tight" role="tabpanel" id="panel-nontunai" aria-labelledby="tab-nontunai" hidden>
+        <div class="notice notice--warning" data-link-warning hidden>
+          <span class="icon" aria-hidden="true">warning</span>
+          <p>URL Payment Link masih contoh. Ganti di <code>assets/js/core/settings.js</code> atau menu Pengaturan → Metode Pembayaran.</p>
+        </div>
+        <div class="qr-box">
+          <div class="qr-box__code" data-qr role="img" aria-label="Kode QR Payment Link Midtrans"></div>
+          <div class="qr-box__text">
+            <p class="text-small text-secondary">Minta pelanggan memindai kode QR, lalu mengisi nominal:</p>
+            <p class="qr-box__amount" data-pay-amount></p>
+            <button class="btn btn--ghost btn--sm" type="button" data-action="copy-amount">
+              <span class="icon icon--sm" aria-hidden="true">content_copy</span>Salin nominal
+            </button>
+            <a class="btn btn--sm" data-payment-link target="_blank" rel="noopener">
+              <span class="icon icon--sm" aria-hidden="true">open_in_new</span>Buka Payment Link di tab baru
+            </a>
+          </div>
+        </div>
+        <fieldset class="channel-picker">
+          <legend class="field__label">Channel yang dipakai pelanggan</legend>
+          <div class="cluster" data-channels></div>
+        </fieldset>
+        <div class="notice">
+          <span class="icon" aria-hidden="true">info</span>
+          <p>Status dikonfirmasi <strong>manual</strong> oleh kasir setelah memeriksa notifikasi sukses di layar Midtrans. Tanpa back-end, aplikasi tidak menerima webhook.</p>
+        </div>
+        <div class="modal__footer">
+          <button class="btn btn--warning-soft" type="button" data-action="save-pending">
+            <span class="icon" aria-hidden="true">schedule</span>Simpan sebagai Pending
+          </button>
+          <button class="btn btn--success" type="button" data-action="confirm-paid">
+            <span class="icon" aria-hidden="true">check_circle</span>Konfirmasi Lunas
+          </button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ========== Dialog: transaksi selesai ========== -->
+  <dialog class="modal modal--lg" id="done-dialog" aria-labelledby="done-title">
+    <div class="modal__form">
+      <div class="modal__header">
+        <span class="modal__icon modal__icon--success" aria-hidden="true"><span class="icon">check_circle</span></span>
+        <div class="stack stack--xs">
+          <h2 class="modal__title" id="done-title">Pembayaran berhasil</h2>
+          <p class="modal__body" data-done-meta></p>
+        </div>
+      </div>
+      <div class="change-panel change-panel--big" data-done-change hidden>
+        <span class="stat__label">Kembalian untuk pelanggan</span>
+        <span class="change-panel__value" data-done-change-value></span>
+      </div>
+      <div class="receipt-stage receipt-stage--short" data-done-receipt></div>
+      <div class="modal__footer">
+        <button class="btn btn--neutral" type="button" data-action="print-receipt">
+          <span class="icon" aria-hidden="true">print</span>Cetak Struk
+        </button>
+        <button class="btn btn--primary" type="button" data-action="new-transaction" autofocus>
+          <span class="icon" aria-hidden="true">add_shopping_cart</span>Transaksi Baru (Enter)
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ========== Dialog: transaksi ditahan ========== -->
+  <dialog class="modal" id="held-dialog" aria-labelledby="held-title">
+    <form class="modal__form" method="dialog">
+      <div class="modal__header">
+        <span class="modal__icon" aria-hidden="true"><span class="icon">pause_circle</span></span>
+        <div class="stack stack--xs">
+          <h2 class="modal__title" id="held-title">Transaksi Ditahan</h2>
+          <p class="modal__body">Pilih transaksi untuk dilanjutkan.</p>
+        </div>
+      </div>
+      <ul class="item-list" role="list" data-held-list></ul>
+      <div class="modal__footer">
+        <button class="btn" type="submit" value="cancel">Tutup</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>

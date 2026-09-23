@@ -35,8 +35,48 @@ export function parseNumber(text) {
   return Number(digits) * (negative ? -1 : 1);
 }
 
+/** 4.317.500 → "Rp 4,3 jt" (sumbu grafik & ringkasan) */
+const compactFormatter = new Intl.NumberFormat('id-ID', { notation: 'compact', maximumFractionDigits: 1 });
+
+export function formatCompactRupiah(value) {
+  return `Rp ${compactFormatter.format(value)}`;
+}
+
+const percentFormatter = new Intl.NumberFormat('id-ID', { style: 'percent', maximumFractionDigits: 1 });
+const changeFormatter = new Intl.NumberFormat('id-ID', {
+  style: 'percent',
+  maximumFractionDigits: 1,
+  signDisplay: 'exceptZero',
+});
+
+/** 0.238 → "23,8%" */
+export function formatPercent(ratio) {
+  return percentFormatter.format(ratio);
+}
+
+/** 0.124 → "+12,4%" */
+export function formatChange(ratio) {
+  return changeFormatter.format(ratio);
+}
+
 export function formatDateLong(date = new Date()) {
   return longDateFormatter.format(date);
+}
+
+const shortDateFormatter = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+
+/** "21 Sep 2026" */
+export function formatDateShort(date) {
+  return shortDateFormatter.format(date);
+}
+
+/** "10:32" — titik dua agar sama dengan tampilan struk */
+export function formatTime(date) {
+  return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+}
+
+export function formatDateTime(date) {
+  return `${formatDateShort(date)}, ${formatTime(date)}`;
 }
 
 /** Awalan nama Bali ("I", "Ni") dilewati: "I Wayan Surya Adnyana" → "WS". */

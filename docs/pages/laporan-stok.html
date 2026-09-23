@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laporan Stok · Toko Sari Amerta</title>
+  <meta name="description" content="Laporan stok dan mutasi barang Toko Sari Amerta: valuasi persediaan, perputaran stok, barang laris, dan dead stock.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script type="module" src="../assets/js/pages/laporan-stok.js"></script>
+</head>
+
+<body data-page="laporan-stok">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Laporan</li>
+                <li><span aria-current="page">Laporan Stok</span></li>
+              </ol>
+            </nav>
+            <h1>Laporan Stok &amp; Mutasi</h1>
+            <p class="page-header__subtitle" data-range-label></p>
+          </div>
+          <div class="page-header__actions">
+            <button class="btn" type="button" data-action="export">
+              <span class="icon" aria-hidden="true">download</span>Export CSV
+            </button>
+            <button class="btn btn--neutral" type="button" data-action="print">
+              <span class="icon" aria-hidden="true">print</span>Cetak Laporan
+            </button>
+          </div>
+        </header>
+
+        <form class="card range-form" data-range-form novalidate aria-label="Periode laporan">
+          <div class="segmented" role="group" aria-label="Periode cepat" data-presets>
+            <button class="segmented__option" type="button" data-preset="7d" aria-pressed="false">7 Hari</button>
+            <button class="segmented__option" type="button" data-preset="30d" aria-pressed="true">30 Hari</button>
+            <button class="segmented__option" type="button" data-preset="month" aria-pressed="false">Bulan Ini</button>
+            <button class="segmented__option" type="button" data-preset="last-month" aria-pressed="false">Bulan Lalu</button>
+          </div>
+          <div class="range-form__dates">
+            <div class="field" data-field="from">
+              <label class="field__label" for="range-from">Dari</label>
+              <div class="control control--sm">
+                <input class="control__input" id="range-from" name="from" type="date" required aria-describedby="range-msg">
+              </div>
+            </div>
+            <div class="field" data-field="to">
+              <label class="field__label" for="range-to">Sampai</label>
+              <div class="control control--sm">
+                <input class="control__input" id="range-to" name="to" type="date" required aria-describedby="range-msg">
+              </div>
+            </div>
+          </div>
+          <p class="field__message range-form__message" id="range-msg" data-range-msg></p>
+        </form>
+
+        <section class="card metric-strip section section--tight" aria-label="Angka kunci persediaan">
+          <div class="metric-strip__item">
+            <span class="stat__label">Nilai Persediaan Akhir</span>
+            <span class="metric-strip__value" data-metric="nilai"></span>
+            <span class="text-caption text-muted" data-metric="nilai-meta"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Unit Masuk / Keluar</span>
+            <span class="metric-strip__value" data-metric="arus"></span>
+            <span class="text-caption text-muted" data-metric="arus-meta"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Perputaran Stok</span>
+            <span class="metric-strip__value" data-metric="turnover"></span>
+            <span class="text-caption text-muted" data-metric="turnover-meta"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Risiko Stok</span>
+            <span class="metric-strip__value metric-strip__value--warning" data-metric="risiko"></span>
+            <span class="text-caption text-muted" data-metric="risiko-meta"></span>
+          </div>
+        </section>
+
+        <div class="grid grid--70-30 section section--tight">
+          <article class="card stack">
+            <header class="card__header">
+              <div>
+                <h2 class="card__title">Arus Barang per Hari</h2>
+                <p class="card__subtitle">Unit diterima dari supplier dibanding unit terjual di kasir</p>
+              </div>
+            </header>
+            <div class="chart-box chart-box--fill">
+              <canvas id="flow-chart" role="img" aria-label="Grafik barang masuk dan keluar per hari"></canvas>
+            </div>
+          </article>
+
+          <article class="card stack stack--tight">
+            <header class="card__header">
+              <h2 class="card__title">Nilai per Kategori</h2>
+            </header>
+            <ul class="bar-list" role="list" data-category-values></ul>
+          </article>
+        </div>
+
+        <div class="notice section section--tight" data-restock-notice hidden>
+          <span class="icon" aria-hidden="true">auto_awesome</span>
+          <p data-restock-text></p>
+          <a class="btn btn--primary btn--sm notice__action" data-restock-link>
+            <span class="icon icon--sm" aria-hidden="true">add_shopping_cart</span>Buat Draf Barang Masuk
+          </a>
+        </div>
+
+        <div class="toolbar section section--tight" data-print-hide>
+          <div class="chip-row" role="group" aria-label="Saring analisis" data-views>
+            <button class="chip" type="button" data-view="" aria-pressed="true">Semua Barang<span class="chip__count" data-view-count=""></span></button>
+            <button class="chip" type="button" data-view="kritis" aria-pressed="false">Stok Kritis<span class="chip__count" data-view-count="kritis"></span></button>
+            <button class="chip" type="button" data-view="laris" aria-pressed="false">Fast Moving<span class="chip__count" data-view-count="laris"></span></button>
+            <button class="chip" type="button" data-view="mati" aria-pressed="false">Tidak Terjual<span class="chip__count" data-view-count="mati"></span></button>
+          </div>
+          <form class="toolbar toolbar__end" role="search" aria-label="Saring laporan stok" data-filters>
+            <label class="sr-only" for="filter-q">Cari produk</label>
+            <div class="control control--sm">
+              <span class="icon" aria-hidden="true">search</span>
+              <input class="control__input" id="filter-q" name="q" type="search" autocomplete="off" placeholder="Cari produk">
+            </div>
+            <div class="control control--sm">
+              <label class="sr-only" for="filter-kategori">Kategori</label>
+              <select class="control__input" id="filter-kategori" name="kategori">
+                <option value="">Semua Kategori</option>
+              </select>
+              <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+            </div>
+            <div class="control control--sm">
+              <label class="sr-only" for="filter-sort">Urutkan</label>
+              <select class="control__input" id="filter-sort" name="sort">
+                <option value="nilai">Nilai tertinggi</option>
+                <option value="keluar">Terjual terbanyak</option>
+                <option value="cover">Hari stok tersisa</option>
+                <option value="nama">Nama A–Z</option>
+              </select>
+              <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+            </div>
+          </form>
+        </div>
+
+        <section class="table-card section section--tight" aria-labelledby="table-title" data-table>
+          <h2 class="sr-only" id="table-title">Mutasi stok per produk</h2>
+          <div class="table-scroll">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Produk</th>
+                  <th class="col-num" scope="col">Stok Awal</th>
+                  <th class="col-num" scope="col">Masuk (+)</th>
+                  <th class="col-num" scope="col">Keluar (−)</th>
+                  <th class="col-num" scope="col">Penyesuaian</th>
+                  <th class="col-num" scope="col">Stok Akhir</th>
+                  <th class="col-num" scope="col">HPP Satuan</th>
+                  <th class="col-num" scope="col">Nilai Akhir</th>
+                  <th class="col-num" scope="col">Sisa Hari</th>
+                  <th class="col-center" scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody data-rows></tbody>
+              <tfoot data-totals></tfoot>
+            </table>
+          </div>
+          <nav class="pagination" aria-label="Halaman laporan stok">
+            <p class="pagination__info" data-page-info></p>
+            <ul class="pagination__pages" data-pages></ul>
+          </nav>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

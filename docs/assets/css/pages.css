@@ -1,0 +1,423 @@
+/* ==========================================================================
+   Pages — pola yang hanya dipakai satu atau dua halaman:
+   login, tabel laba rugi, matriks hak akses, dan bagian form khusus.
+   ========================================================================== */
+
+/* ---------- Login (index.html) ---------- */
+
+.auth {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  min-height: 100dvh;
+}
+
+.auth__brand {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-8);
+  padding: var(--space-12) var(--space-12) var(--space-8);
+  background: var(--sidebar-bg);
+  color: var(--sidebar-idle);
+}
+
+.auth__brand-top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.auth__logo {
+  width: 56px;
+  height: 56px;
+}
+
+.auth__store {
+  font: 600 1.25rem/1.4 var(--font-display);
+  color: var(--sidebar-active);
+}
+
+.auth__sub {
+  font: var(--text-overline);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--sidebar-label);
+}
+
+.auth__pitch {
+  display: grid;
+  gap: var(--space-6);
+  max-width: 44ch;
+}
+
+.auth__headline {
+  font: 600 2.25rem/1.2 var(--font-display);
+  letter-spacing: var(--tracking-display);
+  color: var(--sidebar-active);
+}
+
+.auth__points {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: var(--text-body);
+}
+
+.auth__points li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.auth__points .icon {
+  color: var(--sidebar-indicator);
+}
+
+.auth__foot {
+  font: var(--text-caption);
+  color: var(--sidebar-label);
+}
+
+.auth__panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  padding: var(--space-8) var(--space-5);
+}
+
+.auth__card {
+  display: grid;
+  gap: var(--space-5);
+  width: min(440px, 100%);
+  padding: var(--space-8);
+  border-radius: var(--radius-2xl);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-raised-md);
+}
+
+.auth__legal {
+  font: var(--text-caption);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.control__input--pin {
+  letter-spacing: 0.3em;
+}
+
+.control__toggle {
+  margin-right: var(--space-2);
+}
+
+.demo-accounts {
+  display: grid;
+  gap: var(--space-3);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--divider);
+}
+
+.demo-accounts__list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.demo-account {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--surface-crisp);
+  box-shadow: var(--shadow-crisp);
+  color: var(--text-primary);
+  text-align: left;
+  transition: transform var(--dur-fast) var(--ease);
+}
+
+.demo-account:hover {
+  transform: translateY(-1px);
+}
+
+.demo-account:active {
+  transform: scale(0.99);
+}
+
+.demo-account:focus-visible {
+  box-shadow: var(--shadow-crisp), var(--focus-ring);
+  border-radius: var(--radius-md);
+}
+
+.demo-account[data-inactive] {
+  opacity: 0.7;
+}
+
+.demo-account__text {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+
+.demo-account__name {
+  font: var(--text-label);
+}
+
+.demo-account__meta {
+  font: 500 0.6875rem/1rem var(--font-mono);
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 1023px) {
+  .auth {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .auth__brand {
+    padding: var(--space-6) var(--space-5);
+  }
+
+  .auth__pitch {
+    display: none;
+  }
+}
+
+@media (max-width: 479px) {
+  .auth__card {
+    padding: var(--space-6) var(--space-5);
+  }
+}
+
+/* ---------- Laporan laba rugi ---------- */
+
+.statement th[scope="row"] {
+  padding: 10px var(--space-4) 10px var(--space-8);
+  font: var(--text-small);
+  color: var(--text-primary);
+  text-align: left;
+  text-transform: none;
+  letter-spacing: 0;
+  white-space: normal;
+  background: transparent;
+  border-bottom: 1px solid var(--divider);
+}
+
+.statement td {
+  height: auto;
+  padding-block: 10px;
+}
+
+.statement__section th {
+  padding: var(--space-4) var(--space-4) var(--space-2);
+  background: var(--surface-crisp);
+  color: var(--teal-800);
+  font: var(--text-overline);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+}
+
+.statement__subtotal th[scope="row"],
+.statement__subtotal td {
+  background: var(--surface-header);
+  font-weight: 600;
+}
+
+.statement__subtotal th[scope="row"] {
+  padding-left: var(--space-4);
+}
+
+.statement__highlight th[scope="row"],
+.statement__highlight td {
+  background: var(--teal-100);
+  color: var(--teal-900);
+  font-weight: 600;
+}
+
+.statement__highlight th[scope="row"] {
+  padding-left: var(--space-4);
+  font: var(--text-h3);
+  font-weight: 600;
+}
+
+.statement__total th[scope="row"],
+.statement__total td {
+  background: var(--teal-900);
+  color: var(--text-on-dark);
+  font-weight: 600;
+  border-bottom: 0;
+}
+
+.statement__total th[scope="row"] {
+  padding-left: var(--space-4);
+  font: var(--text-h3);
+  font-weight: 600;
+}
+
+.statement tbody .statement__total td.text-danger {
+  color: var(--sidebar-danger);
+}
+
+.statement tbody tr:hover {
+  background: transparent;
+}
+
+/* ---------- Matriks hak akses ---------- */
+
+.matrix th[scope="row"] {
+  padding: 10px var(--space-4) 10px var(--space-6);
+  background: transparent;
+  color: var(--text-primary);
+  font: var(--text-small);
+  text-transform: none;
+  letter-spacing: 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.matrix__group th {
+  padding-top: var(--space-4);
+  background: var(--surface-crisp);
+  color: var(--teal-800);
+}
+
+.matrix__menu {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.matrix__menu .icon {
+  color: var(--text-muted);
+}
+
+/* ---------- Retur: cari struk & ringkasan transaksi ---------- */
+
+.lookup {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.lookup .field {
+  flex: 1;
+}
+
+/* Tombol sejajar dengan kotak input, bukan dengan label */
+.lookup > .btn {
+  margin-top: calc(1.25rem + var(--space-2));
+}
+
+.trx-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-6);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--surface-crisp);
+  box-shadow: var(--shadow-crisp);
+}
+
+.trx-summary__main {
+  display: grid;
+  gap: 2px;
+}
+
+.trx-summary__id {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.trx-summary__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  margin: 0;
+}
+
+.trx-summary__facts dt {
+  font: var(--text-overline);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.trx-summary__facts dd {
+  font: var(--text-label);
+}
+
+/* ---------- Barang masuk: pemilih produk baris ---------- */
+
+.line-picker {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-2) var(--space-3);
+}
+
+.line-picker__message {
+  grid-column: 1 / -1;
+}
+
+.line-picker.is-invalid .control {
+  box-shadow: var(--shadow-inset), var(--error-ring);
+}
+
+.line-picker.is-invalid .field__message {
+  color: var(--danger-text);
+}
+
+@media (max-width: 559px) {
+  .lookup,
+  .line-picker {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lookup > .btn {
+    margin-top: 0;
+  }
+}
+
+/* ---------- Stok barang: pratinjau penyesuaian ---------- */
+
+.adjust-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--surface-header);
+}
+
+.adjust-preview__value {
+  font: 500 1rem/1.4 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Pajak & diskon: keranjang simulasi ---------- */
+
+.sim-list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: var(--text-small);
+}
+
+.sim-list__item {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}

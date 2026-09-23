@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lembar Hitung Opname · Toko Sari Amerta</title>
+  <meta name="description" content="Lembar hitung fisik stok opname: input qty fisik, selisih otomatis, dan finalisasi rekonsiliasi stok.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script type="module" src="../assets/js/pages/form-stok-opname.js"></script>
+</head>
+
+<!-- Bagian dari menu Stok Opname; kasir membuka dalam mode lihat saja -->
+<body data-page="stok-opname">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Inventori</li>
+                <li><a href="stok-opname.html">Stok Opname</a></li>
+                <li><span aria-current="page" data-crumb>Lembar Hitung</span></li>
+              </ol>
+            </nav>
+            <h1 data-title>Lembar Hitung Fisik</h1>
+            <p class="page-header__subtitle" data-subtitle></p>
+          </div>
+          <span data-status-badge></span>
+        </header>
+
+        <div class="card card--crisp empty-state" data-not-found hidden>
+          <span class="empty-state__icon" aria-hidden="true"><span class="icon">search_off</span></span>
+          <p class="empty-state__title">Sesi opname tidak ditemukan</p>
+          <p class="empty-state__text">Sesi mungkin sudah dihapus. Kembali ke daftar untuk memulai sesi baru.</p>
+          <a class="btn btn--primary" href="stok-opname.html">Kembali ke Stok Opname</a>
+        </div>
+
+        <div class="grid grid--2-1" data-sheet>
+          <div class="stack">
+            <section class="card" aria-labelledby="sec-param">
+              <header class="card__header">
+                <h2 class="card__title card__title--accent" id="sec-param">Parameter Sesi</h2>
+                <span class="overline" data-mode-label></span>
+              </header>
+              <dl class="fact-grid" data-facts></dl>
+            </section>
+
+            <section class="card stack stack--tight" aria-labelledby="sec-sheet">
+              <header class="card__header">
+                <div>
+                  <h2 class="card__title card__title--accent" id="sec-sheet">Lembar Input Hitung</h2>
+                  <p class="card__subtitle" data-sheet-hint></p>
+                </div>
+                <div class="segmented" role="group" aria-label="Saring baris" data-row-filter>
+                  <button class="segmented__option" type="button" data-filter="" aria-pressed="true">Semua</button>
+                  <button class="segmented__option" type="button" data-filter="belum" aria-pressed="false">Belum Dihitung</button>
+                  <button class="segmented__option" type="button" data-filter="selisih" aria-pressed="false">Selisih</button>
+                </div>
+              </header>
+
+              <label class="switch" data-reveal hidden>
+                <input class="switch__input" type="checkbox" role="switch" data-reveal-toggle>
+                <span class="switch__track" aria-hidden="true"></span>
+                Tampilkan stok buku &amp; selisih (untuk pengawas)
+              </label>
+
+              <form class="pos__search" role="search" data-scan-form data-editable>
+                <label class="sr-only" for="scan">Scan barcode atau cari produk</label>
+                <div class="control">
+                  <span class="icon" aria-hidden="true">barcode_scanner</span>
+                  <input class="control__input" id="scan" type="search" autocomplete="off"
+                         placeholder="Scan barcode atau ketik nama, Enter untuk lompat ke barisnya">
+                  <kbd class="kbd">/</kbd>
+                </div>
+                <button class="btn btn--primary" type="submit">
+                  <span class="icon" aria-hidden="true">search</span>Cari
+                </button>
+              </form>
+
+              <div class="table-scroll table-scroll--inset">
+                <table class="table table--compact table--lines">
+                  <thead>
+                    <tr>
+                      <th scope="col">Produk</th>
+                      <th class="col-num" scope="col">Stok Buku</th>
+                      <th scope="col">Hitung Fisik</th>
+                      <th class="col-num" scope="col">Selisih</th>
+                      <th class="col-num" scope="col">Nilai Selisih</th>
+                    </tr>
+                  </thead>
+                  <tbody data-rows></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+
+          <div class="stack">
+            <section class="card stack stack--tight" aria-labelledby="sec-progress">
+              <header class="card__header">
+                <h2 class="card__title card__title--accent" id="sec-progress">Progres &amp; Akurasi</h2>
+                <span class="badge badge--info" data-progress-badge></span>
+              </header>
+              <div class="meter meter--lg" role="progressbar" aria-valuemin="0" data-progress aria-label="Progres penghitungan">
+                <div class="meter__fill" data-progress-fill></div>
+              </div>
+              <dl class="summary-list" data-progress-list aria-live="polite"></dl>
+              <button class="btn btn--block btn--sm" type="button" data-action="fill-rest" data-editable>
+                <span class="icon icon--sm" aria-hidden="true">done_all</span>Tandai sisa sesuai stok buku
+              </button>
+            </section>
+
+            <section class="card stack stack--tight" aria-labelledby="sec-recon">
+              <h2 class="card__title card__title--accent" id="sec-recon">Saat Finalisasi</h2>
+              <ul class="check-list" role="list">
+                <li>Selisih (fisik − stok buku) diterapkan ke stok terkini, sehingga penjualan selama sesi tetap aman.</li>
+                <li>Setiap selisih tercatat sebagai mutasi <strong>Stok Opname</strong> di Riwayat Mutasi.</li>
+                <li>Nilai selisih masuk Laporan Laba Rugi sebagai penyesuaian persediaan.</li>
+              </ul>
+            </section>
+
+            <section class="card stack stack--tight" aria-labelledby="sec-note">
+              <h2 class="card__title card__title--accent" id="sec-note">Catatan Pengawas</h2>
+              <div class="field">
+                <label class="sr-only" for="opname-note">Catatan sesi</label>
+                <div class="control control--textarea">
+                  <textarea class="control__input" id="opname-note" rows="4" maxlength="300" data-note
+                            placeholder="Contoh: 1 pouch minyak bocor di kardus bawah"></textarea>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div class="action-bar" data-action-bar>
+          <a class="btn btn--ghost" href="stok-opname.html">
+            <span class="icon" aria-hidden="true">arrow_back</span>Kembali
+          </a>
+          <div class="action-bar__end">
+            <span class="text-caption text-muted" data-saved-note aria-live="polite" data-editable></span>
+            <button class="btn" type="button" data-action="print">
+              <span class="icon" aria-hidden="true">print</span>Cetak Lembar
+            </button>
+            <button class="btn btn--primary" type="button" data-action="finalize" data-editable>
+              <span class="icon" aria-hidden="true">verified</span>Finalisasi &amp; Rekonsiliasi
+            </button>
+          </div>
+        </div>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

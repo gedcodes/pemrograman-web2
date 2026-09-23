@@ -393,6 +393,10 @@
   margin-top: var(--space-12);
 }
 
+.section--tight {
+  margin-top: var(--space-5);
+}
+
 .section__header {
   display: grid;
   gap: var(--space-1);
@@ -412,11 +416,27 @@
   gap: var(--stack-gap, var(--space-5));
 }
 
+.stack--tight {
+  --stack-gap: var(--space-4);
+}
+
+.stack--xs {
+  --stack-gap: var(--space-1);
+}
+
+.stack > .card__header {
+  margin-bottom: 0;
+}
+
 .cluster {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--cluster-gap, var(--space-3));
+}
+
+.cluster--tight {
+  --cluster-gap: var(--space-2);
 }
 
 .grid {
@@ -426,15 +446,15 @@
 
 /* Bento dashboard: kartu utama 2fr, dua kolom kecil 1fr */
 .grid--bento {
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
 }
 
 .grid--70-30 {
-  grid-template-columns: 7fr 3fr;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
 }
 
 .grid--2-1 {
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
 }
 
 .grid--2 {
@@ -445,9 +465,14 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+/* Kolom tidak ikut meregang setinggi kolom tetangga */
+.grid--start {
+  align-items: start;
+}
+
 @media (max-width: 1279px) {
   .grid--bento {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .grid--bento > :first-child {

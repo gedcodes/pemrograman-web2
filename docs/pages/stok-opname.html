@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stok Opname · Toko Sari Amerta</title>
+  <meta name="description" content="Sesi stok opname Toko Sari Amerta: hitung fisik, akurasi stok, dan rekonsiliasi selisih.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script type="module" src="../assets/js/pages/stok-opname.js"></script>
+</head>
+
+<body data-page="stok-opname">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Inventori</li>
+                <li><span aria-current="page">Stok Opname</span></li>
+              </ol>
+            </nav>
+            <h1>Stok Opname</h1>
+            <p class="page-header__subtitle">Hitung fisik barang di rak, bandingkan dengan stok sistem, lalu rekonsiliasi selisihnya.</p>
+          </div>
+          <div class="page-header__actions">
+            <button class="btn btn--primary" type="button" data-action="new" data-admin-only>
+              <span class="icon" aria-hidden="true">playlist_add_check</span>Mulai Sesi Baru
+            </button>
+          </div>
+        </header>
+
+        <div class="notice notice--warning" data-draft-notice hidden>
+          <span class="icon" aria-hidden="true">pending</span>
+          <p data-draft-text></p>
+          <a class="btn btn--sm notice__action" data-draft-link>
+            Lanjutkan Hitung<span class="icon icon--sm" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+
+        <section class="card metric-strip section section--tight" aria-label="Ringkasan opname">
+          <div class="metric-strip__item">
+            <span class="stat__label">Opname Terakhir</span>
+            <span class="metric-strip__value metric-strip__value--text" data-metric="last"></span>
+            <span class="text-caption text-muted" data-metric="last-meta"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Akurasi Stok</span>
+            <span class="metric-strip__value" data-metric="akurasi"></span>
+            <span class="text-caption text-muted" data-metric="akurasi-meta"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Selisih Bersih</span>
+            <span class="metric-strip__value" data-metric="selisih"></span>
+            <span class="text-caption text-muted" data-metric="selisih-meta"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Belum Pernah Diopname</span>
+            <span class="metric-strip__value" data-metric="belum"></span>
+            <span class="text-caption text-muted">SKU tanpa hitung fisik 90 hari</span>
+          </div>
+        </section>
+
+        <section class="table-card section section--tight" aria-labelledby="table-title" data-table>
+          <header class="table-card__header">
+            <div>
+              <h2 class="card__title" id="table-title">Sesi Opname</h2>
+              <p class="card__subtitle">Sesi final sudah menyesuaikan stok dan tercatat di Riwayat Mutasi.</p>
+            </div>
+          </header>
+          <div class="table-scroll">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Kode Sesi</th>
+                  <th scope="col">Tanggal</th>
+                  <th scope="col">Cakupan</th>
+                  <th scope="col">Petugas</th>
+                  <th scope="col">Progres</th>
+                  <th class="col-num" scope="col">Akurasi</th>
+                  <th class="col-num" scope="col">Selisih</th>
+                  <th class="col-center" scope="col">Status</th>
+                  <th class="col-center" scope="col">Aksi</th>
+                </tr>
+              </thead>
+              <tbody data-rows></tbody>
+            </table>
+          </div>
+          <nav class="pagination" aria-label="Halaman sesi opname">
+            <p class="pagination__info" data-page-info></p>
+            <ul class="pagination__pages" data-pages></ul>
+          </nav>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ========== Dialog: mulai sesi ========== -->
+  <dialog class="modal" id="session-dialog" aria-labelledby="session-title">
+    <form class="modal__form" novalidate>
+      <div class="modal__header">
+        <span class="modal__icon" aria-hidden="true"><span class="icon">fact_check</span></span>
+        <div class="stack stack--xs">
+          <h2 class="modal__title" id="session-title" data-dialog-title>Mulai Sesi Opname</h2>
+          <p class="modal__body" data-dialog-subtitle></p>
+        </div>
+      </div>
+
+      <div class="field" data-field="kategori">
+        <label class="field__label" for="session-kategori">Cakupan hitung</label>
+        <div class="control">
+          <span class="icon" aria-hidden="true">category</span>
+          <select class="control__input" id="session-kategori" name="kategori" aria-describedby="session-kategori-msg">
+            <option value="">Semua kategori (seluruh toko)</option>
+          </select>
+          <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+        </div>
+        <p class="field__message" id="session-kategori-msg" data-hint=""></p>
+      </div>
+
+      <div class="field" data-field="petugas">
+        <label class="field__label" for="session-petugas">
+          <span>Petugas penghitung <span class="field__required" aria-hidden="true">*</span></span>
+        </label>
+        <div class="control">
+          <span class="icon" aria-hidden="true">badge</span>
+          <select class="control__input" id="session-petugas" name="petugas" aria-describedby="session-petugas-msg"></select>
+          <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+        </div>
+        <p class="field__message" id="session-petugas-msg" data-hint=""></p>
+      </div>
+
+      <label class="switch">
+        <input class="switch__input" name="blind" type="checkbox" role="switch" checked>
+        <span class="switch__track" aria-hidden="true"></span>
+        Blind count (sembunyikan stok sistem saat menghitung)
+      </label>
+      <p class="text-small text-secondary">Petugas tidak melihat angka sistem sehingga hasil hitung tidak terpengaruh. Disarankan.</p>
+
+      <div class="modal__footer">
+        <button class="btn" type="button" data-dialog-cancel>Batal</button>
+        <button class="btn btn--primary" type="submit">
+          <span class="icon" aria-hidden="true">play_arrow</span>Mulai Hitung
+        </button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>

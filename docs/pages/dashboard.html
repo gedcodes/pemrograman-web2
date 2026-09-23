@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard · Toko Sari Amerta</title>
+  <meta name="description" content="Ringkasan penjualan, stok menipis, dan transaksi terakhir Toko Sari Amerta.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script type="module" src="../assets/js/pages/dashboard.js"></script>
+</head>
+
+<body data-page="dashboard">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <h1>Dashboard</h1>
+            <p class="page-header__subtitle"><time data-today></time> · Terminal 01</p>
+          </div>
+          <div class="page-header__actions">
+            <div class="segmented" role="group" aria-label="Periode ringkasan" data-period-group>
+              <button class="segmented__option" type="button" data-period="today" aria-pressed="true">Hari Ini</button>
+              <button class="segmented__option" type="button" data-period="week" aria-pressed="false">7 Hari</button>
+              <button class="segmented__option" type="button" data-period="month" aria-pressed="false">Bulan Ini</button>
+            </div>
+            <a class="btn btn--primary" data-page-link="kasir">
+              <span class="icon" aria-hidden="true">point_of_sale</span>Buka Kasir
+            </a>
+          </div>
+        </header>
+
+        <!-- Bento: omzet mendapat ruang 2fr karena bobot informasinya paling besar -->
+        <section aria-labelledby="ringkasan-title">
+          <h2 class="sr-only" id="ringkasan-title">Ringkasan penjualan</h2>
+          <div class="grid grid--bento">
+            <article class="card stat stat--hero">
+              <div class="stat__head">
+                <h3 class="stat__label">Omzet <span data-period-label>Hari Ini</span></h3>
+                <span data-stat="omzet-change"></span>
+              </div>
+              <p class="stat__value" data-stat="omzet"></p>
+              <div class="chart-box chart-box--spark">
+                <canvas id="omzet-spark" role="img" aria-label="Tren omzet periode ini"></canvas>
+              </div>
+              <dl class="grid grid--2">
+                <div>
+                  <dt class="stat__label" data-compare-label></dt>
+                  <dd class="num" data-stat="omzet-prev"></dd>
+                </div>
+                <div>
+                  <dt class="stat__label">Rata-rata / Transaksi</dt>
+                  <dd class="num" data-stat="avg"></dd>
+                </div>
+              </dl>
+            </article>
+
+            <div class="stack">
+              <article class="card stat">
+                <div class="stat__head">
+                  <h3 class="stat__label">Transaksi</h3>
+                  <span data-stat="trx-change"></span>
+                </div>
+                <p class="stat__value"><span data-stat="trx"></span><span class="stat__unit">struk lunas</span></p>
+                <p class="stat__meta" data-stat="trx-meta"></p>
+              </article>
+              <article class="card stat">
+                <div class="stat__head">
+                  <h3 class="stat__label">Produk Terjual</h3>
+                  <span data-stat="items-change"></span>
+                </div>
+                <p class="stat__value"><span data-stat="items"></span><span class="stat__unit">item</span></p>
+                <p class="stat__meta" data-stat="items-meta"></p>
+              </article>
+            </div>
+
+            <div class="stack">
+              <article class="card stat">
+                <div class="stat__head">
+                  <h3 class="stat__label">Stok Kritis</h3>
+                  <span class="badge badge--warning">Perlu restock</span>
+                </div>
+                <p class="stat__value stat__value--warning"><span data-stat="low"></span><span class="stat__unit">produk</span></p>
+                <p class="stat__meta stat__meta--warning" data-stat="low-meta"></p>
+              </article>
+              <article class="card stat" data-role-only="admin">
+                <div class="stat__head">
+                  <h3 class="stat__label">Margin Kotor</h3>
+                  <span data-stat="margin-badge"></span>
+                </div>
+                <p class="stat__value" data-stat="margin"></p>
+                <p class="stat__meta" data-stat="margin-meta"></p>
+              </article>
+              <article class="card stat" data-role-only="kasir" hidden>
+                <div class="stat__head">
+                  <h3 class="stat__label">Menunggu Konfirmasi</h3>
+                  <span class="badge badge--warning"><span class="icon" aria-hidden="true">schedule</span>Pending</span>
+                </div>
+                <p class="stat__value"><span data-stat="pending"></span><span class="stat__unit">transaksi</span></p>
+                <p class="stat__meta">Pembayaran non-tunai yang belum lunas</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <div class="grid grid--70-30 section section--tight">
+          <article class="card stack">
+            <header class="card__header">
+              <div>
+                <h2 class="card__title">Penjualan 7 Hari Terakhir</h2>
+                <p class="card__subtitle">Omzet harian dari transaksi lunas</p>
+              </div>
+              <span class="badge badge--info" data-week-total></span>
+            </header>
+            <div class="chart-box chart-box--fill">
+              <canvas id="sales-chart" role="img" aria-label="Grafik omzet 7 hari terakhir"></canvas>
+            </div>
+          </article>
+
+          <article class="card stack stack--tight">
+            <header class="card__header">
+              <h2 class="card__title">Stok Menipis</h2>
+              <span class="badge badge--warning" data-low-count></span>
+            </header>
+            <ul class="item-list" role="list" data-low-stock></ul>
+            <a class="btn btn--block" data-page-link="barang-masuk">
+              <span class="icon" aria-hidden="true">local_shipping</span>Buat Pesanan
+            </a>
+          </article>
+        </div>
+
+        <section class="table-card section section--tight" aria-labelledby="recent-title">
+          <header class="table-card__header">
+            <div>
+              <h2 class="card__title" id="recent-title">Transaksi Terakhir</h2>
+              <p class="card__subtitle">Enam transaksi terbaru dari semua kasir</p>
+            </div>
+            <a class="btn btn--ghost btn--sm" data-page-link="riwayat-transaksi">
+              Lihat Semua Riwayat<span class="icon icon--sm" aria-hidden="true">arrow_forward</span>
+            </a>
+          </header>
+          <div class="table-scroll">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">No. Struk</th>
+                  <th scope="col">Waktu</th>
+                  <th scope="col">Kasir</th>
+                  <th scope="col">Metode</th>
+                  <th class="col-num" scope="col">Total</th>
+                  <th class="col-center" scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody data-recent></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

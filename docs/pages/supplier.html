@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Supplier · Toko Sari Amerta</title>
+  <meta name="description" content="Master data supplier Toko Sari Amerta: kontak, termin pembayaran, produk yang dipasok, dan hutang tempo.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script type="module" src="../assets/js/pages/supplier.js"></script>
+</head>
+
+<body data-page="supplier">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Master Data</li>
+                <li><span aria-current="page">Supplier</span></li>
+              </ol>
+            </nav>
+            <h1>Supplier</h1>
+            <p class="page-header__subtitle">Pemasok barang dagang beserta kontak, termin pembayaran, dan riwayat pembelian.</p>
+          </div>
+          <div class="page-header__actions">
+            <button class="btn" type="button" data-action="export">
+              <span class="icon" aria-hidden="true">download</span>Export CSV
+            </button>
+            <button class="btn btn--primary" type="button" data-action="add">
+              <span class="icon" aria-hidden="true">add</span>Tambah Supplier
+            </button>
+          </div>
+        </header>
+
+        <section class="card metric-strip" aria-label="Ringkasan supplier">
+          <div class="metric-strip__item">
+            <span class="stat__label">Supplier Aktif</span>
+            <span class="metric-strip__value" data-metric="aktif"></span>
+            <span class="text-caption text-muted" data-metric="aktif-meta"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Pembelian 30 Hari</span>
+            <span class="metric-strip__value" data-metric="beli"></span>
+            <span class="text-caption text-muted" data-metric="beli-meta"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Hutang Tempo Berjalan</span>
+            <span class="metric-strip__value metric-strip__value--warning" data-metric="hutang"></span>
+            <span class="text-caption text-muted" data-metric="hutang-meta"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Pemasok Utama</span>
+            <span class="metric-strip__value metric-strip__value--text" data-metric="utama"></span>
+            <span class="text-caption text-muted" data-metric="utama-meta"></span>
+          </div>
+        </section>
+
+        <form class="toolbar section section--tight" role="search" aria-label="Saring supplier" data-filters>
+          <div class="toolbar__search">
+            <label class="sr-only" for="filter-q">Cari supplier</label>
+            <div class="control">
+              <span class="icon" aria-hidden="true">search</span>
+              <input class="control__input" id="filter-q" name="q" type="search" autocomplete="off" placeholder="Cari nama perusahaan, kontak, atau telepon">
+            </div>
+          </div>
+          <div class="control">
+            <label class="sr-only" for="filter-termin">Termin</label>
+            <select class="control__input" id="filter-termin" name="termin">
+              <option value="">Semua Termin</option>
+              <option value="0">Tunai (COD)</option>
+              <option value="tempo">Tempo</option>
+            </select>
+            <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+          </div>
+          <div class="control">
+            <label class="sr-only" for="filter-status">Status</label>
+            <select class="control__input" id="filter-status" name="status">
+              <option value="">Semua Status</option>
+              <option value="aktif">Aktif</option>
+              <option value="nonaktif">Nonaktif</option>
+            </select>
+            <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+          </div>
+        </form>
+
+        <section class="table-card section section--tight" aria-labelledby="table-title" data-table>
+          <h2 class="sr-only" id="table-title">Daftar supplier</h2>
+          <div class="table-scroll">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Kode</th>
+                  <th scope="col">Supplier</th>
+                  <th scope="col">Kontak</th>
+                  <th scope="col">Termin</th>
+                  <th class="col-num" scope="col">Produk</th>
+                  <th class="col-num" scope="col">Pembelian 30 Hari</th>
+                  <th class="col-num" scope="col">Hutang</th>
+                  <th class="col-center" scope="col">Status</th>
+                  <th class="col-center" scope="col">Aksi</th>
+                </tr>
+              </thead>
+              <tbody data-rows aria-live="polite"></tbody>
+            </table>
+          </div>
+          <nav class="pagination" aria-label="Halaman daftar supplier">
+            <p class="pagination__info" data-page-info></p>
+            <ul class="pagination__pages" data-pages></ul>
+          </nav>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ========== Dialog: tambah / ubah supplier ========== -->
+  <dialog class="modal modal--lg" id="supplier-dialog" aria-labelledby="supplier-dialog-title">
+    <form class="modal__form" novalidate>
+      <div class="modal__header">
+        <span class="modal__icon" aria-hidden="true"><span class="icon">local_shipping</span></span>
+        <div class="stack stack--xs">
+          <h2 class="modal__title" id="supplier-dialog-title" data-dialog-title>Tambah Supplier</h2>
+          <p class="modal__body" data-dialog-subtitle></p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="field field--full" data-field="nama">
+          <label class="field__label" for="sup-nama">
+            <span>Nama perusahaan <span class="field__required" aria-hidden="true">*</span></span>
+          </label>
+          <div class="control">
+            <span class="icon" aria-hidden="true">apartment</span>
+            <input class="control__input" id="sup-nama" name="nama" type="text" maxlength="80" autocomplete="organization"
+                   placeholder="Contoh: PT Sinar Pangan Bali" aria-describedby="sup-nama-msg">
+            <span class="icon control__status" aria-hidden="true">error</span>
+          </div>
+          <p class="field__message" id="sup-nama-msg" data-hint="Sesuai nama pada faktur"></p>
+        </div>
+
+        <div class="field" data-field="kontak_person">
+          <label class="field__label" for="sup-kontak">
+            <span>Nama kontak / sales <span class="field__required" aria-hidden="true">*</span></span>
+          </label>
+          <div class="control">
+            <span class="icon" aria-hidden="true">person</span>
+            <input class="control__input" id="sup-kontak" name="kontak_person" type="text" maxlength="60" autocomplete="name"
+                   aria-describedby="sup-kontak-msg">
+            <span class="icon control__status" aria-hidden="true">error</span>
+          </div>
+          <p class="field__message" id="sup-kontak-msg" data-hint=""></p>
+        </div>
+
+        <div class="field" data-field="telepon">
+          <label class="field__label" for="sup-telepon">
+            <span>Telepon / WhatsApp <span class="field__required" aria-hidden="true">*</span></span>
+          </label>
+          <div class="control">
+            <span class="icon" aria-hidden="true">call</span>
+            <input class="control__input control__input--num" id="sup-telepon" name="telepon" type="tel" maxlength="20"
+                   autocomplete="tel" placeholder="0812-3456-7890" aria-describedby="sup-telepon-msg">
+            <span class="icon control__status" aria-hidden="true">error</span>
+          </div>
+          <p class="field__message" id="sup-telepon-msg" data-hint="Format 08xx atau +62"></p>
+        </div>
+
+        <div class="field" data-field="email">
+          <label class="field__label" for="sup-email">Email</label>
+          <div class="control">
+            <span class="icon" aria-hidden="true">mail</span>
+            <input class="control__input" id="sup-email" name="email" type="email" maxlength="80" autocomplete="email"
+                   placeholder="order@perusahaan.co.id" aria-describedby="sup-email-msg">
+            <span class="icon control__status" aria-hidden="true">error</span>
+          </div>
+          <p class="field__message" id="sup-email-msg" data-hint="Opsional, untuk kirim PO"></p>
+        </div>
+
+        <div class="field" data-field="termin_hari">
+          <label class="field__label" for="sup-termin">
+            <span>Termin pembayaran <span class="field__required" aria-hidden="true">*</span></span>
+          </label>
+          <div class="control">
+            <select class="control__input" id="sup-termin" name="termin_hari" aria-describedby="sup-termin-msg">
+              <option value="0">Tunai saat barang datang (COD)</option>
+              <option value="7">Tempo 7 hari</option>
+              <option value="14">Tempo 14 hari</option>
+              <option value="30">Tempo 30 hari</option>
+              <option value="45">Tempo 45 hari</option>
+            </select>
+            <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+          </div>
+          <p class="field__message" id="sup-termin-msg" data-hint="Dipakai untuk menghitung jatuh tempo faktur"></p>
+        </div>
+
+        <div class="field field--full" data-field="alamat">
+          <label class="field__label" for="sup-alamat">Alamat gudang / kantor</label>
+          <div class="control control--textarea">
+            <textarea class="control__input" id="sup-alamat" name="alamat" rows="2" maxlength="160" autocomplete="street-address"
+                      aria-describedby="sup-alamat-msg"></textarea>
+          </div>
+          <p class="field__message" id="sup-alamat-msg" data-hint=""></p>
+        </div>
+      </div>
+
+      <label class="check">
+        <input name="pkp" type="checkbox" checked>
+        <span>Pengusaha Kena Pajak (PKP)
+          <span class="text-caption text-muted check__sub">Faktur memuat PPN masukan; dipakai sebagai default di form Barang Masuk</span></span>
+      </label>
+      <label class="switch">
+        <input class="switch__input" name="aktif" type="checkbox" role="switch" checked>
+        <span class="switch__track" aria-hidden="true"></span>
+        Supplier aktif
+      </label>
+
+      <div class="modal__footer">
+        <button class="btn" type="button" data-dialog-cancel>Batal</button>
+        <button class="btn btn--primary" type="submit">
+          <span class="icon" aria-hidden="true">check</span>Simpan Supplier
+        </button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>

@@ -7,7 +7,8 @@ import { initShell, renderShell } from '../layout/shell.js';
 import { showToast } from '../components/toast.js';
 import { confirmDialog } from '../components/modal.js';
 import { getCurrentUser, signInAs } from '../core/session.js';
-import { ROLE_LABELS, USERS } from '../data/users.js';
+import { ROLE_LABELS } from '../data/users.js';
+import { findUser } from '../core/db.js';
 import { formatDateLong } from '../core/format.js';
 
 initShell();
@@ -109,7 +110,7 @@ roleGroup.addEventListener('click', (event) => {
   renderShell();
   syncRoleButtons();
 
-  const user = USERS.find((item) => item.id === button.dataset.user);
+  const user = findUser(button.dataset.user);
   showToast({
     type: 'info',
     title: `Masuk sebagai ${ROLE_LABELS[user.peran]}`,

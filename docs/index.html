@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Masuk · Toko Sari Amerta</title>
+  <meta name="description" content="Halaman masuk Admin Panel POS Toko Sari Amerta untuk admin dan kasir.">
+  <link rel="icon" href="assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="assets/css/main.css">
+
+  <script type="module" src="assets/js/pages/login.js"></script>
+</head>
+
+<body>
+  <main class="auth" id="main">
+    <section class="auth__brand" aria-labelledby="brand-title">
+      <div class="auth__brand-top">
+        <img class="auth__logo" src="assets/img/brand/logo-sa.svg" alt="" width="56" height="56">
+        <div>
+          <p class="auth__store" id="brand-title">Toko Sari Amerta</p>
+          <p class="auth__sub">Admin Panel POS</p>
+        </div>
+      </div>
+      <div class="auth__pitch">
+        <p class="auth__headline">Kasir cepat di depan, laporan rapi di belakang.</p>
+        <ul class="auth__points" role="list">
+          <li><span class="icon" aria-hidden="true">barcode_scanner</span>Scan barcode, bayar tunai atau QRIS Midtrans dalam hitungan detik</li>
+          <li><span class="icon" aria-hidden="true">inventory</span>Stok berkurang otomatis dan tercatat di setiap mutasi</li>
+          <li><span class="icon" aria-hidden="true">monitoring</span>Omzet, laba rugi, dan stok kritis terpantau harian</li>
+        </ul>
+      </div>
+      <p class="auth__foot">Jl. Raya Puputan No. 41, Renon, Denpasar</p>
+    </section>
+
+    <section class="auth__panel" aria-labelledby="login-title">
+      <div class="auth__card">
+        <header class="stack stack--xs">
+          <h1 id="login-title">Masuk</h1>
+          <p class="text-small text-secondary" data-greeting>Gunakan username dan PIN 6 digit Anda.</p>
+        </header>
+
+        <div class="notice notice--danger" role="alert" data-login-error hidden>
+          <span class="icon" aria-hidden="true">error</span>
+          <p data-login-error-text></p>
+        </div>
+
+        <form class="stack stack--tight" id="login-form" novalidate>
+          <div class="field" data-field="username">
+            <label class="field__label" for="username">Username</label>
+            <div class="control control--lg">
+              <span class="icon" aria-hidden="true">person</span>
+              <input class="control__input" id="username" name="username" type="text" autocomplete="username"
+                     autocapitalize="none" spellcheck="false" placeholder="contoh: kadek.ayu" aria-describedby="username-msg">
+              <span class="icon control__status" aria-hidden="true">error</span>
+            </div>
+            <p class="field__message" id="username-msg" data-hint=""></p>
+          </div>
+
+          <div class="field" data-field="pin">
+            <label class="field__label" for="pin">
+              <span>PIN</span>
+              <span class="field__hint">6 digit angka</span>
+            </label>
+            <div class="control control--lg">
+              <span class="icon" aria-hidden="true">lock</span>
+              <input class="control__input control__input--num control__input--pin" id="pin" name="pin" type="password"
+                     inputmode="numeric" maxlength="6" autocomplete="current-password" aria-describedby="pin-msg">
+              <button class="icon-btn icon-btn--flat control__toggle" type="button" data-action="toggle-pin"
+                      aria-label="Tampilkan PIN" aria-pressed="false">
+                <span class="icon" aria-hidden="true">visibility</span>
+              </button>
+            </div>
+            <p class="field__message" id="pin-msg" data-hint=""></p>
+          </div>
+
+          <button class="btn btn--primary btn--lg btn--block" type="submit" data-submit>
+            <span class="icon" aria-hidden="true">login</span>Masuk
+          </button>
+        </form>
+
+        <section class="demo-accounts" aria-labelledby="demo-title">
+          <h2 class="overline" id="demo-title">Akun demo · klik untuk mengisi</h2>
+          <ul class="demo-accounts__list" role="list" data-demo-accounts></ul>
+          <p class="text-caption text-muted">Data tiruan tanpa back-end. PIN tersimpan di browser hanya untuk keperluan demo tugas.</p>
+        </section>
+      </div>
+      <p class="auth__legal">© 2026 Toko Sari Amerta · Pemrograman Web 2 · <a class="link" href="layout.html">Katalog komponen</a></p>
+    </section>
+  </main>
+</body>
+</html>

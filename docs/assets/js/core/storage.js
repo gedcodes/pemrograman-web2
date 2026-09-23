@@ -30,3 +30,15 @@ export function removeItem(key) {
     /* storage tidak tersedia — tidak ada yang perlu dihapus */
   }
 }
+
+/** false bila browser menolak localStorage; login lalu dilewati agar demo tetap jalan */
+export function isStorageAvailable() {
+  try {
+    const probe = `${PREFIX}probe`;
+    localStorage.setItem(probe, '1');
+    localStorage.removeItem(probe);
+    return true;
+  } catch {
+    return false;
+  }
+}

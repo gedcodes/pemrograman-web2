@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pajak &amp; Diskon · Toko Sari Amerta</title>
+  <meta name="description" content="Atur tarif PPN, diskon member, dan PPh Final UMKM Toko Sari Amerta dengan simulasi keranjang langsung.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script type="module" src="../assets/js/pages/pajak-diskon.js"></script>
+</head>
+
+<body data-page="pajak-diskon">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Pengaturan</li>
+                <li><span aria-current="page">Pajak &amp; Diskon</span></li>
+              </ol>
+            </nav>
+            <h1>Pajak &amp; Diskon</h1>
+            <p class="page-header__subtitle">Tarif berlaku untuk transaksi baru di Kasir. Struk lama tetap memakai tarif saat transaksi terjadi.</p>
+          </div>
+        </header>
+
+        <form id="tax-form" novalidate aria-labelledby="tax-form-title">
+          <h2 class="sr-only" id="tax-form-title">Pengaturan pajak dan diskon</h2>
+          <div class="grid grid--2-1">
+            <div class="stack">
+              <section class="card stack stack--tight" aria-labelledby="sec-ppn">
+                <header class="card__header">
+                  <div>
+                    <h2 class="card__title card__title--accent" id="sec-ppn">PPN Keluaran</h2>
+                    <p class="card__subtitle">Ditambahkan di atas harga setelah diskon: total = (subtotal − diskon) × (1 + PPN).</p>
+                  </div>
+                </header>
+                <label class="switch">
+                  <input class="switch__input" name="ppnAktif" type="checkbox" role="switch" checked>
+                  <span class="switch__track" aria-hidden="true"></span>
+                  Toko berstatus PKP, kenakan PPN di struk
+                </label>
+                <div class="field" data-field="taxRate">
+                  <label class="field__label" for="tax-rate">
+                    <span>Tarif PPN <span class="field__required" aria-hidden="true">*</span></span>
+                    <span class="field__hint">0–20%</span>
+                  </label>
+                  <div class="control control--rate">
+                    <input class="control__input control__input--num" id="tax-rate" name="taxRate" type="number" min="0" max="20" step="0.01"
+                           inputmode="decimal" aria-describedby="tax-rate-msg">
+                    <span class="control__affix">%</span>
+                    <span class="icon control__status" aria-hidden="true">error</span>
+                  </div>
+                  <p class="field__message" id="tax-rate-msg" data-hint="Tarif umum UU HPP: 11%"></p>
+                </div>
+              </section>
+
+              <section class="card stack stack--tight" aria-labelledby="sec-member">
+                <header class="card__header">
+                  <div>
+                    <h2 class="card__title card__title--accent" id="sec-member">Diskon Member</h2>
+                    <p class="card__subtitle">Otomatis dipotong saat kasir memilih pelanggan member.</p>
+                  </div>
+                </header>
+                <div class="field" data-field="memberDiscountRate">
+                  <label class="field__label" for="discount-rate">
+                    <span>Diskon member <span class="field__required" aria-hidden="true">*</span></span>
+                    <span class="field__hint">0–30%</span>
+                  </label>
+                  <div class="control control--rate">
+                    <input class="control__input control__input--num" id="discount-rate" name="memberDiscountRate" type="number" min="0" max="30"
+                           step="0.5" inputmode="decimal" aria-describedby="discount-rate-msg">
+                    <span class="control__affix">%</span>
+                    <span class="icon control__status" aria-hidden="true">error</span>
+                  </div>
+                  <p class="field__message" id="discount-rate-msg" data-hint="Di atas margin rata-rata produk berarti toko rugi"></p>
+                </div>
+              </section>
+
+              <section class="card stack stack--tight" aria-labelledby="sec-pph">
+                <header class="card__header">
+                  <div>
+                    <h2 class="card__title card__title--accent" id="sec-pph">PPh Final UMKM</h2>
+                    <p class="card__subtitle">Dipakai Laporan Laba Rugi untuk menghitung laba setelah pajak (PP 55/2022).</p>
+                  </div>
+                </header>
+                <div class="field" data-field="incomeTaxRate">
+                  <label class="field__label" for="pph-rate">
+                    <span>Tarif PPh final <span class="field__required" aria-hidden="true">*</span></span>
+                    <span class="field__hint">0–5%</span>
+                  </label>
+                  <div class="control control--rate">
+                    <input class="control__input control__input--num" id="pph-rate" name="incomeTaxRate" type="number" min="0" max="5"
+                           step="0.1" inputmode="decimal" aria-describedby="pph-rate-msg">
+                    <span class="control__affix">%</span>
+                    <span class="icon control__status" aria-hidden="true">error</span>
+                  </div>
+                  <p class="field__message" id="pph-rate-msg" data-hint="0,5% dari peredaran bruto untuk omzet ≤ Rp 4,8 miliar/tahun"></p>
+                </div>
+              </section>
+            </div>
+
+            <aside class="card stack stack--tight sticky-panel" aria-labelledby="sim-title">
+              <header class="card__header">
+                <div>
+                  <h2 class="card__title" id="sim-title">Simulasi Keranjang</h2>
+                  <p class="card__subtitle">Contoh belanja harian, dihitung dengan tarif di form</p>
+                </div>
+              </header>
+              <ul class="sim-list" role="list" data-sim-items></ul>
+              <label class="check">
+                <input type="checkbox" data-sim-member checked>
+                Pelanggan member
+              </label>
+              <dl class="summary-list summary-list--boxed" data-sim-totals aria-live="polite"></dl>
+              <p class="text-caption text-muted" data-sim-note></p>
+            </aside>
+          </div>
+
+          <div class="action-bar">
+            <button class="btn btn--ghost" type="button" data-action="reset">
+              <span class="icon" aria-hidden="true">restart_alt</span>Kembalikan Default
+            </button>
+            <div class="action-bar__end">
+              <span class="text-caption text-muted" data-dirty-note hidden>Ada perubahan belum disimpan</span>
+              <button class="btn btn--primary" type="submit">
+                <span class="icon" aria-hidden="true">check</span>Simpan Tarif
+              </button>
+            </div>
+          </div>
+        </form>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

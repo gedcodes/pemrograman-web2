@@ -1,0 +1,521 @@
+/* ==========================================================================
+   POS — tata letak halaman Kasir (DESIGN.md §8.2 & §8.3)
+   Dua zona: katalog (fleksibel) + keranjang (400px, sticky).
+   ========================================================================== */
+
+.content--pos {
+  padding-top: var(--space-6);
+}
+
+.pos {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 400px;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.pos__catalog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  min-width: 0;
+}
+
+/* ---------- Pencarian / scan ---------- */
+
+.pos__search {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.pos__search .control {
+  flex: 1;
+}
+
+.btn--scan {
+  width: var(--control-h-lg);
+  height: var(--control-h-lg);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+/* Deret chip kategori bisa digeser; padding memberi ruang bagi bayangan */
+.chip-row {
+  display: flex;
+  gap: var(--space-3);
+  margin: -6px -6px -10px;
+  padding: 6px 6px 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chip-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- Grid & kartu produk ---------- */
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--space-4);
+}
+
+.product-grid__empty {
+  grid-column: 1 / -1;
+}
+
+.product-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: 200px;
+  padding: var(--space-4);
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-raised-md);
+  color: var(--text-primary);
+  text-align: left;
+  transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-base) var(--ease);
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Ditekan: permukaan benar-benar terasa masuk */
+.product-card:active {
+  transform: scale(0.97);
+  box-shadow: var(--shadow-inset);
+}
+
+.product-card.is-added {
+  animation: card-press 280ms var(--ease);
+}
+
+.product-card:focus-visible {
+  box-shadow: var(--shadow-raised-md), var(--focus-ring);
+  border-radius: var(--radius-lg);
+}
+
+.product-card:disabled {
+  opacity: 0.5;
+  box-shadow: var(--shadow-raised-sm);
+  transform: none;
+  cursor: not-allowed;
+}
+
+.product-card:disabled .product-card__thumb {
+  filter: grayscale(1);
+}
+
+.product-card__stock {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 1px 8px;
+  font: 600 0.6875rem/1.125rem var(--font-mono);
+}
+
+.product-card__thumb {
+  width: 72px;
+  height: 72px;
+  margin: var(--space-3) auto var(--space-1);
+  border-radius: 16px;
+  background: var(--surface-sunken);
+  box-shadow: var(--shadow-inset-sm);
+  object-fit: cover;
+}
+
+.product-card__name {
+  display: -webkit-box;
+  min-height: 40px;
+  overflow: hidden;
+  font: var(--text-label);
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.product-card__price {
+  margin-top: auto;
+  font: 600 0.9375rem/1.25rem var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes card-press {
+  40% {
+    transform: scale(0.95);
+  }
+}
+
+/* ---------- Panel keranjang ---------- */
+
+.cart {
+  position: sticky;
+  top: calc(var(--topbar-h) + var(--space-4));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-height: calc(100dvh - var(--topbar-h) - var(--space-8));
+  padding: var(--space-5);
+  border-radius: var(--radius-xl);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-raised-md);
+}
+
+.cart__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.cart__title {
+  font: var(--text-h2);
+  letter-spacing: var(--tracking-h2);
+}
+
+.cart__trx {
+  font: 500 0.75rem/1rem var(--font-mono);
+  color: var(--text-muted);
+}
+
+.cart__cashier {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--surface-canvas);
+  box-shadow: var(--shadow-inset-sm);
+}
+
+.cart__cashier-text {
+  display: grid;
+  min-width: 0;
+}
+
+.cart__cashier-name {
+  font: var(--text-label);
+}
+
+.cart__lines {
+  flex: 1;
+  min-height: 140px;
+  margin: 0 calc(-1 * var(--space-2));
+  padding: 0 var(--space-2);
+  overflow-y: auto;
+  list-style: none;
+}
+
+.cart__empty {
+  padding: var(--space-6) 0;
+}
+
+/* Baris 1: nama + hapus · Baris 2: stepper + subtotal */
+.cart-line {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "info remove"
+    "stepper subtotal";
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.cart-line__info {
+  grid-area: info;
+  display: grid;
+  min-width: 0;
+}
+
+.cart-line__name {
+  font: var(--text-label);
+}
+
+.cart-line__price {
+  font: 500 0.75rem/1rem var(--font-mono);
+  color: var(--text-muted);
+}
+
+.cart-line__remove {
+  grid-area: remove;
+  align-self: start;
+}
+
+.cart-line__subtotal {
+  grid-area: subtotal;
+  font: 600 0.9375rem/1.25rem var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.stepper {
+  grid-area: stepper;
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: var(--space-1);
+  padding: 3px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-canvas);
+  box-shadow: var(--shadow-inset-sm);
+}
+
+.stepper__btn {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-raised-sm);
+  color: var(--text-primary);
+}
+
+.stepper__btn:active {
+  box-shadow: var(--shadow-inset-sm);
+}
+
+.stepper__input {
+  width: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--text-primary);
+  font: 600 0.9375rem/1 var(--font-mono);
+  text-align: center;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.stepper__input::-webkit-inner-spin-button,
+.stepper__input::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+.cart__summary {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-top: var(--space-3);
+  border-top: 2px solid var(--divider);
+}
+
+.cart__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font: var(--text-small);
+  color: var(--text-secondary);
+}
+
+.cart__row dd {
+  color: var(--text-primary);
+}
+
+.cart__row--discount,
+.cart__row--discount dd {
+  color: var(--success-text);
+}
+
+.cart__row--total {
+  margin-top: var(--space-2);
+  color: var(--text-primary);
+}
+
+.cart__row--total dt {
+  font: 600 0.875rem/1 var(--font-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cart__row--total dd {
+  font: 600 2.125rem/1.1 var(--font-display);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.cart__secondary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+/* ---------- Dialog pembayaran ---------- */
+
+.pay-total {
+  display: grid;
+  gap: 2px;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--surface-header);
+  box-shadow: inset 0 0 0 1px var(--divider);
+}
+
+.pay-total__value {
+  font: var(--text-display);
+  letter-spacing: var(--tracking-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.quick-amounts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.chip--amount {
+  justify-content: center;
+  height: 44px;
+  border-radius: var(--radius-md);
+  font: 600 0.8125rem/1 var(--font-mono);
+}
+
+.change-panel {
+  display: grid;
+  gap: 2px;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--surface-header);
+  color: var(--text-secondary);
+  transition: background-color var(--dur-base) var(--ease), color var(--dur-base) var(--ease);
+}
+
+.change-panel.is-ready,
+.change-panel--big {
+  background: var(--success-bg);
+  color: var(--success-text);
+}
+
+.change-panel .stat__label {
+  color: inherit;
+}
+
+.change-panel__value {
+  font: 600 2rem/1.15 var(--font-display);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.qr-box {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface-crisp);
+  box-shadow: var(--shadow-crisp);
+}
+
+.qr-box__code svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.qr-box__text {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-2);
+}
+
+.qr-box__amount {
+  font: 600 1.75rem/1.1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.channel-picker {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.channel-picker legend {
+  margin-bottom: var(--space-2);
+  padding: 0;
+}
+
+.receipt-stage--short {
+  max-height: 340px;
+}
+
+/* ---------- Bar ringkas untuk layar kecil ---------- */
+
+.pos-bar {
+  display: none;
+}
+
+@media (max-width: 1279px) {
+  .pos {
+    grid-template-columns: minmax(0, 1fr) 360px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .pos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cart {
+    position: static;
+    max-height: none;
+  }
+
+  .content--pos {
+    padding-bottom: calc(var(--space-16) + var(--space-8));
+  }
+
+  .pos-bar {
+    position: fixed;
+    left: var(--space-3);
+    right: var(--space-3);
+    bottom: var(--space-3);
+    z-index: var(--z-topbar);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4);
+    border-radius: var(--radius-lg);
+    background: rgba(237, 244, 242, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-raised-lg);
+  }
+
+  .pos-bar__summary {
+    display: grid;
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+
+  .pos-bar__total {
+    font: 600 1.25rem/1.2 var(--font-display);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (max-width: 559px) {
+  .quick-amounts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .qr-box {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+  }
+
+  .qr-box__code {
+    width: 180px;
+  }
+}

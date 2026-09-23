@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Barang Masuk · Toko Sari Amerta</title>
+  <meta name="description" content="Daftar penerimaan barang dari supplier Toko Sari Amerta beserta faktur, termin, dan status pembayaran.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script type="module" src="../assets/js/pages/barang-masuk.js"></script>
+</head>
+
+<body data-page="barang-masuk">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Inventori</li>
+                <li><span aria-current="page">Barang Masuk</span></li>
+              </ol>
+            </nav>
+            <h1>Barang Masuk</h1>
+            <p class="page-header__subtitle">Penerimaan barang dari supplier. Setiap dokumen menambah stok dan tercatat di mutasi.</p>
+          </div>
+          <div class="page-header__actions">
+            <button class="btn" type="button" data-action="export">
+              <span class="icon" aria-hidden="true">download</span>Export CSV
+            </button>
+            <a class="btn btn--primary" href="form-barang-masuk.html" data-admin-only>
+              <span class="icon" aria-hidden="true">add</span>Input Penerimaan
+            </a>
+          </div>
+        </header>
+
+        <section class="card metric-strip" aria-label="Ringkasan pembelian bulan ini">
+          <div class="metric-strip__item">
+            <span class="stat__label">Pembelian Bulan Ini</span>
+            <span class="metric-strip__value" data-metric="total"></span>
+            <span class="text-caption text-muted" data-metric="total-meta"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Unit Diterima</span>
+            <span class="metric-strip__value" data-metric="unit"></span>
+            <span class="text-caption text-muted" data-metric="unit-meta"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Hutang Tempo</span>
+            <span class="metric-strip__value metric-strip__value--warning" data-metric="hutang"></span>
+            <span class="text-caption text-muted" data-metric="hutang-meta"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">PPN Masukan</span>
+            <span class="metric-strip__value" data-metric="ppn"></span>
+            <span class="text-caption text-muted">dapat dikreditkan (bulan ini)</span>
+          </div>
+        </section>
+
+        <form class="toolbar section section--tight" role="search" aria-label="Saring barang masuk" data-filters>
+          <div class="toolbar__search">
+            <label class="sr-only" for="filter-q">Cari dokumen</label>
+            <div class="control">
+              <span class="icon" aria-hidden="true">search</span>
+              <input class="control__input" id="filter-q" name="q" type="search" autocomplete="off" placeholder="Cari no. dokumen, faktur, atau produk">
+            </div>
+          </div>
+          <div class="control">
+            <label class="sr-only" for="filter-supplier">Supplier</label>
+            <select class="control__input" id="filter-supplier" name="supplier">
+              <option value="">Semua Supplier</option>
+            </select>
+            <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+          </div>
+          <div class="control">
+            <label class="sr-only" for="filter-bayar">Status bayar</label>
+            <select class="control__input" id="filter-bayar" name="bayar">
+              <option value="">Semua Status Bayar</option>
+              <option value="lunas">Lunas</option>
+              <option value="belum_lunas">Tempo (belum lunas)</option>
+            </select>
+            <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+          </div>
+        </form>
+
+        <section class="table-card section section--tight" aria-labelledby="table-title" data-table>
+          <h2 class="sr-only" id="table-title">Daftar dokumen barang masuk</h2>
+          <div class="table-scroll">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">No. Dokumen</th>
+                  <th scope="col">Tanggal Terima</th>
+                  <th scope="col">Supplier</th>
+                  <th scope="col">No. Faktur</th>
+                  <th class="col-num" scope="col">Item</th>
+                  <th class="col-num" scope="col">Total Faktur</th>
+                  <th scope="col">Jatuh Tempo</th>
+                  <th class="col-center" scope="col">Pembayaran</th>
+                  <th class="col-center" scope="col">Aksi</th>
+                </tr>
+              </thead>
+              <tbody data-rows aria-live="polite"></tbody>
+            </table>
+          </div>
+          <nav class="pagination" aria-label="Halaman barang masuk">
+            <p class="pagination__info" data-page-info></p>
+            <ul class="pagination__pages" data-pages></ul>
+          </nav>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ========== Dialog: detail dokumen ========== -->
+  <dialog class="modal modal--xl" id="detail-dialog" aria-labelledby="detail-title">
+    <div class="modal__form">
+      <div class="modal__header">
+        <div class="stack stack--xs">
+          <h2 class="modal__title" id="detail-title" data-detail-title>Detail Barang Masuk</h2>
+          <p class="text-small text-secondary" data-detail-meta></p>
+        </div>
+        <button class="icon-btn" type="button" data-action="close-detail" aria-label="Tutup detail">
+          <span class="icon" aria-hidden="true">close</span>
+        </button>
+      </div>
+      <dl class="fact-grid" data-detail-facts></dl>
+      <div class="table-scroll table-scroll--inset">
+        <table class="table table--compact">
+          <thead>
+            <tr>
+              <th scope="col">Produk</th>
+              <th class="col-num" scope="col">Qty</th>
+              <th class="col-num" scope="col">Harga Beli</th>
+              <th class="col-num" scope="col">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody data-detail-items></tbody>
+        </table>
+      </div>
+      <dl class="summary-list summary-list--boxed" data-detail-totals></dl>
+      <div class="modal__footer" data-detail-actions></div>
+    </div>
+  </dialog>
+</body>
+</html>

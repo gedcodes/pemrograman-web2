@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Input Barang Masuk · Toko Sari Amerta</title>
+  <meta name="description" content="Catat penerimaan barang dari supplier: faktur, rincian qty, harga beli, PPN masukan, dan termin pembayaran.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script type="module" src="../assets/js/pages/form-barang-masuk.js"></script>
+</head>
+
+<!-- Bagian dari menu Barang Masuk; input khusus admin (kasir: lihat saja) -->
+<body data-page="barang-masuk" data-roles="admin">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Inventori</li>
+                <li><a href="barang-masuk.html">Barang Masuk</a></li>
+                <li><span aria-current="page">Input Penerimaan</span></li>
+              </ol>
+            </nav>
+            <h1>Input Penerimaan Barang</h1>
+            <p class="page-header__subtitle">Cocokkan barang fisik dengan surat jalan, lalu bukukan agar stok bertambah. Kolom bertanda <span class="field__required">*</span> wajib diisi.</p>
+          </div>
+          <span class="badge badge--info"><span class="icon" aria-hidden="true">draft</span><span data-doc-number></span></span>
+        </header>
+
+        <form id="purchase-form" novalidate aria-labelledby="purchase-form-title">
+          <h2 class="sr-only" id="purchase-form-title">Formulir penerimaan barang</h2>
+          <div class="grid grid--2-1">
+            <div class="stack">
+              <section class="card" aria-labelledby="sec-doc">
+                <header class="card__header">
+                  <h2 class="card__title card__title--accent" id="sec-doc">Dokumen &amp; Supplier</h2>
+                  <span class="overline">Identitas faktur</span>
+                </header>
+                <div class="form-grid">
+                  <div class="field field--full" data-field="supplier">
+                    <label class="field__label" for="supplier">
+                      <span>Supplier pengirim <span class="field__required" aria-hidden="true">*</span></span>
+                    </label>
+                    <div class="control">
+                      <span class="icon" aria-hidden="true">local_shipping</span>
+                      <select class="control__input" id="supplier" name="supplier" aria-describedby="supplier-msg">
+                        <option value="">Pilih supplier</option>
+                      </select>
+                      <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+                    </div>
+                    <p class="field__message" id="supplier-msg" data-hint="Termin pembayaran & PPN mengikuti data supplier"></p>
+                  </div>
+
+                  <div class="field" data-field="no_faktur">
+                    <label class="field__label" for="no_faktur">
+                      <span>No. faktur supplier <span class="field__required" aria-hidden="true">*</span></span>
+                    </label>
+                    <div class="control">
+                      <input class="control__input control__input--num" id="no_faktur" name="no_faktur" type="text" maxlength="30"
+                             autocomplete="off" placeholder="INV-ICBP/2026/09/0412" aria-describedby="no_faktur-msg">
+                      <span class="icon control__status" aria-hidden="true">error</span>
+                    </div>
+                    <p class="field__message" id="no_faktur-msg" data-hint="Sesuai lembar faktur"></p>
+                  </div>
+
+                  <div class="field" data-field="no_surat_jalan">
+                    <label class="field__label" for="no_surat_jalan">No. surat jalan</label>
+                    <div class="control">
+                      <input class="control__input control__input--num" id="no_surat_jalan" name="no_surat_jalan" type="text" maxlength="30"
+                             autocomplete="off" placeholder="SJ-ICBP-09142" aria-describedby="no_surat_jalan-msg">
+                      <span class="icon control__status" aria-hidden="true">error</span>
+                    </div>
+                    <p class="field__message" id="no_surat_jalan-msg" data-hint="Opsional"></p>
+                  </div>
+
+                  <div class="field" data-field="tanggal">
+                    <label class="field__label" for="tanggal">
+                      <span>Tanggal terima <span class="field__required" aria-hidden="true">*</span></span>
+                    </label>
+                    <div class="control">
+                      <input class="control__input" id="tanggal" name="tanggal" type="date" aria-describedby="tanggal-msg">
+                      <span class="icon control__status" aria-hidden="true">error</span>
+                    </div>
+                    <p class="field__message" id="tanggal-msg" data-hint="Maksimal 30 hari ke belakang"></p>
+                  </div>
+
+                  <div class="field" data-field="penerima">
+                    <label class="field__label" for="penerima">
+                      <span>Penerima fisik <span class="field__required" aria-hidden="true">*</span></span>
+                    </label>
+                    <div class="control">
+                      <span class="icon" aria-hidden="true">badge</span>
+                      <select class="control__input" id="penerima" name="penerima" aria-describedby="penerima-msg"></select>
+                      <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+                    </div>
+                    <p class="field__message" id="penerima-msg" data-hint=""></p>
+                  </div>
+                </div>
+              </section>
+
+              <section class="card stack stack--tight" aria-labelledby="sec-items">
+                <header class="card__header">
+                  <div>
+                    <h2 class="card__title card__title--accent" id="sec-items">Rincian Barang</h2>
+                    <p class="card__subtitle">Isi qty fisik yang benar-benar diterima dan harga beli per satuan.</p>
+                  </div>
+                </header>
+
+                <div class="line-picker" data-field="picker">
+                  <label class="sr-only" for="picker">Pilih produk untuk ditambahkan</label>
+                  <div class="control">
+                    <span class="icon" aria-hidden="true">add_box</span>
+                    <select class="control__input" id="picker" data-picker aria-describedby="picker-msg"></select>
+                    <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+                  </div>
+                  <button class="btn btn--primary" type="button" data-action="add-line">
+                    <span class="icon" aria-hidden="true">add</span>Tambah Baris
+                  </button>
+                  <p class="field__message line-picker__message" id="picker-msg" data-hint="Produk dari supplier terpilih ditampilkan paling atas"></p>
+                </div>
+
+                <div class="field" data-field="items">
+                  <div class="table-scroll table-scroll--inset">
+                    <table class="table table--compact table--lines">
+                      <thead>
+                        <tr>
+                          <th scope="col">Produk</th>
+                          <th class="col-num" scope="col">Stok</th>
+                          <th scope="col">Qty Diterima</th>
+                          <th scope="col">Harga Beli</th>
+                          <th class="col-num" scope="col">Subtotal</th>
+                          <th class="col-center" scope="col"><span class="sr-only">Hapus</span></th>
+                        </tr>
+                      </thead>
+                      <tbody data-lines></tbody>
+                    </table>
+                  </div>
+                  <p class="field__message" data-hint=""></p>
+                </div>
+              </section>
+            </div>
+
+            <div class="stack">
+              <section class="card stack stack--tight" aria-labelledby="sec-summary">
+                <header class="card__header">
+                  <h2 class="card__title card__title--accent" id="sec-summary">Ringkasan Faktur</h2>
+                </header>
+                <dl class="summary-list">
+                  <div class="summary-list__row"><dt>Subtotal</dt><dd data-sum="subtotal">Rp 0</dd></div>
+                </dl>
+                <div class="field" data-field="diskon">
+                  <label class="field__label" for="diskon">Diskon supplier</label>
+                  <div class="control control--sm">
+                    <span class="control__affix">Rp</span>
+                    <input class="control__input control__input--num" id="diskon" name="diskon" type="text" inputmode="numeric"
+                           autocomplete="off" placeholder="0" data-money aria-describedby="diskon-msg">
+                    <span class="icon control__status" aria-hidden="true">error</span>
+                  </div>
+                  <p class="field__message" id="diskon-msg" data-hint="Potongan nominal pada faktur"></p>
+                </div>
+                <label class="check">
+                  <input name="ppn" type="checkbox" checked>
+                  Faktur mengandung PPN masukan <span data-tax-label></span>
+                </label>
+                <dl class="summary-list">
+                  <div class="summary-list__row"><dt>PPN masukan</dt><dd data-sum="pajak">Rp 0</dd></div>
+                  <div class="summary-list__row summary-list__row--strong"><dt>Total faktur</dt><dd data-sum="total">Rp 0</dd></div>
+                </dl>
+                <div class="field" data-field="termin_hari">
+                  <label class="field__label" for="termin_hari">Syarat pembayaran</label>
+                  <div class="control control--sm">
+                    <select class="control__input" id="termin_hari" name="termin_hari">
+                      <option value="0">Tunai saat barang datang</option>
+                      <option value="7">Tempo 7 hari</option>
+                      <option value="14">Tempo 14 hari</option>
+                      <option value="30">Tempo 30 hari</option>
+                      <option value="45">Tempo 45 hari</option>
+                    </select>
+                    <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+                  </div>
+                  <p class="field__message" data-due-note></p>
+                </div>
+              </section>
+
+              <section class="card stack stack--tight" aria-labelledby="sec-options">
+                <header class="card__header">
+                  <h2 class="card__title card__title--accent" id="sec-options">Opsi Pembukuan</h2>
+                </header>
+                <label class="check">
+                  <input name="update_cost" type="checkbox" checked>
+                  <span>Perbarui harga beli produk dengan harga faktur ini
+                    <span class="text-caption text-muted check__sub">Margin di Data Produk & laporan ikut menyesuaikan</span></span>
+                </label>
+                <div class="field" data-field="catatan">
+                  <label class="field__label" for="catatan">Catatan penerimaan</label>
+                  <div class="control control--textarea">
+                    <textarea class="control__input" id="catatan" name="catatan" rows="3" maxlength="200"
+                              placeholder="Contoh: 1 dus penyok, isi aman"></textarea>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <div class="action-bar">
+            <a class="btn btn--ghost" href="barang-masuk.html" data-action="cancel">
+              <span class="icon" aria-hidden="true">arrow_back</span>Batal &amp; Kembali
+            </a>
+            <div class="action-bar__end">
+              <span class="text-caption text-muted" data-line-count></span>
+              <button class="btn btn--primary" type="submit">
+                <span class="icon" aria-hidden="true">inventory</span>Simpan &amp; Bukukan
+              </button>
+            </div>
+          </div>
+        </form>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

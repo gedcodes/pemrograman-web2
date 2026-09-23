@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Riwayat Transaksi · Toko Sari Amerta</title>
+  <meta name="description" content="Riwayat transaksi kasir Toko Sari Amerta dengan filter status, konfirmasi pembayaran non-tunai, dan detail struk.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script type="module" src="../assets/js/pages/riwayat-transaksi.js"></script>
+</head>
+
+<body data-page="riwayat-transaksi">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Transaksi</li>
+                <li><span aria-current="page">Riwayat Transaksi</span></li>
+              </ol>
+            </nav>
+            <h1>Riwayat Transaksi</h1>
+            <p class="page-header__subtitle" data-subtitle></p>
+          </div>
+          <div class="page-header__actions">
+            <button class="btn" type="button" data-action="export">
+              <span class="icon" aria-hidden="true">download</span>Export CSV
+            </button>
+            <a class="btn btn--primary" data-page-link="kasir">
+              <span class="icon" aria-hidden="true">point_of_sale</span>Transaksi Baru
+            </a>
+          </div>
+        </header>
+
+        <section class="card metric-strip" aria-label="Ringkasan transaksi sesuai filter">
+          <div class="metric-strip__item">
+            <span class="stat__label">Omzet Lunas</span>
+            <span class="metric-strip__value" data-metric="omzet"></span>
+            <span class="text-caption text-muted" data-metric="avg"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Lunas</span>
+            <span class="metric-strip__value metric-strip__value--success" data-metric="settlement"></span>
+            <span class="text-caption text-muted">struk selesai dibayar</span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Perlu Tindakan</span>
+            <span class="metric-strip__value metric-strip__value--warning" data-metric="pending"></span>
+            <span class="text-caption text-muted">non-tunai menunggu konfirmasi</span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Batal / Kedaluwarsa</span>
+            <span class="metric-strip__value metric-strip__value--danger" data-metric="batal"></span>
+            <span class="text-caption text-muted">tidak dihitung ke omzet</span>
+          </div>
+        </section>
+
+        <form class="toolbar section section--tight" role="search" aria-label="Saring transaksi" data-filters>
+          <div class="toolbar__search">
+            <label class="sr-only" for="filter-q">Cari transaksi</label>
+            <div class="control">
+              <span class="icon" aria-hidden="true">search</span>
+              <input class="control__input" id="filter-q" name="q" type="search" autocomplete="off"
+                     placeholder="Cari nomor struk atau nama pelanggan">
+            </div>
+          </div>
+          <div class="control">
+            <label class="sr-only" for="filter-periode">Periode</label>
+            <span class="icon" aria-hidden="true">calendar_month</span>
+            <select class="control__input" id="filter-periode" name="periode">
+              <option value="today">Hari Ini</option>
+              <option value="yesterday">Kemarin</option>
+              <option value="7d">7 Hari Terakhir</option>
+              <option value="month" selected>Bulan Ini</option>
+              <option value="30d">30 Hari Terakhir</option>
+              <option value="all">Semua (62 hari)</option>
+            </select>
+            <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+          </div>
+          <div class="control" data-admin-only>
+            <label class="sr-only" for="filter-kasir">Kasir</label>
+            <span class="icon" aria-hidden="true">badge</span>
+            <select class="control__input" id="filter-kasir" name="kasir">
+              <option value="">Semua Kasir</option>
+            </select>
+            <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+          </div>
+          <div class="control">
+            <label class="sr-only" for="filter-metode">Metode pembayaran</label>
+            <select class="control__input" id="filter-metode" name="metode">
+              <option value="">Semua Metode</option>
+              <option value="tunai">Tunai</option>
+              <option value="qris">QRIS</option>
+              <option value="gopay">GoPay</option>
+              <option value="bank_transfer">Transfer VA</option>
+            </select>
+            <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+          </div>
+          <div class="toolbar__end">
+            <button class="btn btn--ghost" type="reset" data-action="clear-filters" hidden>
+              <span class="icon" aria-hidden="true">filter_alt_off</span>Hapus Filter
+            </button>
+          </div>
+        </form>
+
+        <div class="chip-row section section--tight" role="group" aria-label="Saring status transaksi" data-status-chips>
+          <button class="chip" type="button" data-status="" aria-pressed="true">Semua<span class="chip__count" data-count=""></span></button>
+          <button class="chip" type="button" data-status="settlement" aria-pressed="false">
+            <span class="icon icon--sm" aria-hidden="true">check</span>Lunas<span class="chip__count" data-count="settlement"></span>
+          </button>
+          <button class="chip" type="button" data-status="pending" aria-pressed="false">
+            <span class="icon icon--sm" aria-hidden="true">schedule</span>Pending<span class="chip__count" data-count="pending"></span>
+          </button>
+          <button class="chip" type="button" data-status="batal" aria-pressed="false">
+            <span class="icon icon--sm" aria-hidden="true">cancel</span>Dibatalkan<span class="chip__count" data-count="batal"></span>
+          </button>
+        </div>
+
+        <div class="notice notice--warning section section--tight" data-pending-notice hidden>
+          <span class="icon" aria-hidden="true">schedule</span>
+          <p data-pending-text></p>
+          <button class="btn btn--sm notice__action" type="button" data-action="show-pending">
+            Tampilkan<span class="icon icon--sm" aria-hidden="true">arrow_forward</span>
+          </button>
+        </div>
+
+        <section class="table-card section section--tight" aria-labelledby="table-title" data-table>
+          <h2 class="sr-only" id="table-title">Daftar transaksi</h2>
+          <div class="table-scroll">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">No. Struk</th>
+                  <th scope="col">Waktu</th>
+                  <th scope="col" data-admin-only>Kasir</th>
+                  <th scope="col">Pelanggan</th>
+                  <th scope="col">Metode</th>
+                  <th class="col-num" scope="col">Total</th>
+                  <th class="col-center" scope="col">Status</th>
+                  <th class="col-center" scope="col">Aksi</th>
+                </tr>
+              </thead>
+              <tbody data-rows aria-live="polite"></tbody>
+            </table>
+          </div>
+          <nav class="pagination" aria-label="Halaman riwayat transaksi">
+            <p class="pagination__info" data-page-info></p>
+            <ul class="pagination__pages" data-pages></ul>
+          </nav>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ========== Dialog: detail transaksi ========== -->
+  <dialog class="modal modal--xl" id="detail-dialog" aria-labelledby="detail-title">
+    <div class="modal__form">
+      <div class="modal__header">
+        <div class="stack stack--xs">
+          <h2 class="modal__title" id="detail-title" data-detail-title>Detail Transaksi</h2>
+          <p class="text-small text-secondary" data-detail-meta></p>
+        </div>
+        <button class="icon-btn" type="button" data-action="close-detail" aria-label="Tutup detail transaksi">
+          <span class="icon" aria-hidden="true">close</span>
+        </button>
+      </div>
+      <div class="detail-layout">
+        <div class="receipt-stage receipt-stage--short" data-detail-receipt></div>
+        <div class="stack stack--tight">
+          <div class="notice notice--warning" data-detail-pending hidden>
+            <span class="icon" aria-hidden="true">info</span>
+            <p>Periksa status order <code data-detail-order></code> di dashboard Midtrans sebelum mengonfirmasi. Tanpa back-end, status tidak diperbarui otomatis (PERANCANGAN §4.3).</p>
+          </div>
+          <dl class="summary-list" data-detail-info></dl>
+          <section aria-labelledby="log-title">
+            <h3 class="stat__label" id="log-title">Riwayat Status</h3>
+            <ol class="timeline" data-detail-log></ol>
+          </section>
+        </div>
+      </div>
+      <div class="modal__footer" data-detail-actions></div>
+    </div>
+  </dialog>
+</body>
+</html>

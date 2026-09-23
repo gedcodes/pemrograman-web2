@@ -178,6 +178,11 @@ h3,
 
 /* ---------- Aksesibilitas ---------- */
 
+/* Atribut hidden harus menang atas display dari kelas komponen */
+[hidden] {
+  display: none !important;
+}
+
 :focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);

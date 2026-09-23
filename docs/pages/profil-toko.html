@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profil Toko · Toko Sari Amerta</title>
+  <meta name="description" content="Identitas, alamat, kontak, dan teks struk Toko Sari Amerta dengan pratinjau struk langsung.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script type="module" src="../assets/js/pages/profil-toko.js"></script>
+</head>
+
+<body data-page="profil-toko">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Pengaturan</li>
+                <li><span aria-current="page">Profil Toko</span></li>
+              </ol>
+            </nav>
+            <h1>Profil Toko</h1>
+            <p class="page-header__subtitle">Identitas ini tercetak di header dan footer setiap struk kasir. Kolom bertanda <span class="field__required">*</span> wajib diisi.</p>
+          </div>
+        </header>
+
+        <form id="store-form" novalidate aria-labelledby="store-form-title">
+          <h2 class="sr-only" id="store-form-title">Formulir profil toko</h2>
+          <div class="grid grid--2-1">
+            <div class="stack">
+              <section class="card" aria-labelledby="sec-identity">
+                <header class="card__header">
+                  <h2 class="card__title card__title--accent" id="sec-identity">Identitas &amp; Legalitas</h2>
+                  <span class="overline">Tampil di header struk</span>
+                </header>
+                <div class="form-grid">
+                  <div class="field" data-field="nama">
+                    <label class="field__label" for="nama">
+                      <span>Nama toko <span class="field__required" aria-hidden="true">*</span></span>
+                      <span class="field__hint" data-count="nama">0/32</span>
+                    </label>
+                    <div class="control">
+                      <span class="icon" aria-hidden="true">storefront</span>
+                      <input class="control__input" id="nama" name="nama" type="text" maxlength="32" autocomplete="organization" aria-describedby="nama-msg">
+                      <span class="icon control__status" aria-hidden="true">error</span>
+                    </div>
+                    <p class="field__message" id="nama-msg" data-hint="Dicetak huruf besar, maks. 32 karakter agar muat 80mm"></p>
+                  </div>
+
+                  <div class="field" data-field="tagline">
+                    <label class="field__label" for="tagline">
+                      <span>Slogan / jenis usaha</span>
+                      <span class="field__hint" data-count="tagline">0/40</span>
+                    </label>
+                    <div class="control">
+                      <input class="control__input" id="tagline" name="tagline" type="text" maxlength="40" aria-describedby="tagline-msg">
+                      <span class="icon control__status" aria-hidden="true">error</span>
+                    </div>
+                    <p class="field__message" id="tagline-msg" data-hint="Opsional"></p>
+                  </div>
+
+                  <div class="field" data-field="npwp">
+                    <label class="field__label" for="npwp">
+                      <span>NPWP <span class="field__required" aria-hidden="true">*</span></span>
+                    </label>
+                    <div class="control">
+                      <input class="control__input control__input--num" id="npwp" name="npwp" type="text" inputmode="numeric" maxlength="20"
+                             placeholder="08.214.590.2-905.000" aria-describedby="npwp-msg">
+                      <span class="icon control__status" aria-hidden="true">error</span>
+                    </div>
+                    <p class="field__message" id="npwp-msg" data-hint="15 digit, titik & strip ditambahkan otomatis"></p>
+                  </div>
+
+                  <div class="field" data-field="nib">
+                    <label class="field__label" for="nib">NIB (Nomor Induk Berusaha)</label>
+                    <div class="control">
+                      <input class="control__input control__input--num" id="nib" name="nib" type="text" inputmode="numeric" maxlength="13"
+                             aria-describedby="nib-msg">
+                      <span class="icon control__status" aria-hidden="true">error</span>
+                    </div>
+                    <p class="field__message" id="nib-msg" data-hint="13 digit dari OSS, opsional"></p>
+                  </div>
+                </div>
+              </section>
+
+              <section class="card" aria-labelledby="sec-contact">
+                <header class="card__header">
+                  <h2 class="card__title card__title--accent" id="sec-contact">Alamat, Kontak &amp; Jam Buka</h2>
+                </header>
+                <div class="form-grid">
+                  <div class="field field--full" data-field="alamat">
+                    <label class="field__label" for="alamat">
+                      <span>Alamat toko <span class="field__required" aria-hidden="true">*</span></span>
+                      <span class="field__hint" data-count="alamat">0/64</span>
+                    </label>
+                    <div class="control">
+                      <span class="icon" aria-hidden="true">location_on</span>
+                      <input class="control__input" id="alamat" name="alamat" type="text" maxlength="64" autocomplete="street-address" aria-describedby="alamat-msg">
+                      <span class="icon control__status" aria-hidden="true">error</span>
+                    </div>
+                    <p class="field__message" id="alamat-msg" data-hint="Satu baris singkat untuk struk"></p>
+                  </div>
+
+                  <div class="field" data-field="telepon">
+                    <label class="field__label" for="telepon">
+                      <span>Telepon <span class="field__required" aria-hidden="true">*</span></span>
+                    </label>
+                    <div class="control">
+                      <span class="icon" aria-hidden="true">call</span>
+                      <input class="control__input control__input--num" id="telepon" name="telepon" type="tel" maxlength="20" autocomplete="tel" aria-describedby="telepon-msg">
+                      <span class="icon control__status" aria-hidden="true">error</span>
+                    </div>
+                    <p class="field__message" id="telepon-msg" data-hint="Contoh: (0361) 284910 atau 0812-3890-1122"></p>
+                  </div>
+
+                  <div class="field" data-field="email">
+                    <label class="field__label" for="email">Email</label>
+                    <div class="control">
+                      <span class="icon" aria-hidden="true">mail</span>
+                      <input class="control__input" id="email" name="email" type="email" maxlength="60" autocomplete="email" aria-describedby="email-msg">
+                      <span class="icon control__status" aria-hidden="true">error</span>
+                    </div>
+                    <p class="field__message" id="email-msg" data-hint="Opsional"></p>
+                  </div>
+
+                  <div class="field" data-field="jamBuka">
+                    <label class="field__label" for="jamBuka">
+                      <span>Jam buka <span class="field__required" aria-hidden="true">*</span></span>
+                    </label>
+                    <div class="control">
+                      <span class="icon" aria-hidden="true">schedule</span>
+                      <input class="control__input control__input--num" id="jamBuka" name="jamBuka" type="time" aria-describedby="jamBuka-msg">
+                    </div>
+                    <p class="field__message" id="jamBuka-msg" data-hint=""></p>
+                  </div>
+
+                  <div class="field" data-field="jamTutup">
+                    <label class="field__label" for="jamTutup">
+                      <span>Jam tutup <span class="field__required" aria-hidden="true">*</span></span>
+                    </label>
+                    <div class="control">
+                      <span class="icon" aria-hidden="true">schedule</span>
+                      <input class="control__input control__input--num" id="jamTutup" name="jamTutup" type="time" aria-describedby="jamTutup-msg">
+                    </div>
+                    <p class="field__message" id="jamTutup-msg" data-hint=""></p>
+                  </div>
+                </div>
+              </section>
+
+              <section class="card" aria-labelledby="sec-footer">
+                <header class="card__header">
+                  <h2 class="card__title card__title--accent" id="sec-footer">Teks Footer Struk</h2>
+                  <span class="overline">Maks. 48 karakter per baris</span>
+                </header>
+                <div class="form-grid">
+                  <div class="field" data-field="footer1">
+                    <label class="field__label" for="footer1">
+                      <span>Baris 1</span>
+                      <span class="field__hint" data-count="footer1">0/48</span>
+                    </label>
+                    <div class="control">
+                      <input class="control__input" id="footer1" name="footer1" type="text" maxlength="48" aria-describedby="footer1-msg">
+                    </div>
+                    <p class="field__message" id="footer1-msg" data-hint="Contoh: ucapan terima kasih"></p>
+                  </div>
+                  <div class="field" data-field="footer2">
+                    <label class="field__label" for="footer2">
+                      <span>Baris 2</span>
+                      <span class="field__hint" data-count="footer2">0/48</span>
+                    </label>
+                    <div class="control">
+                      <input class="control__input" id="footer2" name="footer2" type="text" maxlength="48" aria-describedby="footer2-msg">
+                    </div>
+                    <p class="field__message" id="footer2-msg" data-hint="Contoh: kebijakan retur"></p>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <aside class="card stack stack--tight sticky-panel" aria-labelledby="preview-title">
+              <header class="card__header">
+                <h2 class="card__title" id="preview-title">Pratinjau Struk</h2>
+                <span class="badge badge--info">Belum disimpan ikut tampil</span>
+              </header>
+              <div class="receipt-stage" data-preview aria-live="polite"></div>
+              <p class="text-caption text-muted" data-preview-note></p>
+            </aside>
+          </div>
+
+          <div class="action-bar">
+            <button class="btn btn--ghost" type="button" data-action="reset">
+              <span class="icon" aria-hidden="true">restart_alt</span>Kembalikan Default
+            </button>
+            <div class="action-bar__end">
+              <span class="text-caption text-muted" data-dirty-note hidden>Ada perubahan belum disimpan</span>
+              <button class="btn btn--primary" type="submit">
+                <span class="icon" aria-hidden="true">check</span>Simpan Profil
+              </button>
+            </div>
+          </div>
+        </form>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

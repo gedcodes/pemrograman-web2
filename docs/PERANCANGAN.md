@@ -546,12 +546,24 @@ Neumorphism berkontras rendah dan secara default kurang cocok untuk data padat. 
 | # | Halaman | File | Isi Utama |
 | :--: | :-- | :-- | :-- |
 | 1 | Dashboard | `pages/dashboard.html` | 4 stat card (omzet hari ini, jumlah transaksi, produk terjual, stok menipis) + grafik Chart.js penjualan 7 hari + tabel transaksi terakhir |
-| 2 | Data Master | `pages/data-master.html` | Tabel produk dengan search, filter kategori, badge stok, tombol Tambah/Edit/Hapus |
+| 2 | Data Master | `pages/produk.html` | Tabel produk dengan search, filter kategori, badge stok, tombol Tambah/Edit/Hapus |
 | 3 | Form Input/Edit | `pages/form-produk.html` | Form produk dengan validasi JS: nama wajib, harga jual harus lebih besar dari harga beli, stok tidak boleh negatif |
-| 4 | Laporan / Detail | `pages/laporan.html` | Rekap penjualan per periode dan tampilan struk siap cetak dengan `@media print` |
+| 4 | Laporan / Detail | `pages/laporan-penjualan.html` | Rekap penjualan per periode dan tampilan struk siap cetak dengan `@media print` |
 | + | Kasir (nilai tambah) | `pages/kasir.html` | Grid produk, panel keranjang, dan modal pembayaran dua metode (Tunai / Non-Tunai Midtrans) |
 
 > **Urutan pengerjaan:** empat halaman wajib diselesaikan lebih dahulu. Integrasi Midtrans dikerjakan sesudahnya sebagai nilai tambah, karena tidak termasuk komponen yang dinilai pada rubrik.
+
+**Halaman pendukung.** Seluruh menu pada Bagian 2 juga dibangun dengan pola yang sama (nama berkas = `pages/<slug-menu>.html`), ditambah halaman login `index.html`:
+
+| Kelompok | Berkas |
+| :-- | :-- |
+| Transaksi | `riwayat-transaksi.html` (termasuk konfirmasi manual pembayaran *pending*, §4.3), `retur-penjualan.html` |
+| Master Data | `kategori-produk.html`, `satuan.html`, `supplier.html`, `pelanggan.html` |
+| Inventori | `stok-barang.html`, `barang-masuk.html` + `form-barang-masuk.html`, `stok-opname.html` + `form-stok-opname.html` |
+| Laporan | `laporan-laba-rugi.html`, `laporan-stok.html`, `cetak-struk.html` |
+| Pengaturan | `pengguna-akses.html`, `profil-toko.html`, `metode-pembayaran.html` (URL Payment Link, §5.5), `pajak-diskon.html` |
+
+Daftar lengkap beserta referensi desainnya ada di [`README.md`](README.md#status-halaman).
 
 ---
 

@@ -6,6 +6,10 @@
 import { escapeHtml } from '../core/format.js';
 
 const DEFAULT_DURATION = 3500;
+const MAX_VISIBLE = 3;
+
+/** Fungsi penutup tiap toast, agar toast terlama bisa ditutup saat penuh */
+const dismissers = new WeakMap();
 
 const ICONS = {
   success: 'check_circle',
@@ -53,7 +57,14 @@ export function showToast({ type = 'info', title, message = '', duration = DEFAU
   };
 
   toast.querySelector('.toast__close').addEventListener('click', dismiss);
-  getRegion().append(toast);
+  dismissers.set(toast, dismiss);
+
+  const region = getRegion();
+  region.append(toast);
   timer = setTimeout(dismiss, duration);
+
+  // Maksimal tiga toast terlihat; yang terlama ditutup lebih dulu
+  const visible = region.querySelectorAll('.toast:not(.is-leaving)');
+  if (visible.length > MAX_VISIBLE) dismissers.get(visible[0])();
   return dismiss;
 }

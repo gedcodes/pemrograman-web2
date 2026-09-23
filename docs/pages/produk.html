@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Data Produk · Toko Sari Amerta</title>
+  <meta name="description" content="Master data produk Toko Sari Amerta: cari, saring, tambah, ubah, dan hapus produk.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script type="module" src="../assets/js/pages/produk.js"></script>
+</head>
+
+<body data-page="produk">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Master Data</li>
+                <li><span aria-current="page">Produk</span></li>
+              </ol>
+            </nav>
+            <h1>Data Produk</h1>
+            <p class="page-header__subtitle"><span data-total-count>0</span> produk terdaftar di katalog toko</p>
+          </div>
+          <div class="page-header__actions">
+            <button class="btn" type="button" data-action="export">
+              <span class="icon" aria-hidden="true">download</span>Export CSV
+            </button>
+            <a class="btn btn--primary" href="form-produk.html">
+              <span class="icon" aria-hidden="true">add</span>Tambah Produk
+            </a>
+          </div>
+        </header>
+
+        <!-- Ringkasan stok sekaligus filter cepat -->
+        <div class="grid grid--4" role="group" aria-label="Saring berdasarkan status stok" data-status-cards>
+          <button class="mini-stat" type="button" data-status="" aria-pressed="true">
+            <span class="mini-stat__text">
+              <span class="mini-stat__label">Total Katalog</span>
+              <span class="mini-stat__value"><span data-count="semua">0</span> SKU</span>
+            </span>
+            <span class="mini-stat__icon" aria-hidden="true"><span class="icon">inventory_2</span></span>
+          </button>
+          <button class="mini-stat mini-stat--success" type="button" data-status="aman" aria-pressed="false">
+            <span class="mini-stat__text">
+              <span class="mini-stat__label">Stok Aman</span>
+              <span class="mini-stat__value"><span data-count="aman">0</span> SKU</span>
+            </span>
+            <span class="mini-stat__icon" aria-hidden="true"><span class="icon">check_circle</span></span>
+          </button>
+          <button class="mini-stat mini-stat--warning" type="button" data-status="menipis" aria-pressed="false">
+            <span class="mini-stat__text">
+              <span class="mini-stat__label">Stok Menipis</span>
+              <span class="mini-stat__value"><span data-count="menipis">0</span> SKU</span>
+            </span>
+            <span class="mini-stat__icon" aria-hidden="true"><span class="icon">warning</span></span>
+          </button>
+          <button class="mini-stat mini-stat--danger" type="button" data-status="habis" aria-pressed="false">
+            <span class="mini-stat__text">
+              <span class="mini-stat__label">Stok Habis</span>
+              <span class="mini-stat__value"><span data-count="habis">0</span> SKU</span>
+            </span>
+            <span class="mini-stat__icon" aria-hidden="true"><span class="icon">error</span></span>
+          </button>
+        </div>
+
+        <form class="toolbar section section--tight" role="search" aria-label="Saring produk" data-filters>
+          <div class="toolbar__search">
+            <label class="sr-only" for="filter-q">Cari produk</label>
+            <div class="control">
+              <span class="icon" aria-hidden="true">search</span>
+              <input class="control__input" id="filter-q" name="q" type="search" placeholder="Cari nama atau barcode produk" autocomplete="off">
+            </div>
+          </div>
+          <div class="control">
+            <label class="sr-only" for="filter-kategori">Kategori</label>
+            <select class="control__input" id="filter-kategori" name="kategori">
+              <option value="">Semua Kategori</option>
+            </select>
+            <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+          </div>
+          <div class="control">
+            <label class="sr-only" for="filter-status">Status stok</label>
+            <select class="control__input" id="filter-status" name="status">
+              <option value="">Semua Status</option>
+              <option value="aman">Stok Aman</option>
+              <option value="menipis">Stok Menipis</option>
+              <option value="habis">Stok Habis</option>
+            </select>
+            <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+          </div>
+          <div class="toolbar__end">
+            <button class="btn btn--ghost" type="reset" data-action="clear-filters" hidden>
+              <span class="icon" aria-hidden="true">filter_alt_off</span>Hapus Filter
+            </button>
+            <button class="icon-btn" type="button" data-action="reset-data" aria-label="Kembalikan data contoh">
+              <span class="icon" aria-hidden="true">restart_alt</span>
+            </button>
+          </div>
+        </form>
+
+        <section class="table-card section section--tight" aria-labelledby="table-title">
+          <h2 class="sr-only" id="table-title">Daftar produk</h2>
+          <div class="bulk-bar" data-bulk-bar hidden>
+            <span><span data-selected-count>0</span> produk dipilih</span>
+            <button class="btn btn--danger btn--sm" type="button" data-action="bulk-delete">
+              <span class="icon icon--sm" aria-hidden="true">delete</span>Hapus Terpilih
+            </button>
+          </div>
+          <div class="table-scroll">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="col-check" scope="col"><input type="checkbox" data-select-all aria-label="Pilih semua produk di halaman ini"></th>
+                  <th scope="col">Produk</th>
+                  <th scope="col">Kategori</th>
+                  <th class="col-num" scope="col">Harga Beli</th>
+                  <th class="col-num" scope="col">Harga Jual</th>
+                  <th class="col-num" scope="col">Margin</th>
+                  <th class="col-num" scope="col">Stok</th>
+                  <th class="col-center" scope="col">Status</th>
+                  <th class="col-center" scope="col">Aksi</th>
+                </tr>
+              </thead>
+              <tbody data-rows aria-live="polite"></tbody>
+            </table>
+          </div>
+          <nav class="pagination" aria-label="Halaman daftar produk">
+            <p class="pagination__info" data-page-info></p>
+            <ul class="pagination__pages" data-pages></ul>
+          </nav>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

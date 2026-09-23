@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Form Produk · Toko Sari Amerta</title>
+  <meta name="description" content="Tambah atau ubah data produk Toko Sari Amerta dengan validasi langsung.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script type="module" src="../assets/js/pages/form-produk.js"></script>
+</head>
+
+<!-- Form produk bagian dari menu Produk, sehingga data-page = "produk" -->
+<body data-page="produk">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Master Data</li>
+                <li><a href="produk.html">Produk</a></li>
+                <li><span aria-current="page" data-mode-crumb>Tambah Produk</span></li>
+              </ol>
+            </nav>
+            <h1 data-mode-title>Tambah Produk</h1>
+            <p class="page-header__subtitle">Lengkapi informasi, harga, dan stok. Kolom bertanda <span class="field__required">*</span> wajib diisi.</p>
+          </div>
+          <span class="badge badge--info" data-mode-badge><span class="icon" aria-hidden="true">draft</span>Produk baru</span>
+        </header>
+
+        <form id="product-form" novalidate aria-labelledby="form-title">
+          <h2 class="sr-only" id="form-title">Formulir data produk</h2>
+          <div class="grid grid--2-1">
+            <div class="stack">
+              <section class="card" aria-labelledby="sec-info">
+                <header class="card__header">
+                  <h2 class="card__title card__title--accent" id="sec-info">Informasi Produk</h2>
+                  <span class="overline">Identitas &amp; katalog</span>
+                </header>
+                <div class="form-grid">
+                  <div class="field field--full" data-field="nama">
+                    <label class="field__label" for="nama">
+                      <span>Nama Produk <span class="field__required" aria-hidden="true">*</span></span>
+                      <span class="field__hint" data-char-count>0/120</span>
+                    </label>
+                    <div class="control">
+                      <input class="control__input" id="nama" name="nama" type="text" maxlength="120" required
+                             autocomplete="off" placeholder="Contoh: Indomie Goreng Rendang 85g" aria-describedby="nama-msg">
+                      <span class="icon control__status" aria-hidden="true">error</span>
+                    </div>
+                    <p class="field__message" id="nama-msg" data-hint="Nama lengkap beserta ukuran kemasan"></p>
+                  </div>
+
+                  <div class="field" data-field="barcode">
+                    <label class="field__label" for="barcode">
+                      <span>Barcode <span class="field__required" aria-hidden="true">*</span></span>
+                      <span class="field__hint">EAN-8 / EAN-13</span>
+                    </label>
+                    <div class="control">
+                      <span class="icon" aria-hidden="true">barcode_scanner</span>
+                      <input class="control__input control__input--num" id="barcode" name="barcode" type="text" inputmode="numeric"
+                             maxlength="13" required autocomplete="off" placeholder="8–13 digit angka" aria-describedby="barcode-msg">
+                      <span class="icon control__status" aria-hidden="true">error</span>
+                    </div>
+                    <p class="field__message" id="barcode-msg" data-hint="Scan dengan pemindai atau ketik manual"></p>
+                  </div>
+
+                  <div class="field" data-field="kategori">
+                    <label class="field__label" for="kategori">
+                      <span>Kategori <span class="field__required" aria-hidden="true">*</span></span>
+                    </label>
+                    <div class="control">
+                      <select class="control__input" id="kategori" name="kategori" required aria-describedby="kategori-msg">
+                        <option value="">Pilih kategori</option>
+                      </select>
+                      <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+                    </div>
+                    <p class="field__message" id="kategori-msg" data-hint=""></p>
+                  </div>
+
+                  <div class="field" data-field="satuan">
+                    <label class="field__label" for="satuan">
+                      <span>Satuan Jual <span class="field__required" aria-hidden="true">*</span></span>
+                    </label>
+                    <div class="control">
+                      <select class="control__input" id="satuan" name="satuan" required aria-describedby="satuan-msg">
+                        <option value="">Pilih satuan</option>
+                      </select>
+                      <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+                    </div>
+                    <p class="field__message" id="satuan-msg" data-hint=""></p>
+                  </div>
+
+                  <div class="field" data-field="supplier">
+                    <label class="field__label" for="supplier">Pemasok Utama</label>
+                    <div class="control">
+                      <select class="control__input" id="supplier" name="supplier" aria-describedby="supplier-msg">
+                        <option value="">Tanpa pemasok tetap</option>
+                      </select>
+                      <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+                    </div>
+                    <p class="field__message" id="supplier-msg" data-hint="Dipakai saat membuat pesanan barang"></p>
+                  </div>
+                </div>
+              </section>
+
+              <section class="card" aria-labelledby="sec-harga">
+                <header class="card__header">
+                  <h2 class="card__title card__title--accent" id="sec-harga">Harga &amp; Stok</h2>
+                  <span class="overline">Perhitungan finansial</span>
+                </header>
+                <div class="form-grid">
+                  <div class="field" data-field="harga_beli">
+                    <label class="field__label" for="harga_beli">
+                      <span>Harga Beli <span class="field__required" aria-hidden="true">*</span></span>
+                    </label>
+                    <div class="control">
+                      <span class="control__affix">Rp</span>
+                      <input class="control__input control__input--num" id="harga_beli" name="harga_beli" type="text"
+                             inputmode="numeric" required autocomplete="off" placeholder="0" data-money aria-describedby="harga_beli-msg">
+                      <span class="icon control__status" aria-hidden="true">error</span>
+                    </div>
+                    <p class="field__message" id="harga_beli-msg" data-hint="Modal per satuan sebelum PPN"></p>
+                  </div>
+
+                  <div class="field" data-field="harga_jual">
+                    <label class="field__label" for="harga_jual">
+                      <span>Harga Jual <span class="field__required" aria-hidden="true">*</span></span>
+                    </label>
+                    <div class="control">
+                      <span class="control__affix">Rp</span>
+                      <input class="control__input control__input--num" id="harga_jual" name="harga_jual" type="text"
+                             inputmode="numeric" required autocomplete="off" placeholder="0" data-money aria-describedby="harga_jual-msg">
+                      <span class="icon control__status" aria-hidden="true">error</span>
+                    </div>
+                    <p class="field__message" id="harga_jual-msg" data-hint="Harga yang tercetak di struk kasir"></p>
+                  </div>
+
+                  <div class="field" data-field="stok">
+                    <label class="field__label" for="stok">
+                      <span data-stock-label>Stok Awal <span class="field__required" aria-hidden="true">*</span></span>
+                    </label>
+                    <div class="control">
+                      <input class="control__input control__input--num" id="stok" name="stok" type="number" min="0" step="1"
+                             required placeholder="0" aria-describedby="stok-msg">
+                      <span class="control__affix" data-unit-suffix></span>
+                      <span class="icon control__status" aria-hidden="true">error</span>
+                    </div>
+                    <p class="field__message" id="stok-msg" data-hint="Jumlah fisik saat produk didaftarkan"></p>
+                  </div>
+
+                  <div class="field" data-field="stok_minimum">
+                    <label class="field__label" for="stok_minimum">
+                      <span>Stok Minimum <span class="field__required" aria-hidden="true">*</span></span>
+                    </label>
+                    <div class="control">
+                      <input class="control__input control__input--num" id="stok_minimum" name="stok_minimum" type="number" min="0"
+                             step="1" required placeholder="0" aria-describedby="stok_minimum-msg">
+                      <span class="control__affix" data-unit-suffix></span>
+                      <span class="icon control__status" aria-hidden="true">error</span>
+                    </div>
+                    <p class="field__message" id="stok_minimum-msg" data-hint="Batas peringatan stok menipis"></p>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <div class="stack">
+              <section class="card stack stack--tight" aria-labelledby="sec-gambar">
+                <header class="card__header">
+                  <h2 class="card__title card__title--accent" id="sec-gambar">Gambar Produk</h2>
+                  <span class="overline">Maks. 2 MB</span>
+                </header>
+                <div class="image-preview" data-preview hidden>
+                  <img alt="Pratinjau gambar produk" data-preview-img>
+                  <button class="icon-btn" type="button" data-action="remove-image" aria-label="Hapus gambar">
+                    <span class="icon" aria-hidden="true">delete</span>
+                  </button>
+                </div>
+                <div class="field" data-field="gambar">
+                  <div class="dropzone" data-dropzone>
+                    <input class="dropzone__input" id="gambar" type="file" accept="image/png,image/jpeg,image/webp"
+                           aria-describedby="gambar-msg" aria-label="Pilih gambar produk">
+                    <span class="dropzone__icon" aria-hidden="true"><span class="icon">cloud_upload</span></span>
+                    <span class="dropzone__title">Tarik gambar ke sini</span>
+                    <span class="text-small text-secondary">atau klik untuk memilih berkas</span>
+                  </div>
+                  <p class="field__message" id="gambar-msg" data-hint="PNG, JPG, atau WebP. Rasio 1:1 disarankan"></p>
+                </div>
+              </section>
+
+              <section class="card" aria-labelledby="sec-margin">
+                <header class="card__header">
+                  <h2 class="card__title card__title--accent" id="sec-margin">Ringkasan Margin</h2>
+                  <span data-margin-badge></span>
+                </header>
+                <dl class="summary-list">
+                  <div class="summary-list__row"><dt>Laba per unit</dt><dd data-summary="laba">–</dd></div>
+                  <div class="summary-list__row"><dt>Margin (dari harga jual)</dt><dd data-summary="margin">–</dd></div>
+                  <div class="summary-list__row"><dt>Markup (dari harga beli)</dt><dd data-summary="markup">–</dd></div>
+                  <div class="summary-list__row summary-list__row--strong"><dt>Potensi omzet stok</dt><dd data-summary="potensi">–</dd></div>
+                </dl>
+              </section>
+
+              <section class="card stack stack--tight" aria-labelledby="sec-status">
+                <header class="card__header">
+                  <h2 class="card__title card__title--accent" id="sec-status">Status Penjualan</h2>
+                </header>
+                <label class="switch">
+                  <input class="switch__input" id="aktif" name="aktif" type="checkbox" role="switch" checked>
+                  <span class="switch__track" aria-hidden="true"></span>
+                  Produk aktif dijual
+                </label>
+                <p class="text-small text-secondary">Produk nonaktif disembunyikan dari pencarian di halaman Kasir.</p>
+                <label class="check">
+                  <input id="backorder" name="backorder" type="checkbox">
+                  Izinkan transaksi walau stok fisik habis (backorder)
+                </label>
+              </section>
+            </div>
+          </div>
+
+          <div class="action-bar">
+            <a class="btn btn--ghost" href="produk.html" data-action="cancel">
+              <span class="icon" aria-hidden="true">arrow_back</span>Batal &amp; Kembali
+            </a>
+            <div class="action-bar__end">
+              <span class="text-caption text-muted" data-dirty-note hidden>Ada perubahan belum disimpan</span>
+              <button class="btn btn--primary" type="submit">
+                <span class="icon" aria-hidden="true">check</span>Simpan Produk
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <div class="card card--crisp empty-state" data-not-found hidden>
+          <span class="empty-state__icon" aria-hidden="true"><span class="icon">search_off</span></span>
+          <p class="empty-state__title">Produk tidak ditemukan</p>
+          <p class="empty-state__text">Produk yang ingin diubah mungkin sudah dihapus dari katalog.</p>
+          <a class="btn btn--primary" href="produk.html">Kembali ke Data Produk</a>
+        </div>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

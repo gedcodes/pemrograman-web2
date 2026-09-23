@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laporan Laba Rugi · Toko Sari Amerta</title>
+  <meta name="description" content="Laporan laba rugi Toko Sari Amerta per periode: pendapatan, HPP, beban operasional, pajak, dan laba bersih.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script type="module" src="../assets/js/pages/laporan-laba-rugi.js"></script>
+</head>
+
+<body data-page="laporan-laba-rugi">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Laporan</li>
+                <li><span aria-current="page">Laba Rugi</span></li>
+              </ol>
+            </nav>
+            <h1>Laporan Laba Rugi</h1>
+            <p class="page-header__subtitle" data-range-label></p>
+          </div>
+          <div class="page-header__actions">
+            <button class="btn" type="button" data-action="export">
+              <span class="icon" aria-hidden="true">download</span>Export CSV
+            </button>
+            <button class="btn btn--neutral" type="button" data-action="print">
+              <span class="icon" aria-hidden="true">print</span>Cetak Laporan
+            </button>
+          </div>
+        </header>
+
+        <form class="card range-form" data-range-form novalidate aria-label="Periode laporan">
+          <div class="segmented" role="group" aria-label="Periode cepat" data-presets>
+            <button class="segmented__option" type="button" data-preset="7d" aria-pressed="false">7 Hari</button>
+            <button class="segmented__option" type="button" data-preset="30d" aria-pressed="false">30 Hari</button>
+            <button class="segmented__option" type="button" data-preset="month" aria-pressed="true">Bulan Ini</button>
+            <button class="segmented__option" type="button" data-preset="last-month" aria-pressed="false">Bulan Lalu</button>
+          </div>
+          <div class="range-form__dates">
+            <div class="field" data-field="from">
+              <label class="field__label" for="range-from">Dari</label>
+              <div class="control control--sm">
+                <input class="control__input" id="range-from" name="from" type="date" required aria-describedby="range-msg">
+              </div>
+            </div>
+            <div class="field" data-field="to">
+              <label class="field__label" for="range-to">Sampai</label>
+              <div class="control control--sm">
+                <input class="control__input" id="range-to" name="to" type="date" required aria-describedby="range-msg">
+              </div>
+            </div>
+          </div>
+          <p class="field__message range-form__message" id="range-msg" data-range-msg></p>
+        </form>
+
+        <section class="card metric-strip section section--tight" aria-label="Angka kunci laba rugi">
+          <div class="metric-strip__item">
+            <span class="stat__label">Pendapatan Bersih</span>
+            <span class="metric-strip__value" data-metric="pendapatan"></span>
+            <span data-metric="pendapatan-change"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Laba Kotor</span>
+            <span class="metric-strip__value" data-metric="kotor"></span>
+            <span class="text-caption text-muted" data-metric="kotor-meta"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Beban Operasional</span>
+            <span class="metric-strip__value" data-metric="beban"></span>
+            <span class="text-caption text-muted" data-metric="beban-meta"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Laba Bersih</span>
+            <span class="metric-strip__value" data-metric="bersih"></span>
+            <span data-metric="bersih-change"></span>
+          </div>
+        </section>
+
+        <div class="grid grid--2-1 section section--tight">
+          <section class="table-card" aria-labelledby="statement-title">
+            <header class="table-card__header">
+              <div>
+                <h2 class="card__title" id="statement-title">Rincian Laba Rugi</h2>
+                <p class="card__subtitle" data-statement-period></p>
+              </div>
+              <span class="badge badge--info"><span class="icon" aria-hidden="true">payments</span>Rupiah, tanpa PPN</span>
+            </header>
+            <div class="table-scroll">
+              <table class="table statement">
+                <thead>
+                  <tr>
+                    <th scope="col">Pos</th>
+                    <th class="col-num" scope="col">Jumlah (Rp)</th>
+                    <th class="col-num" scope="col">% Pendapatan</th>
+                  </tr>
+                </thead>
+                <tbody data-statement></tbody>
+              </table>
+            </div>
+          </section>
+
+          <aside class="stack" aria-label="Analisis laba rugi">
+            <section class="card stack stack--tight" aria-labelledby="health-title">
+              <header class="card__header">
+                <h2 class="card__title" id="health-title">Kesehatan Bisnis</h2>
+              </header>
+              <ul class="ratio-list" role="list" data-health></ul>
+            </section>
+
+            <section class="card stack stack--tight" aria-labelledby="mix-title">
+              <header class="card__header">
+                <h2 class="card__title" id="mix-title">Ke Mana Pendapatan Pergi</h2>
+              </header>
+              <div class="stack-bar" role="img" data-mix-bar></div>
+              <ul class="legend-list" role="list" data-mix-legend></ul>
+            </section>
+
+            <section class="card stack stack--tight" aria-labelledby="policy-title">
+              <h2 class="card__title" id="policy-title">Dasar Perhitungan</h2>
+              <ul class="check-list" role="list">
+                <li>HPP memakai harga beli yang tercatat pada tiap transaksi.</li>
+                <li>Beban bulanan diprorata per hari; MDR <span data-mdr-rate></span> dari transaksi non-tunai.</li>
+                <li>PPh Final UMKM <span data-pph-rate></span> dari pendapatan bersih (PP 55/2022). Tarif diatur di Pajak &amp; Diskon.</li>
+                <li>PPN keluaran adalah titipan pajak, bukan pendapatan toko.</li>
+              </ul>
+            </section>
+          </aside>
+        </div>
+
+        <article class="card stack section section--tight">
+          <header class="card__header">
+            <div>
+              <h2 class="card__title">Laba Kotor per Hari</h2>
+              <p class="card__subtitle">Penjualan bersih dikurangi HPP barang terjual</p>
+            </div>
+            <span class="badge badge--info" data-best-day></span>
+          </header>
+          <div class="chart-box">
+            <canvas id="profit-chart" role="img" aria-label="Grafik laba kotor per hari"></canvas>
+          </div>
+        </article>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

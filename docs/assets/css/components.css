@@ -89,6 +89,15 @@
   --btn-shadow-active: none;
 }
 
+/* Tombol sekunder neumorphic dengan teks berwarna status */
+.btn--danger-soft {
+  --btn-fg: var(--danger-text);
+}
+
+.btn--warning-soft {
+  --btn-fg: var(--warning-text);
+}
+
 .btn--sm {
   height: var(--control-h-sm);
   padding: 0 var(--space-4);
@@ -167,6 +176,7 @@
   background: var(--surface-raised);
   color: var(--text-primary);
   box-shadow: var(--shadow-raised-sm);
+  text-decoration: none;
   transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-base) var(--ease), color var(--dur-base) var(--ease);
 }
 
@@ -196,6 +206,11 @@
 }
 
 .icon-btn--flat.icon-btn--danger:hover {
+  background: var(--danger-bg);
+  color: var(--danger-text);
+}
+
+.icon-btn--danger-soft {
   background: var(--danger-bg);
   color: var(--danger-text);
 }
@@ -311,6 +326,85 @@
 
 .stat__value--success {
   color: var(--success-text);
+}
+
+/* ---------- Mini stat (ringkasan yang sekaligus tombol filter) ---------- */
+
+.mini-stat {
+  --mini-accent: var(--teal-800);
+  --mini-tint: var(--surface-sunken);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--space-4) var(--space-5);
+  border: 0;
+  border-radius: 18px;
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-raised-sm);
+  color: var(--text-primary);
+  text-align: left;
+  transition: box-shadow var(--dur-base) var(--ease), transform var(--dur-fast) var(--ease);
+}
+
+.mini-stat:active {
+  transform: scale(0.985);
+}
+
+/* Terpilih: inset + ring warna — bukan bayangan saja */
+.mini-stat[aria-pressed="true"] {
+  box-shadow: var(--shadow-inset-sm), 0 0 0 1.5px var(--teal-600);
+}
+
+.mini-stat:focus-visible {
+  box-shadow: var(--shadow-raised-sm), var(--focus-ring);
+  border-radius: 18px;
+}
+
+.mini-stat--success {
+  --mini-accent: var(--success-text);
+  --mini-tint: var(--success-bg);
+}
+
+.mini-stat--warning {
+  --mini-accent: var(--warning-text);
+  --mini-tint: var(--warning-bg);
+}
+
+.mini-stat--danger {
+  --mini-accent: var(--danger-text);
+  --mini-tint: var(--danger-bg);
+}
+
+.mini-stat__text {
+  display: grid;
+  gap: 2px;
+}
+
+.mini-stat__label {
+  font: var(--text-overline);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.mini-stat__value {
+  font: var(--text-h2);
+  color: var(--mini-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.mini-stat__icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: var(--mini-tint);
+  color: var(--mini-accent);
 }
 
 /* ---------- Badge (status, bukan kontrol → datar) ---------- */
@@ -437,8 +531,41 @@
 
 /* ---------- Form ---------- */
 
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4) var(--space-5);
+}
+
+.field--full {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 767px) {
+  .form-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Judul kartu form dengan batang aksen di kiri (pola Stitch) */
+.card__title--accent {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.card__title--accent::before {
+  content: "";
+  width: 4px;
+  height: 20px;
+  border-radius: var(--radius-pill);
+  background: var(--teal-700);
+}
+
+/* Kolom minmax(0, 1fr): lebar intrinsik <input> tidak boleh melebarkan form */
 .field {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-2);
   min-width: 0;
 }
@@ -529,7 +656,9 @@
 }
 
 select.control__input {
+  width: 100%;
   appearance: none;
+  text-overflow: ellipsis;
   padding-right: var(--space-12);
   cursor: pointer;
 }
@@ -562,6 +691,12 @@ select.control__input {
 
 .control--lg {
   height: var(--control-h-lg);
+}
+
+/* Nominal besar (uang diterima, modal awal) */
+.control__input--big {
+  font: 600 1.5rem/1 var(--font-mono);
+  letter-spacing: -0.01em;
 }
 
 .control--sm {
@@ -1024,10 +1159,86 @@ tr:hover .table__actions,
   background: var(--surface-crisp);
   color: var(--text-primary);
   box-shadow: var(--shadow-raised-lg);
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .modal--lg {
   width: min(620px, calc(100vw - 2rem));
+}
+
+.modal__header > .stack {
+  flex: 1;
+}
+
+.modal__icon--success {
+  background: var(--success-bg);
+  color: var(--success-text);
+}
+
+/* ---------- Tabs (garis bawah) ---------- */
+
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: 1px solid var(--divider);
+}
+
+.tabs__tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: 0;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: transparent;
+  color: var(--text-muted);
+  font: var(--text-label);
+  transition: color var(--dur-base) var(--ease), background-color var(--dur-base) var(--ease);
+}
+
+.tabs__tab:hover {
+  color: var(--text-primary);
+}
+
+/* Tab aktif: warna teks + latar tint + garis bawah */
+.tabs__tab[aria-selected="true"] {
+  background: rgba(11, 107, 98, 0.06);
+  color: var(--teal-700);
+}
+
+.tabs__tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: var(--teal-700);
+}
+
+/* ---------- Notice (banner informasi) ---------- */
+
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--info-bg);
+  color: var(--teal-900);
+  font: var(--text-small);
+}
+
+.notice--warning {
+  background: var(--warning-bg);
+  color: var(--warning-text);
+}
+
+.notice code {
+  font: 500 0.8125rem var(--font-mono);
 }
 
 .modal::backdrop {
@@ -1046,6 +1257,7 @@ tr:hover .table__actions,
 
 .modal__form {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-4);
   padding: var(--space-8) var(--space-8) var(--space-6);
 }
@@ -1255,6 +1467,471 @@ tr:hover .table__actions,
   height: 72px;
 }
 
+/* ---------- Tampilan data ---------- */
+
+.chart-box {
+  position: relative;
+  height: 260px;
+}
+
+.chart-box--fill {
+  flex: 1;
+  height: auto;
+  min-height: 260px;
+}
+
+.chart-box--spark {
+  flex: 1;
+  height: auto;
+  min-height: 96px;
+}
+
+.thumb--empty {
+  display: grid;
+  place-items: center;
+  color: var(--text-muted);
+}
+
+.payment-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.payment-type .icon {
+  color: var(--teal-600);
+}
+
+/* Nominal transaksi batal: dicoret + warna bahaya */
+.is-void {
+  color: var(--danger-text);
+  text-decoration: line-through;
+}
+
+.item-list {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item-list__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--dur-base) var(--ease);
+}
+
+.item-list__row:hover {
+  background: rgba(11, 107, 98, 0.05);
+}
+
+.item-list__text {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+
+.item-list__title {
+  font: var(--text-label);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-list__sub {
+  font: 500 0.6875rem/1rem var(--font-mono);
+  color: var(--text-muted);
+}
+
+/* Beberapa angka dalam satu permukaan, dipisah garis — bukan kartu terpisah */
+.metric-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.metric-strip__item {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  padding: 0 var(--space-6);
+  border-left: 1px solid var(--divider);
+}
+
+.metric-strip__item:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.metric-strip__value {
+  font: var(--text-h1);
+  letter-spacing: var(--tracking-h1);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 1023px) {
+  .metric-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: var(--space-6);
+  }
+
+  .metric-strip__item:nth-child(3) {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+@media (max-width: 479px) {
+  .metric-strip {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .metric-strip__item {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+/* Batang proporsi (mis. komposisi metode pembayaran) */
+.meter {
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+  box-shadow: var(--shadow-inset-sm);
+  overflow: hidden;
+}
+
+.meter__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--teal-700);
+  transform-origin: left;
+  transform: scaleX(var(--value, 0));
+  transition: transform var(--dur-slow) var(--ease);
+}
+
+.rank {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--teal-100);
+  color: var(--teal-900);
+  font: 600 0.75rem/1 var(--font-mono);
+}
+
+.rank--top {
+  background: var(--teal-700);
+  color: var(--text-on-dark);
+}
+
+/* Rincian label–nilai (ringkasan keuangan, margin) */
+.summary-list {
+  display: grid;
+  margin: 0;
+}
+
+.summary-list__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--divider);
+  font: var(--text-small);
+}
+
+.summary-list__row:last-child {
+  border-bottom: 0;
+}
+
+.summary-list__row dt {
+  color: var(--text-secondary);
+}
+
+.summary-list__row dd {
+  font: var(--text-numeric);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.summary-list__row--strong dt,
+.summary-list__row--strong dd {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.payment-list {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.payment-list__item {
+  display: grid;
+  gap: 6px;
+}
+
+.payment-list__head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font: var(--text-label);
+}
+
+/* ---------- Pemilih periode laporan ---------- */
+
+.range-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+}
+
+.range-form__dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.range-form__dates .field {
+  gap: var(--space-1);
+  min-width: 160px;
+}
+
+.range-form__message {
+  flex-basis: 100%;
+}
+
+.range-form__message:empty {
+  display: none;
+}
+
+.range-form.is-invalid .range-form__message {
+  color: var(--danger-text);
+}
+
+/* Latar inset tempat struk "diletakkan" */
+.receipt-stage {
+  max-height: 560px;
+  overflow: auto;
+  padding: var(--space-5) var(--space-3) var(--space-6);
+  border-radius: var(--radius-lg);
+  background: var(--surface-sunken);
+  box-shadow: var(--shadow-inset-sm);
+}
+
+/* ---------- Upload gambar ---------- */
+
+.dropzone {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: var(--space-1);
+  padding: var(--space-6) var(--space-4);
+  border-radius: var(--radius-lg);
+  background: rgba(215, 228, 224, 0.25);
+  outline: 1.5px dashed var(--divider);
+  outline-offset: -2px;
+  text-align: center;
+  transition: background-color var(--dur-base) var(--ease), outline-color var(--dur-base) var(--ease);
+}
+
+.dropzone:hover,
+.dropzone.is-dragover {
+  background: rgba(215, 228, 224, 0.5);
+  outline-color: var(--teal-600);
+}
+
+.dropzone:focus-within {
+  box-shadow: var(--focus-ring);
+}
+
+/* Input file menutupi seluruh area: klik & tarik-lepas sama-sama berfungsi */
+.dropzone__input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.dropzone__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: var(--space-1);
+  border-radius: 50%;
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-raised-sm);
+  color: var(--teal-600);
+}
+
+.dropzone__title {
+  font: var(--text-label);
+}
+
+.image-preview {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: var(--radius-lg);
+  background: var(--surface-crisp);
+  box-shadow: var(--shadow-inset-sm);
+  overflow: hidden;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-preview .icon-btn {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-3);
+}
+
+/* ---------- Bar aksi yang menempel di bawah (form) ---------- */
+
+.action-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  background: rgba(237, 244, 242, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 -8px 24px rgba(122, 152, 145, 0.22);
+}
+
+.action-bar__end {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+
+/* ---------- Bar aksi massal tabel ---------- */
+
+.bulk-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-6);
+  background: var(--teal-100);
+  border-bottom: 1px solid var(--divider);
+  font: var(--text-label);
+  color: var(--teal-900);
+}
+
+/* ---------- Struk (printer termal 80mm) ---------- */
+
+.receipt {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto 10px;
+  padding: var(--space-5) var(--space-4) var(--space-6);
+  background: var(--surface-crisp);
+  box-shadow: 0 0 0 1px rgba(203, 218, 213, 0.8);
+  color: var(--text-primary);
+  font: 500 0.75rem/1.55 var(--font-mono);
+}
+
+/* Tepi bawah bergerigi seperti kertas struk yang disobek */
+.receipt::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: conic-gradient(from -45deg at bottom, var(--surface-crisp) 90deg, transparent 0) 0 0 / 16px 100% repeat-x;
+}
+
+.receipt__header,
+.receipt__footer {
+  text-align: center;
+}
+
+.receipt__store {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.receipt__section {
+  display: grid;
+  gap: 2px;
+  margin: var(--space-3) 0 0;
+  padding: var(--space-3) 0 0;
+  border-top: 1px dashed var(--text-muted);
+  list-style: none;
+}
+
+.receipt__row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.receipt__row dd {
+  text-align: right;
+}
+
+.receipt__row--total {
+  margin: var(--space-1) 0;
+  padding: var(--space-1) 0;
+  border-block: 1px solid var(--text-primary);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.receipt__item-name {
+  display: block;
+}
+
+.receipt__item .receipt__row {
+  padding-left: var(--space-3);
+  color: var(--text-secondary);
+}
+
+.receipt__footer {
+  margin-top: var(--space-4);
+  color: var(--text-secondary);
+}
+
+.receipt__stamp {
+  position: absolute;
+  top: var(--space-16);
+  right: var(--space-4);
+  padding: 2px 8px;
+  border: 1.5px solid var(--danger-text);
+  border-radius: 4px;
+  color: var(--danger-text);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  transform: rotate(-8deg);
+}
+
 /* ---------- Animasi (hanya transform & opacity) ---------- */
 
 @keyframes spin {
@@ -1319,4 +1996,788 @@ tr:hover .table__actions,
     opacity: 0;
     transform: translateY(8px);
   }
+}
+
+/* ==========================================================================
+   Komponen tambahan untuk halaman master, inventori, laporan, pengaturan
+   ========================================================================== */
+
+/* ---------- Utilitas teks status ---------- */
+
+.text-warning {
+  color: var(--warning-text);
+}
+
+.text-danger {
+  color: var(--danger-text);
+}
+
+.link,
+.link-btn {
+  color: var(--info-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.link:hover,
+.link-btn:hover {
+  text-decoration: underline;
+}
+
+.link-btn {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+/* ---------- Badge kecil di dalam baris tabel ---------- */
+
+.badge--tiny {
+  padding: 0 7px;
+  font-size: 0.6875rem;
+  line-height: 1.125rem;
+  vertical-align: 1px;
+}
+
+/* ---------- Metric strip: varian nilai ---------- */
+
+.metric-strip__value--success {
+  color: var(--success-text);
+}
+
+.metric-strip__value--warning {
+  color: var(--warning-text);
+}
+
+.metric-strip__value--danger {
+  color: var(--danger-text);
+}
+
+/* Nilai berupa nama (bukan angka) memakai ukuran judul kartu */
+.metric-strip__value--text {
+  font: var(--text-h2);
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Notice: varian & tombol aksi di kanan ---------- */
+
+.notice {
+  align-items: center;
+}
+
+.notice > p {
+  flex: 1;
+  min-width: 0;
+}
+
+.notice--danger {
+  background: var(--danger-bg);
+  color: var(--danger-text);
+}
+
+.notice__action {
+  flex-shrink: 0;
+}
+
+@media (max-width: 559px) {
+  .notice {
+    flex-wrap: wrap;
+  }
+}
+
+/* ---------- Tabel: varian & state baris ---------- */
+
+.table--compact td {
+  height: 48px;
+  padding-block: 8px;
+}
+
+.table--compact th {
+  padding-block: 10px;
+}
+
+/* Tabel di dalam kartu neumorphic (form): permukaan putih tersendiri */
+.table-scroll--inset {
+  border-radius: var(--radius-lg);
+  background: var(--surface-crisp);
+  box-shadow: var(--shadow-crisp);
+}
+
+.table tbody tr.is-warning {
+  background: rgba(247, 230, 181, 0.32);
+}
+
+.table tbody tr.is-danger {
+  background: rgba(246, 218, 207, 0.4);
+}
+
+.table tbody tr.is-muted td {
+  color: var(--text-muted);
+}
+
+.table tbody tr.is-done {
+  box-shadow: inset 3px 0 0 var(--success-text);
+}
+
+.table tbody tr.is-invalid {
+  box-shadow: inset 3px 0 0 var(--btn-danger);
+}
+
+.table tbody tr.is-flash {
+  animation: row-flash 1.2s var(--ease);
+}
+
+@keyframes row-flash {
+  from {
+    background: var(--teal-100);
+  }
+}
+
+.table--selectable tbody tr {
+  cursor: pointer;
+}
+
+.table tfoot th,
+.table tfoot td {
+  padding: 12px var(--space-4);
+  border-top: 1px solid var(--divider);
+  background: var(--surface-header);
+  font-weight: 600;
+  text-align: left;
+}
+
+.table tfoot td.col-num {
+  text-align: right;
+  font: var(--text-numeric);
+  font-weight: 600;
+}
+
+/* Deskripsi abu-abu di bawah nama (bukan kode mono seperti .table__sub) */
+.table__desc {
+  display: block;
+  max-width: 42ch;
+  margin-top: 2px;
+  font: var(--text-caption);
+  color: var(--text-muted);
+}
+
+.table .nowrap {
+  white-space: nowrap;
+}
+
+.table__name--light {
+  font-weight: 500;
+}
+
+.table__wide {
+  min-width: 220px;
+}
+
+/* Teks panjang dipotong satu baris; isi lengkap ada di atribut title */
+.table__clip {
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table .col-meter {
+  min-width: 120px;
+}
+
+/* ---------- Angka perubahan (+/−) ---------- */
+
+.delta {
+  font: var(--text-numeric);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.delta--up {
+  color: var(--success-text);
+}
+
+.delta--down {
+  color: var(--danger-text);
+}
+
+/* ---------- Meter: varian status ---------- */
+
+.meter--success .meter__fill {
+  background: var(--success-text);
+}
+
+.meter--warning .meter__fill {
+  background: var(--warning-text);
+}
+
+.meter--danger .meter__fill {
+  background: var(--btn-danger);
+}
+
+.meter--lg {
+  height: 12px;
+}
+
+/* ---------- Daftar batang (pemakaian satuan, nilai per kategori) ---------- */
+
+.bar-list {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bar-list__item {
+  display: grid;
+  gap: 6px;
+}
+
+.bar-list__head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font: var(--text-label);
+}
+
+/* ---------- Daftar fakta (dl beberapa kolom) ---------- */
+
+.fact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-4) var(--space-5);
+  margin: 0;
+}
+
+.fact-grid dt {
+  font: var(--text-overline);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.fact-grid dd {
+  margin-top: 2px;
+  font: var(--text-label);
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Daftar poin ---------- */
+
+.check-list {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: var(--text-small);
+  color: var(--text-secondary);
+}
+
+.check-list li {
+  position: relative;
+  padding-left: 28px;
+}
+
+.check-list li::before {
+  content: "check_circle";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: "Material Symbols Outlined";
+  font-size: 18px;
+  line-height: 1.25rem;
+  color: var(--teal-600);
+}
+
+.step-list {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+  font: var(--text-small);
+  color: var(--text-secondary);
+}
+
+.step-list li {
+  position: relative;
+  padding-left: 36px;
+  counter-increment: step;
+}
+
+.step-list li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: -2px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--teal-100);
+  color: var(--teal-900);
+  font: 600 0.75rem/1 var(--font-mono);
+}
+
+/* ---------- Timeline (status transaksi, kartu stok) ---------- */
+
+.timeline {
+  display: grid;
+  gap: var(--space-4);
+  margin: var(--space-3) 0 0;
+  padding: 0 0 0 var(--space-5);
+  border-left: 2px solid var(--divider);
+  list-style: none;
+}
+
+.timeline--dense {
+  gap: var(--space-3);
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.timeline__item {
+  --dot: var(--teal-600);
+  position: relative;
+  display: grid;
+  gap: 2px;
+}
+
+.timeline__item::before {
+  content: "";
+  position: absolute;
+  left: calc(-1 * var(--space-5) - 7px);
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--surface-crisp);
+  box-shadow: inset 0 0 0 3px var(--dot);
+}
+
+.timeline__item--success {
+  --dot: var(--success-text);
+}
+
+.timeline__item--warning {
+  --dot: var(--warning-text);
+}
+
+.timeline__item--danger {
+  --dot: var(--btn-danger);
+}
+
+.timeline__item--neutral {
+  --dot: var(--text-muted);
+}
+
+.timeline__title {
+  font: var(--text-label);
+}
+
+.timeline__meta {
+  font: var(--text-caption);
+  color: var(--text-muted);
+}
+
+/* ---------- Modal besar & tata letak detail ---------- */
+
+.modal--xl {
+  width: min(880px, calc(100vw - 2rem));
+}
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+
+@media (max-width: 767px) {
+  .detail-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .modal__form {
+    padding: var(--space-6) var(--space-5) var(--space-5);
+  }
+}
+
+/* ---------- Form: fieldset, radio segmented, kontrol kecil ---------- */
+
+.fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.fieldset > legend {
+  margin-bottom: var(--space-2);
+  padding: 0;
+}
+
+.segmented--block {
+  display: flex;
+  width: 100%;
+}
+
+.segmented--block .segmented__option {
+  flex: 1;
+}
+
+/* Radio yang tampil sebagai segmented: status dari :checked, fokus dari :focus-visible */
+.segmented__option--radio {
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.segmented__option--radio:has(input:checked) {
+  background: var(--surface-crisp);
+  color: var(--text-primary);
+  box-shadow: 0 2px 6px rgba(22, 48, 44, 0.08);
+}
+
+.segmented__option--radio:has(input:focus-visible) {
+  box-shadow: var(--focus-ring);
+}
+
+.check--boxed {
+  align-items: center;
+  min-height: var(--control-h);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--surface-base);
+  box-shadow: var(--shadow-inset-sm);
+  color: var(--text-primary);
+}
+
+.check__sub {
+  display: block;
+}
+
+/* Kontrol di dalam sel tabel (qty, harga, hitung fisik) */
+.control--cell {
+  height: 38px;
+  min-width: 130px;
+  border-radius: var(--radius-sm);
+}
+
+.control--cell .control__input {
+  padding: 0 var(--space-3);
+}
+
+.control--cell .control__affix {
+  padding: 0 var(--space-3);
+  font-size: 0.75rem;
+}
+
+.control--cell .control__affix:first-child {
+  padding-right: 0;
+}
+
+tr.is-invalid .control--cell {
+  box-shadow: var(--shadow-inset), var(--error-ring);
+}
+
+/* Isian persen: sempit agar tidak terlihat seperti kolom teks */
+.control--rate {
+  max-width: 200px;
+}
+
+.stepper--sm .stepper__btn {
+  width: 28px;
+  height: 28px;
+}
+
+.stepper--sm .stepper__input {
+  width: 38px;
+}
+
+.stepper__btn:disabled {
+  opacity: 0.4;
+  box-shadow: none;
+}
+
+/* Catatan per baris (error / peringatan) di bawah nama produk */
+.line-note {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font: var(--text-caption);
+}
+
+.line-note:empty {
+  display: none;
+}
+
+.line-note--error {
+  color: var(--danger-text);
+}
+
+.line-note--warning {
+  color: var(--warning-text);
+}
+
+.summary-list--boxed {
+  padding: var(--space-1) var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface-crisp);
+  box-shadow: var(--shadow-crisp);
+}
+
+.empty-state--compact {
+  padding: var(--space-8) var(--space-4);
+}
+
+/* Panel samping yang ikut menempel saat halaman digulir (pratinjau) */
+.sticky-panel {
+  position: sticky;
+  top: calc(var(--topbar-h) + var(--space-5));
+}
+
+@media (max-width: 1023px) {
+  .sticky-panel {
+    position: static;
+  }
+}
+
+/* ---------- Rasio kesehatan (laba rugi) ---------- */
+
+.ratio-list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ratio-list__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--surface-crisp);
+  box-shadow: var(--shadow-crisp);
+}
+
+.ratio-list__text {
+  display: grid;
+  min-width: 0;
+}
+
+.ratio-list__label {
+  font: var(--text-label);
+}
+
+.ratio-list__value {
+  display: grid;
+  justify-items: end;
+  gap: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* ---------- Batang komposisi bertumpuk + legenda ---------- */
+
+.stack-bar {
+  display: flex;
+  height: 14px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+  box-shadow: var(--shadow-inset-sm);
+  overflow: hidden;
+}
+
+.stack-bar__seg {
+  flex: var(--share) 0 0;
+  background: var(--seg-color);
+}
+
+.stack-bar__seg + .stack-bar__seg {
+  box-shadow: -2px 0 0 var(--surface-crisp);
+}
+
+.legend-list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: var(--text-small);
+}
+
+.legend-list__item {
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr) auto 56px;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.legend-list__swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  background: var(--seg-color);
+}
+
+.legend-list__label {
+  color: var(--text-secondary);
+}
+
+.legend-list__share {
+  color: var(--text-muted);
+  text-align: right;
+}
+
+/* ---------- Daftar pengaturan dengan switch ---------- */
+
+.setting-list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.setting-list__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.setting-list__item:last-child {
+  border-bottom: 0;
+}
+
+.setting-list__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: var(--surface-crisp);
+  box-shadow: var(--shadow-crisp);
+  color: var(--teal-700);
+}
+
+.setting-list__text {
+  display: grid;
+  flex: 1;
+  gap: 2px;
+  min-width: 0;
+}
+
+.setting-list__title {
+  font: var(--text-label);
+  color: var(--text-primary);
+}
+
+/* ---------- Status pill: shift belum dibuka ---------- */
+
+.status-pill__dot--off {
+  background: var(--text-muted);
+  animation: none;
+}
+
+/* ---------- Panel notifikasi (topbar) ---------- */
+
+.notif {
+  position: relative;
+}
+
+.notif__panel {
+  position: absolute;
+  top: calc(100% + var(--space-3));
+  right: 0;
+  z-index: var(--z-toast);
+  width: min(360px, calc(100vw - 2rem));
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface-crisp);
+  box-shadow: var(--shadow-crisp), 0 18px 40px -12px rgba(22, 48, 44, 0.28);
+  animation: modal-in var(--dur-base) var(--ease);
+}
+
+.notif__heading {
+  margin-bottom: var(--space-2);
+  font: var(--text-overline);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.notif__list {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.notif__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.notif__item:hover {
+  background: var(--surface-header);
+}
+
+.notif__icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--info-bg);
+  color: var(--info-text);
+}
+
+.notif__icon--warning {
+  background: var(--warning-bg);
+  color: var(--warning-text);
+}
+
+.notif__icon--danger {
+  background: var(--danger-bg);
+  color: var(--danger-text);
+}
+
+.notif__text {
+  display: grid;
+  gap: 2px;
+}
+
+.notif__title {
+  font: var(--text-label);
+}
+
+.notif__sub {
+  font: var(--text-caption);
+  color: var(--text-muted);
+}
+
+.notif__empty {
+  padding: var(--space-3) var(--space-2);
+  font: var(--text-small);
+  color: var(--text-secondary);
 }

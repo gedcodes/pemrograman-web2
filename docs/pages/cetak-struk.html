@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cetak Ulang Struk · Toko Sari Amerta</title>
+  <meta name="description" content="Cari transaksi dan cetak ulang struk termal 80mm bertanda SALINAN, atau kirim ringkasannya ke WhatsApp pelanggan.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script type="module" src="../assets/js/pages/cetak-struk.js"></script>
+</head>
+
+<body data-page="cetak-struk">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Laporan</li>
+                <li><span aria-current="page">Cetak Ulang Struk</span></li>
+              </ol>
+            </nav>
+            <h1>Cetak Ulang Struk</h1>
+            <p class="page-header__subtitle">Cari transaksi, periksa pratinjaunya, lalu cetak salinan 80mm. Setiap cetak ulang dicatat untuk audit kasir.</p>
+          </div>
+        </header>
+
+        <div class="grid grid--2-1">
+          <div class="stack stack--tight">
+            <form class="toolbar" role="search" aria-label="Cari transaksi" data-filters>
+              <div class="toolbar__search">
+                <label class="sr-only" for="filter-q">Cari struk</label>
+                <div class="control">
+                  <span class="icon" aria-hidden="true">search</span>
+                  <input class="control__input" id="filter-q" name="q" type="search" autocomplete="off"
+                         placeholder="No. struk atau nama pelanggan">
+                </div>
+              </div>
+              <div class="control">
+                <label class="sr-only" for="filter-periode">Periode</label>
+                <span class="icon" aria-hidden="true">calendar_month</span>
+                <select class="control__input" id="filter-periode" name="periode">
+                  <option value="today">Hari Ini</option>
+                  <option value="yesterday">Kemarin</option>
+                  <option value="7d">7 Hari Terakhir</option>
+                  <option value="30d">30 Hari Terakhir</option>
+                  <option value="all">Semua (62 hari)</option>
+                </select>
+                <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+              </div>
+              <div class="control">
+                <label class="sr-only" for="filter-metode">Metode</label>
+                <select class="control__input" id="filter-metode" name="metode">
+                  <option value="">Semua Metode</option>
+                  <option value="tunai">Tunai</option>
+                  <option value="qris">QRIS</option>
+                  <option value="gopay">GoPay</option>
+                  <option value="bank_transfer">Transfer VA</option>
+                </select>
+                <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+              </div>
+            </form>
+
+            <section class="table-card" aria-labelledby="table-title" data-table>
+              <header class="table-card__header">
+                <div>
+                  <h2 class="card__title" id="table-title">Transaksi Siap Cetak</h2>
+                  <p class="card__subtitle">Pilih baris untuk melihat pratinjau. Tombol ↑ ↓ berpindah baris.</p>
+                </div>
+              </header>
+              <div class="table-scroll">
+                <table class="table table--selectable">
+                  <thead>
+                    <tr>
+                      <th scope="col">No. Struk</th>
+                      <th scope="col">Waktu</th>
+                      <th scope="col">Pelanggan</th>
+                      <th scope="col">Metode</th>
+                      <th class="col-num" scope="col">Total</th>
+                      <th class="col-center" scope="col">Status</th>
+                      <th class="col-num" scope="col">Cetak Ulang</th>
+                    </tr>
+                  </thead>
+                  <tbody data-rows></tbody>
+                </table>
+              </div>
+              <nav class="pagination" aria-label="Halaman transaksi">
+                <p class="pagination__info" data-page-info></p>
+                <ul class="pagination__pages" data-pages></ul>
+              </nav>
+            </section>
+          </div>
+
+          <aside class="card stack stack--tight sticky-panel" aria-labelledby="preview-title">
+            <header class="card__header">
+              <h2 class="card__title" id="preview-title">Pratinjau Struk</h2>
+              <span class="badge badge--success"><span class="icon" aria-hidden="true">print</span>Termal 80mm</span>
+            </header>
+            <div class="receipt-stage" data-preview aria-live="polite"></div>
+            <p class="text-small text-secondary" data-reprint-info></p>
+            <button class="btn btn--neutral btn--lg btn--block" type="button" data-action="print" disabled>
+              <span class="icon" aria-hidden="true">print</span>Cetak Salinan
+            </button>
+            <div class="cluster cluster--tight">
+              <a class="btn btn--sm" data-whatsapp target="_blank" rel="noopener" aria-disabled="true">
+                <span class="icon icon--sm" aria-hidden="true">chat</span>Kirim via WhatsApp
+              </a>
+              <button class="btn btn--sm btn--ghost" type="button" data-action="copy" disabled>
+                <span class="icon icon--sm" aria-hidden="true">content_copy</span>Salin Ringkasan
+              </button>
+            </div>
+            <p class="text-caption text-muted">Salinan dicetak dengan cap <strong>SALINAN</strong> agar tidak dipakai untuk menukar barang dua kali.</p>
+          </aside>
+        </div>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

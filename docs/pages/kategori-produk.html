@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kategori Produk · Toko Sari Amerta</title>
+  <meta name="description" content="Master data kategori produk Toko Sari Amerta: tambah, ubah, nonaktifkan, dan hapus kategori.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script type="module" src="../assets/js/pages/kategori-produk.js"></script>
+</head>
+
+<body data-page="kategori-produk">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Master Data</li>
+                <li><span aria-current="page">Kategori Produk</span></li>
+              </ol>
+            </nav>
+            <h1>Kategori Produk</h1>
+            <p class="page-header__subtitle">Pengelompokan produk untuk filter kasir, laporan, dan analisis stok.</p>
+          </div>
+          <div class="page-header__actions">
+            <button class="btn btn--primary" type="button" data-action="add">
+              <span class="icon" aria-hidden="true">add</span>Tambah Kategori
+            </button>
+          </div>
+        </header>
+
+        <section class="card metric-strip" aria-label="Ringkasan kategori">
+          <div class="metric-strip__item">
+            <span class="stat__label">Kategori Aktif</span>
+            <span class="metric-strip__value" data-metric="aktif"></span>
+            <span class="text-caption text-muted" data-metric="aktif-meta"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Produk Terkait</span>
+            <span class="metric-strip__value" data-metric="sku"></span>
+            <span class="text-caption text-muted" data-metric="sku-meta"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Nilai Stok Terbesar</span>
+            <span class="metric-strip__value metric-strip__value--text" data-metric="nilai"></span>
+            <span class="text-caption text-muted" data-metric="nilai-meta"></span>
+          </div>
+          <div class="metric-strip__item">
+            <span class="stat__label">Terlaris Bulan Ini</span>
+            <span class="metric-strip__value metric-strip__value--text" data-metric="laris"></span>
+            <span class="text-caption text-muted" data-metric="laris-meta"></span>
+          </div>
+        </section>
+
+        <form class="toolbar section section--tight" role="search" aria-label="Saring kategori" data-filters>
+          <div class="toolbar__search">
+            <label class="sr-only" for="filter-q">Cari kategori</label>
+            <div class="control">
+              <span class="icon" aria-hidden="true">search</span>
+              <input class="control__input" id="filter-q" name="q" type="search" autocomplete="off" placeholder="Cari nama, kode, atau deskripsi">
+            </div>
+          </div>
+          <div class="control">
+            <label class="sr-only" for="filter-status">Status</label>
+            <select class="control__input" id="filter-status" name="status">
+              <option value="">Semua Status</option>
+              <option value="aktif">Aktif</option>
+              <option value="nonaktif">Nonaktif</option>
+            </select>
+            <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+          </div>
+        </form>
+
+        <section class="table-card section section--tight" aria-labelledby="table-title" data-table>
+          <h2 class="sr-only" id="table-title">Daftar kategori</h2>
+          <div class="table-scroll">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Kode</th>
+                  <th scope="col">Kategori</th>
+                  <th class="col-num" scope="col">Produk</th>
+                  <th class="col-num" scope="col">Stok</th>
+                  <th class="col-num" scope="col">Nilai Stok</th>
+                  <th class="col-num" scope="col">Terjual 30 Hari</th>
+                  <th class="col-center" scope="col">Status</th>
+                  <th class="col-center" scope="col">Aksi</th>
+                </tr>
+              </thead>
+              <tbody data-rows aria-live="polite"></tbody>
+            </table>
+          </div>
+          <nav class="pagination" aria-label="Halaman daftar kategori">
+            <p class="pagination__info" data-page-info></p>
+            <ul class="pagination__pages" data-pages></ul>
+          </nav>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ========== Dialog: tambah / ubah kategori ========== -->
+  <dialog class="modal" id="category-dialog" aria-labelledby="category-dialog-title">
+    <form class="modal__form" novalidate>
+      <div class="modal__header">
+        <span class="modal__icon" aria-hidden="true"><span class="icon">sell</span></span>
+        <div class="stack stack--xs">
+          <h2 class="modal__title" id="category-dialog-title" data-dialog-title>Tambah Kategori</h2>
+          <p class="modal__body" data-dialog-subtitle></p>
+        </div>
+      </div>
+
+      <div class="field" data-field="nama">
+        <label class="field__label" for="cat-nama">
+          <span>Nama kategori <span class="field__required" aria-hidden="true">*</span></span>
+        </label>
+        <div class="control">
+          <input class="control__input" id="cat-nama" name="nama" type="text" maxlength="40" autocomplete="off"
+                 placeholder="Contoh: Perlengkapan Bayi" aria-describedby="cat-nama-msg">
+          <span class="icon control__status" aria-hidden="true">error</span>
+        </div>
+        <p class="field__message" id="cat-nama-msg" data-hint="Tampil sebagai chip filter di halaman Kasir"></p>
+      </div>
+
+      <div class="field" data-field="deskripsi">
+        <label class="field__label" for="cat-deskripsi">Deskripsi</label>
+        <div class="control control--textarea">
+          <textarea class="control__input" id="cat-deskripsi" name="deskripsi" rows="3" maxlength="120"
+                    placeholder="Jenis produk yang termasuk kategori ini" aria-describedby="cat-deskripsi-msg"></textarea>
+        </div>
+        <p class="field__message" id="cat-deskripsi-msg" data-hint="Opsional, maksimal 120 karakter"></p>
+      </div>
+
+      <label class="switch">
+        <input class="switch__input" name="aktif" type="checkbox" role="switch" checked>
+        <span class="switch__track" aria-hidden="true"></span>
+        Kategori aktif
+      </label>
+      <p class="text-small text-secondary">Kategori nonaktif disembunyikan dari chip Kasir dan pilihan Form Produk, tetapi produknya tetap tersimpan.</p>
+
+      <div class="modal__footer">
+        <button class="btn" type="button" data-dialog-cancel>Batal</button>
+        <button class="btn btn--primary" type="submit">
+          <span class="icon" aria-hidden="true">check</span><span data-submit-label>Simpan</span>
+        </button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>

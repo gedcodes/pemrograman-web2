@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Metode Pembayaran · Toko Sari Amerta</title>
+  <meta name="description" content="Aktifkan metode pembayaran kasir dan atur URL Midtrans Payment Link (sandbox) untuk pembayaran non-tunai.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script defer src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <script type="module" src="../assets/js/pages/metode-pembayaran.js"></script>
+</head>
+
+<body data-page="metode-pembayaran">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Pengaturan</li>
+                <li><span aria-current="page">Metode Pembayaran</span></li>
+              </ol>
+            </nav>
+            <h1>Metode Pembayaran</h1>
+            <p class="page-header__subtitle">Metode aktif tampil di modal pembayaran Kasir. Non-tunai memakai Midtrans Payment Link tanpa back-end (PERANCANGAN §5).</p>
+          </div>
+        </header>
+
+        <form id="payment-form" novalidate aria-labelledby="payment-form-title">
+          <h2 class="sr-only" id="payment-form-title">Pengaturan metode pembayaran</h2>
+          <div class="grid grid--2-1">
+            <div class="stack">
+              <section class="card stack stack--tight" aria-labelledby="sec-methods">
+                <header class="card__header">
+                  <div>
+                    <h2 class="card__title card__title--accent" id="sec-methods">Metode di Kasir</h2>
+                    <p class="card__subtitle">Pemakaian dihitung dari transaksi lunas 30 hari terakhir.</p>
+                  </div>
+                </header>
+                <ul class="setting-list" role="list" data-methods></ul>
+              </section>
+
+              <section class="card stack stack--tight" aria-labelledby="sec-link">
+                <header class="card__header">
+                  <div>
+                    <h2 class="card__title card__title--accent" id="sec-link">Midtrans Payment Link</h2>
+                    <p class="card__subtitle">Buat link <em>Dynamic Amount</em> di dashboard Midtrans Sandbox, lalu tempel URL-nya di sini.</p>
+                  </div>
+                  <span class="badge badge--warning"><span class="icon" aria-hidden="true">science</span>Sandbox</span>
+                </header>
+                <div class="field" data-field="paymentLinkUrl">
+                  <label class="field__label" for="payment-link">
+                    <span>URL Payment Link <span class="field__required" aria-hidden="true">*</span></span>
+                  </label>
+                  <div class="control">
+                    <span class="icon" aria-hidden="true">link</span>
+                    <input class="control__input control__input--num" id="payment-link" name="paymentLinkUrl" type="url" autocomplete="off"
+                           spellcheck="false" placeholder="https://app.sandbox.midtrans.com/payment-links/…" aria-describedby="payment-link-msg">
+                    <span class="icon control__status" aria-hidden="true">error</span>
+                  </div>
+                  <p class="field__message" id="payment-link-msg" data-hint="Harus domain sandbox midtrans.com dan diawali https://"></p>
+                </div>
+                <div class="notice notice--warning" data-placeholder-warning hidden>
+                  <span class="icon" aria-hidden="true">warning</span>
+                  <p>URL masih contoh bawaan. QR di Kasir tetap tampil, tetapi pelanggan tidak bisa membayar sampai URL diganti.</p>
+                </div>
+                <div class="qr-box">
+                  <div class="qr-box__code" data-qr role="img" aria-label="Kode QR Payment Link"></div>
+                  <div class="qr-box__text">
+                    <p class="text-small text-secondary">Kode QR ini yang dipindai pelanggan di layar kasir.</p>
+                    <a class="btn btn--sm" data-test-link target="_blank" rel="noopener">
+                      <span class="icon icon--sm" aria-hidden="true">open_in_new</span>Uji Buka Link
+                    </a>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <aside class="stack">
+              <section class="card stack stack--tight" aria-labelledby="sec-security">
+                <header class="card__header">
+                  <h2 class="card__title" id="sec-security">Aturan Keamanan</h2>
+                  <span class="badge badge--success"><span class="icon" aria-hidden="true">verified_user</span>§5.4</span>
+                </header>
+                <ul class="check-list" role="list">
+                  <li><strong>Server Key tidak pernah masuk repositori.</strong> Payment Link tidak butuh Server Key sama sekali.</li>
+                  <li>Hanya kredensial <strong>Sandbox</strong>. URL production ditolak oleh validasi.</li>
+                  <li>URL disimpan di pengaturan terpisah, bukan di logika kasir.</li>
+                  <li>Data kartu tidak pernah disimpan aplikasi; semua input sensitif di halaman Midtrans.</li>
+                </ul>
+              </section>
+              <section class="card stack stack--tight" aria-labelledby="sec-flow">
+                <h2 class="card__title" id="sec-flow">Alur Konfirmasi</h2>
+                <ol class="step-list">
+                  <li>Kasir memilih Non-Tunai, pelanggan memindai QR.</li>
+                  <li>Pelanggan mengisi nominal sesuai total dan membayar.</li>
+                  <li>Kasir memeriksa status di Midtrans lalu menekan <strong>Konfirmasi Lunas</strong>, atau menyimpan sebagai <strong>Pending</strong>.</li>
+                  <li>Transaksi pending diverifikasi kemudian di Riwayat Transaksi.</li>
+                </ol>
+              </section>
+            </aside>
+          </div>
+
+          <div class="action-bar">
+            <button class="btn btn--ghost" type="button" data-action="reset">
+              <span class="icon" aria-hidden="true">restart_alt</span>Kembalikan Default
+            </button>
+            <div class="action-bar__end">
+              <span class="text-caption text-muted" data-dirty-note hidden>Ada perubahan belum disimpan</span>
+              <button class="btn btn--primary" type="submit">
+                <span class="icon" aria-hidden="true">check</span>Simpan Pengaturan
+              </button>
+            </div>
+          </div>
+        </form>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

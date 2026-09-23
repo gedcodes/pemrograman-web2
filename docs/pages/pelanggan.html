@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pelanggan · Toko Sari Amerta</title>
+  <meta name="description" content="Master data pelanggan dan member Toko Sari Amerta: tingkat member, poin loyalti, dan riwayat belanja.">
+  <link rel="icon" href="../assets/img/brand/logo-sa.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <script type="module" src="../assets/js/pages/pelanggan.js"></script>
+</head>
+
+<body data-page="pelanggan">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="app">
+    <aside class="sidebar" id="app-sidebar" aria-label="Sidebar navigasi"></aside>
+    <div class="app__backdrop" data-action="close-drawer" aria-hidden="true"></div>
+
+    <div class="app__main">
+      <header class="topbar" id="app-topbar"></header>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="page-header">
+          <div class="page-header__text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol>
+                <li>Master Data</li>
+                <li><span aria-current="page">Pelanggan</span></li>
+              </ol>
+            </nav>
+            <h1>Pelanggan &amp; Member</h1>
+            <p class="page-header__subtitle">Member mendapat diskon otomatis di Kasir. Total belanja dihitung dari transaksi lunas 62 hari terakhir.</p>
+          </div>
+          <div class="page-header__actions">
+            <button class="btn" type="button" data-action="export">
+              <span class="icon" aria-hidden="true">download</span>Export CSV
+            </button>
+            <button class="btn btn--primary" type="button" data-action="add">
+              <span class="icon" aria-hidden="true">person_add</span>Tambah Pelanggan
+            </button>
+          </div>
+        </header>
+
+        <div class="grid grid--4" role="group" aria-label="Saring berdasarkan tingkat member" data-tier-cards>
+          <button class="mini-stat" type="button" data-tier="" aria-pressed="true">
+            <span class="mini-stat__text">
+              <span class="mini-stat__label">Semua Member</span>
+              <span class="mini-stat__value"><span data-count="">0</span> orang</span>
+            </span>
+            <span class="mini-stat__icon" aria-hidden="true"><span class="icon">group</span></span>
+          </button>
+          <button class="mini-stat mini-stat--warning" type="button" data-tier="Gold" aria-pressed="false">
+            <span class="mini-stat__text">
+              <span class="mini-stat__label">Gold</span>
+              <span class="mini-stat__value"><span data-count="Gold">0</span> orang</span>
+            </span>
+            <span class="mini-stat__icon" aria-hidden="true"><span class="icon">workspace_premium</span></span>
+          </button>
+          <button class="mini-stat" type="button" data-tier="Silver" aria-pressed="false">
+            <span class="mini-stat__text">
+              <span class="mini-stat__label">Silver</span>
+              <span class="mini-stat__value"><span data-count="Silver">0</span> orang</span>
+            </span>
+            <span class="mini-stat__icon" aria-hidden="true"><span class="icon">military_tech</span></span>
+          </button>
+          <button class="mini-stat mini-stat--success" type="button" data-tier="Reguler" aria-pressed="false">
+            <span class="mini-stat__text">
+              <span class="mini-stat__label">Reguler</span>
+              <span class="mini-stat__value"><span data-count="Reguler">0</span> orang</span>
+            </span>
+            <span class="mini-stat__icon" aria-hidden="true"><span class="icon">person</span></span>
+          </button>
+        </div>
+
+        <form class="toolbar section section--tight" role="search" aria-label="Saring pelanggan" data-filters>
+          <div class="toolbar__search">
+            <label class="sr-only" for="filter-q">Cari pelanggan</label>
+            <div class="control">
+              <span class="icon" aria-hidden="true">search</span>
+              <input class="control__input" id="filter-q" name="q" type="search" autocomplete="off" placeholder="Cari nama, kode, atau nomor HP">
+            </div>
+          </div>
+          <div class="control">
+            <label class="sr-only" for="filter-sort">Urutkan</label>
+            <span class="icon" aria-hidden="true">sort</span>
+            <select class="control__input" id="filter-sort" name="sort">
+              <option value="belanja">Belanja terbanyak</option>
+              <option value="poin">Poin terbanyak</option>
+              <option value="terakhir">Terakhir belanja</option>
+              <option value="nama">Nama A–Z</option>
+            </select>
+            <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+          </div>
+          <p class="toolbar__end text-small text-secondary" data-share></p>
+        </form>
+
+        <section class="table-card section section--tight" aria-labelledby="table-title" data-table>
+          <h2 class="sr-only" id="table-title">Daftar pelanggan</h2>
+          <div class="table-scroll">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Kode</th>
+                  <th scope="col">Pelanggan</th>
+                  <th scope="col">No. HP</th>
+                  <th class="col-num" scope="col">Transaksi</th>
+                  <th class="col-num" scope="col">Total Belanja</th>
+                  <th class="col-num" scope="col">Poin</th>
+                  <th scope="col">Terakhir Belanja</th>
+                  <th class="col-center" scope="col">Status</th>
+                  <th class="col-center" scope="col">Aksi</th>
+                </tr>
+              </thead>
+              <tbody data-rows aria-live="polite"></tbody>
+            </table>
+          </div>
+          <nav class="pagination" aria-label="Halaman daftar pelanggan">
+            <p class="pagination__info" data-page-info></p>
+            <ul class="pagination__pages" data-pages></ul>
+          </nav>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <p>© 2026 Toko Sari Amerta · Admin Panel POS</p>
+        <p>Data: mock client-side · Pembayaran non-tunai: Midtrans Sandbox</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ========== Dialog: tambah / ubah pelanggan ========== -->
+  <dialog class="modal modal--lg" id="customer-dialog" aria-labelledby="customer-dialog-title">
+    <form class="modal__form" novalidate>
+      <div class="modal__header">
+        <span class="modal__icon" aria-hidden="true"><span class="icon">loyalty</span></span>
+        <div class="stack stack--xs">
+          <h2 class="modal__title" id="customer-dialog-title" data-dialog-title>Tambah Pelanggan</h2>
+          <p class="modal__body" data-dialog-subtitle></p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="field" data-field="nama">
+          <label class="field__label" for="cust-nama">
+            <span>Nama lengkap <span class="field__required" aria-hidden="true">*</span></span>
+          </label>
+          <div class="control">
+            <input class="control__input" id="cust-nama" name="nama" type="text" maxlength="60" autocomplete="name"
+                   aria-describedby="cust-nama-msg">
+            <span class="icon control__status" aria-hidden="true">error</span>
+          </div>
+          <p class="field__message" id="cust-nama-msg" data-hint="Tercetak di struk sebagai Member"></p>
+        </div>
+
+        <div class="field" data-field="no_hp">
+          <label class="field__label" for="cust-hp">
+            <span>No. HP / WhatsApp <span class="field__required" aria-hidden="true">*</span></span>
+          </label>
+          <div class="control">
+            <span class="icon" aria-hidden="true">smartphone</span>
+            <input class="control__input control__input--num" id="cust-hp" name="no_hp" type="tel" maxlength="20" autocomplete="tel"
+                   placeholder="0812-3456-7890" aria-describedby="cust-hp-msg">
+            <span class="icon control__status" aria-hidden="true">error</span>
+          </div>
+          <p class="field__message" id="cust-hp-msg" data-hint="Dipakai kasir untuk mencari member"></p>
+        </div>
+
+        <div class="field" data-field="tingkat">
+          <label class="field__label" for="cust-tingkat">
+            <span>Tingkat member <span class="field__required" aria-hidden="true">*</span></span>
+          </label>
+          <div class="control">
+            <select class="control__input" id="cust-tingkat" name="tingkat" aria-describedby="cust-tingkat-msg"></select>
+            <span class="icon control__chevron" aria-hidden="true">expand_more</span>
+          </div>
+          <p class="field__message" id="cust-tingkat-msg" data-hint=""></p>
+        </div>
+
+        <div class="field" data-field="poin_loyalti">
+          <label class="field__label" for="cust-poin">
+            <span>Poin loyalti <span class="field__required" aria-hidden="true">*</span></span>
+          </label>
+          <div class="control">
+            <input class="control__input control__input--num" id="cust-poin" name="poin_loyalti" type="number" min="0" step="1"
+                   aria-describedby="cust-poin-msg">
+            <span class="control__affix">poin</span>
+            <span class="icon control__status" aria-hidden="true">error</span>
+          </div>
+          <p class="field__message" id="cust-poin-msg" data-hint="Koreksi manual bila perlu"></p>
+        </div>
+
+        <div class="field field--full" data-field="alamat">
+          <label class="field__label" for="cust-alamat">Alamat</label>
+          <div class="control control--textarea">
+            <textarea class="control__input" id="cust-alamat" name="alamat" rows="2" maxlength="160" autocomplete="street-address"
+                      aria-describedby="cust-alamat-msg"></textarea>
+          </div>
+          <p class="field__message" id="cust-alamat-msg" data-hint="Opsional, untuk pengantaran"></p>
+        </div>
+      </div>
+
+      <label class="switch">
+        <input class="switch__input" name="aktif" type="checkbox" role="switch" checked>
+        <span class="switch__track" aria-hidden="true"></span>
+        Member aktif (muncul di pilihan pelanggan Kasir)
+      </label>
+
+      <div class="modal__footer">
+        <button class="btn" type="button" data-dialog-cancel>Batal</button>
+        <button class="btn btn--primary" type="submit">
+          <span class="icon" aria-hidden="true">check</span>Simpan Pelanggan
+        </button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>
