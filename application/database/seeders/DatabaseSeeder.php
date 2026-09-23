@@ -1,25 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+/**
+ * Urutannya mengikuti arah foreign key: master data lebih dulu, lalu pengguna,
+ * lalu produk yang merujuk kategori dan satuan, dan terakhir transaksi yang
+ * merujuk hampir semuanya.
+ */
 class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            CategorySeeder::class,
+            UnitSeeder::class,
+            SupplierSeeder::class,
+            CustomerSeeder::class,
+            OperationalExpenseSeeder::class,
+            UserSeeder::class,         // 2 admin + 3 kasir
+            ProductSeeder::class,      // 24 produk
+            TransactionSeeder::class,  // riwayat 7 hari + shift + pembayaran + mutasi stok
         ]);
     }
 }

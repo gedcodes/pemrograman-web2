@@ -2,7 +2,50 @@
 
 Kode client-side (HTML5, CSS3, JavaScript vanilla) untuk tugas Pemrograman Web 2. Semua data bersifat mock di sisi klien. Rancangan lengkap ada di [`PERANCANGAN.md`](PERANCANGAN.md), sedangkan referensi visual hasil Stitch ada di [`design/`](design/README.md).
 
-## Menjalankan
+> ### Proyek ini punya dua tahap
+>
+> | Tahap | Letak | Isi |
+> | :-- | :-- | :-- |
+> | **1 — Prototipe** (dinilai rubrik) | `docs/` (berkas ini) | HTML/CSS/JS vanilla, mock data di `localStorage`, tanpa back-end |
+> | **2 — Aplikasi penuh** | [`application/`](../application/) | REST API Laravel 13 + MySQL, SPA Vue 3 (Vite), pembayaran Midtrans Snap |
+>
+> Keduanya memakai rancangan, design token, dan angka contoh yang **sama**. Tahap 2 dibangun mengikuti prototipe ini, bukan menggantikannya.
+>
+> Daftar pekerjaan Tahap 2 beserta catatan pelaksanaannya ada di [`IMPLEMENTASI.md`](IMPLEMENTASI.md); langkah go-live dan pengaturan Midtrans ada di [`DEPLOYMENT.md`](DEPLOYMENT.md).
+
+## Menjalankan aplikasi penuh (Tahap 2)
+
+```bash
+cd application
+composer install
+npm install
+cp .env.example .env         # lalu isi DB_* sesuai MySQL Anda
+php artisan key:generate
+php artisan migrate --seed
+npm run build
+php artisan serve
+```
+
+Buka <http://127.0.0.1:8000/app>. Masuk dengan salah satu akun berikut; kata sandi seluruhnya `password`:
+
+| Email | Peran |
+| :-- | :-- |
+| `surya.owner@sariamerta.test` | Admin / Pemilik |
+| `luh.ratna@sariamerta.test` | Admin (Supervisor) |
+| `kadek.ayu@sariamerta.test` | Kasir shift pagi |
+| `made.dwi@sariamerta.test` | Kasir shift siang |
+| `sari.kasir@sariamerta.test` | Kasir nonaktif (contoh penolakan) |
+
+Dua hal yang sering menjadi penyebab masalah saat pertama menjalankan:
+
+- **`SANCTUM_STATEFUL_DOMAINS` wajib memuat origin frontend.** Bila tidak, seluruh panggilan API dijawab `401` meskipun login berhasil.
+- **Hapus `public/hot` bila ada.** Berkas itu tersisa dari dev server Vite yang pernah berjalan dan membuat Laravel menunjuk ke alamat dev alih-alih hasil `npm run build`, sehingga halaman termuat tetapi kosong.
+
+Pembayaran non-tunai baru aktif setelah kredensial Midtrans diisi ([`DEPLOYMENT.md`](DEPLOYMENT.md) bagian 1). Sebelum itu, tombol Non-Tunai tetap menyimpan transaksi sebagai menunggu pembayaran dan **tidak** mengurangi stok.
+
+---
+
+## Menjalankan prototipe (Tahap 1)
 
 Script memakai ES modules, jadi halaman **harus dibuka lewat server lokal**. Membuka file HTML dengan klik dua kali (`file://`) tidak akan berjalan.
 

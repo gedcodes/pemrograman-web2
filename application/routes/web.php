@@ -19,3 +19,17 @@ Route::middleware(['auth'])->group(function () {
 });
 
 require __DIR__.'/settings.php';
+
+/*
+|--------------------------------------------------------------------------
+| SPA POS
+|--------------------------------------------------------------------------
+|
+| Seluruh alamat di bawah /app diserahkan kepada Vue Router. Halaman Inertia
+| bawaan starter kit sengaja dibiarkan utuh agar tesnya tetap berjalan;
+| penghapusannya menunggu keputusan terpisah.
+|
+*/
+Route::view('/app/{any?}', 'spa')
+    ->where('any', '.*')
+    ->name('spa');

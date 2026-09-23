@@ -1,0 +1,174 @@
+/* ==========================================================================
+   Design Tokens — Toko Sari Amerta · Admin Panel POS
+   Sumber: DESIGN.md (Teal Soft UI) + nilai final dari ekspor Stitch.
+   Semua warna, bayangan, radius, dan tipografi hanya didefinisikan di sini.
+   ========================================================================== */
+
+:root {
+    /* ---------- Permukaan ---------- */
+    --surface-canvas: #f2fbf8; /* kanvas aplikasi (nilai Stitch) */
+    --surface-base: #e4edea; /* dasar input & area inset */
+    --surface-raised: #edf4f2; /* kartu neumorphic, panel keranjang */
+    --surface-crisp: #ffffff; /* tabel, modal, struk, toast */
+    --surface-sunken: #d7e4e0; /* well, thumbnail, track */
+    --surface-header: #f4f8f7; /* header tabel */
+    --divider: #cbdad5;
+    --skeleton-shine: #e7f0ed; /* sorotan animasi skeleton */
+
+    /* ---------- Teks ---------- */
+    --text-primary: #16302c; /* 11,79:1 vs base */
+    --text-secondary: #47625d; /* 5,55:1 */
+    --text-muted: #526e69; /* 4,64:1 — batas bawah, jangan lebih terang */
+    --text-on-dark: #ffffff;
+
+    /* ---------- Skala teal ---------- */
+    --teal-950: #0b2b27; /* permukaan sidebar */
+    --teal-900: #06403b;
+    --teal-800: #09514a; /* hover tombol primary */
+    --teal-700: #0b6b62; /* isian tombol primary */
+    --teal-600: #0d7c74; /* focus ring, border aktif */
+    --teal-400: #45c9b8; /* HANYA di atas sidebar gelap */
+    --teal-100: #d0e7e3; /* tint, baris terpilih */
+
+    /* ---------- Isian tombol (teks putih) ---------- */
+    --btn-primary: var(--teal-700);
+    --btn-primary-hover: var(--teal-800);
+    --btn-success: #1b7a43;
+    --btn-success-hover: #156336;
+    --btn-danger: #b23a16;
+    --btn-danger-hover: #962f11;
+    --btn-neutral: #1f3a35;
+    --btn-neutral-hover: #142925;
+
+    /* ---------- Status (teks + latar pil) ---------- */
+    --success-text: #12694a;
+    --success-bg: #cfe7db;
+    --warning-text: #6f5000;
+    --warning-bg: #f7e6b5;
+    --danger-text: #9e3210;
+    --danger-bg: #f6dacf;
+    --info-text: #0b6158;
+    --info-bg: #d0e7e3;
+
+    /* ---------- Sidebar (di atas --teal-950) ---------- */
+    --sidebar-bg: var(--teal-950);
+    --sidebar-footer-bg: #082320;
+    --sidebar-idle: #a8c6c0;
+    --sidebar-active: #ffffff;
+    --sidebar-label: #7fa39d;
+    --sidebar-indicator: var(--teal-400);
+    --sidebar-hover-bg: rgba(255, 255, 255, 0.05);
+    --sidebar-active-bg: rgba(255, 255, 255, 0.08);
+    --sidebar-danger: #f2b8a5; /* hover tombol keluar di atas sidebar gelap */
+
+    /* ---------- Grafik (Chart.js) ---------- */
+    --chart-1: #0b6b62;
+    --chart-2: #2b5c78;
+    --chart-3: #9a6b06;
+    --chart-4: #b23a16;
+    --chart-area: rgba(11, 107, 98, 0.1);
+    --chart-grid: var(--divider);
+
+    /* ---------- Bayangan (cahaya selalu dari kiri-atas) ---------- */
+    --shadow-raised-sm:
+        4px 4px 10px rgba(122, 152, 145, 0.3),
+        -4px -4px 10px rgba(255, 255, 255, 0.9);
+    --shadow-raised-md:
+        10px 10px 24px rgba(122, 152, 145, 0.32),
+        -8px -8px 20px rgba(255, 255, 255, 0.92);
+    --shadow-raised-lg:
+        24px 24px 60px rgba(90, 120, 113, 0.28),
+        -16px -16px 40px rgba(255, 255, 255, 0.9);
+    --shadow-inset:
+        inset 4px 4px 10px rgba(122, 152, 145, 0.38),
+        inset -3px -3px 8px rgba(255, 255, 255, 0.85);
+    --shadow-inset-sm:
+        inset 2px 2px 5px rgba(122, 152, 145, 0.35),
+        inset -2px -2px 5px rgba(255, 255, 255, 0.85);
+    --shadow-crisp:
+        0 18px 40px -18px rgba(22, 48, 44, 0.14),
+        0 0 0 1px rgba(203, 218, 213, 0.8);
+    --shadow-btn-primary: 0 6px 16px -6px rgba(11, 107, 98, 0.55);
+    --shadow-btn-success: 0 8px 20px -6px rgba(27, 122, 67, 0.55);
+    --shadow-btn-danger: 0 6px 16px -6px rgba(178, 58, 22, 0.5);
+    --shadow-btn-neutral: 0 6px 16px -6px rgba(31, 58, 53, 0.55);
+    --shadow-sidebar: 4px 0 24px rgba(6, 64, 59, 0.25);
+    --focus-ring:
+        0 0 0 1.5px var(--teal-600), 0 0 0 5px rgba(13, 124, 116, 0.24);
+    --error-ring:
+        0 0 0 1.5px var(--btn-danger), 0 0 0 5px rgba(178, 58, 22, 0.18);
+
+    /* ---------- Tipografi ---------- */
+    --font-display: 'Outfit', system-ui, sans-serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', monospace;
+
+    --text-display: 600 2.5rem/2.75rem var(--font-display); /* 40/44 total belanja */
+    --text-h1: 600 1.625rem/2.125rem var(--font-display); /* 26/34 judul halaman */
+    --text-h2: 600 1.25rem/1.75rem var(--font-display); /* 20/28 judul section */
+    --text-h3: 500 1rem/1.5rem var(--font-display); /* 16/24 judul kartu */
+    --text-body: 400 0.9375rem/1.5rem var(--font-body); /* 15/24 */
+    --text-body-strong: 600 0.9375rem/1.5rem var(--font-body);
+    --text-small: 400 0.84375rem/1.25rem var(--font-body); /* 13,5/20 */
+    --text-label: 600 0.84375rem/1.25rem var(--font-body);
+    --text-caption: 500 0.75rem/1.125rem var(--font-body); /* 12/18 */
+    --text-overline: 600 0.6875rem/1rem var(--font-body); /* 11/16 */
+    --text-numeric: 500 0.84375rem/1.25rem var(--font-mono); /* 13,5/20 */
+
+    --tracking-display: -0.02em;
+    --tracking-h1: -0.015em;
+    --tracking-h2: -0.01em;
+    --tracking-overline: 0.08em;
+
+    /* ---------- Spasi (kelipatan 4) ---------- */
+    --space-1: 0.25rem; /* 4 */
+    --space-2: 0.5rem; /* 8 */
+    --space-3: 0.75rem; /* 12 */
+    --space-4: 1rem; /* 16 */
+    --space-5: 1.25rem; /* 20 — gutter antar kartu */
+    --space-6: 1.5rem; /* 24 — padding kartu */
+    --space-8: 2rem; /* 32 — padding halaman desktop */
+    --space-12: 3rem; /* 48 */
+    --space-16: 4rem; /* 64 */
+
+    /* ---------- Radius ---------- */
+    --radius-xs: 8px; /* thumbnail, skeleton */
+    --radius-sm: 12px; /* item sidebar */
+    --radius-md: 14px; /* tombol, input, select */
+    --radius-lg: 20px; /* kartu produk, area upload */
+    --radius-xl: 24px; /* kartu, panel, kontainer tabel */
+    --radius-2xl: 28px; /* modal */
+    --radius-pill: 999px; /* badge, chip, avatar */
+
+    /* ---------- Ukuran kontrol ---------- */
+    --control-h: 48px;
+    --control-h-sm: 36px;
+    --control-h-lg: 56px;
+    --table-row-h: 52px;
+
+    /* ---------- Tata letak ---------- */
+    --sidebar-w: 260px;
+    --sidebar-w-rail: 72px;
+    --topbar-h: 72px;
+    --content-max: 1440px;
+    --page-pad: var(--space-8);
+
+    /* ---------- Motion ---------- */
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur-fast: 140ms;
+    --dur-base: 220ms;
+    --dur-slow: 340ms;
+
+    /* ---------- Lapisan ---------- */
+    --z-topbar: 30;
+    --z-sidebar: 40;
+    --z-backdrop: 35;
+    --z-toast: 60;
+}
+
+@media (max-width: 767px) {
+    :root {
+        --page-pad: var(--space-4);
+        --text-display: 600 1.875rem/2.25rem var(--font-display); /* 30/36 */
+    }
+}

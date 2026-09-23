@@ -29,6 +29,8 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
+            'peran' => 'kasir',
+            'aktif' => true,
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
@@ -54,6 +56,30 @@ class UserFactory extends Factory
 
             $user->switchTeam($team);
         });
+    }
+
+    /**
+     * Pengguna berperan admin / pemilik.
+     */
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => ['peran' => 'admin']);
+    }
+
+    /**
+     * Pengguna berperan kasir.
+     */
+    public function kasir(): static
+    {
+        return $this->state(fn (array $attributes) => ['peran' => 'kasir']);
+    }
+
+    /**
+     * Akun yang dinonaktifkan.
+     */
+    public function nonaktif(): static
+    {
+        return $this->state(fn (array $attributes) => ['aktif' => false]);
     }
 
     /**
