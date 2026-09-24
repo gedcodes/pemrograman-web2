@@ -9,6 +9,7 @@ use App\Http\Requests\SupplierRequest;
 use App\Http\Resources\SupplierResource;
 use App\Models\Supplier;
 use App\Support\ApiResponse;
+use App\Support\Daftar;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -30,7 +31,7 @@ class SupplierController extends Controller
         }
 
         return ApiResponse::paginated(
-            $query->orderBy('nama_supplier')->paginate((int) $request->query('per_page', (string) config('pos.per_halaman'))),
+            Daftar::halaman($query, $request, ['nama_supplier', 'kontak', 'alamat'], 'nama_supplier'),
             SupplierResource::class,
         );
     }

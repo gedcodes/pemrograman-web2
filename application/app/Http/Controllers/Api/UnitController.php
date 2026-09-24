@@ -9,6 +9,7 @@ use App\Http\Requests\UnitRequest;
 use App\Http\Resources\UnitResource;
 use App\Models\Unit;
 use App\Support\ApiResponse;
+use App\Support\Daftar;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -30,7 +31,7 @@ class UnitController extends Controller
         }
 
         return ApiResponse::paginated(
-            $query->orderBy('nama_satuan')->paginate((int) $request->query('per_page', (string) config('pos.per_halaman'))),
+            Daftar::halaman($query, $request, ['nama_satuan', 'simbol'], 'nama_satuan'),
             UnitResource::class,
         );
     }

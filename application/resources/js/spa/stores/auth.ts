@@ -29,6 +29,14 @@ export const sudahMasuk = computed(() => state.user !== null);
 export const adalahAdmin = computed(() => state.user?.peran === 'admin');
 
 /**
+ * Halaman pertama setelah masuk. Kasir langsung ke halaman Kasir, karena
+ * itulah pekerjaannya; admin ke Dashboard.
+ */
+export function halamanAwal(): { name: 'dashboard' | 'kasir' } {
+    return { name: state.user?.peran === 'admin' ? 'dashboard' : 'kasir' };
+}
+
+/**
  * Tanyakan ke server siapa yang sedang masuk.
  *
  * Dipanggil sekali saat aplikasi dinyalakan. Jawaban 401 bukan galat --

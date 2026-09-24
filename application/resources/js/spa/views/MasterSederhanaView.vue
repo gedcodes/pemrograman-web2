@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
-import {
-    ambilPenuh,
-    ApiError,
-    hapus,
-    perbarui,
-    simpan,
-    type PaginationMeta,
-} from '../api/client';
+import { Pencil, Plus, Search, Trash2 } from '@lucide/vue';
+import { computed, nextTick, ref } from 'vue';
+import { ApiError, hapus, perbarui, simpan } from '../api/client';
+import { useDaftarServer } from '../composables/useDaftarServer';
 import { toast } from '../stores/toast';
 import BaseModal from '../components/BaseModal.vue';
+import FieldForm from '../components/FieldForm.vue';
+import InputAngka from '../components/InputAngka.vue';
 import KeadaanData from '../components/KeadaanData.vue';
+import KepalaUrut from '../components/KepalaUrut.vue';
 import PagePagination from '../components/PagePagination.vue';
 
 /**
@@ -19,6 +17,9 @@ import PagePagination from '../components/PagePagination.vue';
  * Kategori, Satuan, Supplier, dan Pelanggan berbentuk sama persis: tabel
  * dengan pencarian ditambah formulir beberapa kolom. Menulis empat berkas
  * hampir identik hanya akan membuat keempatnya lambat laun menyimpang.
+ *
+ * Komponen ini dipasang ulang setiap rute berganti (kunci rute pada
+ * AppLayout), jadi konfigurasinya cukup dibaca sekali saat dibuat.
  */
 const props = defineProps<{
     jenis: 'kategori' | 'satuan' | 'supplier' | 'pelanggan';
@@ -27,8 +28,11 @@ const props = defineProps<{
 interface Kolom {
     kunci: string;
     label: string;
-    tipe?: 'teks' | 'angka';
+    tipe?: 'teks' | 'angka' | 'telepon' | 'panjang';
     wajib?: boolean;
+    /** Batas panjang, sama dengan aturan Form Request di server. */
+    maks?: number;
+    contoh?: string;
     diTabel?: boolean;
 }
 
@@ -47,6 +51,8 @@ const KONFIG: Record<string, Konfigurasi> = {
                 kunci: 'nama_kategori',
                 label: 'Nama kategori',
                 wajib: true,
+                maks: 100,
+                contoh: 'mis. Minuman',
                 diTabel: true,
             },
         ],
@@ -59,9 +65,18 @@ const KONFIG: Record<string, Konfigurasi> = {
                 kunci: 'nama_satuan',
                 label: 'Nama satuan',
                 wajib: true,
+                maks: 50,
+                contoh: 'mis. Botol',
                 diTabel: true,
             },
-            { kunci: 'simbol', label: 'Simbol', wajib: true, diTabel: true },
+            {
+                kunci: 'simbol',
+                label: 'Simbol',
+                wajib: true,
+                maks: 10,
+                contoh: 'mis. btl',
+                diTabel: true,
+            },
         ],
     },
     supplier: {
@@ -72,18 +87,45 @@ const KONFIG: Record<string, Konfigurasi> = {
                 kunci: 'nama_supplier',
                 label: 'Nama supplier',
                 wajib: true,
+                maks: 150,
                 diTabel: true,
             },
-            { kunci: 'kontak', label: 'Kontak', diTabel: true },
-            { kunci: 'alamat', label: 'Alamat', diTabel: true },
+            {
+                kunci: 'kontak',
+                label: 'Kontak',
+                tipe: 'telepon',
+                maks: 30,
+                contoh: 'mis. 0361 234567',
+                diTabel: true,
+            },
+            {
+                kunci: 'alamat',
+                label: 'Alamat',
+                tipe: 'panjang',
+                maks: 500,
+                diTabel: true,
+            },
         ],
     },
     pelanggan: {
         judul: 'Pelanggan',
         url: '/customers',
         kolom: [
-            { kunci: 'nama', label: 'Nama', wajib: true, diTabel: true },
-            { kunci: 'no_hp', label: 'No. HP', diTabel: true },
+            {
+                kunci: 'nama',
+                label: 'Nama',
+                wajib: true,
+                maks: 150,
+                diTabel: true,
+            },
+            {
+                kunci: 'no_hp',
+                label: 'No. HP',
+                tipe: 'telepon',
+                maks: 30,
+                contoh: 'mis. 0812 3456 7890',
+                diTabel: true,
+            },
             {
                 kunci: 'poin_loyalti',
                 label: 'Poin loyalti',
@@ -94,123 +136,166 @@ const KONFIG: Record<string, Konfigurasi> = {
     },
 };
 
-const cfg = computed(() => KONFIG[props.jenis]);
+const cfg = KONFIG[props.jenis];
+const kolomTabel = cfg.kolom.filter((c) => c.diTabel);
 
 type Baris = Record<string, unknown> & { id: number };
 
-const daftar = ref<Baris[]>([]);
-const meta = ref<PaginationMeta | null>(null);
 const cari = ref('');
-const halaman = ref(1);
-const memuat = ref(true);
-const galat = ref<string | null>(null);
+
+const {
+    daftar,
+    meta,
+    memuat,
+    galat,
+    urut,
+    arah,
+    perHalaman,
+    muat,
+    pindahHalaman,
+    urutkan,
+} = useDaftarServer<Baris>(cfg.url, () => ({ q: cari.value || undefined }));
+
+/* ---------------------------------------------------------------- formulir */
 
 const formTerbuka = ref(false);
 const sedangUbah = ref<Baris | null>(null);
-const form = ref<Record<string, unknown>>({});
-const galatField = ref<Record<string, string>>({});
+const form = ref<Record<string, string | number | null>>({});
+const galatServer = ref<Record<string, string>>({});
+const dicoba = ref(false);
 const mengirim = ref(false);
-const akanDihapus = ref<Baris | null>(null);
-
-async function muat() {
-    memuat.value = true;
-    galat.value = null;
-    try {
-        const r = await ambilPenuh<Baris[]>(cfg.value.url, {
-            page: halaman.value,
-            q: cari.value || undefined,
-        });
-        daftar.value = r.data;
-        meta.value = r.meta ?? null;
-    } catch (e) {
-        galat.value = e instanceof ApiError ? e.message : 'Gagal memuat data.';
-    } finally {
-        memuat.value = false;
-    }
-}
 
 function bukaForm(baris: Baris | null) {
     sedangUbah.value = baris;
-    galatField.value = {};
-    form.value = {};
-    for (const k of cfg.value.kolom) {
-        form.value[k.kunci] = baris
-            ? (baris[k.kunci] ?? '')
-            : k.tipe === 'angka'
-              ? 0
-              : '';
+    galatServer.value = {};
+    dicoba.value = false;
+
+    const isi: Record<string, string | number | null> = {};
+    for (const k of cfg.kolom) {
+        const nilai = baris?.[k.kunci];
+        isi[k.kunci] =
+            k.tipe === 'angka'
+                ? typeof nilai === 'number'
+                    ? nilai
+                    : 0
+                : typeof nilai === 'string'
+                  ? nilai
+                  : '';
     }
+    form.value = isi;
     formTerbuka.value = true;
 }
 
+const galatLokal = computed(() => {
+    const e: Record<string, string> = {};
+    for (const k of cfg.kolom) {
+        const v = form.value[k.kunci];
+        const teks = typeof v === 'string' ? v.trim() : '';
+        if (k.wajib && k.tipe !== 'angka' && teks === '')
+            e[k.kunci] = `${k.label} wajib diisi.`;
+        else if (k.maks && teks.length > k.maks)
+            e[k.kunci] = `${k.label} paling panjang ${k.maks} karakter.`;
+    }
+    return e;
+});
+
+function pesanGalat(kunci: string): string | undefined {
+    return (
+        galatServer.value[kunci] ??
+        (dicoba.value ? galatLokal.value[kunci] : undefined)
+    );
+}
+
+async function fokusGalat() {
+    await nextTick();
+    document
+        .querySelector<HTMLElement>('.modal [aria-invalid="true"]')
+        ?.focus();
+}
+
 async function kirim() {
+    if (mengirim.value) return;
+    dicoba.value = true;
+    galatServer.value = {};
+
+    if (Object.keys(galatLokal.value).length > 0) {
+        await fokusGalat();
+        return;
+    }
+
+    const muatan: Record<string, unknown> = {};
+    for (const k of cfg.kolom) {
+        const v = form.value[k.kunci];
+        muatan[k.kunci] = typeof v === 'string' ? v.trim() || null : (v ?? 0);
+    }
+
     mengirim.value = true;
-    galatField.value = {};
     try {
-        if (sedangUbah.value) {
-            const r = await perbarui(
-                `${cfg.value.url}/${sedangUbah.value.id}`,
-                form.value,
-            );
-            toast.sukses(r.message ?? 'Tersimpan.');
-        } else {
-            const r = await simpan(cfg.value.url, form.value);
-            toast.sukses(r.message ?? 'Tersimpan.');
-        }
+        const r = sedangUbah.value
+            ? await perbarui(`${cfg.url}/${sedangUbah.value.id}`, muatan)
+            : await simpan(cfg.url, muatan);
+        toast.sukses(r.message ?? 'Tersimpan.');
         formTerbuka.value = false;
         await muat();
     } catch (e) {
         if (e instanceof ApiError) {
-            galatField.value = Object.fromEntries(
+            galatServer.value = Object.fromEntries(
                 Object.entries(e.errors).map(([k, v]) => [k, v[0]]),
             );
             toast.galat(e.message);
+            await fokusGalat();
+        } else {
+            toast.galat('Gagal menyimpan.');
         }
     } finally {
         mengirim.value = false;
     }
 }
 
+/* ---------------------------------------------------------------- hapus */
+
+const akanDihapus = ref<Baris | null>(null);
+const menghapus = ref(false);
+
+function namaBaris(b: Baris): string {
+    const v = b[cfg.kolom[0].kunci];
+    return typeof v === 'string' ? v : '';
+}
+
 async function konfirmasiHapus() {
-    if (!akanDihapus.value) return;
+    if (!akanDihapus.value || menghapus.value) return;
+    menghapus.value = true;
     try {
-        const r = await hapus(`${cfg.value.url}/${akanDihapus.value.id}`);
+        const r = await hapus(`${cfg.url}/${akanDihapus.value.id}`);
         toast.sukses(r.message ?? 'Dihapus.');
         akanDihapus.value = null;
         await muat();
     } catch (e) {
         toast.galat(e instanceof ApiError ? e.message : 'Gagal menghapus.');
+    } finally {
+        menghapus.value = false;
     }
 }
 
-watch(cari, () => {
-    halaman.value = 1;
-    void muat();
-});
-
-watch(
-    () => props.jenis,
-    () => {
-        halaman.value = 1;
-        cari.value = '';
-        void muat();
-    },
-);
-
-onMounted(muat);
+function tampil(v: unknown): string {
+    return v === null || v === undefined || v === '' ? '-' : String(v);
+}
 </script>
 
 <template>
     <div class="page-head">
-        <input
-            v-model="cari"
-            class="input"
-            style="max-width: 280px"
-            type="search"
-            placeholder="Cari…"
-        />
+        <label class="kotak-cari">
+            <Search :size="18" :stroke-width="1.75" aria-hidden="true" />
+            <span class="sr-only">Cari {{ cfg.judul.toLowerCase() }}</span>
+            <input
+                v-model="cari"
+                type="search"
+                :placeholder="`Cari ${cfg.judul.toLowerCase()}…`"
+            />
+        </label>
         <button class="btn btn-primary" @click="bukaForm(null)">
-            + Tambah {{ cfg.judul }}
+            <Plus :size="18" :stroke-width="2" aria-hidden="true" />
+            Tambah {{ cfg.judul }}
         </button>
     </div>
 
@@ -219,43 +304,69 @@ onMounted(muat);
             :memuat="memuat"
             :galat="galat"
             :kosong="daftar.length === 0"
+            :pesan-kosong="
+                cari
+                    ? `Tidak ada ${cfg.judul.toLowerCase()} yang cocok dengan &quot;${cari}&quot;.`
+                    : `Belum ada data ${cfg.judul.toLowerCase()}.`
+            "
         >
+            <template #aksi>
+                <button v-if="galat" class="btn btn-soft" @click="muat">
+                    Coba lagi
+                </button>
+            </template>
+
             <div class="table-scroll">
                 <table class="data">
                     <thead>
                         <tr>
-                            <th
-                                v-for="k in cfg.kolom.filter((c) => c.diTabel)"
+                            <KepalaUrut
+                                v-for="k in kolomTabel"
                                 :key="k.kunci"
-                                :class="{ num: k.tipe === 'angka' }"
-                            >
-                                {{ k.label }}
+                                :label="k.label"
+                                :kolom="k.kunci"
+                                :urut="urut"
+                                :arah="arah"
+                                :num="k.tipe === 'angka'"
+                                @urutkan="urutkan"
+                            />
+                            <th class="kolom-aksi">
+                                <span class="sr-only">Aksi</span>
                             </th>
-                            <th><span class="sr-only">Aksi</span></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="b in daftar" :key="b.id">
                             <td
-                                v-for="k in cfg.kolom.filter((c) => c.diTabel)"
+                                v-for="k in kolomTabel"
                                 :key="k.kunci"
                                 :class="{ num: k.tipe === 'angka' }"
                             >
-                                {{ b[k.kunci] ?? '-' }}
+                                {{ tampil(b[k.kunci]) }}
                             </td>
-                            <td>
-                                <div class="row">
+                            <td class="kolom-aksi">
+                                <div class="row aksi-baris">
                                     <button
                                         class="btn btn-soft btn-sm"
                                         @click="bukaForm(b)"
                                     >
+                                        <Pencil
+                                            :size="15"
+                                            :stroke-width="1.75"
+                                            aria-hidden="true"
+                                        />
                                         Ubah
                                     </button>
                                     <button
-                                        class="btn btn-ghost btn-sm"
+                                        class="btn btn-ghost btn-sm btn-ikon"
+                                        :aria-label="`Hapus ${namaBaris(b)}`"
                                         @click="akanDihapus = b"
                                     >
-                                        Hapus
+                                        <Trash2
+                                            :size="16"
+                                            :stroke-width="1.75"
+                                            aria-hidden="true"
+                                        />
                                     </button>
                                 </div>
                             </td>
@@ -264,13 +375,9 @@ onMounted(muat);
                 </table>
             </div>
             <PagePagination
+                v-model:per-halaman="perHalaman"
                 :meta="meta"
-                @pindah="
-                    (h) => {
-                        halaman = h;
-                        muat();
-                    }
-                "
+                @pindah="pindahHalaman"
             />
         </KeadaanData>
     </div>
@@ -278,31 +385,70 @@ onMounted(muat);
     <BaseModal
         v-if="formTerbuka"
         :judul="sedangUbah ? `Ubah ${cfg.judul}` : `Tambah ${cfg.judul}`"
+        formulir
+        :terkunci="mengirim"
         @tutup="formTerbuka = false"
     >
-        <form class="stack" novalidate @submit.prevent="kirim">
-            <div v-for="k in cfg.kolom" :key="k.kunci" class="field">
-                <label :for="k.kunci"
-                    >{{ k.label }}{{ k.wajib ? ' *' : '' }}</label
-                >
-                <input
-                    :id="k.kunci"
-                    v-model="form[k.kunci]"
-                    :type="k.tipe === 'angka' ? 'number' : 'text'"
-                    class="input"
-                    :class="{ 'is-error': galatField[k.kunci] }"
+        <form id="form-master" class="stack" novalidate @submit.prevent="kirim">
+            <FieldForm
+                v-for="k in cfg.kolom"
+                :key="k.kunci"
+                v-slot="{ id, invalid, describedby }"
+                :label="k.label"
+                :wajib="k.wajib"
+                :galat="pesanGalat(k.kunci)"
+            >
+                <InputAngka
+                    v-if="k.tipe === 'angka'"
+                    :id="id"
+                    :model-value="(form[k.kunci] as number | null) ?? null"
+                    :invalid="invalid"
+                    :aria-describedby="describedby"
+                    @update:model-value="(v) => (form[k.kunci] = v)"
                 />
-                <p v-if="galatField[k.kunci]" class="field-error">
-                    {{ galatField[k.kunci] }}
-                </p>
-            </div>
+                <textarea
+                    v-else-if="k.tipe === 'panjang'"
+                    :id="id"
+                    v-model="form[k.kunci]"
+                    class="textarea"
+                    :class="{ 'is-error': invalid }"
+                    :maxlength="k.maks"
+                    :aria-invalid="invalid || undefined"
+                    :aria-describedby="describedby"
+                    rows="3"
+                />
+                <input
+                    v-else
+                    :id="id"
+                    v-model="form[k.kunci]"
+                    class="input"
+                    :class="{ 'is-error': invalid }"
+                    :type="k.tipe === 'telepon' ? 'tel' : 'text'"
+                    :inputmode="k.tipe === 'telepon' ? 'tel' : undefined"
+                    :maxlength="k.maks"
+                    :placeholder="k.contoh"
+                    :aria-invalid="invalid || undefined"
+                    :aria-describedby="describedby"
+                    autocomplete="off"
+                />
+            </FieldForm>
         </form>
 
         <template #aksi>
-            <button class="btn btn-soft" @click="formTerbuka = false">
+            <button
+                class="btn btn-soft"
+                :disabled="mengirim"
+                @click="formTerbuka = false"
+            >
                 Batal
             </button>
-            <button class="btn btn-primary" :disabled="mengirim" @click="kirim">
+            <button
+                class="btn btn-primary"
+                type="submit"
+                form="form-master"
+                :disabled="mengirim"
+                :aria-busy="mengirim"
+            >
                 {{ mengirim ? 'Menyimpan…' : 'Simpan' }}
             </button>
         </template>
@@ -311,17 +457,28 @@ onMounted(muat);
     <BaseModal
         v-if="akanDihapus"
         :judul="`Hapus ${cfg.judul.toLowerCase()}?`"
+        :terkunci="menghapus"
         @tutup="akanDihapus = null"
     >
         <p>
-            Data ini akan dihapus. Data yang masih dipakai tidak dapat dihapus.
+            <strong>{{ namaBaris(akanDihapus) }}</strong> akan dihapus. Data
+            yang masih dipakai transaksi atau produk tidak dapat dihapus.
         </p>
         <template #aksi>
-            <button class="btn btn-soft" @click="akanDihapus = null">
+            <button
+                class="btn btn-soft"
+                :disabled="menghapus"
+                @click="akanDihapus = null"
+            >
                 Batal
             </button>
-            <button class="btn btn-danger" @click="konfirmasiHapus">
-                Ya, hapus
+            <button
+                class="btn btn-danger"
+                :disabled="menghapus"
+                :aria-busy="menghapus"
+                @click="konfirmasiHapus"
+            >
+                {{ menghapus ? 'Menghapus…' : 'Ya, hapus' }}
             </button>
         </template>
     </BaseModal>

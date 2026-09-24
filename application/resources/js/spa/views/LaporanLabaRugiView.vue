@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Printer } from '@lucide/vue';
 import { onMounted, ref } from 'vue';
 import { ambil, ApiError } from '../api/client';
 import type { LaporanLabaRugi } from '../api/types';
@@ -10,6 +11,7 @@ import {
     rupiah,
     tanggal,
 } from '../composables/format';
+import FilterPeriode from '../components/FilterPeriode.vue';
 import KeadaanData from '../components/KeadaanData.vue';
 
 // Diselaraskan dengan bawaan API dan Laporan Penjualan (7 hari), supaya
@@ -20,19 +22,24 @@ const data = ref<LaporanLabaRugi | null>(null);
 const memuat = ref(true);
 const galat = ref<string | null>(null);
 
+let urutan = 0;
+
 async function muat() {
+    const ke = ++urutan;
     memuat.value = true;
     galat.value = null;
     try {
-        data.value = await ambil<LaporanLabaRugi>('/reports/profit-loss', {
+        const hasil = await ambil<LaporanLabaRugi>('/reports/profit-loss', {
             dari: dari.value,
             sampai: sampai.value,
         });
+        if (ke === urutan) data.value = hasil;
     } catch (e) {
-        galat.value =
-            e instanceof ApiError ? e.message : 'Gagal memuat laporan.';
+        if (ke === urutan)
+            galat.value =
+                e instanceof ApiError ? e.message : 'Gagal memuat laporan.';
     } finally {
-        memuat.value = false;
+        if (ke === urutan) memuat.value = false;
     }
 }
 
@@ -50,27 +57,19 @@ onMounted(muat);
 
 <template>
     <div class="page-head no-print">
-        <div class="row row-wrap">
-            <div class="field">
-                <label for="d">Dari</label>
-                <input id="d" v-model="dari" type="date" class="input" />
-            </div>
-            <div class="field">
-                <label for="s">Sampai</label>
-                <input id="s" v-model="sampai" type="date" class="input" />
-            </div>
-            <button
-                class="btn btn-primary"
-                style="align-self: flex-end"
-                @click="muat"
-            >
-                Terapkan
-            </button>
-        </div>
-        <button class="btn btn-neutral" @click="cetak">Cetak</button>
+        <FilterPeriode
+            v-model:dari="dari"
+            v-model:sampai="sampai"
+            :memuat="memuat"
+            @terapkan="muat"
+        />
+        <button class="btn btn-neutral" :disabled="!data" @click="cetak">
+            <Printer :size="18" :stroke-width="1.75" aria-hidden="true" />
+            Cetak
+        </button>
     </div>
 
-    <KeadaanData :memuat="memuat" :galat="galat" :baris-skeleton="6">
+    <KeadaanData :memuat="memuat" :galat="galat" kerangka="halaman">
         <template #aksi>
             <button class="btn btn-soft" @click="muat">Coba lagi</button>
         </template>

@@ -29,8 +29,11 @@ class StoreStockOpnameRequest extends FormRequest
             'tanggal' => ['nullable', 'date'],
             'catatan' => ['nullable', 'string', 'max:500'],
             'items' => ['required', 'array', 'min:1'],
-            'items.*.product_id' => ['required', 'integer', 'exists:products,id'],
+            // `distinct`: satu produk dihitung sekali per sesi.
+            'items.*.product_id' => ['required', 'integer', 'exists:products,id', 'distinct'],
             'items.*.stok_fisik' => ['required', 'integer', 'min:0'],
+            // Stok buku yang dilihat petugas saat lembar hitung dibuka.
+            'items.*.stok_sistem' => ['nullable', 'integer', 'min:0'],
         ];
     }
 }

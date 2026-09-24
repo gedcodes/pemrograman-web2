@@ -1,60 +1,48 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
-import { ambilPenuh, ApiError, type PaginationMeta } from '../api/client';
+import { Search } from '@lucide/vue';
+import { ref } from 'vue';
 import type { Product } from '../api/types';
 import { angka, rupiah } from '../composables/format';
+import { useDaftarServer } from '../composables/useDaftarServer';
+import BaseSwitch from '../components/BaseSwitch.vue';
 import KeadaanData from '../components/KeadaanData.vue';
+import KepalaUrut from '../components/KepalaUrut.vue';
 import PagePagination from '../components/PagePagination.vue';
 import StokBadge from '../components/StokBadge.vue';
 
-const daftar = ref<Product[]>([]);
-const meta = ref<PaginationMeta | null>(null);
 const cari = ref('');
 const hanyaMenipis = ref(false);
-const halaman = ref(1);
-const memuat = ref(true);
-const galat = ref<string | null>(null);
 
-async function muat() {
-    memuat.value = true;
-    galat.value = null;
-    try {
-        const r = await ambilPenuh<Product[]>('/products', {
-            page: halaman.value,
-            q: cari.value || undefined,
-            stok_menipis: hanyaMenipis.value ? 1 : undefined,
-        });
-        daftar.value = r.data;
-        meta.value = r.meta ?? null;
-    } catch (e) {
-        galat.value = e instanceof ApiError ? e.message : 'Gagal memuat stok.';
-    } finally {
-        memuat.value = false;
-    }
-}
-
-watch([cari, hanyaMenipis], () => {
-    halaman.value = 1;
-    void muat();
-});
-
-onMounted(muat);
+const {
+    daftar,
+    meta,
+    memuat,
+    galat,
+    urut,
+    arah,
+    perHalaman,
+    muat,
+    pindahHalaman,
+    urutkan,
+} = useDaftarServer<Product>('/products', () => ({
+    q: cari.value || undefined,
+    stok_menipis: hanyaMenipis.value ? 1 : undefined,
+}));
 </script>
 
 <template>
     <div class="page-head">
-        <div class="row row-wrap">
-            <input
-                v-model="cari"
-                class="input"
-                style="max-width: 280px"
-                type="search"
-                placeholder="Cari produk…"
-            />
-            <label class="row" style="cursor: pointer">
-                <input v-model="hanyaMenipis" type="checkbox" />
-                <span class="caption">Stok menipis saja</span>
+        <div class="penyaring">
+            <label class="kotak-cari">
+                <Search :size="18" :stroke-width="1.75" aria-hidden="true" />
+                <span class="sr-only">Cari produk</span>
+                <input
+                    v-model="cari"
+                    type="search"
+                    placeholder="Cari nama atau barcode…"
+                />
             </label>
+            <BaseSwitch v-model="hanyaMenipis">Stok menipis saja</BaseSwitch>
         </div>
     </div>
 
@@ -63,14 +51,34 @@ onMounted(muat);
             :memuat="memuat"
             :galat="galat"
             :kosong="daftar.length === 0"
+            pesan-kosong="Tidak ada produk yang cocok dengan penyaring."
         >
+            <template #aksi>
+                <button v-if="galat" class="btn btn-soft" @click="muat">
+                    Coba lagi
+                </button>
+            </template>
+
             <div class="table-scroll">
                 <table class="data">
                     <thead>
                         <tr>
-                            <th>Produk</th>
+                            <KepalaUrut
+                                label="Produk"
+                                kolom="nama_produk"
+                                :urut="urut"
+                                :arah="arah"
+                                @urutkan="urutkan"
+                            />
                             <th>Satuan</th>
-                            <th class="num">Stok</th>
+                            <KepalaUrut
+                                label="Stok"
+                                kolom="stok"
+                                :urut="urut"
+                                :arah="arah"
+                                num
+                                @urutkan="urutkan"
+                            />
                             <th class="num">Minimum</th>
                             <th class="num">Nilai persediaan</th>
                             <th>Status</th>
@@ -96,13 +104,9 @@ onMounted(muat);
                 </table>
             </div>
             <PagePagination
+                v-model:per-halaman="perHalaman"
                 :meta="meta"
-                @pindah="
-                    (h) => {
-                        halaman = h;
-                        muat();
-                    }
-                "
+                @pindah="pindahHalaman"
             />
         </KeadaanData>
     </div>

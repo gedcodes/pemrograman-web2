@@ -21,6 +21,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $payment_type
  * @property string|null $transaction_status
  * @property string|null $snap_token
+ * @property Carbon|null $snap_kedaluwarsa
  * @property int $jumlah_bayar
  * @property int $kembalian
  * @property Carbon|null $waktu_settlement
@@ -29,7 +30,7 @@ use Illuminate\Support\Carbon;
  * @property-read Transaction $transaction
  * @property-read Collection<int, PaymentLog> $logs
  */
-#[Fillable(['transaction_id', 'metode', 'order_id', 'payment_type', 'transaction_status', 'snap_token', 'jumlah_bayar', 'kembalian', 'waktu_settlement'])]
+#[Fillable(['transaction_id', 'metode', 'order_id', 'payment_type', 'transaction_status', 'snap_token', 'snap_kedaluwarsa', 'jumlah_bayar', 'kembalian', 'waktu_settlement'])]
 class Payment extends Model
 {
     /** @use HasFactory<PaymentFactory> */
@@ -75,6 +76,7 @@ class Payment extends Model
         return [
             'jumlah_bayar' => 'integer',
             'kembalian' => 'integer',
+            'snap_kedaluwarsa' => 'datetime',
             'waktu_settlement' => 'datetime',
         ];
     }

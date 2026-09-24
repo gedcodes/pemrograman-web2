@@ -13,6 +13,7 @@ use App\Models\StockOpname;
 use App\Services\DocumentNumberService;
 use App\Services\StockService;
 use App\Support\ApiResponse;
+use App\Support\Daftar;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,8 +37,7 @@ class StockOpnameController extends Controller
         }
 
         return ApiResponse::paginated(
-            $query->orderByDesc('tanggal')->orderByDesc('id')
-                ->paginate((int) $request->query('per_page', (string) config('pos.per_halaman'))),
+            Daftar::halaman($query, $request, ['tanggal', 'no_dokumen'], 'tanggal', 'desc'),
             StockOpnameResource::class,
         );
     }
@@ -48,16 +48,21 @@ class StockOpnameController extends Controller
     }
 
     /**
-     * Sesi opname langsung diselesaikan: stok sistem dipotret, selisihnya dihitung,
-     * lalu stok disesuaikan ke hasil hitung fisik melalui StockService supaya
-     * penyesuaiannya tetap tercatat pada buku besar mutasi.
+     * Sesi opname langsung diselesaikan.
+     *
+     * Selisih dihitung terhadap stok buku SAAT LEMBAR HITUNG DIBUKA
+     * (`stok_sistem` yang dikirim klien), lalu selisih itu diterapkan ke stok
+     * terkini lewat StockService. Keputusan desain yang sama dengan prototipe:
+     * menimpa stok dengan angka fisik akan menghapus penjualan yang terjadi
+     * selama penghitungan. Klien yang tidak mengirim `stok_sistem` memakai
+     * stok saat ini sebagai stok buku (perilaku lama).
      */
     public function store(StoreStockOpnameRequest $request): JsonResponse
     {
         $userId = $request->user()?->id;
         abort_if($userId === null, 401);
 
-        /** @var list<array{product_id: int, stok_fisik: int}> $items */
+        /** @var list<array{product_id: int, stok_fisik: int, stok_sistem?: int|null}> $items */
         $items = $request->array('items');
 
         $opname = DB::transaction(function () use ($request, $items, $userId): StockOpname {
@@ -73,7 +78,7 @@ class StockOpnameController extends Controller
 
             foreach ($items as $item) {
                 $product = Product::query()->findOrFail($item['product_id']);
-                $stokSistem = $product->stok;
+                $stokSistem = isset($item['stok_sistem']) ? (int) $item['stok_sistem'] : $product->stok;
                 $selisih = $item['stok_fisik'] - $stokSistem;
 
                 OpnameItem::create([
@@ -84,9 +89,9 @@ class StockOpnameController extends Controller
                     'selisih' => $selisih,
                 ]);
 
-                $this->stock->opname(
+                $this->stock->sesuaikan(
                     $product->id,
-                    $item['stok_fisik'],
+                    $selisih,
                     'stock_opname',
                     $opname->id,
                     $userId,

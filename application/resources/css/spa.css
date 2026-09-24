@@ -8,6 +8,64 @@
 
 @import url('https://fonts.bunny.net/css?family=outfit:500,600|plus-jakarta-sans:400,500,600|jetbrains-mono:500&display=swap');
 
+/* Lapisan tambahan khusus SPA. Sengaja tidak ditaruh di spa-tokens.css,
+   supaya berkas itu tetap identik dengan token prototipe. Urutannya:
+   topbar 30 < latar drawer 35 < sidebar 40 < modal 50 < daftar pilihan 55
+   (harus di atas modal) < toast 60 < batang progres 70. */
+:root {
+    --z-modal: 50;
+    --z-popover: 55;
+    --z-progres: 70;
+}
+
+/* ---------------------------------------------------------------- layar pembuka */
+
+/* Tampil dari spa.blade.php selama aplikasi dimuat. Stylesheet ini sudah
+   ditautkan di <head>, jadi token-tokennya tersedia sejak cat pertama. */
+.boot {
+    min-height: 100dvh;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: var(--space-4);
+    background: var(--surface-canvas);
+    animation: boot-muncul 400ms 150ms var(--ease) both;
+}
+
+.boot-mark {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-md);
+    background: var(--teal-700);
+    color: var(--text-on-dark);
+    font: var(--text-h2);
+    box-shadow: var(--shadow-btn-primary);
+}
+
+.boot-putar {
+    width: 22px;
+    height: 22px;
+    border: 2.5px solid var(--teal-100);
+    border-top-color: var(--teal-700);
+    border-radius: 50%;
+    animation: putar 0.8s linear infinite;
+}
+
+.boot-teks {
+    font: var(--text-small);
+    color: var(--text-muted);
+}
+
+/* Muncul sedikit tertunda: pada koneksi cepat layar pembuka tidak sempat
+   berkedip sama sekali. */
+@keyframes boot-muncul {
+    from {
+        opacity: 0;
+    }
+}
+
 /* ---------------------------------------------------------------- reset */
 
 *,
@@ -49,6 +107,14 @@ textarea {
 a {
     color: var(--teal-700);
     text-decoration: none;
+}
+
+/* Sorotan abu-abu bawaan peramban seluler saat diketuk. Tombol di aplikasi
+   ini sudah punya umpan balik tekan sendiri (skala, bayangan). */
+a,
+button,
+[role='button'] {
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* Fokus keyboard selalu terlihat (DESIGN.md Bagian 6.7 poin 3):
@@ -224,6 +290,35 @@ h3 {
     width: 100%;
 }
 
+/* Tombol berisi ikon saja: persegi, supaya deretan aksi tetap rapi. */
+.btn-ikon {
+    width: var(--control-h-sm);
+    padding: 0;
+}
+
+/* Tombol yang sedang memproses cukup diberi aria-busy="true": pemutar muncul
+   di depan labelnya, dan pembaca layar tahu tombol itu sedang bekerja. */
+.btn[aria-busy='true'] {
+    cursor: progress;
+}
+
+.btn[aria-busy='true']::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: putar 0.7s linear infinite;
+}
+
+@keyframes putar {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 /* ---------------------------------------------------------------- form */
 
 .field {
@@ -270,6 +365,126 @@ h3 {
 .field-error {
     font: var(--text-caption);
     color: var(--danger-text);
+}
+
+/* Kotak cari berikon: dipakai di kepala setiap halaman bertabel. */
+.kotak-cari {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: min(320px, 100%);
+    min-height: var(--control-h);
+    padding: 0 var(--space-4);
+    background: var(--surface-base);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-inset);
+    color: var(--text-muted);
+    transition: box-shadow var(--dur-base) var(--ease);
+}
+
+.kotak-cari:focus-within {
+    box-shadow: var(--shadow-inset), var(--focus-ring);
+}
+
+.kotak-cari input {
+    flex: 1;
+    min-width: 0;
+    height: calc(var(--control-h) - 4px);
+    padding: 0;
+    background: transparent;
+    border: 0;
+    outline: none;
+    color: var(--text-primary);
+}
+
+.kotak-cari input::placeholder {
+    color: var(--text-muted);
+}
+
+/* Isian yang tertanam di dalam pembungkus bercincin (kotak cari, isian
+   angka, combobox): cincin fokus milik pembungkus sudah cukup. Tanpa aturan
+   ini, cincin global :focus-visible ikut menempel pada <input> di dalamnya
+   dan terlihat sebagai kotak di dalam kotak. Item daftar pilihan ditandai
+   latar sorotan, bukan cincin. */
+.kotak-cari input:focus-visible,
+.angka-input:focus-visible,
+.pilih-input:focus-visible,
+.pilih-item:focus-visible {
+    box-shadow: none;
+}
+
+/* Umpan balik pemindaian barcode di Kasir: kotak cari menyala hijau saat
+   barang masuk keranjang, merah saat barcode tidak dikenal. Selalu disertai
+   pesan / bunyi, jadi warna bukan satu-satunya penanda. */
+.kotak-cari.pindai-berhasil {
+    animation: pindai-berhasil 700ms var(--ease);
+}
+
+.kotak-cari.pindai-gagal {
+    animation: pindai-gagal 500ms var(--ease);
+}
+
+@keyframes pindai-berhasil {
+    0%,
+    40% {
+        box-shadow:
+            var(--shadow-inset),
+            0 0 0 3px var(--success-text);
+        background: var(--success-bg);
+    }
+}
+
+@keyframes pindai-gagal {
+    0%,
+    60% {
+        box-shadow:
+            var(--shadow-inset),
+            0 0 0 3px var(--danger-text);
+        background: var(--danger-bg);
+    }
+    20% {
+        transform: translateX(-4px);
+    }
+    40% {
+        transform: translateX(4px);
+    }
+}
+
+/* Baris keranjang yang baru bertambah berkedip sekali. */
+.is-kilat {
+    animation: kilat-baris 700ms var(--ease);
+}
+
+@keyframes kilat-baris {
+    0%,
+    30% {
+        background: var(--success-bg);
+    }
+}
+
+/* Deretan penyaring di kepala halaman: cari + pilihan + saklar. */
+.penyaring {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    flex: 1;
+}
+
+.penyaring > .pilih,
+.penyaring > .pilih-kontrol {
+    width: min(220px, 100%);
+}
+
+/* Kolom aksi tabel selalu rata kanan dan tidak terlipat. */
+.kolom-aksi {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.aksi-baris {
+    justify-content: flex-end;
+    gap: var(--space-2);
 }
 
 /* ---------------------------------------------------------------- kartu */

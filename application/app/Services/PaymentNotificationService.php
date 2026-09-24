@@ -8,6 +8,7 @@ use App\Models\Payment;
 use App\Models\PaymentLog;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use RuntimeException;
 
 /**
  * Pemrosesan notifikasi (webhook) Midtrans.
@@ -29,10 +30,47 @@ class PaymentNotificationService
     ) {}
 
     /**
+     * Cocokkan status sebuah pembayaran dengan catatan Midtrans.
+     *
+     * Cadangan bagi webhook yang terlambat atau tidak pernah tiba, misalnya
+     * saat aplikasi berjalan di localhost tanpa terowongan. Server sendiri
+     * yang bertanya ke Midtrans, lalu jawabannya diproses lewat jalur yang
+     * SAMA dengan webhook: signature, idempotensi, dan aturan stok tetap
+     * berlaku. Browser tidak pernah menentukan status lunas.
+     *
+     * Mengembalikan null bila Midtrans belum mengenal order-nya.
+     *
+     * @return array{status: string, diproses: bool, alasan: string}|null
+     *
+     * @throws RuntimeException
+     */
+    public function sinkronkan(Payment $payment): ?array
+    {
+        if ($payment->order_id === null) {
+            return null;
+        }
+
+        $payload = $this->midtrans->cekStatus($payment->order_id);
+
+        if ($payload === null) {
+            return null;
+        }
+
+        // Jawaban Get Status API membawa signature_key yang dihitung sama
+        // seperti notifikasi. Tetap diperiksa, sebagai lapis pengaman kedua.
+        if (isset($payload['signature_key']) && ! $this->midtrans->signatureSah($payload)) {
+            throw new RuntimeException('Jawaban status Midtrans memiliki signature yang tidak sah.');
+        }
+
+        return $this->proses($payload, 'midtrans-status-api');
+    }
+
+    /**
      * @param  array<string, mixed>  $payload
+     * @param  string  $sumber  asal pembaruan, dicatat di payment_logs
      * @return array{status: string, diproses: bool, alasan: string}
      */
-    public function proses(array $payload): array
+    public function proses(array $payload, string $sumber = 'midtrans-webhook'): array
     {
         $orderId = (string) ($payload['order_id'] ?? '');
 
@@ -60,7 +98,7 @@ class PaymentNotificationService
             isset($payload['fraud_status']) ? (string) $payload['fraud_status'] : null,
         );
 
-        return DB::transaction(function () use ($payment, $payload, $kunci, $statusBaru): array {
+        return DB::transaction(function () use ($payment, $payload, $kunci, $statusBaru, $sumber): array {
             // Baris dikunci agar dua notifikasi yang tiba bersamaan tidak
             // sama-sama lolos pemeriksaan lalu mengurangi stok dua kali.
             $payment = Payment::query()->lockForUpdate()->findOrFail($payment->id);
@@ -94,7 +132,7 @@ class PaymentNotificationService
                 $this->transactions->kurangiStok($transaction->load('items'));
             }
 
-            $this->catat($payment->id, $statusLama, $statusBaru, $payload, $kunci, 'midtrans-webhook');
+            $this->catat($payment->id, $statusLama, $statusBaru, $payload, $kunci, $sumber);
 
             return ['status' => $statusBaru, 'diproses' => true, 'alasan' => 'status diperbarui'];
         });

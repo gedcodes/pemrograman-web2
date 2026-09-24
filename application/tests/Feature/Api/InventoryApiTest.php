@@ -124,6 +124,53 @@ class InventoryApiTest extends TestCase
         $this->assertSame(26, $this->produk->fresh()->stok);
     }
 
+    public function test_opname_menerapkan_selisih_sehingga_penjualan_selama_hitung_tidak_hilang(): void
+    {
+        // Lembar hitung dibuka saat stok buku 20. Selama petugas menghitung,
+        // terjual 2 (stok kini 18). Fisik yang dihitung 17 → selisih -3.
+        $this->produk->forceFill(['stok' => 18])->save();
+
+        $this->actingAs($this->admin)->postJson('/api/opnames', [
+            'items' => [[
+                'product_id' => $this->produk->id,
+                'stok_sistem' => 20,
+                'stok_fisik' => 17,
+            ]],
+        ])
+            ->assertCreated()
+            ->assertJsonPath('data.items.0.stok_sistem', 20)
+            ->assertJsonPath('data.items.0.selisih', -3);
+
+        // 18 - 3 = 15: penjualan 2 unit tadi tetap tercatat.
+        $this->assertSame(15, $this->produk->fresh()->stok);
+    }
+
+    public function test_opname_yang_membuat_stok_negatif_ditolak_utuh(): void
+    {
+        $this->produk->forceFill(['stok' => 2])->save();
+
+        $this->actingAs($this->admin)->postJson('/api/opnames', [
+            'items' => [[
+                'product_id' => $this->produk->id,
+                'stok_sistem' => 20,
+                'stok_fisik' => 10,
+            ]],
+        ])->assertStatus(422);
+
+        $this->assertSame(2, $this->produk->fresh()->stok);
+        $this->assertDatabaseCount('stock_opnames', 0);
+    }
+
+    public function test_produk_ganda_dalam_satu_opname_ditolak(): void
+    {
+        $this->actingAs($this->admin)->postJson('/api/opnames', [
+            'items' => [
+                ['product_id' => $this->produk->id, 'stok_fisik' => 17],
+                ['product_id' => $this->produk->id, 'stok_fisik' => 19],
+            ],
+        ])->assertStatus(422);
+    }
+
     public function test_kasir_boleh_melihat_inventori_tetapi_tidak_mengubahnya(): void
     {
         $kasir = User::factory()->kasir()->create();

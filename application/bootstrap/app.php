@@ -1,9 +1,6 @@
 <?php
 
 use App\Http\Middleware\EnsureUserHasRole;
-use App\Http\Middleware\HandleAppearance;
-use App\Http\Middleware\HandleInertiaRequests;
-use App\Http\Middleware\SetTeamUrlDefaults;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -18,21 +15,22 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
-
         // SPA disajikan dari origin yang sama, jadi autentikasinya memakai
         // cookie sesi Sanctum -- bukan token yang harus disimpan sendiri di browser.
         $middleware->statefulApi();
+
+        // Bawaannya `route('login')`, padahal halaman login milik Vue Router dan
+        // Fortify berjalan tanpa tampilan, sehingga rute bernama itu tidak ada
+        // dan permintaan tamu non-JSON berakhir 500. Permintaan ke api/* tetap
+        // dijawab JSON 401 lewat shouldRenderJsonWhen di bawah.
+        $middleware->redirectGuestsTo('/login');
 
         $middleware->alias([
             'role' => EnsureUserHasRole::class,
         ]);
 
         $middleware->web(append: [
-            HandleAppearance::class,
-            HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
-            SetTeamUrlDefaults::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -26,7 +26,7 @@ npm run build
 php artisan serve
 ```
 
-Buka <http://127.0.0.1:8000/app>. Masuk dengan salah satu akun berikut; kata sandi seluruhnya `password`:
+Buka <http://127.0.0.1:8000>. Aplikasi POS disajikan langsung di root, tidak ada lagi halaman bawaan Laravel. Masuk dengan salah satu akun berikut; kata sandi seluruhnya `password`:
 
 | Email | Peran |
 | :-- | :-- |

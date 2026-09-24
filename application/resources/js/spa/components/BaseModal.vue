@@ -1,74 +1,146 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue';
+import { X } from '@lucide/vue';
+import {
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogOverlay,
+    DialogPortal,
+    DialogRoot,
+    DialogTitle,
+} from 'reka-ui';
 
-const props = defineProps<{ judul: string; lebar?: string }>();
+/**
+ * Modal di atas primitif Dialog reka-ui.
+ *
+ * Primitif itu yang memberi: fokus terkunci di dalam modal, fokus kembali ke
+ * tombol pemicu saat ditutup, gulir halaman terkunci, dan tumpukan lapisan.
+ * Yang terakhir penting: menekan Esc saat daftar BaseSelect terbuka cukup
+ * menutup daftarnya, bukan ikut menutup modal beserta isian formulirnya.
+ */
+const props = defineProps<{
+    judul: string;
+    lebar?: string;
+    deskripsi?: string;
+    /**
+     * Tolak penutupan (Esc, klik latar, tombol ×) selama proses berjalan,
+     * supaya permintaan yang sedang dikirim tidak kehilangan formulirnya.
+     */
+    terkunci?: boolean;
+    /** Klik di luar modal tidak menutupnya. Dipakai modal berisi formulir. */
+    formulir?: boolean;
+    /** Saat dicetak, hanya isi modal ini yang keluar di kertas (struk). */
+    cetak?: boolean;
+}>();
+
 const emit = defineEmits<{ tutup: [] }>();
 
-function padaTombol(e: KeyboardEvent) {
-    if (e.key === 'Escape') emit('tutup');
+function ubahBuka(buka: boolean) {
+    if (!buka && !props.terkunci) emit('tutup');
 }
 
-onMounted(() => {
-    document.addEventListener('keydown', padaTombol);
-    document.body.style.overflow = 'hidden';
-});
+/* Formulir yang sudah terisi tidak boleh hilang karena salah klik di latar. */
+function klikLuar(e: Event) {
+    if (props.formulir || props.terkunci) e.preventDefault();
+}
 
-onUnmounted(() => {
-    document.removeEventListener('keydown', padaTombol);
-    document.body.style.overflow = '';
-});
+/**
+ * Bawaan primitifnya memfokuskan elemen pertama, yaitu tombol × di kepala
+ * modal. Untuk formulir, fokus langsung ke isian pertama (atau elemen
+ * bertanda `data-fokus-awal`). Modal konfirmasi jatuh ke tombol pertama di
+ * kaki, yaitu "Batal", pilihan yang aman.
+ */
+function fokusAwal(e: Event) {
+    const wadah = e.target;
+    if (!(wadah instanceof HTMLElement)) return;
+
+    const sasaran =
+        wadah.querySelector<HTMLElement>('[data-fokus-awal]') ??
+        wadah.querySelector<HTMLElement>(
+            '.modal-body :is(input, textarea, button, [role="combobox"]):not([disabled]):not([type="hidden"])',
+        ) ??
+        wadah.querySelector<HTMLElement>('.modal-aksi button:not([disabled])');
+
+    if (sasaran) {
+        e.preventDefault();
+        sasaran.focus();
+    }
+}
 </script>
 
 <template>
-    <div class="backdrop no-print" @click.self="emit('tutup')">
-        <div
-            class="modal"
-            role="dialog"
-            aria-modal="true"
-            :aria-label="props.judul"
-            :style="{ maxWidth: props.lebar ?? '560px' }"
-        >
-            <header class="modal-head">
-                <h2>{{ props.judul }}</h2>
-                <button
-                    class="btn btn-ghost btn-sm"
-                    aria-label="Tutup"
-                    @click="emit('tutup')"
+    <DialogRoot :open="true" @update:open="ubahBuka">
+        <DialogPortal>
+            <DialogOverlay class="modal-latar no-print" />
+            <DialogContent
+                class="modal"
+                :class="{ 'area-cetak': props.cetak }"
+                :style="{ maxWidth: props.lebar ?? '560px' }"
+                v-bind="
+                    props.deskripsi ? {} : { 'aria-describedby': undefined }
+                "
+                @pointer-down-outside="klikLuar"
+                @interact-outside="klikLuar"
+                @open-auto-focus="fokusAwal"
+            >
+                <header class="modal-head no-print">
+                    <DialogTitle class="modal-judul">{{
+                        props.judul
+                    }}</DialogTitle>
+                    <DialogClose
+                        class="btn btn-ghost btn-sm btn-ikon"
+                        aria-label="Tutup"
+                        :disabled="props.terkunci"
+                    >
+                        <X :size="18" :stroke-width="1.75" aria-hidden="true" />
+                    </DialogClose>
+                </header>
+                <DialogDescription
+                    v-if="props.deskripsi"
+                    class="modal-deskripsi no-print"
                 >
-                    &times;
-                </button>
-            </header>
-            <div class="modal-body">
-                <slot />
-            </div>
-            <footer v-if="$slots.aksi" class="modal-aksi">
-                <slot name="aksi" />
-            </footer>
-        </div>
-    </div>
+                    {{ props.deskripsi }}
+                </DialogDescription>
+                <div v-if="$slots.default" class="modal-body">
+                    <slot />
+                </div>
+                <footer v-if="$slots.aksi" class="modal-aksi no-print">
+                    <slot name="aksi" />
+                </footer>
+            </DialogContent>
+        </DialogPortal>
+    </DialogRoot>
 </template>
 
-<style scoped>
-.backdrop {
+<style>
+/* Tidak scoped: elemen di bawah dipindah ke <body> oleh DialogPortal. */
+.modal-latar {
     position: fixed;
     inset: 0;
-    z-index: var(--z-toast);
+    z-index: var(--z-modal);
     background: rgba(11, 43, 39, 0.45);
-    display: grid;
-    place-items: center;
-    padding: var(--space-4);
-    animation: fade 200ms var(--ease);
+    backdrop-filter: blur(2px);
+    animation: modal-pudar 200ms var(--ease);
 }
 
 .modal {
-    width: 100%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: var(--z-modal);
+    transform: translate(-50%, -50%);
+    width: calc(100% - 2 * var(--space-4));
     max-height: calc(100dvh - 2 * var(--space-8));
     display: flex;
     flex-direction: column;
     background: var(--surface-crisp);
     border-radius: var(--radius-2xl);
     box-shadow: var(--shadow-raised-lg);
-    animation: pop var(--dur-slow) var(--ease);
+    animation: modal-muncul var(--dur-slow) var(--ease);
+}
+
+.modal:focus {
+    outline: none;
 }
 
 .modal-head {
@@ -80,28 +152,70 @@ onUnmounted(() => {
     border-bottom: 1px solid var(--divider);
 }
 
+.modal-judul {
+    font: var(--text-h2);
+    letter-spacing: var(--tracking-h2);
+}
+
+.modal-deskripsi {
+    padding: var(--space-4) var(--space-6) 0;
+    font: var(--text-small);
+    color: var(--text-secondary);
+}
+
 .modal-body {
     padding: var(--space-6);
     overflow-y: auto;
 }
 
+/* Modal konfirmasi tanpa isi: deskripsi langsung disusul tombol aksi. */
+.modal-deskripsi + .modal-aksi {
+    margin-top: var(--space-5);
+}
+
 .modal-aksi {
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-end;
     gap: var(--space-3);
     padding: var(--space-4) var(--space-6);
     border-top: 1px solid var(--divider);
 }
 
-@keyframes fade {
+@keyframes modal-pudar {
     from {
         opacity: 0;
     }
 }
-@keyframes pop {
+
+@keyframes modal-muncul {
     from {
         opacity: 0;
-        transform: scale(0.96);
+        transform: translate(-50%, -48%) scale(0.97);
+    }
+}
+
+/* Modal bertanda `cetak` (struk): saat dicetak, seluruh aplikasi di belakangnya
+   disembunyikan dan isi modal mengalir biasa di atas kertas. */
+@media print {
+    body:has(.area-cetak) #spa {
+        display: none !important;
+    }
+
+    .modal.area-cetak {
+        position: static;
+        transform: none;
+        width: auto;
+        max-width: none !important;
+        max-height: none;
+        box-shadow: none;
+        border-radius: 0;
+        animation: none;
+    }
+
+    .modal.area-cetak .modal-body {
+        padding: 0;
+        overflow: visible;
     }
 }
 </style>

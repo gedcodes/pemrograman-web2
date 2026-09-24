@@ -25,9 +25,20 @@ class ShiftController extends Controller
     {
         $shift = $this->shiftTerbuka($request);
 
-        return ApiResponse::ok(
-            $shift !== null ? ShiftResource::make($shift->load('user')) : null,
-        );
+        return ApiResponse::ok($shift !== null ? $this->denganRingkasan($shift) : null);
+    }
+
+    /**
+     * Data shift ditambah rekap kasnya (lihat Shift::ringkasan()).
+     *
+     * @return array<string, mixed>
+     */
+    private function denganRingkasan(Shift $shift): array
+    {
+        return [
+            ...ShiftResource::make($shift->load('user'))->resolve(),
+            'ringkasan' => $shift->ringkasan(),
+        ];
     }
 
     public function buka(OpenShiftRequest $request): JsonResponse
@@ -64,7 +75,14 @@ class ShiftController extends Controller
             'catatan' => $request->string('catatan')->value() ?: $shift->catatan,
         ]);
 
-        return ApiResponse::ok(ShiftResource::make($shift->load('user')), 'Shift ditutup.');
+        $ringkasan = $shift->ringkasan();
+        $pesan = match (true) {
+            $ringkasan['selisih'] === 0 => 'Shift ditutup. Kas cocok.',
+            $ringkasan['selisih'] > 0 => 'Shift ditutup. Kas lebih dari seharusnya.',
+            default => 'Shift ditutup. Kas kurang dari seharusnya.',
+        };
+
+        return ApiResponse::ok($this->denganRingkasan($shift), $pesan);
     }
 
     private function shiftTerbuka(Request $request): ?Shift

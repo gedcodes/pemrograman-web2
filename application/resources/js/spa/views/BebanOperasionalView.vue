@@ -1,32 +1,33 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import {
-    ambilPenuh,
-    ApiError,
-    hapus,
-    perbarui,
-    simpan,
-    type PaginationMeta,
-} from '../api/client';
+import { Pencil, Plus, Trash2 } from '@lucide/vue';
+import { computed, nextTick, ref } from 'vue';
+import { ApiError, hapus, perbarui, simpan } from '../api/client';
 import type { OperationalExpense } from '../api/types';
 import { angka, rupiah } from '../composables/format';
+import { useDaftarServer } from '../composables/useDaftarServer';
 import { toast } from '../stores/toast';
 import BaseModal from '../components/BaseModal.vue';
+import BaseSwitch from '../components/BaseSwitch.vue';
+import FieldForm from '../components/FieldForm.vue';
+import InputAngka from '../components/InputAngka.vue';
 import KeadaanData from '../components/KeadaanData.vue';
+import KepalaUrut from '../components/KepalaUrut.vue';
 import PagePagination from '../components/PagePagination.vue';
 
-const daftar = ref<OperationalExpense[]>([]);
-const meta = ref<PaginationMeta | null>(null);
-const halaman = ref(1);
-const memuat = ref(true);
-const galat = ref<string | null>(null);
-
-const formTerbuka = ref(false);
-const sedangUbah = ref<OperationalExpense | null>(null);
-const form = ref({ nama: '', jumlah_bulanan: 0, keterangan: '', aktif: true });
-const galatField = ref<Record<string, string>>({});
-const mengirim = ref(false);
-const akanDihapus = ref<OperationalExpense | null>(null);
+const {
+    daftar,
+    meta,
+    memuat,
+    galat,
+    urut,
+    arah,
+    muat,
+    pindahHalaman,
+    urutkan,
+} = useDaftarServer<OperationalExpense>('/expenses', undefined, {
+    // Total per bulan dihitung dari SELURUH beban, jadi semuanya dimuat.
+    perHalaman: 100,
+});
 
 /** Total per bulan dari beban yang sedang berlaku saja. */
 const totalAktif = computed(() =>
@@ -37,26 +38,31 @@ const totalAktif = computed(() =>
 
 const perHari = computed(() => Math.round(totalAktif.value / 30));
 
-async function muat() {
-    memuat.value = true;
-    galat.value = null;
-    try {
-        const r = await ambilPenuh<OperationalExpense[]>('/expenses', {
-            page: halaman.value,
-            per_page: 100,
-        });
-        daftar.value = r.data;
-        meta.value = r.meta ?? null;
-    } catch (e) {
-        galat.value = e instanceof ApiError ? e.message : 'Gagal memuat beban.';
-    } finally {
-        memuat.value = false;
-    }
+/* ---------------------------------------------------------------- formulir */
+
+interface FormBeban {
+    nama: string;
+    jumlah_bulanan: number | null;
+    keterangan: string;
+    aktif: boolean;
 }
+
+const formTerbuka = ref(false);
+const sedangUbah = ref<OperationalExpense | null>(null);
+const form = ref<FormBeban>({
+    nama: '',
+    jumlah_bulanan: null,
+    keterangan: '',
+    aktif: true,
+});
+const galatServer = ref<Record<string, string>>({});
+const dicoba = ref(false);
+const mengirim = ref(false);
 
 function bukaForm(b: OperationalExpense | null) {
     sedangUbah.value = b;
-    galatField.value = {};
+    galatServer.value = {};
+    dicoba.value = false;
     form.value = b
         ? {
               nama: b.nama,
@@ -64,37 +70,82 @@ function bukaForm(b: OperationalExpense | null) {
               keterangan: b.keterangan ?? '',
               aktif: b.aktif,
           }
-        : { nama: '', jumlah_bulanan: 0, keterangan: '', aktif: true };
+        : { nama: '', jumlah_bulanan: null, keterangan: '', aktif: true };
     formTerbuka.value = true;
 }
 
+const galatLokal = computed(() => {
+    const e: Record<string, string> = {};
+    if (form.value.nama.trim() === '') e.nama = 'Nama beban wajib diisi.';
+    if (form.value.jumlah_bulanan === null)
+        e.jumlah_bulanan = 'Jumlah per bulan wajib diisi.';
+    return e;
+});
+
+function pesanGalat(kunci: string): string | undefined {
+    return (
+        galatServer.value[kunci] ??
+        (dicoba.value ? galatLokal.value[kunci] : undefined)
+    );
+}
+
+async function fokusGalat() {
+    await nextTick();
+    document
+        .querySelector<HTMLElement>('.modal [aria-invalid="true"]')
+        ?.focus();
+}
+
 async function kirim() {
+    if (mengirim.value) return;
+    dicoba.value = true;
+    galatServer.value = {};
+    if (Object.keys(galatLokal.value).length > 0) {
+        await fokusGalat();
+        return;
+    }
+
+    const muatan = {
+        nama: form.value.nama.trim(),
+        jumlah_bulanan: form.value.jumlah_bulanan,
+        keterangan: form.value.keterangan.trim() || null,
+        aktif: form.value.aktif,
+    };
+
     mengirim.value = true;
-    galatField.value = {};
     try {
         if (sedangUbah.value) {
-            await perbarui(`/expenses/${sedangUbah.value.id}`, form.value);
+            await perbarui(`/expenses/${sedangUbah.value.id}`, muatan);
             toast.sukses('Beban diperbarui.');
         } else {
-            await simpan('/expenses', form.value);
+            await simpan('/expenses', muatan);
             toast.sukses('Beban ditambahkan.');
         }
         formTerbuka.value = false;
         await muat();
     } catch (e) {
         if (e instanceof ApiError) {
-            galatField.value = Object.fromEntries(
+            galatServer.value = Object.fromEntries(
                 Object.entries(e.errors).map(([k, v]) => [k, v[0]]),
             );
             toast.galat(e.message);
+            await fokusGalat();
+        } else {
+            toast.galat('Gagal menyimpan beban.');
         }
     } finally {
         mengirim.value = false;
     }
 }
 
+/* ---------------------------------------------------------------- hapus */
+
+const akanDihapus = ref<OperationalExpense | null>(null);
+const menghapus = ref(false);
+
 async function konfirmasiHapus() {
-    if (!akanDihapus.value) return;
+    if (!akanDihapus.value || menghapus.value) return;
+    menghapus.value = true;
     try {
         const r = await hapus(`/expenses/${akanDihapus.value.id}`);
         toast.sukses(r.message ?? 'Beban dihapus.');
@@ -102,10 +153,10 @@ async function konfirmasiHapus() {
         await muat();
     } catch (e) {
         toast.galat(e instanceof ApiError ? e.message : 'Gagal menghapus.');
+    } finally {
+        menghapus.value = false;
     }
 }
-
-onMounted(muat);
 </script>
 
 <template>
@@ -115,7 +166,8 @@ onMounted(muat);
             diprorata sesuai panjang periode laporan.
         </p>
         <button class="btn btn-primary" @click="bukaForm(null)">
-            + Tambah Beban
+            <Plus :size="18" :stroke-width="2" aria-hidden="true" />
+            Tambah Beban
         </button>
     </div>
 
@@ -123,12 +175,24 @@ onMounted(muat);
         <section class="grid-stats grid">
             <div class="card">
                 <p class="overline">Total per bulan</p>
-                <p class="nilai">{{ rupiah(totalAktif) }}</p>
+                <p v-if="memuat && daftar.length === 0" class="nilai">
+                    <span
+                        class="skeleton"
+                        style="display: block; width: 60%; height: 28px"
+                    />
+                </p>
+                <p v-else class="nilai">{{ rupiah(totalAktif) }}</p>
                 <p class="caption">Hanya beban yang berlaku</p>
             </div>
             <div class="card">
                 <p class="overline">Setara per hari</p>
-                <p class="nilai">{{ rupiah(perHari) }}</p>
+                <p v-if="memuat && daftar.length === 0" class="nilai">
+                    <span
+                        class="skeleton"
+                        style="display: block; width: 50%; height: 28px"
+                    />
+                </p>
+                <p v-else class="nilai">{{ rupiah(perHari) }}</p>
                 <p class="caption">Dasar prorata (bulan = 30 hari)</p>
             </div>
         </section>
@@ -140,16 +204,45 @@ onMounted(muat);
                 :kosong="daftar.length === 0"
                 pesan-kosong="Belum ada beban operasional. Tanpa ini laporan hanya menampilkan laba kotor."
             >
+                <template #aksi>
+                    <button v-if="galat" class="btn btn-soft" @click="muat">
+                        Coba lagi
+                    </button>
+                </template>
+
                 <div class="table-scroll">
                     <table class="data">
                         <thead>
                             <tr>
-                                <th>Nama beban</th>
+                                <KepalaUrut
+                                    label="Nama beban"
+                                    kolom="nama"
+                                    :urut="urut"
+                                    :arah="arah"
+                                    @urutkan="urutkan"
+                                />
                                 <th>Keterangan</th>
-                                <th class="num">Per bulan</th>
+                                <KepalaUrut
+                                    label="Per bulan"
+                                    kolom="jumlah_bulanan"
+                                    :urut="urut"
+                                    :arah="arah"
+                                    num
+                                    arah-awal="desc"
+                                    @urutkan="urutkan"
+                                />
                                 <th class="num">Per hari</th>
-                                <th>Status</th>
-                                <th><span class="sr-only">Aksi</span></th>
+                                <KepalaUrut
+                                    label="Status"
+                                    kolom="aktif"
+                                    :urut="urut"
+                                    :arah="arah"
+                                    arah-awal="desc"
+                                    @urutkan="urutkan"
+                                />
+                                <th class="kolom-aksi">
+                                    <span class="sr-only">Aksi</span>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -176,19 +269,29 @@ onMounted(muat);
                                         {{ b.aktif ? 'Berlaku' : 'Nonaktif' }}
                                     </span>
                                 </td>
-                                <td>
-                                    <div class="row">
+                                <td class="kolom-aksi">
+                                    <div class="row aksi-baris">
                                         <button
                                             class="btn btn-soft btn-sm"
                                             @click="bukaForm(b)"
                                         >
+                                            <Pencil
+                                                :size="15"
+                                                :stroke-width="1.75"
+                                                aria-hidden="true"
+                                            />
                                             Ubah
                                         </button>
                                         <button
-                                            class="btn btn-ghost btn-sm"
+                                            class="btn btn-ghost btn-sm btn-ikon"
+                                            :aria-label="`Hapus ${b.nama}`"
                                             @click="akanDihapus = b"
                                         >
-                                            Hapus
+                                            <Trash2
+                                                :size="16"
+                                                :stroke-width="1.75"
+                                                aria-hidden="true"
+                                            />
                                         </button>
                                     </div>
                                 </td>
@@ -196,15 +299,7 @@ onMounted(muat);
                         </tbody>
                     </table>
                 </div>
-                <PagePagination
-                    :meta="meta"
-                    @pindah="
-                        (h) => {
-                            halaman = h;
-                            muat();
-                        }
-                    "
-                />
+                <PagePagination :meta="meta" @pindah="pindahHalaman" />
             </KeadaanData>
         </div>
     </div>
@@ -212,57 +307,85 @@ onMounted(muat);
     <BaseModal
         v-if="formTerbuka"
         :judul="sedangUbah ? 'Ubah Beban' : 'Tambah Beban'"
+        formulir
+        :terkunci="mengirim"
         @tutup="formTerbuka = false"
     >
-        <div class="stack">
-            <div class="field">
-                <label for="nama">Nama beban *</label>
+        <form id="form-beban" class="stack" novalidate @submit.prevent="kirim">
+            <FieldForm
+                v-slot="{ id, invalid, describedby }"
+                label="Nama beban"
+                wajib
+                :galat="pesanGalat('nama')"
+            >
                 <input
-                    id="nama"
+                    :id="id"
                     v-model="form.nama"
                     class="input"
-                    :class="{ 'is-error': galatField.nama }"
+                    :class="{ 'is-error': invalid }"
+                    :aria-invalid="invalid || undefined"
+                    :aria-describedby="describedby"
+                    maxlength="150"
                     placeholder="mis. Gaji dua kasir paruh waktu"
                 />
-                <p v-if="galatField.nama" class="field-error">
-                    {{ galatField.nama }}
-                </p>
-            </div>
-            <div class="field">
-                <label for="jml">Jumlah per bulan *</label>
-                <input
-                    id="jml"
-                    v-model.number="form.jumlah_bulanan"
-                    type="number"
-                    min="0"
-                    class="input"
-                    :class="{ 'is-error': galatField.jumlah_bulanan }"
+            </FieldForm>
+
+            <FieldForm
+                v-slot="{ id, invalid, describedby }"
+                label="Jumlah per bulan"
+                wajib
+                :bantuan="
+                    form.jumlah_bulanan
+                        ? `Setara ${rupiah(Math.round(form.jumlah_bulanan / 30))} per hari.`
+                        : undefined
+                "
+                :galat="pesanGalat('jumlah_bulanan')"
+            >
+                <InputAngka
+                    :id="id"
+                    v-model="form.jumlah_bulanan"
+                    awalan="Rp"
+                    placeholder="0"
+                    :langkah="10000"
+                    :invalid="invalid"
+                    :aria-describedby="describedby"
                 />
-                <p class="caption">
-                    Setara
-                    {{ rupiah(Math.round(form.jumlah_bulanan / 30)) }} per hari.
-                </p>
-                <p v-if="galatField.jumlah_bulanan" class="field-error">
-                    {{ galatField.jumlah_bulanan }}
-                </p>
-            </div>
-            <div class="field">
-                <label for="ket">Keterangan</label>
-                <input id="ket" v-model="form.keterangan" class="input" />
-            </div>
-            <label class="row" style="cursor: pointer">
-                <input v-model="form.aktif" type="checkbox" />
-                <span class="caption"
-                    >Beban ini masih berlaku dan ikut dihitung</span
-                >
-            </label>
-        </div>
+            </FieldForm>
+
+            <FieldForm
+                v-slot="{ id, describedby }"
+                label="Keterangan"
+                :galat="pesanGalat('keterangan')"
+            >
+                <input
+                    :id="id"
+                    v-model="form.keterangan"
+                    class="input"
+                    :aria-describedby="describedby"
+                    maxlength="255"
+                />
+            </FieldForm>
+
+            <BaseSwitch v-model="form.aktif">
+                Beban ini masih berlaku dan ikut dihitung
+            </BaseSwitch>
+        </form>
 
         <template #aksi>
-            <button class="btn btn-soft" @click="formTerbuka = false">
+            <button
+                class="btn btn-soft"
+                :disabled="mengirim"
+                @click="formTerbuka = false"
+            >
                 Batal
             </button>
-            <button class="btn btn-primary" :disabled="mengirim" @click="kirim">
+            <button
+                class="btn btn-primary"
+                type="submit"
+                form="form-beban"
+                :disabled="mengirim"
+                :aria-busy="mengirim"
+            >
                 {{ mengirim ? 'Menyimpan…' : 'Simpan' }}
             </button>
         </template>
@@ -271,6 +394,7 @@ onMounted(muat);
     <BaseModal
         v-if="akanDihapus"
         judul="Hapus beban?"
+        :terkunci="menghapus"
         @tutup="akanDihapus = null"
     >
         <p>
@@ -282,11 +406,20 @@ onMounted(muat);
             lewat tombol Ubah.
         </p>
         <template #aksi>
-            <button class="btn btn-soft" @click="akanDihapus = null">
+            <button
+                class="btn btn-soft"
+                :disabled="menghapus"
+                @click="akanDihapus = null"
+            >
                 Batal
             </button>
-            <button class="btn btn-danger" @click="konfirmasiHapus">
-                Ya, hapus
+            <button
+                class="btn btn-danger"
+                :disabled="menghapus"
+                :aria-busy="menghapus"
+                @click="konfirmasiHapus"
+            >
+                {{ menghapus ? 'Menghapus…' : 'Ya, hapus' }}
             </button>
         </template>
     </BaseModal>

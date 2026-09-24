@@ -27,7 +27,7 @@ onMounted(muat);
 </script>
 
 <template>
-    <KeadaanData :memuat="memuat" :galat="galat" :baris-skeleton="5">
+    <KeadaanData :memuat="memuat" :galat="galat" kerangka="halaman">
         <template #aksi
             ><button class="btn btn-soft" @click="muat">
                 Coba lagi

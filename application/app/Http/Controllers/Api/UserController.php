@@ -9,6 +9,7 @@ use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Support\ApiResponse;
+use App\Support\Daftar;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -34,7 +35,7 @@ class UserController extends Controller
         }
 
         return ApiResponse::paginated(
-            $query->orderBy('name')->paginate((int) $request->query('per_page', (string) config('pos.per_halaman'))),
+            Daftar::halaman($query, $request, ['name', 'email', 'peran', 'aktif'], 'name'),
             UserResource::class,
         );
     }

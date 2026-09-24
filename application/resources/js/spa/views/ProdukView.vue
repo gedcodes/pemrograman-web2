@@ -1,77 +1,71 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
-import {
-    ambilPenuh,
-    ApiError,
-    hapus,
-    type PaginationMeta,
-} from '../api/client';
+import { Package, Pencil, Plus, Search, Trash2 } from '@lucide/vue';
+import { computed, onMounted, ref } from 'vue';
+import { ambilPenuh, ApiError, hapus } from '../api/client';
 import type { Category, Product } from '../api/types';
 import { angka, gambarProduk, persen } from '../composables/format';
+import { keOpsi } from '../composables/pilihan';
+import { useDaftarServer } from '../composables/useDaftarServer';
 import { adalahAdmin } from '../stores/auth';
 import { toast } from '../stores/toast';
 import BaseModal from '../components/BaseModal.vue';
+import BaseSelect from '../components/BaseSelect.vue';
+import BaseSwitch from '../components/BaseSwitch.vue';
 import KeadaanData from '../components/KeadaanData.vue';
+import KepalaUrut from '../components/KepalaUrut.vue';
 import PagePagination from '../components/PagePagination.vue';
 import StokBadge from '../components/StokBadge.vue';
 
-const daftar = ref<Product[]>([]);
-const meta = ref<PaginationMeta | null>(null);
 const kategori = ref<Category[]>([]);
+const opsiKategori = computed(() =>
+    keOpsi(
+        kategori.value,
+        (k) => k.id,
+        (k) => k.nama_kategori,
+    ),
+);
 
 const cari = ref('');
-const filterKategori = ref<number | ''>('');
+const filterKategori = ref<number | null>(null);
 const hanyaMenipis = ref(false);
-const halaman = ref(1);
 
-const memuat = ref(true);
-const galat = ref<string | null>(null);
+const {
+    daftar,
+    meta,
+    memuat,
+    galat,
+    urut,
+    arah,
+    perHalaman,
+    muat,
+    pindahHalaman,
+    urutkan,
+} = useDaftarServer<Product>('/products', () => ({
+    q: cari.value || undefined,
+    category_id: filterKategori.value ?? undefined,
+    stok_menipis: hanyaMenipis.value ? 1 : undefined,
+}));
+
+const adaPenyaring = computed(
+    () =>
+        cari.value !== '' ||
+        filterKategori.value !== null ||
+        hanyaMenipis.value,
+);
+
+function hapusPenyaring() {
+    cari.value = '';
+    filterKategori.value = null;
+    hanyaMenipis.value = false;
+}
+
+/* ---------------------------------------------------------------- hapus */
+
 const akanDihapus = ref<Product | null>(null);
 const menghapus = ref(false);
 
-let tunda: number | undefined;
-
-async function muat() {
-    memuat.value = true;
-    galat.value = null;
-    try {
-        const r = await ambilPenuh<Product[]>('/products', {
-            page: halaman.value,
-            q: cari.value || undefined,
-            category_id: filterKategori.value || undefined,
-            stok_menipis: hanyaMenipis.value ? 1 : undefined,
-        });
-        daftar.value = r.data;
-        meta.value = r.meta ?? null;
-    } catch (e) {
-        galat.value =
-            e instanceof ApiError ? e.message : 'Gagal memuat produk.';
-    } finally {
-        memuat.value = false;
-    }
-}
-
-/* Pencarian ditunda 300 ms supaya tidak memanggil API pada setiap ketikan. */
-watch(cari, () => {
-    window.clearTimeout(tunda);
-    tunda = window.setTimeout(() => {
-        halaman.value = 1;
-        void muat();
-    }, 300);
-});
-
-watch([filterKategori, hanyaMenipis], () => {
-    halaman.value = 1;
-    void muat();
-});
-
-function pindah(h: number) {
-    halaman.value = h;
-    void muat();
-}
-
 async function konfirmasiHapus() {
-    if (akanDihapus.value === null) return;
+    if (akanDihapus.value === null || menghapus.value) return;
     menghapus.value = true;
     try {
         const r = await hapus(`/products/${akanDihapus.value.id}`);
@@ -88,31 +82,36 @@ async function konfirmasiHapus() {
 }
 
 onMounted(async () => {
-    const k = await ambilPenuh<Category[]>('/categories', { per_page: 100 });
-    kategori.value = k.data;
-    await muat();
+    try {
+        const k = await ambilPenuh<Category[]>('/categories', {
+            per_page: 100,
+        });
+        kategori.value = k.data;
+    } catch {
+        // Penyaring kategori sekadar tidak berisi; tabel tetap bekerja.
+    }
 });
 </script>
 
 <template>
     <div class="page-head">
-        <div class="row row-wrap filter">
-            <input
-                v-model="cari"
-                class="input cari"
-                type="search"
-                placeholder="Cari nama atau barcode…"
-            />
-            <select v-model="filterKategori" class="select">
-                <option value="">Semua kategori</option>
-                <option v-for="k in kategori" :key="k.id" :value="k.id">
-                    {{ k.nama_kategori }}
-                </option>
-            </select>
-            <label class="row toggle">
-                <input v-model="hanyaMenipis" type="checkbox" />
-                <span class="caption">Stok menipis saja</span>
+        <div class="penyaring">
+            <label class="kotak-cari">
+                <Search :size="18" :stroke-width="1.75" aria-hidden="true" />
+                <span class="sr-only">Cari produk</span>
+                <input
+                    v-model="cari"
+                    type="search"
+                    placeholder="Cari nama atau barcode…"
+                />
             </label>
+            <BaseSelect
+                v-model="filterKategori"
+                :opsi="opsiKategori"
+                label-kosong="Semua kategori"
+                aria-label="Saring kategori"
+            />
+            <BaseSwitch v-model="hanyaMenipis">Stok menipis saja</BaseSwitch>
         </div>
 
         <RouterLink
@@ -120,7 +119,8 @@ onMounted(async () => {
             class="btn btn-primary"
             :to="{ name: 'produk-baru' }"
         >
-            + Tambah Produk
+            <Plus :size="18" :stroke-width="2" aria-hidden="true" />
+            Tambah Produk
         </RouterLink>
     </div>
 
@@ -129,25 +129,67 @@ onMounted(async () => {
             :memuat="memuat"
             :galat="galat"
             :kosong="daftar.length === 0"
-            pesan-kosong="Tidak ada produk yang cocok dengan penyaring."
+            :pesan-kosong="
+                adaPenyaring
+                    ? 'Tidak ada produk yang cocok dengan penyaring.'
+                    : 'Belum ada produk.'
+            "
             :baris-skeleton="6"
         >
             <template #aksi>
-                <button class="btn btn-soft" @click="muat">Muat ulang</button>
+                <button v-if="galat" class="btn btn-soft" @click="muat">
+                    Muat ulang
+                </button>
+                <button
+                    v-else-if="adaPenyaring"
+                    class="btn btn-soft"
+                    @click="hapusPenyaring"
+                >
+                    Hapus penyaring
+                </button>
             </template>
 
             <div class="table-scroll">
                 <table class="data">
                     <thead>
                         <tr>
-                            <th>Produk</th>
+                            <KepalaUrut
+                                label="Produk"
+                                kolom="nama_produk"
+                                :urut="urut"
+                                :arah="arah"
+                                @urutkan="urutkan"
+                            />
                             <th>Kategori</th>
-                            <th class="num">Harga beli</th>
-                            <th class="num">Harga jual</th>
+                            <KepalaUrut
+                                label="Harga beli"
+                                kolom="harga_beli"
+                                :urut="urut"
+                                :arah="arah"
+                                num
+                                arah-awal="desc"
+                                @urutkan="urutkan"
+                            />
+                            <KepalaUrut
+                                label="Harga jual"
+                                kolom="harga_jual"
+                                :urut="urut"
+                                :arah="arah"
+                                num
+                                arah-awal="desc"
+                                @urutkan="urutkan"
+                            />
                             <th class="num">Margin</th>
-                            <th class="num">Stok</th>
+                            <KepalaUrut
+                                label="Stok"
+                                kolom="stok"
+                                :urut="urut"
+                                :arah="arah"
+                                num
+                                @urutkan="urutkan"
+                            />
                             <th>Status</th>
-                            <th v-if="adalahAdmin">
+                            <th v-if="adalahAdmin" class="kolom-aksi">
                                 <span class="sr-only">Aksi</span>
                             </th>
                         </tr>
@@ -163,12 +205,22 @@ onMounted(async () => {
                                             :alt="p.nama_produk"
                                             loading="lazy"
                                         />
-                                        <span v-else aria-hidden="true"
-                                            >📦</span
-                                        >
+                                        <Package
+                                            v-else
+                                            :size="20"
+                                            :stroke-width="1.5"
+                                            aria-hidden="true"
+                                        />
                                     </div>
                                     <div>
-                                        <p>{{ p.nama_produk }}</p>
+                                        <p>
+                                            {{ p.nama_produk }}
+                                            <span
+                                                v-if="!p.aktif"
+                                                class="badge badge-danger"
+                                                >Nonaktif</span
+                                            >
+                                        </p>
                                         <p class="caption">
                                             {{ p.barcode ?? 'tanpa barcode' }}
                                         </p>
@@ -188,8 +240,8 @@ onMounted(async () => {
                                     :minimum="p.stok_minimum"
                                 />
                             </td>
-                            <td v-if="adalahAdmin">
-                                <div class="row">
+                            <td v-if="adalahAdmin" class="kolom-aksi">
+                                <div class="row aksi-baris">
                                     <RouterLink
                                         class="btn btn-soft btn-sm"
                                         :to="{
@@ -197,13 +249,23 @@ onMounted(async () => {
                                             params: { id: p.id },
                                         }"
                                     >
+                                        <Pencil
+                                            :size="15"
+                                            :stroke-width="1.75"
+                                            aria-hidden="true"
+                                        />
                                         Ubah
                                     </RouterLink>
                                     <button
-                                        class="btn btn-ghost btn-sm"
+                                        class="btn btn-ghost btn-sm btn-ikon"
+                                        :aria-label="`Hapus ${p.nama_produk}`"
                                         @click="akanDihapus = p"
                                     >
-                                        Hapus
+                                        <Trash2
+                                            :size="16"
+                                            :stroke-width="1.75"
+                                            aria-hidden="true"
+                                        />
                                     </button>
                                 </div>
                             </td>
@@ -212,13 +274,18 @@ onMounted(async () => {
                 </table>
             </div>
 
-            <PagePagination :meta="meta" @pindah="pindah" />
+            <PagePagination
+                v-model:per-halaman="perHalaman"
+                :meta="meta"
+                @pindah="pindahHalaman"
+            />
         </KeadaanData>
     </div>
 
     <BaseModal
         v-if="akanDihapus"
         judul="Hapus produk?"
+        :terkunci="menghapus"
         @tutup="akanDihapus = null"
     >
         <p>
@@ -226,16 +293,21 @@ onMounted(async () => {
         </p>
         <p class="caption" style="margin-top: var(--space-2)">
             Produk yang pernah terjual tidak dapat dihapus, supaya riwayat struk
-            lama tetap utuh.
+            lama tetap utuh. Nonaktifkan saja lewat formulir Ubah.
         </p>
 
         <template #aksi>
-            <button class="btn btn-soft" @click="akanDihapus = null">
+            <button
+                class="btn btn-soft"
+                :disabled="menghapus"
+                @click="akanDihapus = null"
+            >
                 Batal
             </button>
             <button
                 class="btn btn-danger"
                 :disabled="menghapus"
+                :aria-busy="menghapus"
                 @click="konfirmasiHapus"
             >
                 {{ menghapus ? 'Menghapus…' : 'Ya, hapus' }}
@@ -245,26 +317,14 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.filter {
-    flex: 1;
-}
-
-.cari {
-    max-width: 280px;
-}
-
-.select {
-    max-width: 200px;
-}
-
-.toggle {
-    cursor: pointer;
-}
-
 .produk-sel {
     display: flex;
     align-items: center;
     gap: var(--space-3);
+}
+
+.produk-sel .badge {
+    margin-left: var(--space-1);
 }
 
 .thumb {
@@ -275,6 +335,7 @@ onMounted(async () => {
     place-items: center;
     border-radius: var(--radius-xs);
     background: var(--surface-sunken);
+    color: var(--text-muted);
     overflow: hidden;
 }
 

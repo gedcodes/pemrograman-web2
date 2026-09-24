@@ -1,108 +1,242 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import {
-    ambilPenuh,
-    ApiError,
-    simpan,
-    type PaginationMeta,
-} from '../api/client';
+import { Plus, Trash2 } from '@lucide/vue';
+import { computed, nextTick, ref } from 'vue';
+import { ambil, ambilPenuh, ApiError, simpan } from '../api/client';
 import type { Product, Purchase, Supplier } from '../api/types';
 import { angka, kunciTanggal, rupiah, tanggal } from '../composables/format';
+import { keOpsi, type OpsiPilihan } from '../composables/pilihan';
+import { useDaftarServer } from '../composables/useDaftarServer';
 import { adalahAdmin } from '../stores/auth';
 import { toast } from '../stores/toast';
 import BaseModal from '../components/BaseModal.vue';
+import BaseSelect from '../components/BaseSelect.vue';
+import FieldForm from '../components/FieldForm.vue';
+import InputAngka from '../components/InputAngka.vue';
 import KeadaanData from '../components/KeadaanData.vue';
+import KepalaUrut from '../components/KepalaUrut.vue';
 import PagePagination from '../components/PagePagination.vue';
 
-const daftar = ref<Purchase[]>([]);
-const meta = ref<PaginationMeta | null>(null);
-const halaman = ref(1);
-const memuat = ref(true);
-const galat = ref<string | null>(null);
+const {
+    daftar,
+    meta,
+    memuat,
+    galat,
+    urut,
+    arah,
+    perHalaman,
+    muat,
+    pindahHalaman,
+    urutkan,
+} = useDaftarServer<Purchase>('/purchases');
+
+/* ---------------------------------------------------------------- formulir */
+
+interface BarisForm {
+    /** Kunci tetap per baris. Indeks tidak boleh dipakai sebagai kunci:
+        menghapus baris tengah akan menggeser isian ke baris yang salah. */
+    kunci: number;
+    product_id: number | null;
+    qty: number | null;
+    harga_beli: number | null;
+}
+
+let urutBaris = 0;
+
+function barisBaru(): BarisForm {
+    return { kunci: ++urutBaris, product_id: null, qty: 1, harga_beli: null };
+}
 
 const formTerbuka = ref(false);
+const menyiapkan = ref(false);
 const supplier = ref<Supplier[]>([]);
-const produk = ref<Product[]>([]);
+/* Produk yang pernah muncul di hasil pencarian: sumber harga beli dan
+   simbol satuan untuk baris yang memilihnya. */
+const produkDikenal = ref(new Map<number, Product>());
 const mengirim = ref(false);
+const dicoba = ref(false);
+const galatServer = ref<Record<string, string>>({});
 
 const form = ref({
-    supplier_id: '' as number | '',
+    supplier_id: null as number | null,
     tanggal_masuk: kunciTanggal(),
     catatan: '',
-    items: [] as Array<{
-        product_id: number | '';
-        qty: number;
-        harga_beli: number;
-    }>,
+    items: [] as BarisForm[],
 });
 
-const totalForm = computed(() =>
-    form.value.items.reduce((s, i) => s + i.qty * i.harga_beli, 0),
+const opsiSupplier = computed(() =>
+    keOpsi(
+        supplier.value,
+        (s) => s.id,
+        (s) => s.nama_supplier,
+        (s) => s.kontak ?? undefined,
+    ),
 );
 
-async function muat() {
-    memuat.value = true;
-    galat.value = null;
-    try {
-        const r = await ambilPenuh<Purchase[]>('/purchases', {
-            page: halaman.value,
-        });
-        daftar.value = r.data;
-        meta.value = r.meta ?? null;
-    } catch (e) {
-        galat.value = e instanceof ApiError ? e.message : 'Gagal memuat data.';
-    } finally {
-        memuat.value = false;
-    }
+/**
+ * Pencarian produk di server untuk satu baris. Produk tidak lagi dimuat
+ * seluruhnya (dulu dibatasi 200) saat formulir dibuka.
+ *
+ * Produk yang sudah dipilih di baris lain dinonaktifkan, supaya satu
+ * produk tidak tercatat dua kali dalam satu dokumen.
+ */
+async function cariProduk(
+    b: BarisForm,
+    kata: string,
+): Promise<OpsiPilihan<number>[]> {
+    const hasil = await ambil<Product[]>('/products', {
+        q: kata || undefined,
+        per_page: 20,
+    });
+    const dipakai = new Set(
+        form.value.items
+            .filter((x) => x.kunci !== b.kunci && x.product_id !== null)
+            .map((x) => x.product_id),
+    );
+    for (const p of hasil) produkDikenal.value.set(p.id, p);
+    return hasil.map((p) => ({
+        nilai: p.id,
+        label: p.nama_produk,
+        keterangan: `${p.barcode ?? 'tanpa barcode'} · stok ${angka(p.stok)}`,
+        nonaktif: dipakai.has(p.id),
+    }));
 }
+
+function simbol(b: BarisForm): string | undefined {
+    return b.product_id === null
+        ? undefined
+        : produkDikenal.value.get(b.product_id)?.unit?.simbol;
+}
+
+const totalForm = computed(() =>
+    form.value.items.reduce(
+        (s, i) => s + (i.qty ?? 0) * (i.harga_beli ?? 0),
+        0,
+    ),
+);
 
 async function bukaForm() {
-    if (supplier.value.length === 0) {
-        const [s, p] = await Promise.all([
-            ambilPenuh<Supplier[]>('/suppliers', { per_page: 100 }),
-            ambilPenuh<Product[]>('/products', { per_page: 200 }),
-        ]);
-        supplier.value = s.data;
-        produk.value = p.data;
+    menyiapkan.value = true;
+    try {
+        if (supplier.value.length === 0) {
+            supplier.value = (
+                await ambilPenuh<Supplier[]>('/suppliers', { per_page: 100 })
+            ).data;
+        }
+        form.value = {
+            supplier_id: null,
+            tanggal_masuk: kunciTanggal(),
+            catatan: '',
+            items: [barisBaru()],
+        };
+        dicoba.value = false;
+        galatServer.value = {};
+        formTerbuka.value = true;
+    } catch (e) {
+        toast.galat(
+            e instanceof ApiError ? e.message : 'Gagal menyiapkan formulir.',
+        );
+    } finally {
+        menyiapkan.value = false;
     }
-    form.value = {
-        supplier_id: '',
-        tanggal_masuk: kunciTanggal(),
-        catatan: '',
-        items: [{ product_id: '', qty: 1, harga_beli: 0 }],
-    };
-    formTerbuka.value = true;
 }
 
-function tambahBaris() {
-    form.value.items.push({ product_id: '', qty: 1, harga_beli: 0 });
+async function tambahBaris() {
+    const b = barisBaru();
+    form.value.items.push(b);
+    await nextTick();
+    document.getElementById(`produk-${b.kunci}`)?.focus();
 }
 
-function hapusBaris(i: number) {
-    form.value.items.splice(i, 1);
+function hapusBaris(kunci: number) {
+    form.value.items = form.value.items.filter((b) => b.kunci !== kunci);
 }
 
 /** Harga beli diisikan otomatis dari master produk sebagai titik awal. */
-function padaPilihProduk(i: number) {
-    const p = produk.value.find((x) => x.id === form.value.items[i].product_id);
-    if (p) form.value.items[i].harga_beli = p.harga_beli;
+function padaPilihProduk(b: BarisForm) {
+    const p =
+        b.product_id === null
+            ? undefined
+            : produkDikenal.value.get(b.product_id);
+    if (p && (b.harga_beli === null || b.harga_beli === 0)) {
+        b.harga_beli = p.harga_beli;
+    }
+}
+
+const galatLokal = computed(() => {
+    const e: Record<string, string> = {};
+    const f = form.value;
+    if (f.supplier_id === null) e.supplier_id = 'Supplier wajib dipilih.';
+    if (!f.tanggal_masuk) e.tanggal_masuk = 'Tanggal wajib diisi.';
+    else if (f.tanggal_masuk > kunciTanggal())
+        e.tanggal_masuk = 'Tanggal masuk tidak boleh di masa depan.';
+    f.items.forEach((b, i) => {
+        if (b.product_id === null) e[`items.${i}.product_id`] = 'Pilih produk.';
+        if (!b.qty || b.qty < 1) e[`items.${i}.qty`] = 'Minimal 1.';
+        if (b.harga_beli === null) e[`items.${i}.harga_beli`] = 'Isi harga.';
+    });
+    return e;
+});
+
+function pesanGalat(kunci: string): string | undefined {
+    return (
+        galatServer.value[kunci] ??
+        (dicoba.value ? galatLokal.value[kunci] : undefined)
+    );
+}
+
+function galatBaris(i: number): string | undefined {
+    return (
+        pesanGalat(`items.${i}.product_id`) ??
+        pesanGalat(`items.${i}.qty`) ??
+        pesanGalat(`items.${i}.harga_beli`)
+    );
+}
+
+async function fokusGalat() {
+    await nextTick();
+    document
+        .querySelector<HTMLElement>('.modal [aria-invalid="true"]')
+        ?.focus();
 }
 
 async function kirim() {
+    if (mengirim.value) return;
+    dicoba.value = true;
+    galatServer.value = {};
+    if (Object.keys(galatLokal.value).length > 0) {
+        await fokusGalat();
+        return;
+    }
+
     mengirim.value = true;
     try {
-        const r = await simpan<Purchase>('/purchases', form.value);
+        const r = await simpan<Purchase>('/purchases', {
+            supplier_id: form.value.supplier_id,
+            tanggal_masuk: form.value.tanggal_masuk,
+            catatan: form.value.catatan.trim() || null,
+            items: form.value.items.map((b) => ({
+                product_id: b.product_id,
+                qty: b.qty,
+                harga_beli: b.harga_beli,
+            })),
+        });
         toast.sukses(r.message ?? 'Barang masuk dicatat.');
         formTerbuka.value = false;
         await muat();
     } catch (e) {
-        toast.galat(e instanceof ApiError ? e.message : 'Gagal menyimpan.');
+        if (e instanceof ApiError) {
+            galatServer.value = Object.fromEntries(
+                Object.entries(e.errors).map(([k, v]) => [k, v[0]]),
+            );
+            toast.galat(e.message);
+            await fokusGalat();
+        } else {
+            toast.galat('Gagal menyimpan.');
+        }
     } finally {
         mengirim.value = false;
     }
 }
-
-onMounted(muat);
 </script>
 
 <template>
@@ -110,8 +244,20 @@ onMounted(muat);
         <p class="caption">
             Mencatat penerimaan barang sekaligus menambah stok.
         </p>
-        <button v-if="adalahAdmin" class="btn btn-primary" @click="bukaForm">
-            + Catat Penerimaan
+        <button
+            v-if="adalahAdmin"
+            class="btn btn-primary"
+            :disabled="menyiapkan"
+            :aria-busy="menyiapkan"
+            @click="bukaForm"
+        >
+            <Plus
+                v-if="!menyiapkan"
+                :size="18"
+                :stroke-width="2"
+                aria-hidden="true"
+            />
+            Catat Penerimaan
         </button>
     </div>
 
@@ -122,14 +268,42 @@ onMounted(muat);
             :kosong="daftar.length === 0"
             pesan-kosong="Belum ada dokumen barang masuk."
         >
+            <template #aksi>
+                <button v-if="galat" class="btn btn-soft" @click="muat">
+                    Coba lagi
+                </button>
+            </template>
+
             <div class="table-scroll">
                 <table class="data">
                     <thead>
                         <tr>
-                            <th>No. Dokumen</th>
-                            <th>Tanggal</th>
+                            <KepalaUrut
+                                label="No. Dokumen"
+                                kolom="no_dokumen"
+                                :urut="urut"
+                                :arah="arah"
+                                arah-awal="desc"
+                                @urutkan="urutkan"
+                            />
+                            <KepalaUrut
+                                label="Tanggal"
+                                kolom="tanggal_masuk"
+                                :urut="urut"
+                                :arah="arah"
+                                arah-awal="desc"
+                                @urutkan="urutkan"
+                            />
                             <th>Supplier</th>
-                            <th class="num">Total biaya</th>
+                            <KepalaUrut
+                                label="Total biaya"
+                                kolom="total_biaya"
+                                :urut="urut"
+                                :arah="arah"
+                                num
+                                arah-awal="desc"
+                                @urutkan="urutkan"
+                            />
                         </tr>
                     </thead>
                     <tbody>
@@ -143,13 +317,9 @@ onMounted(muat);
                 </table>
             </div>
             <PagePagination
+                v-model:per-halaman="perHalaman"
                 :meta="meta"
-                @pindah="
-                    (h) => {
-                        halaman = h;
-                        muat();
-                    }
-                "
+                @pindah="pindahHalaman"
             />
         </KeadaanData>
     </div>
@@ -157,86 +327,148 @@ onMounted(muat);
     <BaseModal
         v-if="formTerbuka"
         judul="Catat Penerimaan Barang"
-        lebar="720px"
+        lebar="820px"
+        formulir
+        :terkunci="mengirim"
         @tutup="formTerbuka = false"
     >
-        <div class="stack">
+        <form id="form-bm" class="stack" novalidate @submit.prevent="kirim">
             <div class="dua">
-                <div class="field">
-                    <label for="sup">Supplier *</label>
-                    <select id="sup" v-model="form.supplier_id" class="select">
-                        <option value="">Pilih supplier</option>
-                        <option v-for="s in supplier" :key="s.id" :value="s.id">
-                            {{ s.nama_supplier }}
-                        </option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label for="tgl">Tanggal masuk</label>
+                <FieldForm
+                    v-slot="{ id, invalid, describedby }"
+                    label="Supplier"
+                    wajib
+                    :galat="pesanGalat('supplier_id')"
+                >
+                    <BaseSelect
+                        :id="id"
+                        v-model="form.supplier_id"
+                        :opsi="opsiSupplier"
+                        placeholder="Pilih supplier"
+                        :invalid="invalid"
+                        :aria-describedby="describedby"
+                    />
+                </FieldForm>
+                <FieldForm
+                    v-slot="{ id, invalid, describedby }"
+                    label="Tanggal masuk"
+                    wajib
+                    :galat="pesanGalat('tanggal_masuk')"
+                >
                     <input
-                        id="tgl"
+                        :id="id"
                         v-model="form.tanggal_masuk"
                         type="date"
                         class="input"
+                        :class="{ 'is-error': invalid }"
+                        :max="kunciTanggal()"
+                        :aria-invalid="invalid || undefined"
+                        :aria-describedby="describedby"
                     />
+                </FieldForm>
+            </div>
+
+            <fieldset class="rincian">
+                <legend class="overline">Rincian barang</legend>
+
+                <div class="rincian-kepala" aria-hidden="true">
+                    <span>Produk</span>
+                    <span class="num">Qty</span>
+                    <span class="num">Harga beli / unit</span>
+                    <span class="num">Subtotal</span>
+                    <span />
                 </div>
-            </div>
 
-            <div v-for="(it, i) in form.items" :key="i" class="baris-item">
-                <select
-                    v-model="it.product_id"
-                    class="select"
-                    @change="padaPilihProduk(i)"
+                <div
+                    v-for="(b, i) in form.items"
+                    :key="b.kunci"
+                    class="baris-item"
                 >
-                    <option value="">Pilih produk</option>
-                    <option v-for="p in produk" :key="p.id" :value="p.id">
-                        {{ p.nama_produk }}
-                    </option>
-                </select>
-                <input
-                    v-model.number="it.qty"
-                    type="number"
-                    min="1"
-                    class="input"
-                    placeholder="Qty"
-                />
-                <input
-                    v-model.number="it.harga_beli"
-                    type="number"
-                    min="0"
-                    class="input"
-                    placeholder="Harga beli"
-                />
-                <span class="num">{{ angka(it.qty * it.harga_beli) }}</span>
+                    <BaseSelect
+                        :id="`produk-${b.kunci}`"
+                        v-model="b.product_id"
+                        :opsi="[]"
+                        :cari-server="(kata: string) => cariProduk(b, kata)"
+                        :cari="true"
+                        placeholder="Cari nama atau barcode…"
+                        :aria-label="`Produk baris ${i + 1}`"
+                        :invalid="Boolean(pesanGalat(`items.${i}.product_id`))"
+                        @update:model-value="padaPilihProduk(b)"
+                    />
+                    <InputAngka
+                        v-model="b.qty"
+                        :akhiran="simbol(b)"
+                        :aria-label="`Jumlah baris ${i + 1}`"
+                        :invalid="Boolean(pesanGalat(`items.${i}.qty`))"
+                    />
+                    <InputAngka
+                        v-model="b.harga_beli"
+                        awalan="Rp"
+                        :langkah="500"
+                        :aria-label="`Harga beli baris ${i + 1}`"
+                        :invalid="Boolean(pesanGalat(`items.${i}.harga_beli`))"
+                    />
+                    <span class="num subtotal">{{
+                        angka((b.qty ?? 0) * (b.harga_beli ?? 0))
+                    }}</span>
+                    <button
+                        type="button"
+                        class="btn btn-ghost btn-sm btn-ikon"
+                        :aria-label="`Hapus baris ${i + 1}`"
+                        :disabled="form.items.length === 1"
+                        @click="hapusBaris(b.kunci)"
+                    >
+                        <Trash2 :size="16" :stroke-width="1.75" />
+                    </button>
+                    <p v-if="galatBaris(i)" class="field-error galat-baris">
+                        Baris {{ i + 1 }}: {{ galatBaris(i) }}
+                    </p>
+                </div>
+
                 <button
-                    class="btn btn-ghost btn-sm"
-                    :disabled="form.items.length === 1"
-                    @click="hapusBaris(i)"
+                    type="button"
+                    class="btn btn-soft btn-sm tambah"
+                    @click="tambahBaris"
                 >
-                    ×
+                    <Plus :size="16" :stroke-width="2" aria-hidden="true" />
+                    Tambah baris
                 </button>
-            </div>
+            </fieldset>
 
-            <button class="btn btn-soft btn-sm" @click="tambahBaris">
-                + Tambah baris
-            </button>
+            <FieldForm v-slot="{ id }" label="Catatan">
+                <input
+                    :id="id"
+                    v-model="form.catatan"
+                    class="input"
+                    maxlength="500"
+                    placeholder="mis. nomor surat jalan"
+                />
+            </FieldForm>
 
-            <div class="row" style="font: var(--text-body-strong)">
-                <span>Total biaya</span><span class="spacer" /><span
-                    class="num"
-                    >{{ rupiah(totalForm) }}</span
-                >
+            <div class="total">
+                <span>Total biaya</span>
+                <span class="num">{{ rupiah(totalForm) }}</span>
             </div>
             <p class="caption">
                 Total dihitung ulang di server dari baris yang dikirim.
             </p>
-        </div>
+        </form>
 
         <template #aksi>
-            <button class="btn btn-soft" @click="formTerbuka = false">
+            <button
+                class="btn btn-soft"
+                :disabled="mengirim"
+                @click="formTerbuka = false"
+            >
                 Batal
             </button>
-            <button class="btn btn-primary" :disabled="mengirim" @click="kirim">
+            <button
+                class="btn btn-primary"
+                type="submit"
+                form="form-bm"
+                :disabled="mengirim"
+                :aria-busy="mengirim"
+            >
                 {{ mengirim ? 'Menyimpan…' : 'Simpan & Tambah Stok' }}
             </button>
         </template>
@@ -250,17 +482,71 @@ onMounted(muat);
     gap: var(--space-4);
 }
 
+.rincian {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.rincian legend {
+    margin-bottom: var(--space-2);
+}
+
+.rincian-kepala,
 .baris-item {
     display: grid;
-    grid-template-columns: 2fr 80px 120px 100px 40px;
+    grid-template-columns: minmax(0, 2.4fr) 110px 150px 96px 36px;
     gap: var(--space-2);
     align-items: center;
 }
 
+.rincian-kepala {
+    font: var(--text-caption);
+    color: var(--text-muted);
+}
+
+.subtotal {
+    font: var(--text-numeric);
+}
+
+.galat-baris {
+    grid-column: 1 / -1;
+}
+
+.tambah {
+    align-self: flex-start;
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--divider);
+    font: var(--text-body-strong);
+}
+
 @media (max-width: 767px) {
-    .dua,
-    .baris-item {
+    .dua {
         grid-template-columns: 1fr;
+    }
+
+    .rincian-kepala {
+        display: none;
+    }
+
+    /* Di layar sempit tiap baris menjadi kartu kecil dua kolom. */
+    .baris-item {
+        grid-template-columns: 1fr 1fr;
+        padding: var(--space-3);
+        border-radius: var(--radius-md);
+        background: var(--surface-raised);
+    }
+
+    .baris-item > :first-child {
+        grid-column: 1 / -1;
     }
 }
 </style>

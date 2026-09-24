@@ -377,7 +377,7 @@ Kuncinya sudah ditambahkan ke `.env` dan `.env.example` **dengan nilai kosong**,
 
 ### 6.1 Pembersihan Starter Kit
 
-- [x] Lepas Inertia dari `vite.config.ts` dan `app.ts` — **DIPUTUSKAN 2026-09-23: TIDAK dilepas.** SPA tetap aditif di `/app`, halaman Inertia dibiarkan utuh agar ~92 tes starter kit tetap lolos
+- [x] Lepas Inertia dari `vite.config.ts` dan `app.ts` — 2026-09-23 sempat diputuskan tidak dilepas; **2026-09-24 dilepas tuntas**, SPA pindah ke root (lihat bagian terakhir dokumen ini)
 - [x] Pasang `vue-router` dan `axios`, atur base URL + `withCredentials` untuk Sanctum
 - [x] Susun ulang `resources/js/`: `router/`, `views/`, `components/`, `stores/`, `composables/`, `api/`
 
@@ -513,7 +513,7 @@ Penolakan `403` itu diuji lewat `fetch` langsung dari dalam browser, bukan denga
 - **5 butir uji sandbox Midtrans** — menunggu kredensial diisi ke `.env` (panduan di [`DEPLOYMENT.md`](DEPLOYMENT.md) bagian 1). Kodenya sudah selesai dan dicakup 24 tes otomatis.
 - **1 butir deploy** — menunggu server Anda ([`DEPLOYMENT.md`](DEPLOYMENT.md) bagian 3).
 
-**Yang berdiri:** 31 tabel dengan 21 foreign key, 17 model, 8 seeder, 58 endpoint API, integrasi Midtrans Snap lengkap dengan webhook ber-signature dan idempoten, serta SPA Vue 3 berisi 18 halaman yang responsif dari 390px sampai 1440px. `composer run ci:check` hijau: **203 tes / 625 asersi**, PHPStan level 7 nol error.
+**Yang berdiri:** 31 tabel dengan 21 foreign key, 17 model, 8 seeder, 58 endpoint API, integrasi Midtrans Snap lengkap dengan webhook ber-signature dan idempoten, serta SPA Vue 3 berisi 18 halaman yang responsif dari 390px sampai 1440px. `composer run ci:check` hijau: **206 tes / 659 asersi**, PHPStan level 7 nol error.
 
 ---
 
@@ -557,6 +557,20 @@ Kunci tidak pernah melewati percakapan ini. Setelah `.env` diisi dan `php artisa
 
 Periode bawaan Laporan Laba Rugi juga diselaraskan dari 30 hari menjadi **7 hari**, mengikuti bawaan API dan Laporan Penjualan — sebelumnya beban sebulan penuh dibandingkan dengan penjualan seminggu, sehingga laporan tampak rugi besar padahal datanya memang hanya 7 hari.
 
+### Perbaikan Setelah Percobaan Manual Pertama
+
+Saat aplikasi dicoba langsung, login menghasilkan `RuntimeException: This password does not use the Bcrypt algorithm`. Penelusuran menemukan **dua masalah terpisah**.
+
+**1. Hash kata sandi di basis data rusak.** Yang tersimpan `$10$…` sepanjang 57 karakter dengan algoritma terbaca `unknown`, padahal bcrypt yang sah 60 karakter berawalan `$2y$12$` — tiga karakter `$2y` hilang dan cost-nya 10, bukan 12 seperti setelan `.env`. Hilang setelah `migrate:fresh --seed`.
+
+> **Asalnya tidak dapat dijelaskan.** `UserSeeder` terbukti menghasilkan `$2y$12$…` yang sah dan lolos `Hash::check`, sehingga tidak ada jalur kode di proyek ini yang dapat memproduksi hash cost-10 tanpa prefiks. Kemungkinan terbesar baris itu ditulis dari luar aplikasi atau tersisa dari seed lama.
+
+**2. Pengguna hasil seeder tidak punya tim — ini cacat pada seeder.** Setelah masalah pertama beres, login Inertia tetap gagal dengan `Missing required parameter for [Route: dashboard]`. Rute bawaan starter kit ter-scope tim (`{current_team}/dashboard`), dan `UserFactory` membuatkan tim pribadi lewat `afterCreating()`, tetapi `UserSeeder` memakai `User::create()` langsung sehingga `current_team_id` tetap `NULL`.
+
+Cacat ini **lolos dari 203 tes** karena seluruh tes memakai `UserFactory`, sedangkan yang dipakai sehari-hari adalah `UserSeeder`. `UserSeeder` kini membuat tim pribadi per pengguna, dengan slug ditulis eksplisit karena `DatabaseSeeder` memakai `WithoutModelEvents` yang mematikan hook pembangkit slug pada `Team`.
+
+Ditambahkan `tests/Feature/SeederTest.php` yang menguji **hasil seeder**, bukan hasil factory: hash bcrypt 60 karakter yang cocok dengan kata sandi bawaan, tim pribadi per pengguna, dan komposisi peran. Kedua pintu login kini terbukti bekerja — `/login` mengarah ke `/suryaowner/dashboard`, `/app/login` ke `/app/`.
+
 ### Yang Masih Terbuka
 
 | Hal | Status |
@@ -566,3 +580,53 @@ Periode bawaan Laporan Laba Rugi juga diselaraskan dari 30 hari menjadi **7 hari
 | Rincian retur (stok tidak kembali) | **Diputuskan tidak dikerjakan** |
 | Figma untuk §8/§10 PERANCANGAN | Butir rubrik, belum dibuat |
 | Medan prototipe tanpa kolom | `tingkat` pelanggan, `termin_hari` & `pkp` supplier, `supplier` utama produk |
+| ~~Dua pintu masuk (`/login` Inertia vs `/app/login` SPA)~~ | **Selesai 2026-09-24** — template dihapus, SPA di root |
+
+---
+
+## Lanjutan 2026-09-24 — Template Laravel Dihapus, SPA Pindah ke Root
+
+Keputusan 2026-09-23 untuk membiarkan Inertia **dibatalkan**. Starter kit Laravel dihapus tuntas, dan <http://127.0.0.1:8000> kini langsung membuka aplikasi POS. Alamatnya menjadi `/kasir`, `/produk`, `/login`, dan seterusnya, tanpa prefiks `/app`.
+
+### Yang dihapus
+
+| Lapis | Isi |
+| :-- | :-- |
+| Frontend | Seluruh `resources/js` di luar `spa/` (halaman, komponen shadcn, layout, Wayfinder), `app.ts`, `app.css`, `app.blade.php`, `components.json` |
+| Backend | Teams (model, controller, policy, rule, notifikasi, enum), halaman Settings, middleware Inertia/appearance/team, kelas respons Fortify khusus, `CreateNewUser`, `ResetUserPassword` |
+| Fitur Fortify | Registrasi, reset kata sandi, verifikasi email, 2FA, passkey. Fortify kini **tanpa tampilan**: yang tersisa hanya `POST /login` dan `POST /logout` yang dipakai SPA |
+| Paket | Composer: `inertiajs/inertia-laravel`, `laravel/wayfinder`, `laravel/chisel`. npm: Inertia, Wayfinder, passkeys, Tailwind, dan utilitas shadcn (`clsx`, `cva`, `tailwind-merge`, `vue-sonner`, `vue-input-otp`) |
+| Tes | ±90 tes starter kit (Teams, Settings, 2FA, verifikasi, reset) |
+
+`laravel/passkeys` tetap terpasang karena dibutuhkan Fortify, tetapi fiturnya tidak aktif. Rute `user/confirm-password` Fortify juga tetap terdaftar karena selalu didaftarkan Fortify apa pun fitur yang aktif. Rute itu hanya dapat dipakai pengguna yang sudah masuk.
+
+### Basis data
+
+- Empat migrasi template (teams, `current_team_id`, passkeys, kolom 2FA) dihapus dari repositori.
+- Migrasi baru `2026_09_24_120001_drop_starter_kit_tables` men-drop sisa tabel dan kolomnya dari basis data yang sudah terlanjur memilikinya. Semua langkahnya dijaga `hasTable`/`hasColumn`, sehingga pada instalasi baru migrasi ini tidak melakukan apa pun. Catatan migrasi lama ikut dibersihkan.
+- **Tanpa `migrate:fresh`, data POS tetap utuh.** Setelah migrasi `db_pos` masih memuat 350 transaksi dan 5 pengguna. Yang terhapus hanya 5 tim pribadi hasil seeder. Dump sebelum migrasi disimpan sebagai cadangan.
+
+### Routing
+
+`routes/web.php` kini hanya berisi dua rute:
+
+1. `GET app/{any?}` mengalihkan alamat lama ke padanannya di root, beserta query string. Contohnya `/app/login?lanjut=%2Fkasir` menjadi `/login?lanjut=%2Fkasir`.
+2. `GET {any?}` menyajikan `spa.blade.php` untuk semua alamat, kecuali `api/`, `sanctum/`, `storage/`, dan `up`. Pengecualian ini wajib: rute web didaftarkan **sebelum** rute api, sehingga tanpa pengecualian, `GET /api/...` yang tak dikenal akan dijawab HTML 200, bukan JSON 404.
+
+Vue Router memakai `createWebHistory()` tanpa base.
+
+### Satu regresi ditemukan dan diperbaiki
+
+Uji langsung terhadap server menemukan `GET /api/user` **tanpa** header JSON berakhir `500 Route [login] not defined`. Middleware `auth` membangun URL redirect tamu lewat `route('login')`, dan rute bernama itu dulu disediakan tampilan Fortify yang kini dimatikan. SPA tidak terkena karena selalu mengirim `Accept: application/json`, tetapi klien lain akan kena. Diperbaiki dengan `redirectGuestsTo('/login')` di `bootstrap/app.php`, dan tes regresinya ditambahkan.
+
+### Hasil verifikasi
+
+- `composer run ci:check` hijau: lint dan format, `vue-tsc`, Vitest **41 lolos**, Pint, PHPStan level 7 **0 error**, PHPUnit **146 lolos**. Tes baru: `SpaRoutingTest` untuk root, tautan dalam, pengalihan `/app`, dan prefiks yang dikecualikan. `AuthenticationTest` ditulis ulang untuk login JSON.
+- Uji di Chrome sungguhan terhadap `http://127.0.0.1:8000`:
+  - Tamu yang membuka root dibawa ke `/login`. Admin mendarat di `/`, kasir di `/kasir`.
+  - Dari 19 tautan yang diperiksa, tidak ada yang masih menunjuk `/app`.
+  - Muat ulang langsung `/produk` dan `/laporan/penjualan` tetap berjalan, begitu juga `/app/produk` yang dialihkan ke `/produk`.
+  - `/settings/profile` kini menampilkan 404 milik SPA.
+  - Keluar kembali ke `/login`, dan penjaga peran tetap menolak kasir dari laporan.
+  - Satu-satunya respons galat adalah `401 GET /api/user` saat tamu membuka root. Itu memang cara SPA mendeteksi pengunjung belum masuk.
+

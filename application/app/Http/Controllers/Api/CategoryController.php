@@ -9,6 +9,7 @@ use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Support\ApiResponse;
+use App\Support\Daftar;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -29,7 +30,7 @@ class CategoryController extends Controller
         }
 
         return ApiResponse::paginated(
-            $query->orderBy('nama_kategori')->paginate((int) $request->query('per_page', (string) config('pos.per_halaman'))),
+            Daftar::halaman($query, $request, ['nama_kategori'], 'nama_kategori'),
             CategoryResource::class,
         );
     }

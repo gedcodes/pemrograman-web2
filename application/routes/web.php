@@ -1,35 +1,34 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Teams\TeamInvitationController;
-use App\Http\Middleware\EnsureTeamMembership;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-Route::inertia('/', 'Welcome')->name('home');
-
-Route::prefix('{current_team}')
-    ->middleware(['auth', 'verified', EnsureTeamMembership::class])
-    ->group(function () {
-        Route::get('dashboard', DashboardController::class)->name('dashboard');
-    });
-
-Route::middleware(['auth'])->group(function () {
-    Route::post('invitations/{invitation}/accept', [TeamInvitationController::class, 'accept'])->name('invitations.accept');
-    Route::delete('invitations/{invitation}', [TeamInvitationController::class, 'decline'])->name('invitations.decline');
-});
-
-require __DIR__.'/settings.php';
 
 /*
 |--------------------------------------------------------------------------
 | SPA POS
 |--------------------------------------------------------------------------
 |
-| Seluruh alamat di bawah /app diserahkan kepada Vue Router. Halaman Inertia
-| bawaan starter kit sengaja dibiarkan utuh agar tesnya tetap berjalan;
-| penghapusannya menunggu keputusan terpisah.
+| Aplikasi ini hanya punya satu antarmuka: SPA Vue di resources/js/spa.
+| Seluruh alamat halaman diserahkan kepada Vue Router, termasuk /login
+| (yang GET; POST /login dan /logout tetap milik Fortify).
+|
+| Empat prefiks dikecualikan karena bukan halaman:
+|   api/     -- REST API (routes/api.php)
+|   sanctum/ -- cookie CSRF untuk SPA
+|   storage/ -- berkas disk lokal yang disajikan Laravel
+|   up       -- health check
+| Rute web didaftarkan SEBELUM rute api, jadi tanpa pengecualian ini
+| permintaan GET /api/... akan tertelan dan dijawab HTML, bukan JSON.
 |
 */
-Route::view('/app/{any?}', 'spa')
-    ->where('any', '.*')
+
+// Alamat lama ketika SPA masih disajikan di bawah /app (sebelum 2026-09-24).
+Route::get('app/{any?}', function (Request $request, ?string $any = null) {
+    $query = $request->getQueryString();
+
+    return redirect('/'.$any.($query ? '?'.$query : ''));
+})->where('any', '.*');
+
+Route::view('{any?}', 'spa')
+    ->where('any', '^(?!(api|sanctum|storage|up)(/|$)).*')
     ->name('spa');

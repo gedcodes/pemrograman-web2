@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Models\Payment;
 use App\Models\Transaction;
 use Midtrans\Config;
 use Midtrans\Snap;
+use Midtrans\Transaction as MidtransTransaction;
 use RuntimeException;
+use Throwable;
 
 /**
  * Satu-satunya tempat SDK Midtrans dipanggil.
@@ -71,7 +72,7 @@ class MidtransService
 
         $transaction->loadMissing(['items', 'customer', 'payment']);
 
-        $orderId = $this->orderId($transaction);
+        $orderId = $this->orderIdBerikutnya($transaction);
         $itemDetails = $this->rincianItem($transaction);
 
         // Midtrans menolak permintaan bila gross_amount tidak sama persis
@@ -111,10 +112,66 @@ class MidtransService
         $transaction->payment?->update([
             'order_id' => $orderId,
             'snap_token' => $token,
+            'snap_kedaluwarsa' => now()->addMinutes((int) config('midtrans.expiry_duration')),
             'transaction_status' => 'pending',
         ]);
 
         return $token;
+    }
+
+    /**
+     * Snap Token yang masih dapat dibuka ulang, bila ada.
+     *
+     * Membuka ulang token yang sama menampilkan tagihan yang SAMA di Midtrans
+     * (QRIS atau nomor VA yang tadi), jadi pelanggan tidak perlu memindai kode
+     * baru dan tidak ada order ganda. Sisa satu menit dianggap sudah habis,
+     * supaya kasir tidak diberi tagihan yang kedaluwarsa saat sedang dibayar.
+     */
+    public function tokenAktif(Transaction $transaction): ?string
+    {
+        $payment = $transaction->payment;
+
+        if ($transaction->status !== 'pending'
+            || $payment === null
+            || $payment->snap_token === null
+            || $payment->snap_kedaluwarsa === null
+            || $payment->snap_kedaluwarsa->isBefore(now()->addMinute())) {
+            return null;
+        }
+
+        return $payment->snap_token;
+    }
+
+    /**
+     * Tanyakan status sebuah order langsung ke Midtrans (Get Status API).
+     *
+     * Ini BUKAN callback browser yang dapat dipalsukan: server sendiri yang
+     * menghubungi Midtrans dengan Server Key. Jawabannya berbentuk sama dengan
+     * notifikasi webhook, sehingga dapat diproses oleh jalur yang sama.
+     *
+     * Mengembalikan null bila Midtrans belum mengenal order tersebut, yaitu
+     * pelanggan membuka popup tetapi belum memilih metode pembayaran.
+     *
+     * @return array<string, mixed>|null
+     *
+     * @throws RuntimeException
+     */
+    public function cekStatus(string $orderId): ?array
+    {
+        try {
+            $jawaban = MidtransTransaction::status($orderId);
+        } catch (Throwable $e) {
+            if ($e->getCode() === 404) {
+                return null;
+            }
+
+            throw new RuntimeException('Gagal menanyakan status ke Midtrans: '.$e->getMessage(), 0, $e);
+        }
+
+        /** @var array<string, mixed> $payload */
+        $payload = json_decode((string) json_encode($jawaban), true) ?: [];
+
+        return $payload;
     }
 
     /**
@@ -233,20 +290,29 @@ class MidtransService
     }
 
     /**
-     * Midtrans menolak order_id yang pernah dipakai. Bila pembayaran sebelumnya
-     * kedaluwarsa lalu ditagih ulang, nomor percobaan ditambahkan di belakang.
+     * Midtrans menolak order_id yang pernah dipakai. Bila tagihan sebelumnya
+     * kedaluwarsa lalu ditagih ulang, nomor percobaan ditambahkan di belakang:
+     * SA-TRX-… → SA-TRX-…-R2 → SA-TRX-…-R3.
+     *
+     * Nomornya dibaca dari order_id TERAKHIR milik pembayaran ini. Cara lama
+     * menghitung baris pembayaran, padahal satu transaksi hanya punya satu
+     * baris, sehingga percobaan ketiga dan seterusnya selalu jatuh ke -R2 lagi
+     * dan ditolak Midtrans sebagai order ganda.
      */
-    private function orderId(Transaction $transaction): string
+    public function orderIdBerikutnya(Transaction $transaction): string
     {
         $dasar = 'SA-'.$transaction->no_struk;
+        $sebelumnya = $transaction->payment?->order_id;
 
-        $percobaan = Payment::query()
-            ->where('order_id', 'like', $dasar.'%')
-            ->count();
+        if ($sebelumnya === null) {
+            return $dasar;
+        }
 
-        return $percobaan === 0 || $transaction->payment?->order_id === null
-            ? $dasar
-            : sprintf('%s-R%d', $dasar, $percobaan + 1);
+        $ke = preg_match('/-R(\d+)$/', $sebelumnya, $cocok) === 1
+            ? (int) $cocok[1] + 1
+            : 2;
+
+        return sprintf('%s-R%d', $dasar, $ke);
     }
 
     private function konfigurasi(): void

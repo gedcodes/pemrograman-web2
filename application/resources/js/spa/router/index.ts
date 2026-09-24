@@ -3,7 +3,8 @@ import {
     createWebHistory,
     type RouteRecordRaw,
 } from 'vue-router';
-import { auth, muatSesi } from '../stores/auth';
+import { auth, halamanAwal, muatSesi } from '../stores/auth';
+import { aturNavigasi } from '../stores/progres';
 
 /**
  * Peta rute SPA.
@@ -192,6 +193,15 @@ const routes: RouteRecordRaw[] = [
             },
         ],
     },
+    // Kasir Mode Tablet: sengaja DI LUAR AppLayout, sehingga tampil layar
+    // penuh tanpa sidebar. Penjaga login dan peran tetap berlaku karena
+    // rute ini tidak bertanda `tamu`.
+    {
+        path: '/kasir/tablet',
+        name: 'kasir-tablet',
+        component: () => import('../views/KasirTabletView.vue'),
+        meta: { judul: 'Kasir · Mode Tablet' },
+    },
     {
         path: '/:pathMatch(.*)*',
         name: 'tidak-ditemukan',
@@ -201,16 +211,25 @@ const routes: RouteRecordRaw[] = [
 ];
 
 export const router = createRouter({
-    // SPA disajikan di bawah /app, jadi base-nya harus disebutkan.
-    history: createWebHistory('/app'),
+    // SPA disajikan langsung di root (routes/web.php menyerahkan seluruh
+    // alamat halaman kepada Vue Router).
+    history: createWebHistory(),
     routes,
     scrollBehavior: () => ({ top: 0 }),
 });
 
 router.beforeEach(async (to) => {
+    aturNavigasi(true);
+
     // Sesi ditanyakan sekali saja saat aplikasi dinyalakan.
     if (!auth.siap) {
-        await muatSesi();
+        try {
+            await muatSesi();
+        } catch {
+            // Server tak terjangkau atau akun dinonaktifkan (403): perlakukan
+            // sebagai belum masuk. Tanpa ini navigasi pertama gagal dan
+            // layar tetap kosong, bukan menampilkan halaman login.
+        }
     }
 
     const masuk = auth.user !== null;
@@ -220,7 +239,7 @@ router.beforeEach(async (to) => {
     }
 
     if (to.name === 'login' && masuk) {
-        return { name: 'dashboard' };
+        return halamanAwal();
     }
 
     if (to.meta.admin && auth.user?.peran !== 'admin') {
@@ -231,6 +250,18 @@ router.beforeEach(async (to) => {
 });
 
 router.afterEach((to) => {
+    aturNavigasi(false);
     const judul = typeof to.meta.judul === 'string' ? to.meta.judul : 'POS';
     document.title = `${judul} · Toko Sari Amerta`;
+});
+
+router.onError((e: unknown, to) => {
+    aturNavigasi(false);
+
+    // Setelah build baru di-deploy, potongan JS lama sudah tidak ada di server
+    // sehingga impor dinamis halaman gagal. Muat ulang penuh mengambil versi baru.
+    const pesan = e instanceof Error ? e.message : '';
+    if (/dynamically imported module|Importing a module script/i.test(pesan)) {
+        window.location.assign(router.resolve(to).href);
+    }
 });

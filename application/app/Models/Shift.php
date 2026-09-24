@@ -62,6 +62,40 @@ class Shift extends Model
     }
 
     /**
+     * Rekap kas shift, untuk layar Tutup Shift.
+     *
+     * Kas seharusnya = modal awal + penjualan TUNAI yang lunas. Penjualan
+     * non-tunai tidak masuk laci, jadi dilaporkan terpisah. Selisih baru
+     * ada setelah kasir menghitung laci (kas_akhir diisi): positif berarti
+     * uang lebih, negatif berarti uang kurang.
+     *
+     * @return array{jumlah_transaksi: int, penjualan_tunai: int, penjualan_non_tunai: int, tagihan_menunggu: int, kas_seharusnya: int, selisih: int|null}
+     */
+    public function ringkasan(): array
+    {
+        $baris = $this->transactions()
+            ->join('payments', 'payments.transaction_id', '=', 'transactions.id')
+            ->selectRaw("SUM(CASE WHEN transactions.status = 'settlement' THEN 1 ELSE 0 END) as jumlah")
+            ->selectRaw("SUM(CASE WHEN transactions.status = 'settlement' AND payments.metode = 'tunai' THEN transactions.total ELSE 0 END) as tunai")
+            ->selectRaw("SUM(CASE WHEN transactions.status = 'settlement' AND payments.metode = 'non_tunai' THEN transactions.total ELSE 0 END) as non_tunai")
+            ->selectRaw("SUM(CASE WHEN transactions.status = 'pending' THEN 1 ELSE 0 END) as menunggu")
+            ->toBase()
+            ->first();
+
+        $tunai = (int) ($baris->tunai ?? 0);
+        $kasSeharusnya = $this->modal_awal + $tunai;
+
+        return [
+            'jumlah_transaksi' => (int) ($baris->jumlah ?? 0),
+            'penjualan_tunai' => $tunai,
+            'penjualan_non_tunai' => (int) ($baris->non_tunai ?? 0),
+            'tagihan_menunggu' => (int) ($baris->menunggu ?? 0),
+            'kas_seharusnya' => $kasSeharusnya,
+            'selisih' => $this->kas_akhir !== null ? $this->kas_akhir - $kasSeharusnya : null,
+        ];
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

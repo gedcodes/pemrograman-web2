@@ -1,7 +1,5 @@
 <?php
 
-use Laravel\Fortify\Features;
-
 return [
 
     /*
@@ -73,7 +71,7 @@ return [
     |
     */
 
-    'home' => '/dashboard',
+    'home' => '/',
 
     /*
     |--------------------------------------------------------------------------
@@ -116,8 +114,6 @@ return [
 
     'limiters' => [
         'login' => 'login',
-        'two-factor' => 'two-factor',
-        'passkeys' => 'passkeys',
     ],
 
     /*
@@ -131,23 +127,9 @@ return [
     |
     */
 
-    'views' => true,
-
-    /*
-    |--------------------------------------------------------------------------
-    | Passkeys
-    |--------------------------------------------------------------------------
-    |
-    | These settings configure Fortify's passkey (WebAuthn) support.
-    |
-    */
-
-    'passkeys' => [
-        'relying_party_id' => parse_url(config('app.url'), PHP_URL_HOST),
-        'allowed_origins' => [config('app.url')],
-        'user_handle_secret' => env('PASSKEYS_USER_HANDLE_SECRET', config('app.key')),
-        'timeout' => 60000,
-    ],
+    // Tanpa tampilan: halaman login milik SPA (Vue Router), Fortify hanya
+    // menyediakan POST /login dan POST /logout.
+    'views' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -161,17 +143,11 @@ return [
     */
 
     'features' => [
-        Features::registration(),
-        Features::resetPasswords(),
-        Features::emailVerification(),
-        Features::twoFactorAuthentication([
-            'confirm' => true,
-            'confirmPassword' => true,
-            // 'window' => 0
-        ]),
-        Features::passkeys([
-            'confirmPassword' => true,
-        ]),
+        // SENGAJA KOSONG. Aplikasi POS hanya memakai masuk/keluar:
+        // - registrasi publik dimatikan, akun dibuat admin lewat
+        //   Pengaturan → Pengguna & Akses (POST /api/users);
+        // - reset kata sandi, verifikasi email, 2FA, dan passkey adalah
+        //   fitur starter kit yang tidak punya halaman di SPA.
     ],
 
 ];

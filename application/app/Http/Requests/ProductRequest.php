@@ -43,7 +43,11 @@ class ProductRequest extends FormRequest
             'unit_id' => ['required', 'integer', 'exists:units,id'],
             'harga_beli' => ['required', 'integer', 'min:0'],
             'harga_jual' => ['required', 'integer', 'min:0', 'gte:harga_beli'],
-            'stok' => ['nullable', 'integer', 'min:0'],
+            // Stok awal hanya boleh diisi saat produk DIBUAT. Setelah itu stok
+            // berubah lewat Barang Masuk, Stok Opname, atau penjualan, yaitu
+            // jalur yang mencatat mutasinya. Menerima stok di sini akan
+            // menimpa penjualan yang terjadi selama formulir terbuka.
+            'stok' => $id === null ? ['nullable', 'integer', 'min:0'] : ['prohibited'],
             'stok_minimum' => ['nullable', 'integer', 'min:0'],
             'gambar' => ['nullable', 'string', 'max:255'],
             'aktif' => ['nullable', 'boolean'],
@@ -57,6 +61,7 @@ class ProductRequest extends FormRequest
     {
         return [
             'harga_jual.gte' => 'Harga jual tidak boleh lebih kecil daripada harga beli.',
+            'stok.prohibited' => 'Stok tidak dapat diubah dari sini. Gunakan Barang Masuk atau Stok Opname agar pergerakannya tercatat.',
         ];
     }
 }

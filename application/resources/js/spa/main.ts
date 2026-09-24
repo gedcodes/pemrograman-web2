@@ -3,4 +3,9 @@ import App from './App.vue';
 import { router } from './router';
 import '../../css/spa.css';
 
-createApp(App).use(router).mount('#spa');
+const app = createApp(App).use(router);
+
+// Dipasang setelah navigasi pertama (termasuk pemeriksaan sesi) selesai.
+// Sampai saat itu layar pembuka dari spa.blade.php tetap tampil, bukan
+// halaman kosong yang hanya berisi batang progres.
+void router.isReady().finally(() => app.mount('#spa'));

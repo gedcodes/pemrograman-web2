@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { Eye, EyeOff } from '@lucide/vue';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ApiError } from '../api/client';
-import { masuk } from '../stores/auth';
+import { halamanAwal, masuk } from '../stores/auth';
 import { toast } from '../stores/toast';
 
 const route = useRoute();
@@ -11,6 +12,7 @@ const router = useRouter();
 const email = ref('');
 const password = ref('');
 const ingat = ref(false);
+const lihatSandi = ref(false);
 const mengirim = ref(false);
 const galat = ref<string | null>(null);
 const galatField = ref<Record<string, string>>({});
@@ -24,9 +26,10 @@ async function kirim() {
         await masuk(email.value, password.value, ingat.value);
         toast.sukses('Selamat datang kembali.');
 
-        const lanjut =
-            typeof route.query.lanjut === 'string' ? route.query.lanjut : '/';
-        await router.push(lanjut);
+        // Kembali ke halaman yang tadi hendak dibuka; bila tidak ada, ke
+        // halaman awal sesuai peran (kasir langsung ke Kasir).
+        const lanjut = route.query.lanjut;
+        await router.push(typeof lanjut === 'string' ? lanjut : halamanAwal());
     } catch (e) {
         if (e instanceof ApiError) {
             galat.value = e.message;
@@ -76,15 +79,35 @@ async function kirim() {
 
                 <div class="field">
                     <label for="password">Kata sandi</label>
-                    <input
-                        id="password"
-                        v-model="password"
-                        type="password"
-                        class="input"
-                        :class="{ 'is-error': galatField.password }"
-                        autocomplete="current-password"
-                        required
-                    />
+                    <div class="sandi">
+                        <input
+                            id="password"
+                            v-model="password"
+                            :type="lihatSandi ? 'text' : 'password'"
+                            class="input"
+                            :class="{ 'is-error': galatField.password }"
+                            autocomplete="current-password"
+                            required
+                        />
+                        <button
+                            type="button"
+                            class="btn btn-ghost btn-sm btn-ikon sandi-lihat"
+                            :aria-label="
+                                lihatSandi
+                                    ? 'Sembunyikan kata sandi'
+                                    : 'Tampilkan kata sandi'
+                            "
+                            :aria-pressed="lihatSandi"
+                            @click="lihatSandi = !lihatSandi"
+                        >
+                            <EyeOff
+                                v-if="lihatSandi"
+                                :size="18"
+                                :stroke-width="1.75"
+                            />
+                            <Eye v-else :size="18" :stroke-width="1.75" />
+                        </button>
+                    </div>
                     <p v-if="galatField.password" class="field-error">
                         {{ galatField.password }}
                     </p>
@@ -99,6 +122,7 @@ async function kirim() {
                     class="btn btn-primary btn-lg btn-block"
                     type="submit"
                     :disabled="mengirim"
+                    :aria-busy="mengirim"
                 >
                     {{ mengirim ? 'Memeriksa…' : 'Masuk' }}
                 </button>
@@ -161,5 +185,19 @@ async function kirim() {
 
 .ingat {
     cursor: pointer;
+}
+
+.sandi {
+    position: relative;
+}
+
+.sandi .input {
+    padding-right: 48px;
+}
+
+.sandi-lihat {
+    position: absolute;
+    top: 6px;
+    right: 6px;
 }
 </style>

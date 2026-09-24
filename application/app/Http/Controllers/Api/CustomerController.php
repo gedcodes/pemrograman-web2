@@ -9,6 +9,7 @@ use App\Http\Requests\CustomerRequest;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 use App\Support\ApiResponse;
+use App\Support\Daftar;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -30,7 +31,7 @@ class CustomerController extends Controller
         }
 
         return ApiResponse::paginated(
-            $query->orderBy('nama')->paginate((int) $request->query('per_page', (string) config('pos.per_halaman'))),
+            Daftar::halaman($query, $request, ['nama', 'no_hp', 'poin_loyalti'], 'nama'),
             CustomerResource::class,
         );
     }

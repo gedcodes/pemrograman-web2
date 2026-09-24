@@ -71,6 +71,19 @@ export interface Shift {
     modal_awal: number;
     kas_akhir: number | null;
     catatan: string | null;
+    /** Rekap kas; hanya ada pada jawaban /shifts/aktif dan /shifts/close. */
+    ringkasan?: RingkasanShift;
+}
+
+export interface RingkasanShift {
+    jumlah_transaksi: number;
+    penjualan_tunai: number;
+    penjualan_non_tunai: number;
+    tagihan_menunggu: number;
+    /** Modal awal + penjualan tunai lunas. */
+    kas_seharusnya: number;
+    /** Kas akhir − kas seharusnya; null selama shift masih terbuka. */
+    selisih: number | null;
 }
 
 export interface TransactionItem {
@@ -90,6 +103,8 @@ export interface Payment {
     order_id: string | null;
     payment_type: string | null;
     transaction_status: string | null;
+    /** Batas berlaku tagihan non-tunai yang sedang terbuka (QRIS / VA). */
+    snap_kedaluwarsa: string | null;
     jumlah_bayar: number;
     kembalian: number;
     waktu_settlement: string | null;
@@ -162,6 +177,8 @@ export interface StockOpname {
 }
 
 export interface DashboardData {
+    /** true untuk kasir: angka milik kasir sendiri, tanpa grafik omzet toko. */
+    ringkas: boolean;
     kartu: {
         omzet_hari_ini: number;
         jumlah_transaksi: number;

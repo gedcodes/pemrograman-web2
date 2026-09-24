@@ -1,20 +1,34 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { ambil } from '../api/client';
+import { ambil, ApiError } from '../api/client';
 import type { MidtransConfig } from '../api/types';
 import KeadaanData from '../components/KeadaanData.vue';
 
 const cfg = ref<MidtransConfig | null>(null);
 const memuat = ref(true);
+const galat = ref<string | null>(null);
 
-onMounted(async () => {
-    cfg.value = await ambil<MidtransConfig>('/midtrans/config');
-    memuat.value = false;
-});
+async function muat() {
+    memuat.value = true;
+    galat.value = null;
+    try {
+        cfg.value = await ambil<MidtransConfig>('/midtrans/config');
+    } catch (e) {
+        galat.value =
+            e instanceof ApiError ? e.message : 'Gagal memuat konfigurasi.';
+    } finally {
+        memuat.value = false;
+    }
+}
+
+onMounted(muat);
 </script>
 
 <template>
-    <KeadaanData :memuat="memuat" :baris-skeleton="3">
+    <KeadaanData :memuat="memuat" :galat="galat" kerangka="halaman">
+        <template #aksi>
+            <button class="btn btn-soft" @click="muat">Coba lagi</button>
+        </template>
         <div
             v-if="cfg"
             class="stack"

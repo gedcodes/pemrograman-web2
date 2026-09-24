@@ -72,6 +72,31 @@ class ProductApiTest extends TestCase
             );
     }
 
+    public function test_mengubah_produk_tidak_boleh_mengubah_stok(): void
+    {
+        $product = Product::factory()->create(['stok' => 40]);
+
+        $this->actingAs($this->admin)
+            ->putJson("/api/products/{$product->id}", $this->payload(['stok' => 999]))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('stok');
+
+        $this->assertSame(40, $product->fresh()?->stok);
+    }
+
+    public function test_mengubah_produk_tanpa_stok_tidak_menyentuh_stok(): void
+    {
+        $product = Product::factory()->create(['stok' => 40]);
+        $muatan = $this->payload(['harga_jual' => 27_000]);
+        unset($muatan['stok']);
+
+        $this->actingAs($this->admin)
+            ->putJson("/api/products/{$product->id}", $muatan)
+            ->assertOk()
+            ->assertJsonPath('data.harga_jual', 27_000)
+            ->assertJsonPath('data.stok', 40);
+    }
+
     public function test_harga_jual_sama_dengan_harga_beli_diizinkan(): void
     {
         $this->actingAs($this->admin)

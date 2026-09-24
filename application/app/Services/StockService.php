@@ -45,13 +45,19 @@ class StockService
     }
 
     /**
-     * Sesuaikan stok ke angka hasil hitung fisik. Selisihnya boleh positif maupun negatif.
+     * Terapkan SELISIH hasil stok opname ke stok terkini.
+     *
+     * Bukan menimpa stok dengan angka hitung fisik: penjualan dan penerimaan
+     * yang terjadi selama petugas menghitung tetap tercatat. Contoh: buku 20,
+     * dihitung 17 (selisih -3), sementara itu terjual 2 → stok akhir 15,
+     * bukan 17 yang akan menghapus dua penjualan tadi.
+     *
+     * @param  int  $selisih  bertanda: positif menambah, negatif mengurangi
+     *
+     * @throws StokTidakCukupException bila selisih membuat stok negatif
      */
-    public function opname(int $productId, int $stokFisik, string $refTipe, int $refId, ?int $userId = null, ?string $keterangan = null): ?StockMove
+    public function sesuaikan(int $productId, int $selisih, string $refTipe, int $refId, ?int $userId = null, ?string $keterangan = null): ?StockMove
     {
-        $product = Product::query()->lockForUpdate()->findOrFail($productId);
-        $selisih = $stokFisik - $product->stok;
-
         if ($selisih === 0) {
             return null;
         }

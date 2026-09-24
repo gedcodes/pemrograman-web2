@@ -1,4 +1,5 @@
 import axios, { AxiosError, type AxiosInstance } from 'axios';
+import { permintaanMulai, permintaanSelesai } from '../stores/progres';
 
 /**
  * Klien HTTP tunggal untuk seluruh SPA.
@@ -21,6 +22,36 @@ export const http: AxiosInstance = axios.create({
         'X-Requested-With': 'XMLHttpRequest',
     },
 });
+
+/**
+ * Setiap panggilan ke server menyalakan batang progres di atas layar.
+ *
+ * Dipasang pada `http` DAN axios bawaan: login, logout, dan cookie CSRF
+ * memakai axios bawaan karena alamatnya di luar prefiks /api, sedangkan
+ * instance hasil `axios.create()` tidak ikut memakai interceptor bawaan.
+ */
+for (const klien of [http, axios]) {
+    klien.interceptors.request.use(
+        (config) => {
+            permintaanMulai();
+            return config;
+        },
+        (e: unknown) => {
+            permintaanSelesai();
+            return Promise.reject(e);
+        },
+    );
+    klien.interceptors.response.use(
+        (r) => {
+            permintaanSelesai();
+            return r;
+        },
+        (e: unknown) => {
+            permintaanSelesai();
+            return Promise.reject(e);
+        },
+    );
+}
 
 /** Bentuk response sukses yang dipakai seluruh endpoint. */
 export interface ApiEnvelope<T> {

@@ -10,6 +10,7 @@ use App\Http\Resources\SalesReturnResource;
 use App\Models\SalesReturn;
 use App\Services\DocumentNumberService;
 use App\Support\ApiResponse;
+use App\Support\Daftar;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -37,8 +38,7 @@ class SalesReturnController extends Controller
         }
 
         return ApiResponse::paginated(
-            $query->orderByDesc('tanggal_retur')->orderByDesc('id')
-                ->paginate((int) $request->query('per_page', (string) config('pos.per_halaman'))),
+            Daftar::halaman($query, $request, ['tanggal_retur', 'no_dokumen', 'jumlah_refund', 'status_approval'], 'tanggal_retur', 'desc'),
             SalesReturnResource::class,
         );
     }

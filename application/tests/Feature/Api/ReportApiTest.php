@@ -270,4 +270,31 @@ class ReportApiTest extends TestCase
 
         $this->actingAs($kasir)->getJson('/api/dashboard')->assertOk();
     }
+
+    public function test_dashboard_kasir_ringkas_hanya_berisi_penjualannya_sendiri(): void
+    {
+        // Penjualan admin (bukan milik kasir): 2 unit.
+        $this->transaksiLunas(2);
+
+        // Penjualan kasir sendiri: 3 unit.
+        $kasir = User::factory()->kasir()->create();
+        $milikKasir = $this->transaksiLunas(3);
+        $shiftKasir = Shift::create(['user_id' => $kasir->id, 'waktu_buka' => now(), 'modal_awal' => 0]);
+        $milikKasir->update(['shift_id' => $shiftKasir->id]);
+
+        $this->actingAs($kasir)->getJson('/api/dashboard')
+            ->assertOk()
+            ->assertJsonPath('data.ringkas', true)
+            ->assertJsonPath('data.kartu.jumlah_transaksi', 1)
+            ->assertJsonPath('data.kartu.omzet_hari_ini', $milikKasir->total)
+            ->assertJsonPath('data.kartu.produk_terjual', 3)
+            // Grafik omzet toko adalah data pemilik: tidak dikirim ke kasir.
+            ->assertJsonPath('data.grafik_7_hari', [])
+            ->assertJsonCount(1, 'data.transaksi_terakhir');
+
+        $this->actingAs($this->admin)->getJson('/api/dashboard')
+            ->assertJsonPath('data.ringkas', false)
+            ->assertJsonPath('data.kartu.jumlah_transaksi', 2)
+            ->assertJsonCount(7, 'data.grafik_7_hari');
+    }
 }

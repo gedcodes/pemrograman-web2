@@ -11,6 +11,7 @@ use App\Models\Shift;
 use App\Models\Transaction;
 use App\Services\TransactionService;
 use App\Support\ApiResponse;
+use App\Support\Daftar;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -53,7 +54,7 @@ class TransactionController extends Controller
         }
 
         return ApiResponse::paginated(
-            $query->orderByDesc('tanggal')->paginate((int) $request->query('per_page', (string) config('pos.per_halaman'))),
+            Daftar::halaman($query, $request, ['tanggal', 'no_struk', 'status', 'total'], 'tanggal', 'desc'),
             TransactionResource::class,
         );
     }

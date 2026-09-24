@@ -12,6 +12,7 @@ use App\Models\PurchaseItem;
 use App\Services\DocumentNumberService;
 use App\Services\StockService;
 use App\Support\ApiResponse;
+use App\Support\Daftar;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -43,8 +44,7 @@ class PurchaseController extends Controller
         }
 
         return ApiResponse::paginated(
-            $query->orderByDesc('tanggal_masuk')->orderByDesc('id')
-                ->paginate((int) $request->query('per_page', (string) config('pos.per_halaman'))),
+            Daftar::halaman($query, $request, ['tanggal_masuk', 'no_dokumen', 'total_biaya'], 'tanggal_masuk', 'desc'),
             PurchaseResource::class,
         );
     }

@@ -9,6 +9,7 @@ use App\Http\Requests\OperationalExpenseRequest;
 use App\Http\Resources\OperationalExpenseResource;
 use App\Models\OperationalExpense;
 use App\Support\ApiResponse;
+use App\Support\Daftar;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -26,8 +27,7 @@ class OperationalExpenseController extends Controller
         }
 
         return ApiResponse::paginated(
-            $query->orderByDesc('jumlah_bulanan')
-                ->paginate((int) $request->query('per_page', (string) config('pos.per_halaman'))),
+            Daftar::halaman($query, $request, ['nama', 'jumlah_bulanan', 'aktif'], 'jumlah_bulanan', 'desc'),
             OperationalExpenseResource::class,
         );
     }

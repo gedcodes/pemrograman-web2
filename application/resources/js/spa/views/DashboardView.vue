@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { ShoppingCart } from '@lucide/vue';
 import { computed, onMounted, ref } from 'vue';
 import { ambil, ApiError } from '../api/client';
 import type { DashboardData } from '../api/types';
 import { angka, jam, rupiah } from '../composables/format';
+import { auth } from '../stores/auth';
 import KeadaanData from '../components/KeadaanData.vue';
 import StatCard from '../components/StatCard.vue';
 import StatusBadge from '../components/StatusBadge.vue';
@@ -41,12 +43,102 @@ function label(tanggal: string): string {
 </script>
 
 <template>
-    <KeadaanData :memuat="memuat" :galat="galat" :baris-skeleton="6">
+    <KeadaanData :memuat="memuat" :galat="galat" kerangka="halaman">
         <template #aksi>
             <button class="btn btn-soft" @click="muat">Coba lagi</button>
         </template>
 
-        <div v-if="data" class="stack" style="gap: var(--space-6)">
+        <!-- Versi kasir (PERANCANGAN Bagian 2.2): angka milik kasir sendiri
+             hari ini. Omzet toko dan grafik penjualan memang tidak dikirim
+             server kepada kasir. -->
+        <div v-if="data?.ringkas" class="stack" style="gap: var(--space-6)">
+            <section class="card sapaan">
+                <div>
+                    <p class="overline">Selamat bertugas</p>
+                    <h2>{{ auth.user?.name }}</h2>
+                    <p class="caption">Ringkasan penjualan Anda hari ini.</p>
+                </div>
+                <RouterLink
+                    class="btn btn-primary btn-lg"
+                    :to="{ name: 'kasir' }"
+                >
+                    <ShoppingCart
+                        :size="20"
+                        :stroke-width="1.75"
+                        aria-hidden="true"
+                    />
+                    Buka Kasir
+                </RouterLink>
+            </section>
+
+            <section class="grid-stats grid">
+                <StatCard
+                    label="Penjualan saya"
+                    :nilai="rupiah(data.kartu.omzet_hari_ini)"
+                    keterangan="Transaksi lunas hari ini"
+                />
+                <StatCard
+                    label="Transaksi saya"
+                    :nilai="angka(data.kartu.jumlah_transaksi)"
+                    keterangan="Struk yang Anda terbitkan"
+                />
+                <StatCard
+                    label="Produk terjual"
+                    :nilai="angka(data.kartu.produk_terjual)"
+                    keterangan="Unit yang Anda jual"
+                />
+                <StatCard
+                    label="Stok menipis"
+                    :nilai="angka(data.kartu.stok_menipis)"
+                    keterangan="Beri tahu admin untuk restok"
+                    :nada="
+                        data.kartu.stok_menipis > 0 ? 'peringatan' : 'netral'
+                    "
+                />
+            </section>
+
+            <section class="table-wrap">
+                <div class="tabel-kepala">
+                    <h2>Transaksi saya hari ini</h2>
+                    <RouterLink
+                        class="btn btn-soft btn-sm"
+                        :to="{ name: 'riwayat-transaksi' }"
+                    >
+                        Lihat semua
+                    </RouterLink>
+                </div>
+                <div class="table-scroll">
+                    <table class="data">
+                        <thead>
+                            <tr>
+                                <th>No. Struk</th>
+                                <th>Waktu</th>
+                                <th>Status</th>
+                                <th class="num">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                v-for="t in data.transaksi_terakhir"
+                                :key="t.id"
+                            >
+                                <td>{{ t.no_struk }}</td>
+                                <td>{{ jam(t.tanggal) }}</td>
+                                <td><StatusBadge :status="t.status" /></td>
+                                <td class="num">{{ angka(t.total) }}</td>
+                            </tr>
+                            <tr v-if="data.transaksi_terakhir.length === 0">
+                                <td colspan="4" class="muted">
+                                    Belum ada transaksi hari ini.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <div v-else-if="data" class="stack" style="gap: var(--space-6)">
             <!-- Empat kartu statistik (PERANCANGAN Bagian 9). -->
             <section class="grid-stats grid">
                 <StatCard
@@ -191,6 +283,14 @@ function label(tanggal: string): string {
     .grafik {
         height: 180px;
     }
+}
+
+.sapaan {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
 }
 
 .tabel-kepala {

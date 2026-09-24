@@ -9,6 +9,7 @@ use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Support\ApiResponse;
+use App\Support\Daftar;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -42,7 +43,7 @@ class ProductController extends Controller
         }
 
         return ApiResponse::paginated(
-            $query->orderBy('nama_produk')->paginate((int) $request->query('per_page', (string) config('pos.per_halaman'))),
+            Daftar::halaman($query, $request, ['nama_produk', 'barcode', 'harga_beli', 'harga_jual', 'stok'], 'nama_produk'),
             ProductResource::class,
         );
     }
@@ -88,9 +89,11 @@ class ProductController extends Controller
 
     public function update(ProductRequest $request, Product $product): JsonResponse
     {
+        // `stok` sengaja tidak ada di daftar ini (dan ditolak ProductRequest):
+        // StockService adalah satu-satunya pintu perubahan stok.
         $product->update($request->only([
             'barcode', 'nama_produk', 'category_id', 'unit_id',
-            'harga_beli', 'harga_jual', 'stok', 'stok_minimum', 'gambar', 'aktif',
+            'harga_beli', 'harga_jual', 'stok_minimum', 'gambar', 'aktif',
         ]));
 
         return ApiResponse::ok(ProductResource::make($product->load(['category', 'unit'])), 'Produk berhasil diperbarui.');
