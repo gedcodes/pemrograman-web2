@@ -33,7 +33,7 @@ class ProductResource extends JsonResource
             'stok_minimum' => $this->stok_minimum,
             // Dihitung di sini supaya seluruh halaman memakai ambang yang sama.
             'stok_menipis' => $this->stok <= $this->stok_minimum,
-            'gambar' => $this->gambar,
+            'gambar_url' => $this->gambar_url,
             'aktif' => $this->aktif,
         ];
     }

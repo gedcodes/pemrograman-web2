@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T extends string | number">
-import { Check, ChevronDown, Search } from '@lucide/vue';
+import { Check, ChevronDown, Package, Search } from '@lucide/vue';
 import {
     ComboboxAnchor,
     ComboboxContent,
@@ -23,7 +23,7 @@ import {
     SelectViewport,
 } from 'reka-ui';
 import { useDebounceFn } from '@vueuse/core';
-import { computed, ref, watch } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 import type { OpsiPilihan } from '../composables/pilihan';
 
 /**
@@ -95,6 +95,21 @@ const memuatServer = ref(false);
    di hasil pencarian berikutnya, tetapi labelnya harus tetap tampil. */
 const labelDikenal = new Map<unknown, string>();
 
+/* Foto setiap opsi yang pernah terlihat, untuk ditampilkan di kotak pilihan
+   setelah dipilih. Reaktif, karena kotak itu digambar ulang saat nilai
+   berganti -- berbeda dengan label yang dibaca lewat fungsi. */
+const gambarDikenal = reactive(new Map<unknown, string | null>());
+
+const adaGambar = (o: { nilai: unknown; gambar?: string | null }): boolean =>
+    'gambar' in o && o.gambar !== undefined;
+
+const gambarTerpilih = computed<{ ada: boolean; url: string | null }>(() => {
+    const v = model.value;
+    return v !== null && gambarDikenal.has(v)
+        ? { ada: true, url: gambarDikenal.get(v) ?? null }
+        : { ada: false, url: null };
+});
+
 let urutCari = 0;
 
 async function cariKeServer(kata: string) {
@@ -145,6 +160,7 @@ watch(
     () => {
         for (const o of [...props.opsi, ...(hasilServer.value ?? [])]) {
             labelDikenal.set(o.nilai, o.label);
+            if (adaGambar(o)) gambarDikenal.set(o.nilai, o.gambar ?? null);
         }
     },
     { immediate: true },
@@ -212,7 +228,20 @@ function teksCari(o: { label: string; keterangan?: string }): string {
                 'is-nonaktif': props.disabled,
             }"
         >
+            <span
+                v-if="gambarTerpilih.ada"
+                class="pilih-gambar pilih-gambar-terpilih"
+                aria-hidden="true"
+            >
+                <img
+                    v-if="gambarTerpilih.url"
+                    :src="gambarTerpilih.url"
+                    alt=""
+                />
+                <Package v-else :size="16" :stroke-width="1.5" />
+            </span>
             <Search
+                v-else
                 class="pilih-ikon-cari"
                 :size="16"
                 :stroke-width="1.75"
@@ -265,6 +294,19 @@ function teksCari(o: { label: string; keterangan?: string }): string {
                         :disabled="'nonaktif' in o && o.nonaktif"
                         class="pilih-item"
                     >
+                        <span
+                            v-if="adaGambar(o)"
+                            class="pilih-gambar"
+                            aria-hidden="true"
+                        >
+                            <img
+                                v-if="'gambar' in o && o.gambar"
+                                :src="o.gambar"
+                                alt=""
+                                loading="lazy"
+                            />
+                            <Package v-else :size="18" :stroke-width="1.5" />
+                        </span>
                         <span class="pilih-item-teks">
                             <span>{{ o.label }}</span>
                             <small v-if="'keterangan' in o && o.keterangan">{{
@@ -512,6 +554,33 @@ function teksCari(o: { label: string; keterangan?: string }): string {
 .pilih-item-teks small {
     font: var(--text-caption);
     color: var(--text-muted);
+}
+
+/* Foto opsi: cukup besar untuk membedakan kemasan (mis. dua varian mi
+   instan yang namanya mirip), dengan latar putih untuk foto transparan. */
+.pilih-gambar {
+    flex: 0 0 40px;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    border-radius: var(--radius-xs);
+    background: #fff;
+    box-shadow: 0 0 0 1px var(--divider);
+    color: var(--text-muted);
+}
+
+.pilih-gambar img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.pilih-gambar-terpilih {
+    flex-basis: 28px;
+    width: 28px;
+    height: 28px;
 }
 
 .pilih-centang {

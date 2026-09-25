@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Printer } from '@lucide/vue';
 import { onMounted, ref } from 'vue';
 import { ambil, ApiError } from '../api/client';
 import type { LaporanLabaRugi } from '../api/types';
@@ -13,6 +12,7 @@ import {
 } from '../composables/format';
 import FilterPeriode from '../components/FilterPeriode.vue';
 import KeadaanData from '../components/KeadaanData.vue';
+import TombolUnduh from '../components/TombolUnduh.vue';
 
 // Diselaraskan dengan bawaan API dan Laporan Penjualan (7 hari), supaya
 // periode beban dan periode penjualan tidak timpang.
@@ -43,9 +43,7 @@ async function muat() {
     }
 }
 
-function cetak() {
-    window.print();
-}
+const periode = () => ({ dari: dari.value, sampai: sampai.value });
 
 /** Rugi harus terbaca sebagai rugi, bukan diwarnai hijau seperti laba. */
 function nada(nilai: number): string {
@@ -56,17 +54,19 @@ onMounted(muat);
 </script>
 
 <template>
-    <div class="page-head no-print">
+    <div class="page-head">
         <FilterPeriode
             v-model:dari="dari"
             v-model:sampai="sampai"
             :memuat="memuat"
             @terapkan="muat"
         />
-        <button class="btn btn-neutral" :disabled="!data" @click="cetak">
-            <Printer :size="18" :stroke-width="1.75" aria-hidden="true" />
-            Cetak
-        </button>
+        <TombolUnduh
+            url="/reports/profit-loss/unduh"
+            :params="periode"
+            :nama="`laporan-laba-rugi_${dari}_${sampai}`"
+            :disabled="!data"
+        />
     </div>
 
     <KeadaanData :memuat="memuat" :galat="galat" kerangka="halaman">
@@ -75,17 +75,13 @@ onMounted(muat);
         </template>
 
         <div v-if="data" class="stack" style="gap: var(--space-5)">
-            <div class="kop">
-                <h2>Laporan Laba Rugi</h2>
-                <p class="caption">
-                    Toko Sari Amerta &middot;
-                    {{ tanggal(data.periode.dari) }} &ndash;
-                    {{ tanggal(data.periode.sampai) }} ({{
-                        data.periode.jumlah_hari
-                    }}
-                    hari)
-                </p>
-            </div>
+            <p class="caption">
+                {{ tanggal(data.periode.dari) }} &ndash;
+                {{ tanggal(data.periode.sampai) }} ({{
+                    data.periode.jumlah_hari
+                }}
+                hari)
+            </p>
 
             <div class="card stack">
                 <p class="overline">Penjualan</p>
@@ -181,10 +177,6 @@ onMounted(muat);
 </template>
 
 <style scoped>
-.kop {
-    display: none;
-}
-
 .baris {
     display: flex;
     align-items: baseline;
@@ -231,17 +223,5 @@ onMounted(muat);
     border-top: 2px solid var(--divider);
     padding-top: var(--space-4);
     margin-top: var(--space-2);
-}
-
-@media print {
-    .kop {
-        display: block;
-        margin-bottom: var(--space-4);
-    }
-
-    .card {
-        box-shadow: none;
-        border: 1px solid var(--divider);
-    }
 }
 </style>

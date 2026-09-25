@@ -11,6 +11,7 @@ use App\Models\Shift;
 use App\Models\Transaction;
 use App\Models\TransactionItem;
 use App\Models\User;
+use App\Services\PengaturanToko;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -236,6 +237,18 @@ class ReportApiTest extends TestCase
         // Hanya nilai transaksi non-tunai yang kena MDR 0,7%.
         $this->assertSame($nonTunai->total, $d['beban']['nilai_non_tunai']);
         $this->assertSame((int) round($nonTunai->total * 0.007), $d['beban']['mdr']);
+    }
+
+    public function test_biaya_mdr_memakai_tarif_pengaturan_toko(): void
+    {
+        $nonTunai = $this->transaksiLunas(10);
+        Payment::factory()->create(['transaction_id' => $nonTunai->id, 'metode' => 'non_tunai']);
+        app(PengaturanToko::class)->perbarui(['tarif_mdr' => 0.02]);
+
+        $d = $this->actingAs($this->admin)->getJson('/api/reports/profit-loss')->json('data');
+
+        $this->assertSame((int) round($nonTunai->total * 0.02), $d['beban']['mdr']);
+        $this->assertSame(0.02, $d['beban']['tarif_mdr']);
     }
 
     public function test_kasir_tidak_boleh_mengelola_beban_operasional(): void

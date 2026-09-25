@@ -30,7 +30,9 @@ class StockOpnameController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        $query = StockOpname::query()->with('user');
+        $query = StockOpname::query()
+            ->with('user')
+            ->withCount(['items', 'items as berselisih_count' => fn ($q) => $q->where('selisih', '!=', 0)]);
 
         if ($request->filled('status')) {
             $query->where('status', $request->string('status')->value());
@@ -44,7 +46,10 @@ class StockOpnameController extends Controller
 
     public function show(StockOpname $opname): JsonResponse
     {
-        return ApiResponse::ok(StockOpnameResource::make($opname->load(['user', 'items'])));
+        return ApiResponse::ok(StockOpnameResource::make(
+            $opname->load(['user', 'items' => fn ($q) => $q->orderByRaw('selisih = 0')->orderBy('id'), 'items.product.unit'])
+                ->loadCount(['items', 'items as berselisih_count' => fn ($q) => $q->where('selisih', '!=', 0)]),
+        ));
     }
 
     /**

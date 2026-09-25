@@ -20,7 +20,8 @@ import type {
     StatusTransaksi,
     Transaction,
 } from '../api/types';
-import { kunciTanggal, statusTransaksi } from './format';
+import { tarifDiskonMember, tarifPajakBerlaku } from '../stores/toko';
+import { kunciTanggal, persen, statusTransaksi } from './format';
 import { keOpsi, type OpsiPilihan } from './pilihan';
 import { bunyiBerhasil, bunyiGagal } from './useBunyi';
 
@@ -361,15 +362,27 @@ function buatKasir(beritahu: Pemberitahu) {
         keranjang.value.reduce((s, b) => s + b.qty, 0),
     );
 
-    /* Total dihitung ulang di server; angka di sini hanya pratinjau bagi kasir. */
+    /* Total dihitung ulang di server; angka di sini hanya pratinjau bagi kasir.
+       Tarifnya dari Pengaturan Toko (stores/toko), rumusnya sama dengan
+       PricingService: diskon dulu, baru PPN di atas DPP. */
     const subtotal = computed(() =>
         keranjang.value.reduce((s, b) => s + b.qty * b.product.harga_jual, 0),
     );
     const diskon = computed(() =>
-        pelangganId.value !== null ? Math.round(subtotal.value * 0.05) : 0,
+        pelangganId.value !== null
+            ? Math.round(subtotal.value * tarifDiskonMember.value)
+            : 0,
     );
     const pajak = computed(() =>
-        Math.round((subtotal.value - diskon.value) * 0.11),
+        Math.round((subtotal.value - diskon.value) * tarifPajakBerlaku.value),
+    );
+    /** Baris PPN disembunyikan bila toko bukan PKP (tarif nol). */
+    const adaPajak = computed(() => tarifPajakBerlaku.value > 0);
+    const labelDiskon = computed(
+        () => `Diskon member ${persen(tarifDiskonMember.value * 100)}`,
+    );
+    const labelPajak = computed(
+        () => `PPN ${persen(tarifPajakBerlaku.value * 100)}`,
     );
     const total = computed(() => subtotal.value - diskon.value + pajak.value);
 
@@ -714,6 +727,9 @@ function buatKasir(beritahu: Pemberitahu) {
         diskon,
         pajak,
         total,
+        adaPajak,
+        labelDiskon,
+        labelPajak,
         // pembayaran
         modalBayar,
         metode,

@@ -40,13 +40,14 @@ class OpnameItem extends Model
     }
 
     /**
-     * Produk yang dihitung pada baris ini.
+     * Produk yang dihitung pada baris ini -- termasuk yang sudah dihapus,
+     * supaya riwayat opname lama tetap menampilkan nama barangnya.
      *
      * @return BelongsTo<Product, $this>
      */
     public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class)->withTrashed();
     }
 
     /**

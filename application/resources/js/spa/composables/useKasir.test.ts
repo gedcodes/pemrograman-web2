@@ -3,7 +3,8 @@ import { flushPromises } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vite-plus/test';
 import { defineComponent, h } from 'vue';
 import { ambil, simpan } from '../api/client';
-import type { Product, Shift } from '../api/types';
+import type { Pengaturan, Product, Shift } from '../api/types';
+import { lupakanPengaturan, terapkanPengaturan } from '../stores/toko';
 import { useKasir, type Kasir, type Pemberitahu } from './useKasir';
 
 vi.mock('../api/client', async (asli) => ({
@@ -34,8 +35,34 @@ function produk(id: number, harga: number, stok: number): Product {
         stok,
         stok_minimum: 5,
         stok_menipis: false,
-        gambar: null,
+        gambar_url: null,
         aktif: true,
+    };
+}
+
+/** Pengaturan lengkap dengan tarif bawaan, sebagian dapat ditimpa. */
+function pengaturan(timpa: Partial<Pengaturan> = {}): Pengaturan {
+    return {
+        nama_toko: 'Toko Uji',
+        slogan: null,
+        logo_url: null,
+        inisial: 'TU',
+        alamat: 'Jl. Uji 1',
+        telepon: '0361 000000',
+        email: null,
+        npwp: null,
+        nib: null,
+        jam_buka: '07:00',
+        jam_tutup: '21:00',
+        struk_footer_1: null,
+        struk_footer_2: null,
+        struk_tampilkan_logo: true,
+        pkp: true,
+        tarif_pajak: 0.11,
+        tarif_diskon_member: 0.05,
+        tarif_mdr: 0.007,
+        batas_bayar_menit: 30,
+        ...timpa,
     };
 }
 
@@ -89,6 +116,31 @@ describe('useKasir — keranjang', () => {
         expect(kasir.diskon).toBe(1_250);
         expect(kasir.pajak).toBe(2_613); // round(23.750 × 0,11) = round(2.612,5)
         expect(kasir.total).toBe(26_363);
+    });
+
+    it('memakai tarif dari Pengaturan Toko, dan tanpa PPN bila toko bukan PKP', () => {
+        const { kasir } = pasang();
+        kasir.tambah(produk(1, 10_000, 10));
+        kasir.pelangganId = 7;
+
+        try {
+            terapkanPengaturan(
+                pengaturan({ tarif_diskon_member: 0.1, tarif_pajak: 0.12 }),
+            );
+            expect(kasir.diskon).toBe(1_000);
+            expect(kasir.pajak).toBe(1_080); // (10.000 − 1.000) × 12%
+            expect(kasir.labelDiskon).toBe('Diskon member 10%');
+            expect(kasir.labelPajak).toBe('PPN 12%');
+            expect(kasir.adaPajak).toBe(true);
+
+            terapkanPengaturan(pengaturan({ pkp: false }));
+            expect(kasir.pajak).toBe(0);
+            expect(kasir.adaPajak).toBe(false);
+            expect(kasir.total).toBe(9_500); // diskon bawaan 5%, tanpa PPN
+        } finally {
+            // Store bersifat global; tes lain mengandalkan tarif bawaan.
+            lupakanPengaturan();
+        }
     });
 
     it('qty yang diketik melebihi stok dibatasi ke sisa stok', () => {

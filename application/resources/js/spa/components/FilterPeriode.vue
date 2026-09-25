@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { CalendarRange } from '@lucide/vue';
-import { computed } from 'vue';
 import { hariLalu, kunciTanggal } from '../composables/format';
+import InputTanggal from './InputTanggal.vue';
 
 /**
- * Penyaring periode laporan: rentang tanggal + preset sekali klik.
+ * Penyaring periode laporan: preset sekali klik + kalender rentang.
  *
- * Preset langsung menerapkan periodenya. Rentang manual baru diterapkan
- * lewat tombol Terapkan (atau Enter), supaya laporan tidak dimuat ulang
- * setiap kali satu tanggal diganti di tengah jalan.
+ * Preset berupa tombol, bukan isi kalender: tidak ada yang mau mengeklik
+ * kalender untuk "30 hari terakhir". Rentang manual dipilih di SATU kalender
+ * (flatpickr) dan langsung diterapkan begitu ujung keduanya dipilih, jadi
+ * tidak perlu tombol Terapkan lagi.
  */
 defineProps<{ memuat?: boolean }>();
 
@@ -24,18 +24,17 @@ function awalBulan(): string {
     return kunciTanggal(new Date(d.getFullYear(), d.getMonth(), 1));
 }
 
+function awalTahun(): string {
+    return kunciTanggal(new Date(new Date().getFullYear(), 0, 1));
+}
+
 const PRESET = [
     { label: '7 hari', dari: () => hariLalu(6) },
     { label: '30 hari', dari: () => hariLalu(29) },
+    { label: '90 hari', dari: () => hariLalu(89) },
     { label: 'Bulan ini', dari: awalBulan },
+    { label: 'Tahun ini', dari: awalTahun },
 ];
-
-const galat = computed(() => {
-    if (!dari.value || !sampai.value) return 'Isi kedua tanggal.';
-    if (dari.value > sampai.value)
-        return 'Tanggal "dari" tidak boleh setelah tanggal "sampai".';
-    return null;
-});
 
 function presetAktif(p: (typeof PRESET)[number]): boolean {
     return dari.value === p.dari() && sampai.value === hariIni;
@@ -46,14 +45,10 @@ function pakaiPreset(p: (typeof PRESET)[number]) {
     sampai.value = hariIni;
     emit('terapkan');
 }
-
-function terapkan() {
-    if (!galat.value) emit('terapkan');
-}
 </script>
 
 <template>
-    <form class="periode" novalidate @submit.prevent="terapkan">
+    <div class="periode">
         <div class="preset" role="group" aria-label="Periode cepat">
             <button
                 v-for="p in PRESET"
@@ -70,46 +65,19 @@ function terapkan() {
         </div>
 
         <div class="rentang">
-            <CalendarRange
-                class="ikon"
-                :size="18"
-                :stroke-width="1.75"
-                aria-hidden="true"
+            <InputTanggal
+                id="periode-rentang"
+                v-model:dari="dari"
+                v-model:sampai="sampai"
+                rentang
+                :maks="hariIni"
+                :disabled="memuat"
+                aria-label="Rentang tanggal laporan"
+                placeholder="Pilih rentang tanggal"
+                @pilih="emit('terapkan')"
             />
-            <label class="sr-only" for="periode-dari">Dari tanggal</label>
-            <input
-                id="periode-dari"
-                v-model="dari"
-                type="date"
-                class="input"
-                :max="sampai || hariIni"
-                :aria-invalid="Boolean(galat) || undefined"
-                aria-describedby="periode-galat"
-            />
-            <span aria-hidden="true">–</span>
-            <label class="sr-only" for="periode-sampai">Sampai tanggal</label>
-            <input
-                id="periode-sampai"
-                v-model="sampai"
-                type="date"
-                class="input"
-                :min="dari"
-                :max="hariIni"
-                :aria-invalid="Boolean(galat) || undefined"
-                aria-describedby="periode-galat"
-            />
-            <button
-                type="submit"
-                class="btn btn-primary btn-sm"
-                :disabled="memuat || Boolean(galat)"
-                :aria-busy="memuat"
-            >
-                Terapkan
-            </button>
         </div>
-
-        <p v-if="galat" id="periode-galat" class="field-error">{{ galat }}</p>
-    </form>
+    </div>
 </template>
 
 <style scoped>
@@ -122,24 +90,16 @@ function terapkan() {
 
 .preset {
     display: flex;
+    flex-wrap: wrap;
     gap: var(--space-2);
 }
 
 .rentang {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-2);
-    color: var(--text-muted);
+    width: 17.5rem;
+    max-width: 100%;
 }
 
-.rentang .input {
-    width: auto;
+.rentang :deep(.input-tanggal) {
     min-height: var(--control-h-sm);
-    padding: 0 var(--space-3);
-}
-
-.field-error {
-    flex-basis: 100%;
 }
 </style>

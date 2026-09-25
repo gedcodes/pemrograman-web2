@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -12,6 +13,9 @@ use Tests\TestCase;
  */
 class SpaRoutingTest extends TestCase
 {
+    // Layar pembuka membaca identitas toko dari tabel `settings`.
+    use RefreshDatabase;
+
     public function test_root_langsung_menyajikan_spa(): void
     {
         $this->get('/')

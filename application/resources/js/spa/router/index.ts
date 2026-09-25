@@ -3,8 +3,10 @@ import {
     createWebHistory,
     type RouteRecordRaw,
 } from 'vue-router';
+import { watchEffect } from 'vue';
 import { auth, halamanAwal, muatSesi } from '../stores/auth';
 import { aturNavigasi } from '../stores/progres';
+import { toko } from '../stores/toko';
 
 /**
  * Peta rute SPA.
@@ -65,6 +67,16 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('../views/ProdukFormView.vue'),
                 meta: {
                     judul: 'Tambah Produk',
+                    grup: 'Master Data',
+                    admin: true,
+                },
+            },
+            {
+                path: 'produk/cetak-label',
+                name: 'cetak-label',
+                component: () => import('../views/CetakLabelView.vue'),
+                meta: {
+                    judul: 'Cetak Label Barcode',
                     grup: 'Master Data',
                     admin: true,
                 },
@@ -162,6 +174,16 @@ const routes: RouteRecordRaw[] = [
 
             // ---- Pengaturan (admin saja)
             {
+                path: 'pengaturan/toko',
+                name: 'pengaturan-toko',
+                component: () => import('../views/PengaturanTokoView.vue'),
+                meta: {
+                    judul: 'Pengaturan Toko',
+                    grup: 'Pengaturan',
+                    admin: true,
+                },
+            },
+            {
                 path: 'pengguna',
                 name: 'pengguna-akses',
                 component: () => import('../views/PenggunaView.vue'),
@@ -249,10 +271,17 @@ router.beforeEach(async (to) => {
     return true;
 });
 
-router.afterEach((to) => {
-    aturNavigasi(false);
-    const judul = typeof to.meta.judul === 'string' ? to.meta.judul : 'POS';
-    document.title = `${judul} · Toko Sari Amerta`;
+router.afterEach(() => aturNavigasi(false));
+
+/* Judul tab mengikuti halaman yang AKTIF dan nama toko terkini.
+   Sengaja bukan di afterEach: afterEach juga berjalan untuk navigasi yang
+   dibatalkan (mis. memilih "Kembali ke formulir" pada dialog perubahan belum
+   disimpan), sehingga judul sempat berganti ke halaman yang tidak jadi dibuka.
+   Nama toko yang baru disimpan di Pengaturan Toko juga langsung ikut. */
+watchEffect(() => {
+    const meta = router.currentRoute.value.meta;
+    const judul = typeof meta.judul === 'string' ? meta.judul : 'POS';
+    document.title = `${judul} · ${toko.publik.nama_toko}`;
 });
 
 router.onError((e: unknown, to) => {

@@ -160,6 +160,46 @@ async function kirim<T>(
     }
 }
 
+/**
+ * Unduh berkas (PDF/Excel) dari API lalu simpan di perangkat.
+ *
+ * Lewat axios, bukan `<a href>`, supaya permintaannya membawa sesi Sanctum
+ * dan galatnya (mis. 422 periode tidak sah) dapat ditampilkan sebagai pesan,
+ * bukan terunduh sebagai berkas JSON.
+ */
+export async function unduh(
+    url: string,
+    params: Record<string, unknown>,
+    namaCadangan: string,
+): Promise<void> {
+    let r;
+    try {
+        r = await http.get<Blob>(url, { params, responseType: 'blob' });
+    } catch (e) {
+        // Galat datang sebagai Blob juga: baca dulu isinya sebagai JSON.
+        if (e instanceof AxiosError && e.response?.data instanceof Blob) {
+            try {
+                e.response.data = JSON.parse(await e.response.data.text());
+            } catch {
+                // bukan JSON; biarkan pesan bawaan
+            }
+        }
+        throw normalkan(e);
+    }
+
+    const cocok = /filename="?([^";]+)"?/.exec(
+        String(r.headers['content-disposition'] ?? ''),
+    );
+    const tautan = document.createElement('a');
+    tautan.href = URL.createObjectURL(r.data);
+    tautan.download = cocok?.[1] ?? namaCadangan;
+    document.body.append(tautan);
+    tautan.click();
+    tautan.remove();
+    // Beri waktu browser memulai unduhan sebelum URL-nya dilepas.
+    setTimeout(() => URL.revokeObjectURL(tautan.href), 10_000);
+}
+
 export const simpan = <T>(url: string, body?: unknown) =>
     kirim<T>('post', url, body);
 export const perbarui = <T>(url: string, body?: unknown) =>

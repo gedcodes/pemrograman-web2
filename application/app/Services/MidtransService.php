@@ -90,6 +90,10 @@ class MidtransService
             ));
         }
 
+        // Diambil di sini, bukan lewat constructor: tes memakai partial mock
+        // atas kelas ini, dan partial mock tidak menjalankan constructor.
+        $batasMenit = app(PengaturanToko::class)->batasBayarMenit();
+
         $params = [
             'transaction_details' => [
                 'order_id' => $orderId,
@@ -102,7 +106,7 @@ class MidtransService
             ],
             'expiry' => [
                 'unit' => 'minute',
-                'duration' => (int) config('midtrans.expiry_duration'),
+                'duration' => $batasMenit,
             ],
         ];
 
@@ -112,7 +116,7 @@ class MidtransService
         $transaction->payment?->update([
             'order_id' => $orderId,
             'snap_token' => $token,
-            'snap_kedaluwarsa' => now()->addMinutes((int) config('midtrans.expiry_duration')),
+            'snap_kedaluwarsa' => now()->addMinutes($batasMenit),
             'transaction_status' => 'pending',
         ]);
 
@@ -276,13 +280,15 @@ class MidtransService
             ];
         }
 
+        // Tanpa persen: tarif di Pengaturan Toko dapat sudah berubah sejak
+        // transaksi dibuat (mis. saat tagihan kedaluwarsa lalu ditagih ulang),
+        // sedangkan nominal pajaknya tetap yang tersimpan di transaksi.
         if ($transaction->pajak > 0) {
-            $persen = round((float) config('pos.tarif_pajak') * 100);
             $items[] = [
                 'id' => 'PPN',
                 'price' => $transaction->pajak,
                 'quantity' => 1,
-                'name' => sprintf('PPN %d%%', $persen),
+                'name' => 'PPN',
             ];
         }
 

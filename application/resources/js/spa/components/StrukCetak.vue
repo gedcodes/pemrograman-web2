@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import type { Transaction } from '../api/types';
+import { computed } from 'vue';
+import type { Pengaturan, Transaction } from '../api/types';
 import { angka, tanggalJam } from '../composables/format';
+import { toko } from '../stores/toko';
 
 /**
  * Isi struk, dipakai bersama oleh Kasir (struk baru) dan Riwayat Transaksi
@@ -9,11 +11,28 @@ import { angka, tanggalJam } from '../composables/format';
  *
  * Struk cetak ulang diberi tanda "CETAK ULANG" beserta waktu cetaknya,
  * supaya salinan tidak dapat disangka struk asli untuk klaim ganda.
+ *
+ * Kepala dan kaki struk diambil dari Pengaturan Toko. Prop `identitas`
+ * menggantinya, dipakai halaman Pengaturan Toko untuk pratinjau isian yang
+ * belum disimpan.
  */
 const props = defineProps<{
     transaksi: Transaction;
     cetakUlang?: boolean;
+    identitas?: Partial<Pengaturan>;
 }>();
+
+const id = computed<Partial<Pengaturan>>(
+    () => props.identitas ?? toko.lengkap ?? toko.publik,
+);
+const logo = computed(() =>
+    id.value.struk_tampilkan_logo !== false ? id.value.logo_url : null,
+);
+const kaki = computed(() =>
+    [id.value.struk_footer_1, id.value.struk_footer_2].filter(
+        (b): b is string => Boolean(b),
+    ),
+);
 
 const waktuCetak = new Date().toISOString();
 
@@ -27,8 +46,16 @@ function metode(t: Transaction): string {
 
 <template>
     <div class="struk">
+        <div class="struk-toko">
+            <img v-if="logo" class="struk-logo" :src="logo" alt="" />
+            <strong class="struk-nama">{{ id.nama_toko }}</strong>
+            <p v-if="id.slogan" class="caption">{{ id.slogan }}</p>
+            <p v-if="id.alamat" class="caption">{{ id.alamat }}</p>
+            <p v-if="id.telepon" class="caption">Telp. {{ id.telepon }}</p>
+            <p v-if="id.npwp" class="caption">NPWP {{ id.npwp }}</p>
+        </div>
+
         <div class="struk-kepala">
-            <strong>Toko Sari Amerta</strong>
             <p class="caption">{{ props.transaksi.no_struk }}</p>
             <p class="caption">{{ tanggalJam(props.transaksi.tanggal) }}</p>
             <p v-if="props.transaksi.shift?.user" class="caption">
@@ -98,13 +125,40 @@ function metode(t: Transaction): string {
             </template>
         </div>
 
-        <p class="struk-kaki caption">Terima kasih atas kunjungan Anda.</p>
+        <div v-if="kaki.length" class="struk-kaki">
+            <p v-for="baris in kaki" :key="baris" class="caption">
+                {{ baris }}
+            </p>
+        </div>
     </div>
 </template>
 
 <style scoped>
 .struk {
     font: var(--text-small);
+}
+
+.struk-toko {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    text-align: center;
+    padding-bottom: var(--space-3);
+    margin-bottom: var(--space-3);
+    border-bottom: 1px dashed var(--divider);
+}
+
+.struk-logo {
+    max-width: 120px;
+    max-height: 56px;
+    margin-bottom: var(--space-2);
+    object-fit: contain;
+}
+
+.struk-nama {
+    font: var(--text-body-strong);
+    font-size: 1.05em;
 }
 
 .struk-kepala {
@@ -151,6 +205,9 @@ function metode(t: Transaction): string {
 
 .struk-kaki {
     margin-top: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
     text-align: center;
 }
 </style>

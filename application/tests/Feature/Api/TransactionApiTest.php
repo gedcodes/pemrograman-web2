@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Shift;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Services\PengaturanToko;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -84,6 +85,57 @@ class TransactionApiTest extends TestCase
             ->assertJsonPath('data.diskon', 2_750)
             ->assertJsonPath('data.pajak', 5_748)
             ->assertJsonPath('data.total', 57_998);
+    }
+
+    public function test_tarif_dari_pengaturan_toko_dipakai_transaksi_baru(): void
+    {
+        $this->bukaShift();
+        $customer = Customer::factory()->create();
+        app(PengaturanToko::class)->perbarui(['tarif_pajak' => 0.12, 'tarif_diskon_member' => 0.1]);
+
+        // subtotal 55.000 ; diskon 10% = 5.500 ; DPP 49.500 ; PPN 12% = 5.940
+        $this->actingAs($this->kasir)->postJson('/api/transactions', [
+            'metode' => 'tunai',
+            'jumlah_bayar' => 100_000,
+            'customer_id' => $customer->id,
+            'items' => [['product_id' => $this->produk->id, 'qty' => 10]],
+        ])
+            ->assertCreated()
+            ->assertJsonPath('data.diskon', 5_500)
+            ->assertJsonPath('data.pajak', 5_940)
+            ->assertJsonPath('data.total', 55_440);
+    }
+
+    public function test_toko_non_pkp_tidak_memungut_ppn(): void
+    {
+        $this->bukaShift();
+        app(PengaturanToko::class)->perbarui(['pkp' => false]);
+
+        $this->actingAs($this->kasir)->postJson('/api/transactions', [
+            'metode' => 'tunai',
+            'jumlah_bayar' => 20_000,
+            'items' => [['product_id' => $this->produk->id, 'qty' => 2]],
+        ])
+            ->assertCreated()
+            ->assertJsonPath('data.pajak', 0)
+            ->assertJsonPath('data.total', 11_000);
+    }
+
+    public function test_mengubah_tarif_tidak_mengubah_transaksi_lama(): void
+    {
+        $this->bukaShift();
+
+        $id = $this->actingAs($this->kasir)->postJson('/api/transactions', [
+            'metode' => 'tunai',
+            'jumlah_bayar' => 20_000,
+            'items' => [['product_id' => $this->produk->id, 'qty' => 2]],
+        ])->assertCreated()->json('data.id');
+
+        app(PengaturanToko::class)->perbarui(['tarif_pajak' => 0.2]);
+
+        $this->actingAs($this->kasir)->getJson("/api/transactions/{$id}")
+            ->assertJsonPath('data.pajak', 1_210)
+            ->assertJsonPath('data.total', 12_210);
     }
 
     public function test_harga_kiriman_klien_diabaikan(): void

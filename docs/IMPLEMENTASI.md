@@ -630,3 +630,223 @@ Uji langsung terhadap server menemukan `GET /api/user` **tanpa** header JSON ber
   - Keluar kembali ke `/login`, dan penjaga peran tetap menolak kasir dari laporan.
   - Satu-satunya respons galat adalah `401 GET /api/user` saat tamu membuka root. Itu memang cara SPA mendeteksi pengunjung belum masuk.
 
+
+---
+
+## Lanjutan 2026-09-24 — Pengaturan Toko
+
+Menu baru **Pengaturan → Pengaturan Toko** (`/pengaturan/toko`, khusus admin). Halaman ini menggabungkan rancangan Profil Toko dan Pajak & Diskon dari prototipe (`docs/pages/profil-toko.html`, `pajak-diskon.html`), dua halaman yang sebelumnya belum dibangun.
+
+### Yang dapat diatur
+
+| Bagian | Isian | Dipakai di |
+| :-- | :-- | :-- |
+| Identitas | Logo (PNG/JPG/WebP, maks. 1 MB), nama toko, slogan | Sidebar, halaman masuk, layar pembuka, judul tab, favicon, kop laporan, mode tablet, kepala struk |
+| Alamat & kontak | Alamat, telepon, email, jam buka & tutup | Kepala struk |
+| Legalitas | NPWP (15/16 digit), NIB (13 digit) | Kepala struk (NPWP) |
+| Struk | Cetak logo ya/tidak, kaki struk dua baris | Struk Kasir dan cetak ulang di Riwayat |
+| Pajak & diskon | Status PKP, tarif PPN (0–20%), diskon member (0–30%) | `PricingService` di server dan pratinjau keranjang Kasir |
+| Pembayaran non-tunai | Tarif MDR (0–5%), batas waktu bayar (5–1.440 menit) | Laporan Laba Rugi, masa berlaku tagihan Midtrans |
+
+Di sisi kanan halaman ada **pratinjau struk** yang berubah saat mengetik, sebelum disimpan. Halaman ini juga punya penanda "Belum disimpan", dialog konfirmasi bila meninggalkan halaman, dan pintasan Ctrl+S.
+
+### Rancangan
+
+- **Tabel `settings` berbentuk kunci-nilai** (`kunci`, `nilai` JSON). Menambah pengaturan baru tidak butuh migrasi, cukup satu baris di `PengaturanToko::skema()`, aturan validasinya di `PengaturanRequest`, dan isiannya di halaman.
+- **`App\Services\PengaturanToko` adalah satu-satunya pintu.** Kunci yang belum pernah disimpan memakai nilai bawaan dari `config/pos.php`, jadi tabel kosong pun menghasilkan aplikasi yang berjalan normal. Service ini juga memastikan tipe setiap nilai benar (tarif selalu `float`, saklar selalu `bool`). Sengaja tidak di-cache, karena cache yang basi pada tarif pajak berarti kasir menagih angka yang salah.
+- **Tiga tempat yang dulu membaca `config('pos.*')` langsung** kini memakai service: `PricingService` (PPN dan diskon), `ReportController` (MDR), dan `MidtransService` (batas waktu bayar).
+- **Pratinjau keranjang Kasir tidak lagi menulis tetap `0.11` dan `0.05`.** Sebelumnya, mengubah tarif akan membuat pratinjau berbeda dari total yang dihitung server. Label "PPN 11%" dan "Diskon member 5%" juga dibentuk dari tarif, dan baris PPN disembunyikan bila toko bukan PKP.
+- **Mengubah tarif tidak mengubah transaksi lama**, karena nominal diskon dan pajak disimpan per transaksi. Untuk alasan yang sama, rincian PPN yang dikirim ke Midtrans kini berlabel "PPN" tanpa persen: tagihan yang ditagih ulang dapat terjadi setelah tarif berubah.
+- **Identitas publik dirender server.** Nama, slogan, logo, dan inisial disisipkan ke `spa.blade.php` (`window.__TOKO__`), sehingga layar pembuka, judul tab, favicon, dan halaman masuk langsung benar tanpa berkedip dari nama bawaan. Yang disisipkan sengaja hanya identitas; tarif dan NPWP tidak ikut (dijaga tes).
+- **Inisial pengganti logo dihitung di server saja** ("Toko Sari Amerta" → "SA", kata "toko"/"warung" dilewati). Dengan begitu Blade dan SPA tidak pernah berbeda pendapat.
+- **Logo:**
+  - Disimpan di disk `public` dengan nama acak, jadi setiap logo baru punya URL baru dan tidak tertahan cache browser.
+  - Berkas lama dihapus setelah yang baru tersimpan.
+  - URL-nya relatif (`/storage/...`), bukan absolut dari `APP_URL`.
+  - **SVG ditolak**, karena dapat memuat skrip dan disajikan dari origin aplikasi.
+  - Bila berkas gagal dimuat, misalnya karena `storage:link` belum dibuat, komponen `MerekToko` menampilkan inisial, bukan ikon gambar rusak.
+- **Hak akses:** GET `/api/pengaturan` boleh untuk semua peran, karena Kasir butuh tarif dan identitas struk. PUT `/api/pengaturan`, POST dan DELETE `/api/pengaturan/logo` hanya untuk admin.
+
+### Satu bug lama ikut ditemukan
+
+`router.afterEach` mengganti judul tab juga untuk navigasi yang **dibatalkan**. Memilih "Kembali ke formulir" pada dialog perubahan belum disimpan membuat judul tab berganti ke halaman yang tidak jadi dibuka; ini juga terjadi di Form Produk. Judul kini dihitung dari rute yang benar-benar aktif lewat `watchEffect`, sekaligus langsung ikut berubah saat nama toko disimpan.
+
+### Langkah tambahan
+
+`php artisan storage:link` wajib dijalankan sekali, baik lokal maupun di server. Langkah ini sudah ditambahkan ke README dan DEPLOYMENT bagian 3.
+
+### Hasil verifikasi
+
+- `composer run ci:check` hijau: Vitest **46 lolos**, PHPUnit **183 lolos / 598 asersi**, PHPStan level 7 **0 error**. Tes baru:
+  - `PengaturanApiTest`: nilai bawaan, hak akses, 12 kasus validasi, siklus logo unggah–ganti–hapus tanpa sisa berkas, 4 jenis logo tidak sah, isi layar pembuka, dan inisial.
+  - Tarif baru, toko non-PKP, dan transaksi lama tidak berubah di `TransactionApiTest`.
+  - Tarif MDR di `ReportApiTest`.
+  - Tarif pratinjau kasir di `useKasir.test.ts`.
+  - `InputPersen.test.ts`.
+- Uji di Chrome sungguhan (24 pemeriksaan, seluruhnya lolos):
+  - Menyimpan lewat Ctrl+S mengirim tarif sebagai pecahan. Sidebar dan judul tab langsung berubah tanpa muat ulang.
+  - SVG ditolak dan PNG diterima. Logo termuat lewat `storage:link` dan tampil di sidebar, pratinjau struk, halaman masuk, serta favicon.
+  - Kasir menampilkan "PPN 12%".
+  - Tidak ada scroll horizontal di 390px.
+  - Data uji dikembalikan ke nilai bawaan setelahnya.
+
+---
+
+## Lanjutan 2026-09-24 — Foto Produk, Perbesar Foto, Barcode Otomatis & Cetak Label
+
+### 1. Foto produk kini dapat diunggah
+
+Sebelumnya Form Produk **tidak punya isian foto sama sekali**. Kolom `gambar` hanya berisi path teks yang diisi seeder, menunjuk ke `public/img-produk/`.
+
+- **Form Produk** mendapat kartu *Foto produk* di sisi kanan: pilih, ganti, hapus, dan pratinjau yang dapat diperbesar. Foto dipilih lebih dulu lalu diunggah **setelah** produk tersimpan, karena produk baru belum punya id sebelum itu. Bila produknya tersimpan tetapi fotonya gagal, data produk tidak dibuang: formulir berpindah ke mode ubah supaya foto dapat dicoba lagi.
+- **Endpoint baru (admin):** `POST /api/products/{id}/gambar` dan `DELETE /api/products/{id}/gambar`. Format PNG/JPG/WebP, maks. 2 MB, minimal 64 px. SVG ditolak karena dapat memuat skrip. Foto disimpan di disk `public` folder `produk/` dengan nama acak, dan foto lama hasil unggahan dihapus setelah yang baru tersimpan.
+- **`gambar_url` dibentuk server** (`Product::gambarUrl`). Foto unggahan menjadi `/storage/produk/...`, sedangkan foto contoh seeder tetap `/img-produk/products/...`. Foto contoh seeder **tidak pernah dihapus** aplikasi (dijaga tes).
+- **`gambar` tidak lagi dapat ditulis lewat `PUT /api/products`**, supaya klien tidak dapat menunjuk ke berkas sembarang (dijaga tes dengan `../../.env`).
+
+### 2. Transaksi "Menunggu" dan "Kedaluwarsa": pertanyaan, bukan perubahan
+
+Keduanya **tidak** mengurangi stok dan **tidak** dihitung sebagai penjualan. Buktinya dari kode dan data:
+
+| Bagian | Yang dihitung |
+| :-- | :-- |
+| Stok | Hanya berkurang saat status menjadi `settlement` (`TransactionService`, `PaymentNotificationService`). Di `db_pos`: **0 mutasi stok** dari transaksi yang tidak lunas |
+| Laporan Penjualan & Laba Rugi | `Transaction::lunas()` / `status = 'settlement'` |
+| Dashboard | `lunas()` |
+| Rekap shift | Penjualan tunai/non-tunai hanya dari `settlement`; `pending` dihitung terpisah sebagai "tagihan menunggu" |
+
+**Temuan dari pengecekan status langsung ke Midtrans Sandbox (hanya membaca, tanpa mengubah data):**
+
+| Transaksi | Di aplikasi | Di Midtrans |
+| :-- | :-- | :-- |
+| TRX-20260923-0053 (Rp86.580) | pending | **settlement (sudah dibayar)** |
+| TRX-20260923-0054 (Rp547.452) | pending | **settlement (sudah dibayar)** |
+| TRX-20260923-0052 | pending | expire |
+| TRX-20260923-0003, -0032 | pending | tidak dikenal (data seeder, tidak pernah dibuatkan tagihan) |
+
+Status di aplikasi tertinggal karena webhook Midtrans tidak dapat menjangkau `localhost`. Dua transaksi yang sudah dibayar belum mengurangi stok dan belum masuk laporan. Tombol **Periksa** di Riwayat Transaksi menyinkronkannya satu per satu. **Belum dijalankan**, karena mengubah data dan stok.
+
+### 3. Perbesar foto
+
+Komponen `PratinjauGambar` (modal, tutup dengan Esc atau klik di luar) dengan tombol *Buka ukuran asli*. Thumbnail di Master Produk dan pratinjau di Form Produk dapat diklik; thumbnail tanpa foto tetap ikon biasa.
+
+### 4. Barcode otomatis & cetak label
+
+- **Format barcode internal: EAN-13 berawalan `20`** (`App\Services\BarcodeService`). Awalan 20–29 dicadangkan GS1 untuk kode internal toko, sehingga tidak bertabrakan dengan barcode pabrik; prototipe pun sudah memakai awalan ini. Nomornya acak (bukan berurutan) dengan digit cek sah, dan keunikannya diperiksa termasuk terhadap produk yang sudah dihapus.
+- **Dipakai di tiga tempat:**
+  - Tombol **Buat otomatis** di Form Produk (`GET /api/products/barcode-baru`), lengkap dengan pratinjau barcode.
+  - Banner **"N produk belum punya barcode"** di Master Produk, dengan konfirmasi (`POST /api/products/barcode-otomatis`).
+  - Tombol **Buat barcode** di halaman cetak, untuk produk dalam daftar cetak saja (`ids`).
+- **Halaman Cetak Label Barcode** (`/produk/cetak-label`, dari tombol *Cetak Label* atau ikon printer per baris):
+  - Pilih produk (cari atau *Semua produk aktif*) beserta jumlah label per produk.
+  - Dua ukuran kertas: **A4 21 label (63,5 × 38,1 mm)** atau **printer label thermal 50 × 30 mm**.
+  - Nama toko dan harga dapat ditampilkan atau disembunyikan.
+- **Simbologi dipilih otomatis:** EAN-13/EAN-8 bila digit ceknya sah, selain itu **Code 128**. Sebagian data contoh prototipe (mis. Telur `2000140000105`) digit ceknya salah, dan tetap tercetak serta terbaca sebagai Code 128. Barcode digambar SVG oleh **JsBarcode** (MIT), pustaka pertama di proyek ini untuk urusan gambar. Pertimbangannya: barcode yang salah satu garis saja tidak terbaca pemindai, jadi pustaka yang teruji luas lebih aman daripada encoder buatan sendiri.
+- **Digit cek EAN dihitung di dua tempat** (PHP untuk membuat, TypeScript untuk memilih simbologi) dan keduanya diuji dengan contoh yang sama.
+
+### Bug yang ditemukan saat pengujian cetak
+
+Saat dicetak, `<main class="konten">` masih membawa padding 32 px dan tinggi minimal satu layar. Akibatnya:
+
+- Printer thermal mencetak **2 stiker kosong** (25 halaman untuk 23 label).
+- Pada A4 seluruh label **bergeser ±8,5 mm ke bawah**, sehingga meleset dari kotak lembar stiker. Tes jumlah halaman A4 tetap lolos, jadi bug ini baru ketahuan setelah posisi label diukur.
+
+Diperbaiki dengan menolkan padding dan tinggi pembungkus aplikasi hanya saat halaman berisi lembar label dicetak.
+
+### Hasil verifikasi
+
+- `composer run ci:check` hijau: Vitest **54 lolos**, PHPUnit **202 lolos / 666 asersi**, PHPStan level 7 **0 error**. Tes baru:
+  - `ProdukGambarDanBarcodeTest` (19 tes): siklus foto, foto seeder tidak terhapus, path tidak dapat disuntik, 4 jenis foto tidak sah, hak akses, digit cek, barcode baru, isi massal, penyaring `tanpa_barcode`, dan barcode berspasi.
+  - `barcode.test.ts`.
+- Uji di Chrome sungguhan (29 pemeriksaan, seluruhnya lolos) memakai dua produk uji sementara yang dihapus permanen setelahnya:
+  - Unggah foto lewat formulir, perbesar dari form dan dari daftar.
+  - Barcode otomatis, satu per satu maupun massal.
+  - **Garis barcode di label dibaca ulang oleh dekoder EAN-13 terpisah** dan hasilnya sama persis dengan kodenya, termasuk barcode asli Indomie.
+  - PDF A4: 2 halaman berukuran 210 × 297 mm, label pertama tepat di tepi margin. PDF thermal: 23 halaman berukuran 50 × 30 mm.
+  - Tanpa scroll horizontal di 390 px.
+  - Barcode baru dipindai di Kasir dan masuk keranjang.
+
+---
+
+## Lanjutan 2026-09-24 — Tren Pendapatan, Pemilih Tanggal, Unduh PDF/Excel, Rincian Opname, Foto di Pemilih Produk
+
+### 1. Tren pendapatan di Laporan Penjualan
+
+- **Kartu ringkasan:**
+  - Total diterima, dengan perubahan dibanding **periode sebelumnya yang sama panjang**. Perubahannya ditandai ikon naik/turun dan tanda +/−, tidak hanya warna.
+  - Jumlah transaksi.
+  - Rata-rata per transaksi.
+  - Diskon.
+- **Grafik area `GrafikTren`** (SVG, tanpa pustaka grafik), mengikuti skill *dataviz*:
+  - Garis 2 px dengan arsiran 10%, garis bantu tipis tanpa putus-putus.
+  - Sumbu Y berangka bulat dalam format Indonesia ringkas ("1 jt", "1,5 jt").
+  - Label langsung hanya pada titik tertinggi, bukan di setiap titik.
+  - Crosshair dan tooltip saat disorot, dan dapat dijelajahi keyboard (← → Home End).
+  - Tinggi wadah sudah termasuk pita label sumbu X, sehingga tidak ada gulir bertingkat.
+- **Warna deret `#00897b` dipilih lewat validator palet**, bukan ditaksir. Teal merek (`--teal-600`) gagal pada ambang *chroma* dan terbaca keabu-abuan sebagai garis data.
+- **Deret tren rapat, dibentuk di server** (`LaporanService::tren`): hari tanpa penjualan tetap ada bernilai nol. Tanpa itu garis melompati hari sepi dan menggambarkan penjualan yang tidak pernah terjadi. Periode di atas **62 hari** otomatis dirangkum **per bulan**.
+
+### 2. Pemilih tanggal flatpickr
+
+`<input type="date">` bawaan browser diganti komponen `InputTanggal` (flatpickr 4.6, MIT):
+
+- Berbahasa Indonesia, minggu dimulai Senin.
+- Tampilan "24 Sep 2026", nilai yang dikirim tetap "2026-09-24".
+- Tema teal yang sama dengan design system.
+- Tampilan di ponsel sama dengan di desktop, tidak jatuh ke pemilih bawaan OS.
+
+`FilterPeriode` kini memakai **satu kalender rentang** yang langsung menerapkan periode begitu ujung keduanya dipilih, sehingga tombol Terapkan tidak diperlukan lagi. Presetnya bertambah **90 hari** dan **Tahun ini**. Tanggal masuk di form Barang Masuk juga memakai komponen ini.
+
+### 3. Unduh PDF & Excel menggantikan Cetak
+
+- Tombol **Cetak** di Laporan Penjualan dan Laba Rugi diganti **Unduh PDF** dan **Unduh Excel**. Laporan Stok juga mendapat keduanya.
+- **Berkas dibuat server**, dengan dompdf untuk PDF dan PhpSpreadsheet untuk Excel (keduanya berlisensi bebas). Endpoint: `GET /api/reports/{sales|profit-loss|stock}/unduh?format=pdf|xlsx` (khusus admin, `Cache-Control: no-store`).
+- **Isinya dari `LaporanService`**, yang juga dipakai tampilan JSON, sehingga angka di layar, PDF, dan Excel dijamin sama. Seluruh perhitungan laporan dipindahkan dari controller ke service ini.
+- **PDF:**
+  - Kop berisi logo dan identitas dari Pengaturan Toko.
+  - Kartu ringkasan, grafik kolom tren, dan tabel dengan kepala yang berulang di setiap halaman.
+  - Nomor halaman "Halaman X dari Y".
+- **Excel:**
+  - Angka ditulis sebagai **angka** (bukan teks) dan tanggal sebagai **tanggal Excel**, sehingga bisa langsung dijumlah dan disaring.
+  - Baris jumlah dan laba bersih memakai **rumus**.
+  - Lembar Tren memuat **grafik garis Excel**.
+  - Barcode disimpan sebagai **teks**; sebagai angka, Excel membuang nol di depan dan menampilkannya sebagai `8,99E+12`.
+  - Kolom diberi penyaring dan baris kepala dibekukan.
+- **Struk kasir dan label barcode tetap dicetak.** Keduanya dikirim ke printer fisik (thermal/stiker); menggantinya dengan unduhan akan memutus alur kerja kasir.
+
+### 4. Barang apa saja yang diopname
+
+- Riwayat opname kini menampilkan kolom **Dihitung** (jumlah produk) dan **Berselisih**, plus tombol **Lihat** yang membuka rincian sesi:
+  - Foto, nama, dan barcode produk.
+  - Stok sistem, stok fisik, dan selisih.
+  - Nilai selisih (selisih × harga beli).
+  - Ringkasan lebih/kurang, dan penyaring "hanya yang berselisih".
+- **Barang yang dihitung dan cocok kini ikut tercatat.** Sebelumnya hanya barang berselisih yang disimpan, sehingga pemilik tidak bisa tahu barang mana yang sudah diperiksa. Lembar hitung mendapat centang **Dihitung** per baris: otomatis tercentang saat angkanya diubah, bisa dicentang sendiri bila jumlahnya cocok, atau sekaligus lewat tombol untuk semua baris yang tampil. Isian awal sama dengan stok sistem, jadi angka yang tidak berubah belum tentu sudah dihitung. Karena itulah dibutuhkan tanda eksplisit.
+- Server mencatat barang cocok dengan selisih 0 **tanpa** menulis mutasi stok (`StockService::sesuaikan` mengabaikan selisih 0).
+- Relasi produk pada rincian opname menyertakan produk yang sudah dihapus, sehingga riwayat lama tetap menampilkan nama barangnya.
+
+### 5. Foto di pemilih produk Barang Masuk
+
+`BaseSelect` kini mendukung foto per opsi (`gambar` di `OpsiPilihan`): foto 40 px di daftar, ikon pengganti bila produk tanpa foto supaya daftar tetap sejajar, dan foto kecil di kotak pilihan setelah dipilih. Dipakai di Barang Masuk dan Cetak Label. Pemakaian `BaseSelect` lain tidak berubah karena propertinya opsional.
+
+### Temuan & perbaikan selama pengujian
+
+- **Periode laporan tidak divalidasi.** Tanggal salah format langsung dilempar ke Carbon dan berakhir 500. Kini dijawab 422; `sampai` harus ≥ `dari`, dan panjang periode paling lama 3 tahun.
+- **PDF ±555 KB**, karena logo toko 1254 px disematkan utuh. Kini logo dikecilkan ke 160 px sebelum disematkan, sehingga PDF menjadi ±57 KB.
+- **Grafik kolom PDF rusak.** dompdf mempersempit kolom hari tanpa penjualan sehingga batang di sebelahnya melebar dan menyatu. Diperbaiki dengan `table-layout: fixed`.
+- **Label tanggal terakhir sumbu X terpotong** di tepi kanan. Kini dirata-kanankan.
+- **Aplikasi berjalan dalam UTC** (`config/app.php`), sementara toko berada di Denpasar (WITA, UTC+8). Batas "hari" di laporan dan dashboard mengikuti UTC, sehingga penjualan sebelum pukul 08.00 WITA masuk ke hari sebelumnya. **Belum diubah**: mengganti zona waktu berarti menggeser seluruh cap waktu yang sudah tersimpan, dan itu perlu keputusan tersendiri. Sementara itu, cap waktu "Dibuat" di PDF diberi label zona waktunya supaya tidak menyesatkan.
+
+### Hasil verifikasi
+
+- `composer run ci:check` hijau: Vitest **58 lolos**, PHPUnit **218 lolos / 743 asersi**, PHPStan level 7 **0 error**. Tes baru:
+  - `LaporanTrenDanUnduhTest` (16 tes): tren rapat, rangkuman bulanan, pembanding, validasi periode, dan isi PDF/Excel yang dibaca ulang dengan PhpSpreadsheet (rumus, grafik, barcode sebagai teks, laba bersih Excel = layar).
+  - Dua tes opname: barang cocok tercatat tanpa mutasi, dan produk terhapus tetap tampil.
+  - `GrafikTren.test.ts`.
+- **Berkas PDF dirender menjadi gambar dan diperiksa visual**: 30 hari (harian), 120 hari (bulanan), Laba Rugi, dan Stok (2 halaman).
+- **Uji di Chrome sungguhan (32 pemeriksaan, seluruhnya lolos)** tanpa menulis ke `db_pos`, karena penyimpanan opname dan Barang Masuk dicegat di browser:
+  - Grafik, hover, keyboard, dan preset.
+  - Rentang flatpickr memuat ulang laporan secara otomatis.
+  - Unduhan PDF/Excel ketiga laporan: nama berkas dan isinya sah.
+  - Rincian opname, dan centang Dihitung yang mengirim barang cocok dengan selisih 0.
+  - Foto di pemilih produk benar-benar termuat.
+  - Tanpa scroll horizontal di 390 px.

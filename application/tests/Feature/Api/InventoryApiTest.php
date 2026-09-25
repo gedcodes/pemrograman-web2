@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Api;
 
 use App\Models\Product;
+use App\Models\StockMove;
 use App\Models\Supplier;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -159,6 +160,51 @@ class InventoryApiTest extends TestCase
 
         $this->assertSame(2, $this->produk->fresh()->stok);
         $this->assertDatabaseCount('stock_opnames', 0);
+    }
+
+    public function test_barang_yang_cocok_ikut_tercatat_tanpa_mengubah_stok(): void
+    {
+        $cocok = Product::factory()->create(['stok' => 7]);
+
+        $id = $this->actingAs($this->admin)->postJson('/api/opnames', [
+            'items' => [
+                ['product_id' => $this->produk->id, 'stok_fisik' => $this->produk->stok - 2, 'stok_sistem' => $this->produk->stok],
+                ['product_id' => $cocok->id, 'stok_fisik' => 7, 'stok_sistem' => 7],
+            ],
+        ])->assertCreated()->json('data.id');
+
+        // Yang cocok tercatat sebagai barang yang diperiksa, tanpa mutasi stok.
+        $this->assertDatabaseHas('opname_items', ['product_id' => $cocok->id, 'selisih' => 0]);
+        $this->assertSame(0, StockMove::where('product_id', $cocok->id)->count());
+        $this->assertSame(7, $cocok->fresh()?->stok);
+
+        $this->actingAs($this->admin)->getJson('/api/opnames')
+            ->assertJsonPath('data.0.jumlah_produk', 2)
+            ->assertJsonPath('data.0.jumlah_berselisih', 1);
+
+        // Rincian: barang berselisih lebih dulu, lengkap dengan data produknya.
+        $this->actingAs($this->admin)->getJson("/api/opnames/{$id}")
+            ->assertOk()
+            ->assertJsonPath('data.items.0.product_id', $this->produk->id)
+            ->assertJsonPath('data.items.0.selisih', -2)
+            ->assertJsonPath('data.items.0.nilai_selisih', -2 * $this->produk->harga_beli)
+            ->assertJsonPath('data.items.0.product.nama_produk', $this->produk->nama_produk)
+            ->assertJsonPath('data.items.1.product_id', $cocok->id)
+            ->assertJsonPath('data.items.1.selisih', 0);
+    }
+
+    public function test_rincian_opname_tetap_menampilkan_produk_yang_sudah_dihapus(): void
+    {
+        $p = Product::factory()->create(['stok' => 3]);
+        $id = $this->actingAs($this->admin)->postJson('/api/opnames', [
+            'items' => [['product_id' => $p->id, 'stok_fisik' => 3, 'stok_sistem' => 3]],
+        ])->json('data.id');
+
+        $p->delete();
+
+        $this->actingAs($this->admin)->getJson("/api/opnames/{$id}")
+            ->assertJsonPath('data.items.0.product.nama_produk', $p->nama_produk)
+            ->assertJsonPath('data.items.0.product.dihapus', true);
     }
 
     public function test_produk_ganda_dalam_satu_opname_ditolak(): void

@@ -25,6 +25,10 @@ class StockOpnameResource extends JsonResource
             'tanggal' => $this->tanggal,
             'status' => $this->status,
             'catatan' => $this->catatan,
+            // Ringkasan dari withCount/withSum di daftar, supaya tabel dapat
+            // menampilkan cakupan opname tanpa memuat seluruh barisnya.
+            'jumlah_produk' => $this->whenHas('items_count', fn () => (int) $this->items_count),
+            'jumlah_berselisih' => $this->whenHas('berselisih_count', fn () => (int) $this->berselisih_count),
             'items' => OpnameItemResource::collection($this->whenLoaded('items')),
         ];
     }

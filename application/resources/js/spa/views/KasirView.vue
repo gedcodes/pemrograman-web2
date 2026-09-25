@@ -13,7 +13,7 @@ import {
 } from '@lucide/vue';
 import { useMediaQuery } from '@vueuse/core';
 import { onMounted, onUnmounted, ref } from 'vue';
-import { angka, gambarProduk, rupiah } from '../composables/format';
+import { angka, rupiah } from '../composables/format';
 import { bunyiAktif } from '../composables/useBunyi';
 import { useKasir } from '../composables/useKasir';
 import { toast } from '../stores/toast';
@@ -207,8 +207,8 @@ onUnmounted(() => document.removeEventListener('keydown', pintasan));
                 >
                     <div class="thumb">
                         <img
-                            v-if="p.gambar"
-                            :src="gambarProduk(p.gambar) ?? ''"
+                            v-if="p.gambar_url"
+                            :src="p.gambar_url"
                             :alt="p.nama_produk"
                             loading="lazy"
                         />
@@ -319,16 +319,16 @@ onUnmounted(() => document.removeEventListener('keydown', pintasan));
                     >
                 </div>
                 <div v-if="kasir.diskon > 0" class="row">
-                    <span>Diskon member 5%</span><span class="spacer" /><span
-                        class="num"
+                    <span>{{ kasir.labelDiskon }}</span
+                    ><span class="spacer" /><span class="num"
                         >−{{ angka(kasir.diskon) }}</span
                     >
                 </div>
-                <div class="row">
-                    <span>PPN 11%</span><span class="spacer" /><span
-                        class="num"
-                        >{{ angka(kasir.pajak) }}</span
-                    >
+                <div v-if="kasir.adaPajak" class="row">
+                    <span>{{ kasir.labelPajak }}</span
+                    ><span class="spacer" /><span class="num">{{
+                        angka(kasir.pajak)
+                    }}</span>
                 </div>
                 <div class="row total-baris">
                     <span>Total</span><span class="spacer" />

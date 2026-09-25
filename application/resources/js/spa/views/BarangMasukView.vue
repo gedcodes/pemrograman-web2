@@ -12,6 +12,7 @@ import BaseModal from '../components/BaseModal.vue';
 import BaseSelect from '../components/BaseSelect.vue';
 import FieldForm from '../components/FieldForm.vue';
 import InputAngka from '../components/InputAngka.vue';
+import InputTanggal from '../components/InputTanggal.vue';
 import KeadaanData from '../components/KeadaanData.vue';
 import KepalaUrut from '../components/KepalaUrut.vue';
 import PagePagination from '../components/PagePagination.vue';
@@ -97,6 +98,9 @@ async function cariProduk(
         nilai: p.id,
         label: p.nama_produk,
         keterangan: `${p.barcode ?? 'tanpa barcode'} · stok ${angka(p.stok)}`,
+        // Foto membedakan kemasan yang namanya mirip, supaya penerimaan
+        // barang tidak tercatat ke produk yang salah.
+        gambar: p.gambar_url,
         nonaktif: dipakai.has(p.id),
     }));
 }
@@ -355,14 +359,11 @@ async function kirim() {
                     wajib
                     :galat="pesanGalat('tanggal_masuk')"
                 >
-                    <input
+                    <InputTanggal
                         :id="id"
                         v-model="form.tanggal_masuk"
-                        type="date"
-                        class="input"
-                        :class="{ 'is-error': invalid }"
-                        :max="kunciTanggal()"
-                        :aria-invalid="invalid || undefined"
+                        :maks="kunciTanggal()"
+                        :invalid="invalid"
                         :aria-describedby="describedby"
                     />
                 </FieldForm>

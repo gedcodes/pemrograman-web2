@@ -2,6 +2,7 @@ import { computed, reactive, readonly } from 'vue';
 import axios from 'axios';
 import { ambil, ApiError, resetCsrf, siapkanCsrf } from '../api/client';
 import type { User } from '../api/types';
+import { lupakanPengaturan, muatPengaturan } from './toko';
 
 /**
  * Keadaan autentikasi.
@@ -46,6 +47,10 @@ export async function muatSesi(): Promise<void> {
     state.memuat = true;
     try {
         state.user = await ambil<User>('/user');
+        // Tarif pajak/diskon dan identitas toko untuk struk. Dimuat sebelum
+        // halaman pertama tampil, supaya pratinjau keranjang Kasir tidak
+        // sempat memakai tarif bawaan yang mungkin sudah diubah admin.
+        await muatPengaturan();
     } catch (e) {
         if (e instanceof ApiError && e.status === 401) {
             state.user = null;
@@ -118,5 +123,6 @@ export async function keluar(): Promise<void> {
         // Sesi mungkin sudah kedaluwarsa di server; keadaan lokal tetap dibersihkan.
     }
     state.user = null;
+    lupakanPengaturan();
     resetCsrf();
 }

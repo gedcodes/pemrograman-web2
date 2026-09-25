@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\MidtransNotificationController;
 use App\Http\Controllers\Api\OperationalExpenseController;
 use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\PengaturanController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PurchaseController;
 use App\Http\Controllers\Api\ReportController;
@@ -58,6 +59,10 @@ Route::middleware(['auth:sanctum', 'role'])->group(function (): void {
     // ---- Dashboard: admin penuh, kasir versi ringkas (Bagian 2.2).
     Route::get('/dashboard', DashboardController::class);
 
+    // ---- Pengaturan toko: kasir perlu tarif dan identitas toko untuk
+    //      pratinjau keranjang dan struk, jadi membacanya boleh semua peran.
+    Route::get('pengaturan', [PengaturanController::class, 'show']);
+
     // ---- Master data: dibaca semua peran, diubah hanya admin.
     Route::get('categories', [CategoryController::class, 'index']);
     Route::get('categories/{category}', [CategoryController::class, 'show']);
@@ -68,6 +73,8 @@ Route::middleware(['auth:sanctum', 'role'])->group(function (): void {
 
     Route::get('products', [ProductController::class, 'index']);
     Route::get('products/barcode/{kode}', [ProductController::class, 'barcode']);
+    // Harus di atas products/{product}, atau "barcode-baru" dianggap id produk.
+    Route::get('products/barcode-baru', [ProductController::class, 'barcodeBaru'])->middleware('role:admin');
     Route::get('products/{product}', [ProductController::class, 'show']);
 
     // ---- Pembayaran non-tunai (Midtrans Snap).
@@ -107,6 +114,9 @@ Route::middleware(['auth:sanctum', 'role'])->group(function (): void {
         Route::apiResource('units', UnitController::class)->except(['index', 'show']);
         Route::apiResource('customers', CustomerController::class)->except(['index', 'show']);
         Route::apiResource('products', ProductController::class)->except(['index', 'show']);
+        Route::post('products/barcode-otomatis', [ProductController::class, 'barcodeOtomatis']);
+        Route::post('products/{product}/gambar', [ProductController::class, 'unggahGambar']);
+        Route::delete('products/{product}/gambar', [ProductController::class, 'hapusGambar']);
         Route::apiResource('suppliers', SupplierController::class);
         Route::apiResource('users', UserController::class);
 
@@ -119,8 +129,17 @@ Route::middleware(['auth:sanctum', 'role'])->group(function (): void {
         Route::apiResource('expenses', OperationalExpenseController::class)
             ->parameters(['expenses' => 'beban']);
 
+        Route::put('pengaturan', [PengaturanController::class, 'update']);
+        Route::post('pengaturan/logo', [PengaturanController::class, 'unggahLogo']);
+        Route::delete('pengaturan/logo', [PengaturanController::class, 'hapusLogo']);
+
         Route::get('reports/sales', [ReportController::class, 'sales']);
         Route::get('reports/profit-loss', [ReportController::class, 'profitLoss']);
         Route::get('reports/stock', [ReportController::class, 'stock']);
+
+        // Unduhan PDF / Excel (?format=pdf|xlsx), isi sama dengan versi JSON.
+        Route::get('reports/sales/unduh', [ReportController::class, 'unduhPenjualan']);
+        Route::get('reports/profit-loss/unduh', [ReportController::class, 'unduhLabaRugi']);
+        Route::get('reports/stock/unduh', [ReportController::class, 'unduhStok']);
     });
 });

@@ -81,9 +81,3 @@ export function statusTransaksi(status: string): {
             return { label: 'Draf', kelas: 'badge-info' };
     }
 }
-
-/** Gambar produk disajikan dari prototipe agar tidak perlu diunggah ulang. */
-export function gambarProduk(path: string | null | undefined): string | null {
-    if (!path) return null;
-    return `/img-produk/${path}`;
-}

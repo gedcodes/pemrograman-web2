@@ -37,7 +37,9 @@ class ProductRequest extends FormRequest
         $id = $terikat instanceof Product ? $terikat->id : null;
 
         return [
-            'barcode' => ['nullable', 'string', 'max:50', Rule::unique('products')->ignore($id)],
+            // Karakter ASCII tercetak tanpa spasi: itulah yang dapat dikodekan
+            // Code 128 dan dikirim ulang apa adanya oleh pemindai.
+            'barcode' => ['nullable', 'string', 'max:50', 'regex:/^[!-~]+$/', Rule::unique('products')->ignore($id)],
             'nama_produk' => ['required', 'string', 'max:180'],
             'category_id' => ['required', 'integer', 'exists:categories,id'],
             'unit_id' => ['required', 'integer', 'exists:units,id'],
@@ -49,7 +51,6 @@ class ProductRequest extends FormRequest
             // menimpa penjualan yang terjadi selama formulir terbuka.
             'stok' => $id === null ? ['nullable', 'integer', 'min:0'] : ['prohibited'],
             'stok_minimum' => ['nullable', 'integer', 'min:0'],
-            'gambar' => ['nullable', 'string', 'max:255'],
             'aktif' => ['nullable', 'boolean'],
         ];
     }
@@ -61,6 +62,8 @@ class ProductRequest extends FormRequest
     {
         return [
             'harga_jual.gte' => 'Harga jual tidak boleh lebih kecil daripada harga beli.',
+            'barcode.regex' => 'Barcode hanya boleh berisi huruf, angka, dan tanda baca, tanpa spasi.',
+            'barcode.unique' => 'Barcode ini sudah dipakai produk lain.',
             'stok.prohibited' => 'Stok tidak dapat diubah dari sini. Gunakan Barang Masuk atau Stok Opname agar pergerakannya tercatat.',
         ];
     }

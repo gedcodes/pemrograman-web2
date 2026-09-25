@@ -58,7 +58,8 @@ export interface Product {
     stok: number;
     stok_minimum: number;
     stok_menipis: boolean;
-    gambar: string | null;
+    /** URL foto (unggahan di /storage, atau contoh seeder di /img-produk). */
+    gambar_url: string | null;
     aktif: boolean;
 }
 
@@ -164,6 +165,17 @@ export interface OpnameItem {
     stok_sistem: number;
     stok_fisik: number;
     selisih: number;
+    /** Selisih × harga beli saat ini; ada bila produk dimuat. */
+    nilai_selisih?: number;
+    product?: {
+        id: number;
+        nama_produk: string;
+        barcode: string | null;
+        gambar_url: string | null;
+        harga_beli: number;
+        satuan: string | null;
+        dihapus: boolean;
+    };
 }
 
 export interface StockOpname {
@@ -173,6 +185,9 @@ export interface StockOpname {
     tanggal: string;
     status: 'draft' | 'selesai';
     catatan: string | null;
+    /** Jumlah produk yang dihitung pada sesi ini. */
+    jumlah_produk?: number;
+    jumlah_berselisih?: number;
     items?: OpnameItem[];
 }
 
@@ -193,15 +208,37 @@ export interface DashboardData {
     transaksi_terakhir: Transaction[];
 }
 
+/** Satu titik tren: satu hari, atau satu bulan untuk periode panjang. */
+export interface TitikTren {
+    /** "YYYY-MM-DD" (harian) atau "YYYY-MM" (bulanan). */
+    kunci: string;
+    /** Hari pertama yang diwakili titik ini, "YYYY-MM-DD". */
+    mulai: string;
+    jumlah_transaksi: number;
+    total: number;
+}
+
 export interface LaporanPenjualan {
-    periode: { dari: string; sampai: string };
+    periode: { dari: string; sampai: string; jumlah_hari: number };
     ringkasan: {
         jumlah_transaksi: number;
         subtotal: number;
         diskon: number;
         pajak: number;
         total: number;
+        rata_rata_transaksi: number;
     };
+    /** Periode sebelumnya yang sama panjang, untuk perbandingan. */
+    pembanding: {
+        dari: string;
+        sampai: string;
+        jumlah_transaksi: number;
+        total: number;
+        /** null bila periode sebelumnya tanpa penjualan. */
+        perubahan_persen: number | null;
+    };
+    /** Deret rapat: hari/bulan tanpa penjualan tetap ada bernilai nol. */
+    tren: { satuan: 'hari' | 'bulan'; titik: TitikTren[] };
     harian: Array<{
         /** Dinamai tanggal_str di server agar tidak tertimpa cast datetime model. */
         tanggal_str: string;
@@ -263,6 +300,40 @@ export interface MidtransConfig {
     is_production: boolean;
     siap: boolean;
     snap_url: string;
+}
+
+/**
+ * Identitas toko yang boleh dilihat tamu. Disisipkan server ke
+ * `window.__TOKO__` (spa.blade.php), jadi tersedia sebelum masuk.
+ */
+export interface TokoPublik {
+    nama_toko: string;
+    slogan: string | null;
+    logo_url: string | null;
+    /** Dua huruf pengganti logo, dihitung server ("Toko Sari Amerta" → "SA"). */
+    inisial: string;
+}
+
+/**
+ * Seluruh Pengaturan Toko (GET /api/pengaturan). Tarif berupa PECAHAN:
+ * 0.11 berarti 11%.
+ */
+export interface Pengaturan extends TokoPublik {
+    alamat: string;
+    telepon: string;
+    email: string | null;
+    npwp: string | null;
+    nib: string | null;
+    jam_buka: string;
+    jam_tutup: string;
+    struk_footer_1: string | null;
+    struk_footer_2: string | null;
+    struk_tampilkan_logo: boolean;
+    pkp: boolean;
+    tarif_pajak: number;
+    tarif_diskon_member: number;
+    tarif_mdr: number;
+    batas_bayar_menit: number;
 }
 
 /** Baris keranjang di halaman Kasir (hanya hidup di browser). */

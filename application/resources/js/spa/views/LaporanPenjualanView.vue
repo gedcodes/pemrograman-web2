@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Printer } from '@lucide/vue';
-import { onMounted, ref } from 'vue';
+import { TrendingDown, TrendingUp } from '@lucide/vue';
+import { computed, onMounted, ref } from 'vue';
 import { ambil, ApiError } from '../api/client';
 import type { LaporanPenjualan } from '../api/types';
 import {
@@ -11,7 +11,9 @@ import {
     tanggal,
 } from '../composables/format';
 import FilterPeriode from '../components/FilterPeriode.vue';
+import GrafikTren from '../components/GrafikTren.vue';
 import KeadaanData from '../components/KeadaanData.vue';
+import TombolUnduh from '../components/TombolUnduh.vue';
 
 const dari = ref(hariLalu(6));
 const sampai = ref(kunciTanggal());
@@ -40,25 +42,35 @@ async function muat() {
     }
 }
 
-function cetak() {
-    window.print();
-}
+const periode = () => ({ dari: dari.value, sampai: sampai.value });
+
+/** Perubahan vs periode sebelumnya yang sama panjang; naik = baik. */
+const perubahan = computed(() => {
+    const p = data.value?.pembanding;
+    if (!p || p.perubahan_persen === null) return null;
+    return {
+        naik: p.perubahan_persen >= 0,
+        teks: `${p.perubahan_persen >= 0 ? '+' : '−'}${angka(Math.abs(p.perubahan_persen))}%`,
+    };
+});
 
 onMounted(muat);
 </script>
 
 <template>
-    <div class="page-head no-print">
+    <div class="page-head">
         <FilterPeriode
             v-model:dari="dari"
             v-model:sampai="sampai"
             :memuat="memuat"
             @terapkan="muat"
         />
-        <button class="btn btn-neutral" :disabled="!data" @click="cetak">
-            <Printer :size="18" :stroke-width="1.75" aria-hidden="true" />
-            Cetak
-        </button>
+        <TombolUnduh
+            url="/reports/sales/unduh"
+            :params="periode"
+            :nama="`laporan-penjualan_${dari}_${sampai}`"
+            :disabled="!data"
+        />
     </div>
 
     <KeadaanData :memuat="memuat" :galat="galat" kerangka="halaman">
@@ -69,46 +81,87 @@ onMounted(muat);
         >
 
         <div v-if="data" class="stack" style="gap: var(--space-5)">
-            <div class="kop">
-                <h2>Laporan Penjualan</h2>
-                <p class="caption">
-                    Toko Sari Amerta &middot;
-                    {{ tanggal(data.periode.dari) }} &ndash;
-                    {{ tanggal(data.periode.sampai) }}
-                </p>
-                <p class="caption">Hanya memuat transaksi berstatus lunas.</p>
-            </div>
-
             <section class="grid-stats grid">
-                <div class="card">
-                    <p class="overline">Transaksi</p>
-                    <p class="ringkas-nilai">
-                        {{ angka(data.ringkasan.jumlah_transaksi) }}
-                    </p>
-                </div>
-                <div class="card">
-                    <p class="overline">Subtotal</p>
-                    <p class="ringkas-nilai">
-                        {{ rupiah(data.ringkasan.subtotal) }}
-                    </p>
-                </div>
-                <div class="card">
-                    <p class="overline">Diskon</p>
-                    <p class="ringkas-nilai">
-                        {{ rupiah(data.ringkasan.diskon) }}
-                    </p>
-                </div>
                 <div class="card">
                     <p class="overline">Total diterima</p>
                     <p class="ringkas-nilai">
                         {{ rupiah(data.ringkasan.total) }}
                     </p>
+                    <p v-if="perubahan" class="caption perubahan">
+                        <span
+                            class="perubahan-nilai"
+                            :class="perubahan.naik ? 'naik' : 'turun'"
+                        >
+                            <component
+                                :is="perubahan.naik ? TrendingUp : TrendingDown"
+                                :size="15"
+                                :stroke-width="2"
+                                aria-hidden="true"
+                            />
+                            {{ perubahan.teks }}
+                        </span>
+                        vs {{ rupiah(data.pembanding.total) }} periode
+                        sebelumnya
+                    </p>
+                    <p v-else class="caption">
+                        Periode sebelumnya tanpa penjualan
+                    </p>
                 </div>
+                <div class="card">
+                    <p class="overline">Transaksi</p>
+                    <p class="ringkas-nilai">
+                        {{ angka(data.ringkasan.jumlah_transaksi) }}
+                    </p>
+                    <p class="caption">
+                        {{ angka(data.pembanding.jumlah_transaksi) }} periode
+                        sebelumnya
+                    </p>
+                </div>
+                <div class="card">
+                    <p class="overline">Rata-rata / transaksi</p>
+                    <p class="ringkas-nilai">
+                        {{ rupiah(data.ringkasan.rata_rata_transaksi) }}
+                    </p>
+                </div>
+                <div class="card">
+                    <p class="overline">Diskon diberikan</p>
+                    <p class="ringkas-nilai">
+                        {{ rupiah(data.ringkasan.diskon) }}
+                    </p>
+                </div>
+            </section>
+
+            <section class="card stack">
+                <div>
+                    <h2>
+                        Tren pendapatan
+                        {{
+                            data.tren.satuan === 'bulan'
+                                ? 'per bulan'
+                                : 'per hari'
+                        }}
+                    </h2>
+                    <p class="caption">
+                        {{ tanggal(data.periode.dari) }} &ndash;
+                        {{ tanggal(data.periode.sampai) }} &middot; hanya
+                        transaksi lunas
+                        <template v-if="data.tren.satuan === 'bulan'">
+                            &middot; periode di atas 62 hari dirangkum per bulan
+                        </template>
+                    </p>
+                </div>
+                <GrafikTren
+                    :titik="data.tren.titik"
+                    :satuan="data.tren.satuan"
+                />
             </section>
 
             <section class="table-wrap">
                 <div class="table-scroll">
                     <table class="data">
+                        <caption class="sr-only">
+                            Rincian penjualan per hari
+                        </caption>
                         <thead>
                             <tr>
                                 <th>Tanggal</th>
@@ -164,10 +217,6 @@ onMounted(muat);
 </template>
 
 <style scoped>
-.kop {
-    display: none;
-}
-
 .ringkas-nilai {
     font: var(--text-h2);
     letter-spacing: var(--tracking-h2);
@@ -175,21 +224,24 @@ onMounted(muat);
     margin-top: var(--space-2);
 }
 
-/* Kop laporan hanya muncul saat dicetak (PERANCANGAN Bagian 9). */
-@media print {
-    .kop {
-        display: block;
-        margin-bottom: var(--space-4);
-    }
+.perubahan {
+    margin-top: var(--space-1);
+}
 
-    .card,
-    .table-wrap {
-        box-shadow: none;
-        border: 1px solid var(--divider);
-    }
+/* Arah ditandai ikon + tanda, bukan warna saja. */
+.perubahan-nilai {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
 
-    .grid-stats {
-        grid-template-columns: repeat(4, 1fr);
-    }
+.naik {
+    color: var(--success-text);
+}
+
+.turun {
+    color: var(--danger-text);
 }
 </style>

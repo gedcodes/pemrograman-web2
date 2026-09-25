@@ -35,6 +35,7 @@ use Illuminate\Support\Carbon;
  * @property-read Category $category
  * @property-read Unit $unit
  * @property-read float $margin
+ * @property-read string|null $gambar_url
  * @property-read Collection<int, TransactionItem> $transactionItems
  * @property-read Collection<int, PurchaseItem> $purchaseItems
  * @property-read Collection<int, OpnameItem> $opnameItems
@@ -45,6 +46,14 @@ class Product extends Model
 {
     /** @use HasFactory<ProductFactory> */
     use HasFactory, SoftDeletes;
+
+    /**
+     * Folder foto unggahan di disk `public` (storage/app/public/produk).
+     *
+     * Foto contoh dari seeder berada di tempat lain, yaitu `public/img-produk`
+     * (mis. `products/aqua-botol-600ml.webp`), dan tidak pernah dihapus aplikasi.
+     */
+    public const FOLDER_GAMBAR = 'produk';
 
     /**
      * Nilai bawaan yang mencerminkan default basis data.
@@ -134,6 +143,33 @@ class Product extends Model
                 ? round(($this->harga_jual - $this->harga_beli) / $this->harga_jual * 100, 2)
                 : 0.0,
         );
+    }
+
+    /**
+     * URL foto produk, dibentuk di server supaya klien tidak perlu tahu di
+     * mana berkasnya disimpan. Relatif, bukan absolut dari APP_URL (lihat
+     * catatan pada `PengaturanToko::urlLogo`).
+     *
+     * @return Attribute<string|null, never>
+     */
+    protected function gambarUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => match (true) {
+                $this->gambar === null || $this->gambar === '' => null,
+                $this->gambarUnggahan() => '/storage/'.$this->gambar,
+                default => '/img-produk/'.$this->gambar,
+            },
+        );
+    }
+
+    /**
+     * Apakah foto ini hasil unggahan (boleh dihapus aplikasi), bukan foto
+     * contoh bawaan seeder di `public/img-produk`.
+     */
+    public function gambarUnggahan(): bool
+    {
+        return is_string($this->gambar) && str_starts_with($this->gambar, self::FOLDER_GAMBAR.'/');
     }
 
     /**

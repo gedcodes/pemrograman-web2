@@ -117,6 +117,7 @@ git pull
 cd application
 composer install --no-dev --optimize-autoloader
 php artisan migrate --force
+php artisan storage:link
 npm ci
 npm run build
 php artisan config:cache
@@ -131,6 +132,7 @@ php artisan route:cache
 | Database | MySQL 8.x; buat schema lalu isi `DB_*` di `.env` |
 | `APP_KEY` | `php artisan key:generate` bila belum ada |
 | Hak tulis | `storage/` dan `bootstrap/cache/` |
+| `php artisan storage:link` | **Wajib sekali saja.** Logo toko disimpan di `storage/app/public/toko` dan disajikan lewat `/storage/...`. Tanpa tautan ini logo gagal dimuat, dan aplikasi menampilkan inisial toko sebagai gantinya |
 | `SANCTUM_STATEFUL_DOMAINS` | **Wajib memuat domain frontend.** Bila tidak, seluruh panggilan API dari SPA akan dijawab `401` meskipun login berhasil |
 
 > Jebakan `SANCTUM_STATEFUL_DOMAINS` ini sudah pernah terjadi saat pengembangan: server di port 8125 menolak seluruh permintaan karena daftarnya hanya memuat port 8000.

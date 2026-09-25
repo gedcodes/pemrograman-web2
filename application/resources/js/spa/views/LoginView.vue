@@ -5,6 +5,8 @@ import { useRoute, useRouter } from 'vue-router';
 import { ApiError } from '../api/client';
 import { halamanAwal, masuk } from '../stores/auth';
 import { toast } from '../stores/toast';
+import { toko } from '../stores/toko';
+import MerekToko from '../components/MerekToko.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -50,10 +52,12 @@ async function kirim() {
     <div class="layar">
         <div class="panel">
             <div class="brand">
-                <span class="brand-mark">SA</span>
+                <MerekToko :ukuran="48" sudut="md" />
                 <div>
-                    <h1>Toko Sari Amerta</h1>
-                    <p class="caption">Admin Panel Point of Sales</p>
+                    <h1>{{ toko.publik.nama_toko }}</h1>
+                    <p class="caption">
+                        {{ toko.publik.slogan ?? 'Admin Panel Point of Sales' }}
+                    </p>
                 </div>
             </div>
 
@@ -161,18 +165,6 @@ async function kirim() {
 .brand h1 {
     font: var(--text-h2);
     letter-spacing: var(--tracking-h2);
-}
-
-.brand-mark {
-    display: grid;
-    place-items: center;
-    width: 48px;
-    height: 48px;
-    flex: 0 0 48px;
-    border-radius: var(--radius-md);
-    background: var(--teal-700);
-    color: #fff;
-    font: var(--text-h3);
 }
 
 .galat-kotak {

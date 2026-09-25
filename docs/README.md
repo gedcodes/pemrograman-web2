@@ -22,6 +22,7 @@ npm install
 cp .env.example .env         # lalu isi DB_* sesuai MySQL Anda
 php artisan key:generate
 php artisan migrate --seed
+php artisan storage:link     # agar logo toko dapat disajikan
 npm run build
 php artisan serve
 ```

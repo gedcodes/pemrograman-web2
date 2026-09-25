@@ -18,7 +18,7 @@ import {
 } from '@lucide/vue';
 import { useFullscreen, useNow, useWakeLock } from '@vueuse/core';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
-import { angka, gambarProduk, rupiah } from '../composables/format';
+import { angka, rupiah } from '../composables/format';
 import { bunyiAktif } from '../composables/useBunyi';
 import { useKasir } from '../composables/useKasir';
 import { auth } from '../stores/auth';
@@ -26,6 +26,7 @@ import { toast } from '../stores/toast';
 import BaseSelect from '../components/BaseSelect.vue';
 import InputQty from '../components/InputQty.vue';
 import StokBadge from '../components/StokBadge.vue';
+import MerekToko from '../components/MerekToko.vue';
 import ToastHost from '../components/ToastHost.vue';
 import KasirGerbangShift from '../components/kasir/KasirGerbangShift.vue';
 import KasirModalBayar from '../components/kasir/KasirModalBayar.vue';
@@ -132,7 +133,7 @@ onUnmounted(() => {
             </RouterLink>
 
             <div class="merek">
-                <span class="merek-tanda" aria-hidden="true">SA</span>
+                <MerekToko :ukuran="44" />
                 <div class="merek-teks">
                     <strong>Kasir · Mode Tablet</strong>
                     <small>{{ auth.user?.name }} · {{ jamSekarang }}</small>
@@ -314,8 +315,8 @@ onUnmounted(() => {
                         >
                         <span class="ubin-gambar">
                             <img
-                                v-if="p.gambar"
-                                :src="gambarProduk(p.gambar) ?? ''"
+                                v-if="p.gambar_url"
+                                :src="p.gambar_url"
                                 alt=""
                                 loading="lazy"
                             />
@@ -465,16 +466,16 @@ onUnmounted(() => {
                         >
                     </div>
                     <div v-if="kasir.diskon > 0" class="row">
-                        <span>Diskon member 5%</span
+                        <span>{{ kasir.labelDiskon }}</span
                         ><span class="spacer" /><span class="num"
                             >−{{ angka(kasir.diskon) }}</span
                         >
                     </div>
-                    <div class="row">
-                        <span>PPN 11%</span><span class="spacer" /><span
-                            class="num"
-                            >{{ angka(kasir.pajak) }}</span
-                        >
+                    <div v-if="kasir.adaPajak" class="row">
+                        <span>{{ kasir.labelPajak }}</span
+                        ><span class="spacer" /><span class="num">{{
+                            angka(kasir.pajak)
+                        }}</span>
                     </div>
                     <button
                         type="button"
@@ -572,18 +573,6 @@ onUnmounted(() => {
     align-items: center;
     gap: var(--space-3);
     min-width: 0;
-}
-
-.merek-tanda {
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    flex: 0 0 44px;
-    border-radius: var(--radius-sm);
-    background: var(--teal-700);
-    color: var(--text-on-dark);
-    font: var(--text-h3);
 }
 
 .merek-teks {

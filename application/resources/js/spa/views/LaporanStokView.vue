@@ -4,6 +4,7 @@ import { ambil, ApiError } from '../api/client';
 import type { LaporanStok } from '../api/types';
 import { angka, rupiah } from '../composables/format';
 import KeadaanData from '../components/KeadaanData.vue';
+import TombolUnduh from '../components/TombolUnduh.vue';
 import StokBadge from '../components/StokBadge.vue';
 
 const data = ref<LaporanStok | null>(null);
@@ -27,6 +28,14 @@ onMounted(muat);
 </script>
 
 <template>
+    <div class="page-head">
+        <p class="caption">
+            Posisi stok saat ini. Unduhan memuat seluruh produk beserta nilai
+            persediaannya.
+        </p>
+        <TombolUnduh url="/reports/stock/unduh" nama="laporan-stok" />
+    </div>
+
     <KeadaanData :memuat="memuat" :galat="galat" kerangka="halaman">
         <template #aksi
             ><button class="btn btn-soft" @click="muat">

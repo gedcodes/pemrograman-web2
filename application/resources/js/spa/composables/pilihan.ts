@@ -4,6 +4,12 @@ export interface OpsiPilihan<V extends string | number = string | number> {
     label: string;
     /** Teks kecil di bawah label, ikut dicari (mis. barcode, tanggal). */
     keterangan?: string;
+    /**
+     * Foto kecil di samping label (mis. produk). `null` = tidak berfoto,
+     * tampil sebagai ikon pengganti supaya daftar tetap sejajar; tidak diisi
+     * sama sekali = daftar tanpa kolom foto.
+     */
+    gambar?: string | null;
     nonaktif?: boolean;
 }
 

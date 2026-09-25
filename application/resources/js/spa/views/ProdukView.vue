@@ -1,9 +1,17 @@
 <script setup lang="ts">
-import { Package, Pencil, Plus, Search, Trash2 } from '@lucide/vue';
+import {
+    Barcode,
+    Package,
+    Pencil,
+    Plus,
+    Printer,
+    Search,
+    Trash2,
+} from '@lucide/vue';
 import { computed, onMounted, ref } from 'vue';
-import { ambilPenuh, ApiError, hapus } from '../api/client';
+import { ambilPenuh, ApiError, hapus, simpan } from '../api/client';
 import type { Category, Product } from '../api/types';
-import { angka, gambarProduk, persen } from '../composables/format';
+import { angka, persen } from '../composables/format';
 import { keOpsi } from '../composables/pilihan';
 import { useDaftarServer } from '../composables/useDaftarServer';
 import { adalahAdmin } from '../stores/auth';
@@ -14,6 +22,7 @@ import BaseSwitch from '../components/BaseSwitch.vue';
 import KeadaanData from '../components/KeadaanData.vue';
 import KepalaUrut from '../components/KepalaUrut.vue';
 import PagePagination from '../components/PagePagination.vue';
+import PratinjauGambar from '../components/PratinjauGambar.vue';
 import StokBadge from '../components/StokBadge.vue';
 
 const kategori = ref<Category[]>([]);
@@ -81,7 +90,51 @@ async function konfirmasiHapus() {
     }
 }
 
+/* ----------------------------------------------------------- perbesar */
+
+const diperbesar = ref<Product | null>(null);
+
+/* --------------------------------------------- produk tanpa barcode */
+
+/* Jumlahnya dihitung server (bukan dari halaman yang sedang tampil), supaya
+   produk tanpa barcode di halaman lain ikut terhitung. */
+const jumlahTanpaBarcode = ref(0);
+const konfirmasiBarcode = ref(false);
+const membuatBarcode = ref(false);
+
+async function hitungTanpaBarcode() {
+    if (!adalahAdmin.value) return;
+    try {
+        const r = await ambilPenuh<Product[]>('/products', {
+            tanpa_barcode: 1,
+            per_page: 1,
+        });
+        jumlahTanpaBarcode.value = r.meta?.total ?? r.data.length;
+    } catch {
+        jumlahTanpaBarcode.value = 0;
+    }
+}
+
+async function buatBarcodeSemua() {
+    membuatBarcode.value = true;
+    try {
+        const r = await simpan<{ jumlah: number }>(
+            '/products/barcode-otomatis',
+        );
+        toast.sukses(r.message ?? 'Barcode dibuat.');
+        konfirmasiBarcode.value = false;
+        await Promise.all([muat(), hitungTanpaBarcode()]);
+    } catch (e) {
+        toast.galat(
+            e instanceof ApiError ? e.message : 'Gagal membuat barcode.',
+        );
+    } finally {
+        membuatBarcode.value = false;
+    }
+}
+
 onMounted(async () => {
+    void hitungTanpaBarcode();
     try {
         const k = await ambilPenuh<Category[]>('/categories', {
             per_page: 100,
@@ -114,14 +167,32 @@ onMounted(async () => {
             <BaseSwitch v-model="hanyaMenipis">Stok menipis saja</BaseSwitch>
         </div>
 
-        <RouterLink
-            v-if="adalahAdmin"
-            class="btn btn-primary"
-            :to="{ name: 'produk-baru' }"
-        >
-            <Plus :size="18" :stroke-width="2" aria-hidden="true" />
-            Tambah Produk
-        </RouterLink>
+        <div v-if="adalahAdmin" class="row" style="gap: var(--space-2)">
+            <RouterLink class="btn btn-soft" :to="{ name: 'cetak-label' }">
+                <Printer :size="18" :stroke-width="1.75" aria-hidden="true" />
+                Cetak Label
+            </RouterLink>
+            <RouterLink class="btn btn-primary" :to="{ name: 'produk-baru' }">
+                <Plus :size="18" :stroke-width="2" aria-hidden="true" />
+                Tambah Produk
+            </RouterLink>
+        </div>
+    </div>
+
+    <div
+        v-if="adalahAdmin && jumlahTanpaBarcode > 0"
+        class="card peringatan-barcode"
+        role="status"
+    >
+        <Barcode :size="22" :stroke-width="1.75" aria-hidden="true" />
+        <p>
+            <strong>{{ jumlahTanpaBarcode }} produk belum punya barcode</strong>
+            dan tidak dapat dipindai di Kasir.
+        </p>
+        <span class="spacer" />
+        <button class="btn btn-soft" @click="konfirmasiBarcode = true">
+            Buat barcode otomatis
+        </button>
     </div>
 
     <div class="table-wrap">
@@ -198,15 +269,22 @@ onMounted(async () => {
                         <tr v-for="p in daftar" :key="p.id">
                             <td>
                                 <div class="produk-sel">
-                                    <div class="thumb">
+                                    <button
+                                        v-if="p.gambar_url"
+                                        type="button"
+                                        class="thumb thumb-tombol"
+                                        :aria-label="`Perbesar foto ${p.nama_produk}`"
+                                        title="Perbesar foto"
+                                        @click="diperbesar = p"
+                                    >
                                         <img
-                                            v-if="p.gambar"
-                                            :src="gambarProduk(p.gambar) ?? ''"
-                                            :alt="p.nama_produk"
+                                            :src="p.gambar_url"
+                                            alt=""
                                             loading="lazy"
                                         />
+                                    </button>
+                                    <div v-else class="thumb">
                                         <Package
-                                            v-else
                                             :size="20"
                                             :stroke-width="1.5"
                                             aria-hidden="true"
@@ -256,6 +334,21 @@ onMounted(async () => {
                                         />
                                         Ubah
                                     </RouterLink>
+                                    <RouterLink
+                                        class="btn btn-ghost btn-sm btn-ikon"
+                                        :to="{
+                                            name: 'cetak-label',
+                                            query: { produk: p.id },
+                                        }"
+                                        :aria-label="`Cetak label barcode ${p.nama_produk}`"
+                                        title="Cetak label barcode"
+                                    >
+                                        <Printer
+                                            :size="16"
+                                            :stroke-width="1.75"
+                                            aria-hidden="true"
+                                        />
+                                    </RouterLink>
                                     <button
                                         class="btn btn-ghost btn-sm btn-ikon"
                                         :aria-label="`Hapus ${p.nama_produk}`"
@@ -281,6 +374,49 @@ onMounted(async () => {
             />
         </KeadaanData>
     </div>
+
+    <PratinjauGambar
+        v-if="diperbesar?.gambar_url"
+        :src="diperbesar.gambar_url"
+        :judul="diperbesar.nama_produk"
+        :keterangan="diperbesar.barcode ?? 'Tanpa barcode'"
+        @tutup="diperbesar = null"
+    />
+
+    <BaseModal
+        v-if="konfirmasiBarcode"
+        judul="Buat barcode otomatis?"
+        :terkunci="membuatBarcode"
+        @tutup="konfirmasiBarcode = false"
+    >
+        <p>
+            <strong>{{ jumlahTanpaBarcode }} produk</strong> akan diberi barcode
+            internal EAN-13 berawalan <code>20</code>, awalan yang dicadangkan
+            untuk kode internal toko sehingga tidak bertabrakan dengan barcode
+            pabrik.
+        </p>
+        <p class="caption" style="margin-top: var(--space-2)">
+            Produk yang sudah punya barcode tidak diubah. Setelah itu, cetak
+            labelnya lewat tombol Cetak Label.
+        </p>
+        <template #aksi>
+            <button
+                class="btn btn-soft"
+                :disabled="membuatBarcode"
+                @click="konfirmasiBarcode = false"
+            >
+                Batal
+            </button>
+            <button
+                class="btn btn-primary"
+                :disabled="membuatBarcode"
+                :aria-busy="membuatBarcode"
+                @click="buatBarcodeSemua"
+            >
+                {{ membuatBarcode ? 'Membuat…' : 'Ya, buat barcode' }}
+            </button>
+        </template>
+    </BaseModal>
 
     <BaseModal
         v-if="akanDihapus"
@@ -343,5 +479,40 @@ onMounted(async () => {
     width: 100%;
     height: 100%;
     object-fit: contain;
+}
+
+/* Thumbnail berfoto dapat diklik untuk memperbesar. */
+.thumb-tombol {
+    padding: 0;
+    border: 0;
+    background: #fff;
+    box-shadow: 0 0 0 1px var(--divider);
+    cursor: zoom-in;
+    transition: transform var(--dur-base) var(--ease);
+}
+
+.thumb-tombol:hover {
+    transform: scale(1.06);
+}
+
+.thumb-tombol:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+}
+
+.peringatan-barcode {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    background: var(--warning-bg);
+    color: var(--warning-text);
+}
+
+@media (max-width: 767px) {
+    .peringatan-barcode {
+        flex-wrap: wrap;
+    }
 }
 </style>

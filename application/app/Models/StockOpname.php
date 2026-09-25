@@ -24,6 +24,8 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property-read User $user
  * @property-read Collection<int, OpnameItem> $items
+ * @property-read int|null $items_count
+ * @property-read int|null $berselisih_count
  */
 #[Fillable(['no_dokumen', 'user_id', 'tanggal', 'status', 'catatan'])]
 class StockOpname extends Model

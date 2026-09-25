@@ -16,6 +16,8 @@ import { computed, ref, watch, type Component } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { adalahAdmin, auth, keluar } from '../stores/auth';
 import { toast } from '../stores/toast';
+import { toko } from '../stores/toko';
+import MerekToko from '../components/MerekToko.vue';
 import ToastHost from '../components/ToastHost.vue';
 
 const route = useRoute();
@@ -116,6 +118,11 @@ const menu: Entri[] = [
         label: 'Pengaturan',
         ikon: Settings,
         anak: [
+            {
+                nama: 'pengaturan-toko',
+                label: 'Pengaturan Toko',
+                admin: true,
+            },
             { nama: 'pengguna-akses', label: 'Pengguna & Akses', admin: true },
             {
                 nama: 'beban-operasional',
@@ -236,9 +243,11 @@ async function padaKeluar() {
             aria-label="Navigasi utama"
         >
             <div class="brand">
-                <span class="brand-mark">SA</span>
+                <MerekToko :ukuran="40" />
                 <span class="brand-teks sembunyi-rail">
-                    <strong>Sari Amerta</strong>
+                    <strong :title="toko.publik.nama_toko">{{
+                        toko.publik.nama_toko
+                    }}</strong>
                     <small>Point of Sales</small>
                 </span>
             </div>
@@ -430,18 +439,6 @@ async function padaKeluar() {
     align-items: center;
     gap: var(--space-3);
     padding: var(--space-5) var(--space-4);
-}
-
-.brand-mark {
-    display: grid;
-    place-items: center;
-    width: 40px;
-    height: 40px;
-    flex: 0 0 40px;
-    border-radius: var(--radius-sm);
-    background: var(--teal-700);
-    color: var(--text-on-dark);
-    font: var(--text-h3);
 }
 
 .brand-teks,

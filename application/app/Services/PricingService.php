@@ -18,9 +18,15 @@ namespace App\Services;
  *
  * Perhatikan urutannya: diskon member dipotong lebih dulu, baru PPN dikenakan
  * di atas dasar pengenaan pajak. Membalik urutan ini menghasilkan total berbeda.
+ *
+ * Tarifnya dibaca dari Pengaturan Toko pada saat transaksi dibuat. Nominal
+ * diskon dan pajak disimpan per transaksi, sehingga mengubah tarif tidak
+ * mengubah struk atau laporan yang sudah lewat.
  */
 class PricingService
 {
+    public function __construct(private readonly PengaturanToko $pengaturan) {}
+
     /**
      * @param  list<array{qty: int, harga_satuan: int}>  $lines
      * @return array{subtotal: int, diskon: int, pajak: int, total: int}
@@ -32,8 +38,8 @@ class PricingService
             $subtotal += $line['qty'] * $line['harga_satuan'];
         }
 
-        $tarifDiskon = $member ? (float) config('pos.tarif_diskon_member') : 0.0;
-        $tarifPajak = (float) config('pos.tarif_pajak');
+        $tarifDiskon = $member ? $this->pengaturan->tarifDiskonMember() : 0.0;
+        $tarifPajak = $this->pengaturan->tarifPajakBerlaku();
 
         $diskon = (int) round($subtotal * $tarifDiskon);
         $dpp = $subtotal - $diskon;

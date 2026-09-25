@@ -1,16 +1,26 @@
 <script setup lang="ts">
+import { ImageUp, Package, Trash2, WandSparkles } from '@lucide/vue';
 import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue';
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
-import { ambil, ambilPenuh, ApiError, perbarui, simpan } from '../api/client';
+import {
+    ambil,
+    ambilPenuh,
+    ApiError,
+    hapus,
+    perbarui,
+    simpan,
+} from '../api/client';
 import type { Category, Product, Unit } from '../api/types';
 import { persen, rupiah } from '../composables/format';
 import { keOpsi } from '../composables/pilihan';
 import { toast } from '../stores/toast';
+import BarcodeSvg from '../components/BarcodeSvg.vue';
 import BaseModal from '../components/BaseModal.vue';
 import BaseSelect from '../components/BaseSelect.vue';
 import BaseSwitch from '../components/BaseSwitch.vue';
 import FieldForm from '../components/FieldForm.vue';
 import InputAngka from '../components/InputAngka.vue';
+import PratinjauGambar from '../components/PratinjauGambar.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -46,7 +56,6 @@ interface FormProduk {
     harga_jual: number | null;
     stok: number | null;
     stok_minimum: number | null;
-    gambar: string | null;
     aktif: boolean;
 }
 
@@ -60,7 +69,6 @@ function formKosong(): FormProduk {
         harga_jual: null,
         stok: 0,
         stok_minimum: 0,
-        gambar: null,
         aktif: true,
     };
 }
@@ -69,7 +77,97 @@ const form = ref<FormProduk>(formKosong());
 
 /* Potret isian saat dimuat, untuk mendeteksi perubahan yang belum disimpan. */
 const awal = ref(JSON.stringify(form.value));
-const kotor = computed(() => JSON.stringify(form.value) !== awal.value);
+const kotor = computed(
+    () =>
+        JSON.stringify(form.value) !== awal.value ||
+        berkasBaru.value !== null ||
+        hapusFoto.value,
+);
+
+/* ---------------------------------------------------------------- foto */
+
+/* Foto dipilih di sini tetapi baru diunggah SETELAH produk tersimpan:
+   produk baru belum punya id sebelum itu. */
+const gambarUrl = ref<string | null>(null);
+const berkasBaru = ref<File | null>(null);
+const pratinjauBaru = ref<string | null>(null);
+const hapusFoto = ref(false);
+const galatFoto = ref<string | null>(null);
+const pemilihFoto = ref<HTMLInputElement | null>(null);
+const perbesar = ref(false);
+
+const JENIS_FOTO = ['image/png', 'image/jpeg', 'image/webp'];
+
+/** Foto yang tampil sekarang: pilihan baru, atau yang tersimpan. */
+const fotoTampil = computed(() =>
+    hapusFoto.value ? null : (pratinjauBaru.value ?? gambarUrl.value),
+);
+
+function lepasPratinjau() {
+    if (pratinjauBaru.value) URL.revokeObjectURL(pratinjauBaru.value);
+    pratinjauBaru.value = null;
+}
+
+function pilihFoto(e: Event) {
+    const input = e.target as HTMLInputElement;
+    const berkas = input.files?.[0];
+    input.value = ''; // supaya berkas yang sama dapat dipilih lagi
+    if (!berkas) return;
+
+    galatFoto.value = null;
+    if (!JENIS_FOTO.includes(berkas.type)) {
+        galatFoto.value = 'Foto harus berupa gambar PNG, JPG, atau WebP.';
+        return;
+    }
+    if (berkas.size > 2 * 1024 * 1024) {
+        galatFoto.value = 'Ukuran foto paling besar 2 MB.';
+        return;
+    }
+
+    lepasPratinjau();
+    berkasBaru.value = berkas;
+    pratinjauBaru.value = URL.createObjectURL(berkas);
+    hapusFoto.value = false;
+}
+
+function buangFoto() {
+    lepasPratinjau();
+    berkasBaru.value = null;
+    galatFoto.value = null;
+    // Foto tersimpan baru benar-benar dihapus saat formulir disimpan.
+    hapusFoto.value = gambarUrl.value !== null;
+}
+
+/** Unggah/hapus foto untuk produk yang sudah tersimpan. */
+async function simpanFoto(produkId: number): Promise<void> {
+    if (berkasBaru.value) {
+        const data = new FormData();
+        data.append('gambar', berkasBaru.value);
+        await simpan<Product>(`/products/${produkId}/gambar`, data);
+    } else if (hapusFoto.value) {
+        await hapus<Product>(`/products/${produkId}/gambar`);
+    }
+}
+
+/* ------------------------------------------------------------- barcode */
+
+const membuatBarcode = ref(false);
+
+async function buatBarcode() {
+    membuatBarcode.value = true;
+    try {
+        const r = await ambil<{ barcode: string }>('/products/barcode-baru');
+        form.value.barcode = r.barcode;
+        delete galatServer.value.barcode;
+        toast.info('Barcode internal dibuat. Simpan produk untuk memakainya.');
+    } catch (e) {
+        toast.galat(
+            e instanceof ApiError ? e.message : 'Gagal membuat barcode.',
+        );
+    } finally {
+        membuatBarcode.value = false;
+    }
+}
 
 const galatServer = ref<Record<string, string>>({});
 const mengirim = ref(false);
@@ -111,6 +209,9 @@ const galatLokal = computed(() => {
         e.nama_produk = 'Nama produk paling panjang 180 karakter.';
     if (f.barcode.length > 50)
         e.barcode = 'Barcode paling panjang 50 karakter.';
+    else if (f.barcode.trim() !== '' && !/^[!-~]+$/.test(f.barcode.trim()))
+        e.barcode =
+            'Barcode hanya boleh berisi huruf, angka, dan tanda baca, tanpa spasi.';
     if (f.category_id === null) e.category_id = 'Kategori wajib dipilih.';
     if (f.unit_id === null) e.unit_id = 'Satuan wajib dipilih.';
     if (f.harga_beli === null) e.harga_beli = 'Harga beli wajib diisi.';
@@ -174,7 +275,6 @@ async function kirim() {
         harga_beli: f.harga_beli,
         harga_jual: f.harga_jual,
         stok_minimum: f.stok_minimum ?? 0,
-        gambar: f.gambar || null,
         aktif: f.aktif,
     };
 
@@ -183,17 +283,46 @@ async function kirim() {
     // selama formulir terbuka, tanpa tercatat di mutasi stok.
     if (!mengubah.value) muatan.stok = f.stok ?? 0;
 
+    let produkId: number | null = null;
     try {
-        if (mengubah.value) {
-            await perbarui(`/products/${id.value}`, muatan);
-            toast.sukses('Produk diperbarui.');
-        } else {
-            await simpan('/products', muatan);
-            toast.sukses('Produk ditambahkan.');
-        }
+        const r = mengubah.value
+            ? await perbarui<Product>(`/products/${id.value}`, muatan)
+            : await simpan<Product>('/products', muatan);
+        produkId = r.data.id;
+
+        await simpanFoto(produkId);
+
+        toast.sukses(
+            mengubah.value ? 'Produk diperbarui.' : 'Produk ditambahkan.',
+        );
         tersimpan = true;
         await router.push({ name: 'produk' });
     } catch (e) {
+        // Produk sudah tersimpan tetapi fotonya gagal: jangan buang data
+        // yang sudah masuk. Buka formulir ubah supaya foto dapat dicoba lagi.
+        if (produkId !== null) {
+            toast.galat(
+                `Produk tersimpan, tetapi foto gagal diunggah: ${
+                    e instanceof ApiError
+                        ? (e.field('gambar') ?? e.message)
+                        : 'kesalahan tak terduga'
+                }`,
+            );
+            if (mengubah.value) {
+                // Isian produk sudah tersimpan; yang tersisa hanya fotonya,
+                // jadi tetap di sini dan biarkan pengguna menyimpan ulang.
+                awal.value = JSON.stringify(form.value);
+            } else {
+                // Rute dikunci dengan path, jadi formulir ubah dimuat sebagai
+                // komponen baru berisi produk yang baru tersimpan.
+                tersimpan = true;
+                await router.replace({
+                    name: 'produk-ubah',
+                    params: { id: produkId },
+                });
+            }
+            return;
+        }
         if (e instanceof ApiError) {
             galatServer.value = Object.fromEntries(
                 Object.entries(e.errors).map(([k, v]) => [k, v[0]]),
@@ -232,9 +361,9 @@ async function muat() {
                 harga_jual: p.harga_jual,
                 stok: p.stok,
                 stok_minimum: p.stok_minimum,
-                gambar: p.gambar,
                 aktif: p.aktif,
             };
+            gambarUrl.value = p.gambar_url;
         }
         awal.value = JSON.stringify(form.value);
     } catch (e) {
@@ -281,6 +410,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+    lepasPratinjau();
     window.removeEventListener('beforeunload', sebelumTutup);
     document.removeEventListener('keydown', pintasan);
 });
@@ -344,22 +474,45 @@ onUnmounted(() => {
                     v-slot="{ id: i, invalid, describedby }"
                     label="Barcode"
                     untuk="barcode"
-                    bantuan="Kosongkan bila produk tidak berbarcode."
+                    bantuan="Pindai barcode pabrik, atau buat barcode internal bila produk tidak punya."
                     :galat="pesanGalat('barcode')"
                 >
-                    <input
-                        :id="i"
-                        v-model="form.barcode"
-                        class="input input-mono"
-                        :class="{ 'is-error': invalid }"
-                        :aria-invalid="invalid || undefined"
-                        :aria-describedby="describedby"
-                        maxlength="50"
-                        inputmode="numeric"
-                        autocomplete="off"
-                        @blur="sentuh('barcode')"
-                    />
+                    <div class="barcode-baris">
+                        <input
+                            :id="i"
+                            v-model="form.barcode"
+                            class="input input-mono"
+                            :class="{ 'is-error': invalid }"
+                            :aria-invalid="invalid || undefined"
+                            :aria-describedby="describedby"
+                            maxlength="50"
+                            inputmode="numeric"
+                            autocomplete="off"
+                            @blur="sentuh('barcode')"
+                        />
+                        <button
+                            type="button"
+                            class="btn btn-soft"
+                            :disabled="membuatBarcode"
+                            :aria-busy="membuatBarcode"
+                            @click="buatBarcode"
+                        >
+                            <WandSparkles
+                                :size="16"
+                                :stroke-width="1.75"
+                                aria-hidden="true"
+                            />
+                            {{ membuatBarcode ? 'Membuat…' : 'Buat otomatis' }}
+                        </button>
+                    </div>
                 </FieldForm>
+
+                <div
+                    v-if="form.barcode.trim() && !galatLokal.barcode"
+                    class="barcode-pratinjau"
+                >
+                    <BarcodeSvg :kode="form.barcode.trim()" :tinggi="48" />
+                </div>
 
                 <div class="dua-kolom">
                     <FieldForm
@@ -490,6 +643,71 @@ onUnmounted(() => {
 
         <aside class="stack samping">
             <div class="card stack">
+                <h3>Foto produk</h3>
+                <button
+                    v-if="fotoTampil"
+                    type="button"
+                    class="foto-pratinjau"
+                    :aria-label="`Perbesar foto ${form.nama_produk || 'produk'}`"
+                    @click="perbesar = true"
+                >
+                    <img :src="fotoTampil" alt="" />
+                    <span
+                        v-if="berkasBaru"
+                        class="badge badge-warning foto-tanda"
+                        >Belum disimpan</span
+                    >
+                </button>
+                <div v-else class="foto-kosong">
+                    <Package
+                        :size="40"
+                        :stroke-width="1.25"
+                        aria-hidden="true"
+                    />
+                    <span class="caption">Belum ada foto</span>
+                </div>
+
+                <div class="row" style="gap: var(--space-2)">
+                    <button
+                        type="button"
+                        class="btn btn-soft"
+                        @click="pemilihFoto?.click()"
+                    >
+                        <ImageUp :size="16" aria-hidden="true" />
+                        {{ fotoTampil ? 'Ganti foto' : 'Pilih foto' }}
+                    </button>
+                    <button
+                        v-if="fotoTampil"
+                        type="button"
+                        class="btn btn-ghost btn-bahaya"
+                        @click="buangFoto"
+                    >
+                        <Trash2 :size="16" aria-hidden="true" />
+                        Hapus
+                    </button>
+                </div>
+                <p v-if="galatFoto" class="field-error" role="alert">
+                    {{ galatFoto }}
+                </p>
+                <p v-else-if="hapusFoto" class="caption">
+                    Foto akan dihapus saat produk disimpan.
+                </p>
+                <p v-else class="caption">
+                    PNG, JPG, atau WebP, maks. 2 MB. Sebaiknya persegi dengan
+                    latar polos.
+                </p>
+                <input
+                    ref="pemilihFoto"
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp"
+                    class="sr-only"
+                    tabindex="-1"
+                    aria-hidden="true"
+                    @change="pilihFoto"
+                />
+            </div>
+
+            <div class="card stack">
                 <h3>Ringkasan harga</h3>
                 <div class="row">
                     <span>Laba per unit</span><span class="spacer" /><span
@@ -543,6 +761,14 @@ onUnmounted(() => {
         </aside>
     </form>
 
+    <PratinjauGambar
+        v-if="perbesar && fotoTampil"
+        :src="fotoTampil"
+        :judul="form.nama_produk || 'Foto produk'"
+        :keterangan="berkasBaru ? 'Foto baru, belum disimpan.' : undefined"
+        @tutup="perbesar = false"
+    />
+
     <BaseModal
         v-if="jawabTinggalkan"
         judul="Tinggalkan formulir?"
@@ -581,6 +807,71 @@ onUnmounted(() => {
 
 .input-mono {
     font: var(--text-numeric);
+}
+
+.barcode-baris {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.barcode-baris .input {
+    flex: 1;
+    min-width: 0;
+}
+
+.barcode-pratinjau {
+    align-self: flex-start;
+    width: 240px;
+    max-width: 100%;
+    padding: var(--space-2);
+    background: #fff;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 0 0 1px var(--divider);
+}
+
+.foto-pratinjau {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-md);
+    background: #fff;
+    box-shadow: 0 0 0 1px var(--divider);
+    cursor: zoom-in;
+    overflow: hidden;
+}
+
+.foto-pratinjau img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.foto-pratinjau:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+}
+
+.foto-tanda {
+    position: absolute;
+    top: var(--space-2);
+    left: var(--space-2);
+}
+
+.foto-kosong {
+    display: grid;
+    place-items: center;
+    gap: var(--space-2);
+    aspect-ratio: 1;
+    border-radius: var(--radius-md);
+    background: var(--surface-base);
+    color: var(--text-muted);
+}
+
+.btn-bahaya {
+    color: var(--danger-text);
 }
 
 .rugi {
