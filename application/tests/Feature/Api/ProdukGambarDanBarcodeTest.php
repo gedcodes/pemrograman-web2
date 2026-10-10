@@ -28,7 +28,7 @@ class ProdukGambarDanBarcodeTest extends TestCase
     {
         parent::setUp();
         $this->admin = User::factory()->admin()->create();
-        Storage::fake('public');
+        Storage::fake('unggahan');
     }
 
     private function unggah(Product $p, UploadedFile $berkas): TestResponse
@@ -51,32 +51,32 @@ class ProdukGambarDanBarcodeTest extends TestCase
             ->assertJsonPath('message', 'Foto produk diperbarui.')
             ->json('data.gambar_url');
 
-        $this->assertStringStartsWith('/storage/produk/', $url1);
-        $path1 = substr($url1, strlen('/storage/'));
-        Storage::disk('public')->assertExists($path1);
+        $this->assertStringStartsWith('/unggahan/produk/', $url1);
+        $path1 = substr($url1, strlen('/unggahan/'));
+        Storage::disk('unggahan')->assertExists($path1);
 
         $url2 = $this->unggah($p, UploadedFile::fake()->image('b.webp', 300, 300))->assertOk()->json('data.gambar_url');
 
         $this->assertNotSame($url1, $url2);
-        Storage::disk('public')->assertMissing($path1);
-        Storage::disk('public')->assertExists(substr($url2, strlen('/storage/')));
+        Storage::disk('unggahan')->assertMissing($path1);
+        Storage::disk('unggahan')->assertExists(substr($url2, strlen('/unggahan/')));
     }
 
     public function test_foto_contoh_seeder_tidak_pernah_dihapus_saat_diganti(): void
     {
         // Seandainya pun berkas bernama sama ada di disk, jalur contoh seeder
         // (di luar folder produk/) tidak boleh disentuh aplikasi.
-        Storage::disk('public')->put('products/aqua-botol-600ml.webp', 'contoh');
+        Storage::disk('unggahan')->put('products/aqua-botol-600ml.webp', 'contoh');
         $p = Product::factory()->create(['gambar' => 'products/aqua-botol-600ml.webp']);
 
         $this->actingAs($this->admin)->getJson("/api/products/{$p->id}")
             ->assertJsonPath('data.gambar_url', '/img-produk/products/aqua-botol-600ml.webp');
 
         $this->unggah($p, UploadedFile::fake()->image('baru.png', 200, 200))->assertOk();
-        Storage::disk('public')->assertExists('products/aqua-botol-600ml.webp');
+        Storage::disk('unggahan')->assertExists('products/aqua-botol-600ml.webp');
 
         $this->actingAs($this->admin)->deleteJson("/api/products/{$p->id}/gambar")->assertOk();
-        Storage::disk('public')->assertExists('products/aqua-botol-600ml.webp');
+        Storage::disk('unggahan')->assertExists('products/aqua-botol-600ml.webp');
     }
 
     public function test_foto_dihapus(): void
@@ -88,7 +88,7 @@ class ProdukGambarDanBarcodeTest extends TestCase
             ->assertOk()
             ->assertJsonPath('data.gambar_url', null);
 
-        Storage::disk('public')->assertMissing(substr($url, strlen('/storage/')));
+        Storage::disk('unggahan')->assertMissing(substr($url, strlen('/unggahan/')));
         $this->assertNull($p->fresh()?->gambar);
     }
 
@@ -131,7 +131,7 @@ class ProdukGambarDanBarcodeTest extends TestCase
 
         $this->unggah($p, $berkas())->assertUnprocessable()->assertJsonValidationErrors('gambar');
 
-        $this->assertSame([], Storage::disk('public')->allFiles());
+        $this->assertSame([], Storage::disk('unggahan')->allFiles());
         $this->assertNull($p->fresh()?->gambar);
     }
 

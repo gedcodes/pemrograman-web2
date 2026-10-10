@@ -168,15 +168,15 @@ class PengaturanApiTest extends TestCase
 
     public function test_logo_diunggah_diganti_lalu_dihapus_tanpa_menyisakan_berkas(): void
     {
-        Storage::fake('public');
+        Storage::fake('unggahan');
 
         $pertama = $this->actingAs($this->admin)->post('/api/pengaturan/logo', [
             'logo' => UploadedFile::fake()->image('logo.png', 256, 256),
         ], ['Accept' => 'application/json'])->assertOk()->json('data.logo_url');
 
-        $this->assertStringStartsWith('/storage/toko/', $pertama);
-        $pathPertama = substr($pertama, strlen('/storage/'));
-        Storage::disk('public')->assertExists($pathPertama);
+        $this->assertStringStartsWith('/unggahan/toko/', $pertama);
+        $pathPertama = substr($pertama, strlen('/unggahan/'));
+        Storage::disk('unggahan')->assertExists($pathPertama);
 
         // Mengganti logo membuang berkas lama dan menghasilkan URL baru.
         $kedua = $this->actingAs($this->admin)->post('/api/pengaturan/logo', [
@@ -184,13 +184,13 @@ class PengaturanApiTest extends TestCase
         ], ['Accept' => 'application/json'])->assertOk()->json('data.logo_url');
 
         $this->assertNotSame($pertama, $kedua);
-        Storage::disk('public')->assertMissing($pathPertama);
+        Storage::disk('unggahan')->assertMissing($pathPertama);
 
         $this->actingAs($this->admin)->deleteJson('/api/pengaturan/logo')
             ->assertOk()
             ->assertJsonPath('data.logo_url', null);
 
-        Storage::disk('public')->assertMissing(substr($kedua, strlen('/storage/')));
+        Storage::disk('unggahan')->assertMissing(substr($kedua, strlen('/unggahan/')));
     }
 
     /**
@@ -213,19 +213,19 @@ class PengaturanApiTest extends TestCase
     #[DataProvider('logoTidakSah')]
     public function test_logo_tidak_sah_ditolak(\Closure $berkas): void
     {
-        Storage::fake('public');
+        Storage::fake('unggahan');
 
         $this->actingAs($this->admin)
             ->post('/api/pengaturan/logo', ['logo' => $berkas()], ['Accept' => 'application/json'])
             ->assertUnprocessable()
             ->assertJsonValidationErrors('logo');
 
-        $this->assertSame([], Storage::disk('public')->allFiles());
+        $this->assertSame([], Storage::disk('unggahan')->allFiles());
     }
 
     public function test_layar_pembuka_memakai_identitas_tersimpan(): void
     {
-        Storage::fake('public');
+        Storage::fake('unggahan');
         $pengaturan = app(PengaturanToko::class);
         $pengaturan->perbarui(['nama_toko' => 'Warung Bu Tini']);
         $url = $pengaturan->gantiLogo(UploadedFile::fake()->image('logo.png', 64, 64));

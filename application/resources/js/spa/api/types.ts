@@ -58,7 +58,7 @@ export interface Product {
     stok: number;
     stok_minimum: number;
     stok_menipis: boolean;
-    /** URL foto (unggahan di /storage, atau contoh seeder di /img-produk). */
+    /** URL foto (unggahan di /unggahan, atau contoh seeder di /img-produk). */
     gambar_url: string | null;
     aktif: boolean;
 }

@@ -47,6 +47,34 @@ return [
             'report' => false,
         ],
 
+        /*
+         * Berkas unggahan pengguna: foto produk dan logo toko.
+         *
+         * Root-nya langsung di dalam `public/`, bukan `storage/app/public`,
+         * supaya berkas tersaji apa adanya oleh web server tanpa perlu
+         * `php artisan storage:link`. Symlink itu mudah terlupakan -- dan di
+         * hosting bersama atau Windows tanpa hak admin kadang tidak dapat
+         * dibuat sama sekali -- sedangkan akibatnya fatal: SETIAP foto
+         * unggahan dijawab 404 meski berkasnya ada di disk.
+         *
+         * Foldernya bernama `unggahan`, BUKAN `produk`: `/produk` adalah rute
+         * SPA, dan public/.htaccess hanya meneruskan permintaan ke index.php
+         * bila path-nya bukan folder yang benar-benar ada. Folder
+         * `public/produk` justru akan membuat halaman Produk dijawab 403.
+         *
+         * Yang tersimpan di basis data tetap path relatif (mis.
+         * `produk/abc.jpg`), bukan URL, supaya pindah lokasi cukup satu ubahan
+         * di sini plus pembentuk URL-nya.
+         */
+        'unggahan' => [
+            'driver' => 'local',
+            'root' => public_path('unggahan'),
+            'url' => '/unggahan',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

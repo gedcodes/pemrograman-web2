@@ -48,7 +48,7 @@ class Product extends Model
     use HasFactory, SoftDeletes;
 
     /**
-     * Folder foto unggahan di disk `public` (storage/app/public/produk).
+     * Folder foto unggahan di disk `unggahan` (public/unggahan/produk).
      *
      * Foto contoh dari seeder berada di tempat lain, yaitu `public/img-produk`
      * (mis. `products/aqua-botol-600ml.webp`), dan tidak pernah dihapus aplikasi.
@@ -150,6 +150,9 @@ class Product extends Model
      * mana berkasnya disimpan. Relatif, bukan absolut dari APP_URL (lihat
      * catatan pada `PengaturanToko::urlLogo`).
      *
+     * Kedua cabangnya menunjuk ke berkas nyata di dalam `public/`, jadi tidak
+     * ada symlink yang perlu dibuat lebih dulu.
+     *
      * @return Attribute<string|null, never>
      */
     protected function gambarUrl(): Attribute
@@ -157,7 +160,7 @@ class Product extends Model
         return Attribute::make(
             get: fn (): ?string => match (true) {
                 $this->gambar === null || $this->gambar === '' => null,
-                $this->gambarUnggahan() => '/storage/'.$this->gambar,
+                $this->gambarUnggahan() => '/unggahan/'.$this->gambar,
                 default => '/img-produk/'.$this->gambar,
             },
         );
@@ -166,6 +169,9 @@ class Product extends Model
     /**
      * Apakah foto ini hasil unggahan (boleh dihapus aplikasi), bukan foto
      * contoh bawaan seeder di `public/img-produk`.
+     *
+     * Pemeriksaan prefiks ini pula yang menjaga `delete()` tetap di dalam
+     * folder unggahan: path seeder tidak pernah ikut terhapus.
      */
     public function gambarUnggahan(): bool
     {

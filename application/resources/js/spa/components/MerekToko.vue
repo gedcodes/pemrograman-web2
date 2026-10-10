@@ -7,7 +7,7 @@ import { toko } from '../stores/toko';
  * inisial ("SA") bila logo belum diunggah. Dipakai di sidebar, halaman masuk,
  * dan Kasir Mode Tablet supaya ketiganya selalu sama.
  *
- * Bila berkas logo gagal dimuat (mis. `storage:link` belum dibuat di server),
+ * Bila berkas logo gagal dimuat (mis. berkasnya terhapus dari server),
  * inisial yang tampil -- bukan ikon gambar rusak.
  */
 const props = withDefaults(

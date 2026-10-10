@@ -130,7 +130,7 @@ class ProductController extends Controller
 
         /** @var UploadedFile $berkas */
         $berkas = $request->file('gambar');
-        $path = Storage::disk('public')->putFile(Product::FOLDER_GAMBAR, $berkas);
+        $path = Storage::disk('unggahan')->putFile(Product::FOLDER_GAMBAR, $berkas);
         if ($path === false) {
             return response()->json(['message' => 'Foto gagal disimpan.'], 500);
         }
@@ -138,7 +138,7 @@ class ProductController extends Controller
         $lama = $product->gambarUnggahan() ? $product->gambar : null;
         $product->update(['gambar' => $path]);
         if ($lama !== null) {
-            Storage::disk('public')->delete($lama);
+            Storage::disk('unggahan')->delete($lama);
         }
 
         return ApiResponse::ok(ProductResource::make($product->load(['category', 'unit'])), 'Foto produk diperbarui.');
@@ -147,7 +147,7 @@ class ProductController extends Controller
     public function hapusGambar(Product $product): JsonResponse
     {
         if ($product->gambarUnggahan()) {
-            Storage::disk('public')->delete((string) $product->gambar);
+            Storage::disk('unggahan')->delete((string) $product->gambar);
         }
         $product->update(['gambar' => null]);
 

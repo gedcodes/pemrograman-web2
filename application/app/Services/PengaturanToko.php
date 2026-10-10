@@ -27,7 +27,7 @@ use RuntimeException;
  */
 final class PengaturanToko
 {
-    /** Folder logo di disk `public` (storage/app/public/toko). */
+    /** Folder logo di disk `unggahan` (public/unggahan/toko). */
     public const FOLDER_LOGO = 'toko';
 
     /**
@@ -188,7 +188,7 @@ final class PengaturanToko
     {
         $lama = $this->semua()['logo'];
 
-        $path = Storage::disk('public')->putFile(self::FOLDER_LOGO, $berkas);
+        $path = Storage::disk('unggahan')->putFile(self::FOLDER_LOGO, $berkas);
         if ($path === false) {
             throw new RuntimeException('Logo gagal disimpan.');
         }
@@ -247,13 +247,13 @@ final class PengaturanToko
      */
     private function urlLogo(mixed $path): ?string
     {
-        return is_string($path) && $path !== '' ? '/storage/'.$path : null;
+        return is_string($path) && $path !== '' ? '/unggahan/'.$path : null;
     }
 
     private function hapusBerkas(mixed $path): void
     {
         if (is_string($path) && $path !== '') {
-            Storage::disk('public')->delete($path);
+            Storage::disk('unggahan')->delete($path);
         }
     }
 

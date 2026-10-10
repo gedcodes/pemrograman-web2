@@ -91,17 +91,17 @@ final class UnduhLaporan
     private function logoDataUri(): ?string
     {
         $path = $this->pengaturan->semua()['logo'] ?? null;
-        if (! is_string($path) || ! Storage::disk('public')->exists($path)) {
+        if (! is_string($path) || ! Storage::disk('unggahan')->exists($path)) {
             return null;
         }
 
-        $isi = (string) Storage::disk('public')->get($path);
+        $isi = (string) Storage::disk('unggahan')->get($path);
         $kecil = $this->kecilkan($isi, 160);
         if ($kecil !== null) {
             return 'data:image/png;base64,'.base64_encode($kecil);
         }
 
-        $mime = Storage::disk('public')->mimeType($path) ?: 'image/png';
+        $mime = Storage::disk('unggahan')->mimeType($path) ?: 'image/png';
 
         return 'data:'.$mime.';base64,'.base64_encode($isi);
     }
